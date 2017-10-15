@@ -114,6 +114,7 @@
             android:launchMode="singleInstance"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true" />
+        <activity android:name=".ui.activities.SupportDevelopmentActivity" />
 
         <service
             android:name=".service.MusicService"
