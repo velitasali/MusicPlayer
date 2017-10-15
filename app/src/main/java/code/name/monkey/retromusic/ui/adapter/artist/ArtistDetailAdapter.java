@@ -15,11 +15,10 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
-
-
 import code.name.monkey.retromusic.ui.adapter.HorizontalAlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 
 /**
  * Created by hemanths on 19/09/17.
@@ -32,6 +31,7 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final String TAG = "ArtistDetailAdapter";
     private ArrayList<Object> mList = new ArrayList<>();
     private AppCompatActivity mActivity;
+    private int mColor;
 
     public ArtistDetailAdapter(AppCompatActivity activity) {
         mActivity = activity;
@@ -108,7 +108,8 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ArtistDetailViewHolder titleHolder = (ArtistDetailViewHolder) viewHolder;
                 if (titleHolder.title != null) {
                     titleHolder.title.setText(mList.get(i).toString());
-                    titleHolder.title.setTextColor(ThemeStore.accentColor(mActivity));
+                    titleHolder.title.setTextColor(PreferenceUtil.getInstance(mActivity).getAdaptiveColor() ?
+                            mColor : ThemeStore.accentColor(mActivity));
                 }
                 break;
         }
@@ -121,6 +122,11 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     public void swapData(ArrayList<Object> list) {
         mList = list;
+        notifyDataSetChanged();
+    }
+
+    public void setColor(int color) {
+        mColor = color;
         notifyDataSetChanged();
     }
 
