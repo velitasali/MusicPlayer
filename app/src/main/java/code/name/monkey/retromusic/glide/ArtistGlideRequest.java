@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.bumptech.glide.BitmapRequestBuilder;
@@ -30,7 +31,13 @@ public class ArtistGlideRequest {
 
     public static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
     private static final DiskCacheStrategy DEFAULT_DISK_CACHE_STRATEGY = DiskCacheStrategy.SOURCE;
-    private static final int DEFAULT_ERROR_IMAGE = R.drawable.default_artist_image;
+    private static int DEFAULT_ERROR_IMAGE;
+
+    static {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            DEFAULT_ERROR_IMAGE = R.drawable.default_album_art;
+        else DEFAULT_ERROR_IMAGE = R.drawable.default_artist_image;
+    }
 
     public static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Artist artist, boolean noCustomImage, boolean forceDownload) {
         boolean hasCustomImage = CustomArtistImageUtil.getInstance(RetroApplication.getInstance()).hasCustomArtistImage(artist);
