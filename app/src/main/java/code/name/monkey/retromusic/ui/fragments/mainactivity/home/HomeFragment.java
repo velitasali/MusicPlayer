@@ -137,6 +137,7 @@ public class HomeFragment extends AbsMainActivityFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
         setStatusbarColorAuto(view);
         getMainActivity().setTaskDescriptionColorAuto();
         getMainActivity().setNavigationbarColorAuto();

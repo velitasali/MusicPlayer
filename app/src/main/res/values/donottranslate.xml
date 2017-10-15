@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="donation_ids" translatable="false">
-        <item>donation_1</item>
-        <item>donation_2</item>
-        <item>donation_3</item>
-        <item>donation_4</item>
-        <item>donation_5</item>
-        <item>donation_6</item>
+        <item>code_name_monkey_donate_1</item>
+        <item>code_name_monkey_donate_2</item>
+        <item>code_name_monkey_donate_3</item>
+        <item>code_name_monkey_donate_4</item>
+        <item>code_name_monkey_donate_5</item>
+        <item>code_name_monkey_donate_6</item>
     </string-array>
     <string name="dev_info" translatable="false">hi i\'m hemanth s, love to be android developer, i\'m from hosur, tamil nadu, india.</string>
 

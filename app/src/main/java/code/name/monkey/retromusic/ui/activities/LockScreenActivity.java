@@ -21,7 +21,7 @@ import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
-import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
+import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.views.swipebtn.SwipeButton;
 
@@ -34,10 +34,8 @@ public class LockScreenActivity extends AbsMusicServiceActivity {
     ImageView image;
     @BindView(R.id.swipe_btn)
     SwipeButton mSwipeButton;
-    /*@NonNull
-    private PlayerAlbumCoverFragment mPlayerAlbumCoverFragment;*/
     @NonNull
-    private AbsPlayerControlsFragment mPlayerPlaybackControlsFragment;
+    private PlayerPlaybackControlsFragment mPlayerPlaybackControlsFragment;
     @NonNull
     private VolumeFragment mVolumeFragment;
 
@@ -55,11 +53,11 @@ public class LockScreenActivity extends AbsMusicServiceActivity {
 
         ButterKnife.bind(this);
 
-
         //mPlayerAlbumCoverFragment = (PlayerAlbumCoverFragment) getSupportFragmentManager().findFragmentById(R.id.album_fragment);
         //mPlayerAlbumCoverFragment.setCallbacks(this);
 
-        mPlayerPlaybackControlsFragment = (AbsPlayerControlsFragment) getSupportFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        mPlayerPlaybackControlsFragment = (PlayerPlaybackControlsFragment) getSupportFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        mPlayerPlaybackControlsFragment.hideVolumeIfAvailable();
 
         mVolumeFragment = (VolumeFragment) getSupportFragmentManager().findFragmentById(R.id.volume_fragment);
 

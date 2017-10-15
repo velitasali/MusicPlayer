@@ -6,13 +6,12 @@
                 android:bottom="0dp"
                 android:left="72dp"
                 android:right="0dp"
-                android:top="72dp"/>
+                android:top="72dp" />
             <gradient
                 android:angle="135"
                 android:endColor="@color/md_blue_A700"
-                android:startColor="@color/md_green_A200"/>
-            <corners android:radius="4dp"/>
+                android:startColor="@color/md_green_A200" />
         </shape>
     </item>
-    <item android:drawable="@drawable/ic_artist_music_note_white"/>
+    <item android:drawable="@drawable/ic_artist_music_note_white" />
 </layer-list>

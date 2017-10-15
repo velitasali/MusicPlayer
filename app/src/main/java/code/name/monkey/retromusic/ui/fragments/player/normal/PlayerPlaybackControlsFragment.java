@@ -347,4 +347,8 @@ public class PlayerPlaybackControlsFragment extends AbsPlayerControlsFragment {
         songTotalTime.setText(MusicUtil.getReadableDurationString(total));
         songCurrentProgress.setText(MusicUtil.getReadableDurationString(progress));
     }
+
+    public void hideVolumeIfAvailable() {
+        mVolumeContainer.setVisibility(View.GONE);
+    }
 }

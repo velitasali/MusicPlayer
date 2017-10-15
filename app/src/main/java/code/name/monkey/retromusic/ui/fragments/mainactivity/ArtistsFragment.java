@@ -187,7 +187,6 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem sortOrder = menu.findItem(R.id.action_sort_order);
-        //menu.removeItem(R.id.action_grid_size);
         setUpSortOrderMenu(sortOrder.getSubMenu());
     }
 

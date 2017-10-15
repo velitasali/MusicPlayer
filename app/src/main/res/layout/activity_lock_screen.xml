@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingTop="@dimen/status_bar_padding">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/status_bar_padding">
 
     <fragment
         android:id="@+id/playback_controls_fragment"
@@ -13,14 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        tools:layout="@layout/fragment_player_playback_controls"/>
+        tools:layout="@layout/fragment_player_playback_controls" />
 
     <fragment
         android:id="@+id/volume_fragment"
         android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_volume"/>
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -46,7 +45,7 @@
                     <ImageView
                         android:id="@+id/image"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent" />
                 </android.support.v7.widget.CardView>
 
             </code.name.monkey.retromusic.views.WidthFitSquareLayout>
@@ -78,5 +77,5 @@
         app:inner_text_bottom_padding="16dp"
         app:inner_text_color="@android:color/white"
         app:inner_text_size="14sp"
-        app:inner_text_top_padding="16dp"/>
+        app:inner_text_top_padding="16dp" />
 </LinearLayout>
