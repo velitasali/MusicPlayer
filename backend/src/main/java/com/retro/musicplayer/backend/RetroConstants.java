@@ -5,6 +5,7 @@ package com.retro.musicplayer.backend;
  */
 
 public class RetroConstants {
+    public static final String BASE_API_URL_KUGOU = "http://lyrics.kugou.com/";
     public static final String RETRO_MUSIC_PACKAGE_NAME = "code.name.monkey.retromusic";
     public static final String MUSIC_PACKAGE_NAME = "com.android.music";
 

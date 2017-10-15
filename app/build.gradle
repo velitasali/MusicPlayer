@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
@@ -22,8 +21,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
-        versionCode 72
-        versionName '6.0.200'
+        versionCode 80
+        versionName 'R - 1.0.001'
 
         multiDexEnabled true
 
@@ -49,8 +48,8 @@ android {
     flavorDimensions "default"
     productFlavors {
         normal {
-            versionCode defaultConfig.versionCode + 4000
-            versionName defaultConfig.versionName + " BETA 5"
+            versionCode defaultConfig.versionCode + 10000
+            versionName defaultConfig.versionName + " BETA 6"
             dimension "default"
         }
         kitkat {
@@ -149,4 +148,5 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.andkulikov:transitionseverywhere:1.7.6'
     implementation project(':backend')
+    compile 'com.anjlab.android.iab.v3:library:1.0.44'
 }
