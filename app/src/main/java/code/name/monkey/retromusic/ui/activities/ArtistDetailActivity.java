@@ -47,7 +47,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.SortOrder.ArtistSongSortOrder;
 import code.name.monkey.retromusic.lastfm.rest.LastFMRestClient;
 import code.name.monkey.retromusic.lastfm.rest.model.LastFmArtist;
-
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistDetailAdapter;
 import code.name.monkey.retromusic.util.CustomArtistImageUtil;
@@ -67,6 +66,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     public static final String EXTRA_ARTIST_ID = "extra_artist_id";
     private static final String TAG = "ArtistDetailActivity";
     private static final int REQUEST_CODE_SELECT_IMAGE = 9003;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.image)
@@ -87,7 +87,6 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     RecyclerView mRecyclerView;
     @BindView(R.id.title_container)
     ViewGroup titleContainer;
-
     private Artist mArtist;
     private LastFMRestClient mLastFMRestClient;
     @Nullable
@@ -366,6 +365,9 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     }*/
 
     private void setColors(int color) {
+
+        mArtistDetailAdapter.setColor(color);
+
         if (PreferenceUtil.getInstance(this).getAdaptiveColor()) {
             TintHelper.setTintAuto(playSongs, color, true);
         } else {
