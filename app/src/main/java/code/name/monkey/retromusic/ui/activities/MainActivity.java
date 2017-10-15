@@ -50,7 +50,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.SearchQueryHelper;
 import code.name.monkey.retromusic.interfaces.LibraryTabSelectedItem;
 import code.name.monkey.retromusic.interfaces.MainActivityFragmentCallbacks;
-
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
@@ -115,7 +114,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                         break;
                     case Intent.ACTION_SCREEN_ON:
                         collapsePanel();
-                        recreate();
+                        //recreate();
                         break;
                 }
             }
@@ -453,7 +452,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                         new Handler().postDelayed(() -> setMusicChooser(LIBRARY), 200);
                         break;
                     case SUPPORT_DIALOG:
-                        new Handler().postDelayed(() -> ViewUtil.showDonationDialog(MainActivity.this), 200);
+                        //new Handler().postDelayed(() -> ViewUtil.showDonationDialog(MainActivity.this), 200);
+                        new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SupportDevelopmentActivity.class)), 200);
                         break;
                     case SETTIINGS:
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)), 200);
