@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.kabouzeid.appthemehelper.ATH;
 import com.kabouzeid.appthemehelper.ThemeStore;
@@ -25,7 +26,32 @@ import code.name.monkey.retromusic.util.Util;
 
 public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
-    View mDecorView;
+    public void hideStatusBar() {
+        setFullscreen(PreferenceUtil.getInstance(this).getFullScreenMode());
+    }
+
+    private void setFullscreen(boolean fullscreen) {
+        final View view = getWindow().getDecorView();
+        final View statusBar = view.findViewById(R.id.status_bar);
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        if (fullscreen) {
+            if (statusBar != null) {
+                statusBar.setVisibility(View.GONE);
+            }
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        } else {
+            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        }
+        getWindow().setAttributes(attrs);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideStatusBar();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +73,6 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
         changeBackgroundShape();
 
-        mDecorView = getWindow().getDecorView();
 
         //ActivityUtils.toggleFullscreen(this, PreferenceUtil.getInstance(this).getFullScreenMode());
     }

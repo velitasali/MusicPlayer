@@ -24,7 +24,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
@@ -126,9 +125,8 @@ public class SettingsActivity extends AbsBaseActivity
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        setResult(RESULT_OK);
         finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -235,12 +233,20 @@ public class SettingsActivity extends AbsBaseActivity
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+
             TwoStatePreference toggleVolume = (TwoStatePreference) findPreference("toggle_volume");
             toggleVolume.setOnPreferenceChangeListener((preference, o) -> {
-                Toast.makeText(getContext(), "Restart app!", Toast.LENGTH_SHORT).show();
+                getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
+                return true;
+            });
+
+            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
+            toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
                 getActivity().recreate();
                 return true;
             });
+
             TwoStatePreference colorAppShortcuts = (TwoStatePreference) findPreference("should_color_app_shortcuts");
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
                 colorAppShortcuts.setVisible(false);
@@ -259,8 +265,8 @@ public class SettingsActivity extends AbsBaseActivity
 
             TwoStatePreference cornerWindow = (TwoStatePreference) findPreference("corner_window");
             cornerWindow.setOnPreferenceChangeListener((preference, newValue) -> {
-                Toast.makeText(getContext(), "Restart app!", Toast.LENGTH_SHORT).show();
                 getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
                 return true;
             });
         }
@@ -313,7 +319,8 @@ public class SettingsActivity extends AbsBaseActivity
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
+                    ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView
+                            .canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                 }
             });
             getListView().setBackgroundColor(ATHUtil.resolveColor(getActivity(), android.R.attr.colorPrimary));
@@ -381,9 +388,8 @@ public class SettingsActivity extends AbsBaseActivity
             }
             TwoStatePreference twoSatePreference = (TwoStatePreference) findPreference("adaptive_color_app");
             twoSatePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-
-                Toast.makeText(getContext(), "Restart app!", Toast.LENGTH_SHORT).show();
                 getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
                 return true;
             });
 
