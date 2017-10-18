@@ -37,9 +37,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import code.name.monkey.retromusic.BuildConfig;
+import code.name.monkey.retromusic.Constants;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
+import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.IconImageView;
 
 /**
@@ -84,6 +87,11 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
     private void donate(int i) {
         final String[] ids = getResources().getStringArray(DONATION_PRODUCT_IDS);
         mBillingProcessor.purchase(this, ids[i]);
+    }
+
+    @OnClick(R.id.donate)
+    void donate() {
+        Util.openUrl(this, Constants.PAYPAL_ME_URL);
     }
 
     @Override
