@@ -8,7 +8,6 @@ import android.support.annotation.LayoutRes;
 import android.support.design.widget.BottomNavigationView;
 import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -212,12 +211,7 @@ public abstract class AbsSlidingMusicPanelActivity
     }
 
     public void hideBottomBar(final boolean hide) {
-        /*if (hide) {
-            mSlidingUpPanelLayout.setPanelHeight(0);
-            collapsePanel();
-        } else {
-            mSlidingUpPanelLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.mini_player_height_expanded));
-        }*/
+
         if (hide) {
             mSlidingUpPanelLayout.setPanelHeight(0);
             collapsePanel();

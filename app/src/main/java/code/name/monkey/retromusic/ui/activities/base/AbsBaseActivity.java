@@ -37,6 +37,7 @@ public abstract class AbsBaseActivity extends AbsThemeActivity {
     private String[] permissions;
     private String permissionDeniedMessage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

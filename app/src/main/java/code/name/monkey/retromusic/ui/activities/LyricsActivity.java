@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,9 +18,12 @@ import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.model.lyrics.Lyrics;
 
 import java.io.File;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -27,7 +31,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.lastfm.rest.KygouClient;
 import code.name.monkey.retromusic.lastfm.rest.model.KuGouSearchLyricResult;
-
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -72,6 +75,13 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
         kygouClient = new KygouClient(this);
         mUpdateHelper = new MusicProgressViewUpdateHelper(this, 700, 500);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_lyrics, menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     @Override
@@ -228,6 +238,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -235,4 +246,6 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     public void onUpdateProgressViews(int progress, int total) {
         lyricView.setCurrentTimeMillis(progress);
     }
+
+
 }

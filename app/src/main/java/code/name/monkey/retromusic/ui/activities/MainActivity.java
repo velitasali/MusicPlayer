@@ -62,7 +62,6 @@ import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
 import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
-import code.name.monkey.retromusic.util.ViewUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -143,9 +142,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
         setUpNavigationView();
 
-        if (checkUserName()) {
+        /*if (checkUserName()) {
             startActivityForResult(new Intent(this, UserInfoActivity.class), APP_USER_INFO_REQUEST);
-        }
+        }*/
 
         if (savedInstanceState == null) {
             setMusicChooser(PreferenceUtil.getInstance(this).getLastMusicChooser());
@@ -214,7 +213,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
 
     private void setUpNavigationView() {
-        setupTitles();
+        //setupTitles();
         mNavigationItems.setLayoutManager(new LinearLayoutManager(this));
         mNavigationItems.setItemAnimator(new DefaultItemAnimator());
         mNavigationItems.setAdapter(new NavigationItemsAdapter());
@@ -362,7 +361,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 break;
             case REQUEST_CODE_THEME:
             case APP_USER_INFO_REQUEST:
-                setupTitles();
+                postRecreate();
                 break;
         }
 
@@ -456,7 +455,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SupportDevelopmentActivity.class)), 200);
                         break;
                     case SETTIINGS:
-                        new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)), 200);
+                        new Handler().postDelayed(() -> startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), REQUEST_CODE_THEME), 200);
                         break;
                     case ABOUT:
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, AboutActivity.class)), 200);

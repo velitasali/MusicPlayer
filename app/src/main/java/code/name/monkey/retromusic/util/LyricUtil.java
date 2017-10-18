@@ -39,6 +39,11 @@ public class LyricUtil {
         }
     }
 
+    public static boolean deleteLrcFile(String title, String artist) {
+        File file = new File(getLrcPath(title, artist));
+        return file.delete();
+    }
+
     public static boolean isLrcFileExist(String title, String artist) {
         File file = new File(getLrcPath(title, artist));
         return file.exists();

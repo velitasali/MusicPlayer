@@ -435,4 +435,5 @@
     <string name="year">Year</string>
     <string name="reset_artist_image">Reset artist image</string>
     <string name="set_artist_image">Set artist image</string>
+    <string name="edit">Edit</string>
 </resources>

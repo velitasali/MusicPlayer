@@ -87,7 +87,7 @@
         android:layout_height="@dimen/tab_height"
         android:layout_weight="0"
         android:paddingEnd="8dp"
-        android:elevation="4dp"
+        android:elevation="6dp"
         android:paddingLeft="60dp"
         android:paddingRight="8dp"
         android:paddingStart="60dp" />

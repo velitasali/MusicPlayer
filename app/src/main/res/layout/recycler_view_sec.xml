@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -20,15 +19,17 @@
 
         <TextView
             android:id="@+id/title"
+            fontpath="font/sans_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?android:attr/textColorPrimary"
-            android:textStyle="bold"
             android:visibility="gone"
+            android:textStyle="bold"
+            tools:ignore="MissingPrefix"
             tools:text="@string/songs"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/see_all"
@@ -42,7 +43,7 @@
             android:paddingTop="6dp"
             android:text="See all"
             android:textColor="@color/md_white_1000"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <View
@@ -50,12 +51,11 @@
         android:layout_width="48dp"
         android:layout_height="2dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"/>
+        android:layout_marginStart="16dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

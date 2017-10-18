@@ -49,7 +49,7 @@ android {
     productFlavors {
         normal {
             versionCode defaultConfig.versionCode + 10000
-            versionName defaultConfig.versionName + " BETA 6"
+            versionName defaultConfig.versionName + " BETA 7"
             dimension "default"
         }
         kitkat {
