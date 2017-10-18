@@ -23,5 +23,10 @@
             android:key="toggle_volume"
             android:summary="@string/pref_summary_toggle_volume"
             android:title="@string/pref_title_toggle_volume" />
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+            android:defaultValue="false"
+            android:key="toggle_full_screen"
+            android:summary="@string/pref_summary_toggle_full_screen"
+            android:title="@string/pref_title_toggle_full_screen" />
     </com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>
