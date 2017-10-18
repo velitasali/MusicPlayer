@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.afollestad.materialcab.MaterialCab;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 
@@ -41,6 +42,7 @@ import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -98,6 +100,7 @@ public class LibraryFragment
         getMainActivity().setNavigationbarColorAuto();
         getMainActivity().setTaskDescriptionColorAuto();
         getMainActivity().setBottomBarVisibility(View.VISIBLE);
+        getMainActivity().hideStatusBar();
 
         setupToolbar();
         if (savedInstanceState == null)
@@ -122,6 +125,9 @@ public class LibraryFragment
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         getActivity().setTitle(R.string.app_name);
         getMainActivity().setSupportActionBar(mToolbar);
+
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
+
     }
 
 
@@ -196,6 +202,7 @@ public class LibraryFragment
             menu.removeItem(R.id.action_grid_size);
             menu.removeItem(R.id.action_colored_footers);
         }
+
         Activity activity = getActivity();
         if (activity == null) return;
         ToolbarContentTintHelper.handleOnCreateOptionsMenu(getActivity(), mToolbar, menu, ATHToolbarActivity.getToolbarBackgroundColor(mToolbar));

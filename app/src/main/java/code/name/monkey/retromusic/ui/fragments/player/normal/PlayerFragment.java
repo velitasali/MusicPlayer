@@ -27,7 +27,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.LyricUtil;
@@ -50,7 +49,8 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Nullable
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
-
+    @BindView(R.id.now_playing_container)
+    ViewGroup mViewGroup;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
     private int lastColor;
@@ -58,7 +58,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     private PlayerAlbumCoverFragment playerAlbumCoverFragment;
     private Unbinder unbinder;
     private ValueAnimator valueAnimator;
-
 
     public static PlayerFragment newInstance() {
         Bundle args = new Bundle();
@@ -138,7 +137,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
 
     @Override
     public void onDestroyView() {
-
         if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
             updateLyricsAsyncTask.cancel(true);
         }
@@ -160,10 +158,16 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        /*Adding margin to toolbar for !full screen mode*/
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
+            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
+            mViewGroup.setLayoutParams(params);
+        }
+
         setUpSubFragments();
         setUpPlayerToolbar();
-
-
     }
 
     private void setUpSubFragments() {

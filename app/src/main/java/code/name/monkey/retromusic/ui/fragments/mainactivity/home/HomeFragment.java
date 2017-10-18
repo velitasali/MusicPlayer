@@ -47,6 +47,7 @@ import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.adapter.home.HomeAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 
 import static code.name.monkey.retromusic.R.id.toolbar;
@@ -98,6 +99,27 @@ public class HomeFragment extends AbsMainActivityFragment
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
+        setStatusbarColorAuto(view);
+        getMainActivity().setTaskDescriptionColorAuto();
+        getMainActivity().setNavigationbarColorAuto();
+        getMainActivity().setBottomBarVisibility(View.GONE);
+        getMainActivity().hideStatusBar();
+
+        /*Adding margin to toolbar for !full screen mode*/
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mToolbar.getLayoutParams();
+            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
+            mToolbar.setLayoutParams(params);
+        }
+
+        setupToolbar();
+        setupRecyclerView();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
@@ -134,19 +156,6 @@ public class HomeFragment extends AbsMainActivityFragment
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
-        setStatusbarColorAuto(view);
-        getMainActivity().setTaskDescriptionColorAuto();
-        getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setBottomBarVisibility(View.GONE);
-
-        setupToolbar();
-        setupRecyclerView();
-
-    }
 
     private void setupToolbar() {
         mAppbar.addOnOffsetChangedListener(new AppBarStateChangeListener() {

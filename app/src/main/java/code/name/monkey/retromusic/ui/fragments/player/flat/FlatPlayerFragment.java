@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.LyricUtil;
@@ -108,6 +107,11 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        /*Hide status bar view for !full screen mode*/
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            view.findViewById(R.id.player_status_bar).setVisibility(View.GONE);
+        }
         setUpPlayerToolbar();
         setUpSubFragments();
 

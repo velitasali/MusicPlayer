@@ -197,11 +197,11 @@ public class FoldersFragment extends AbsMainActivityFragment
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setStatusbarColorAuto(view);
-
         getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
         getMainActivity().setNavigationbarColorAuto();
         getMainActivity().setTaskDescriptionColorAuto();
         getMainActivity().setBottomBarVisibility(View.GONE);
+        getMainActivity().hideStatusBar();
 
         setUpAppbarColor();
         setUpToolbar();
