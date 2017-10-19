@@ -201,7 +201,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
 
     @Override
     public void showEmptyView() {
-
+        adapter.swapDataSet(new ArrayList<>());
     }
 
     @Override
