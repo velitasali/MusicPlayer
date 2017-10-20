@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="96dp"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
@@ -37,7 +37,7 @@
                 app:layout_collapseMode="pin"
                 app:titleMarginStart="0dp"
                 tools:ignore="UnusedAttribute"/>
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 
         <TextView
             android:id="@+id/player_queue_sub_header"

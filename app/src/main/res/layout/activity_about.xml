@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="96dp"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
@@ -31,7 +31,7 @@
                 app:navigationIcon="@drawable/ic_close_white_24dp"
                 app:title="@string/action_about" />
             
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView

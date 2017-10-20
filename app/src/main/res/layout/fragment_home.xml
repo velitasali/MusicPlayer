@@ -19,7 +19,7 @@
             android:focusable="true"
             tools:ignore="UnusedAttribute">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
                 android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +35,6 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:minHeight="196dp"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="0.7">
 
@@ -92,7 +91,7 @@
                     android:fitsSystemWindows="true"
                     tools:ignore="UnusedAttribute" />
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+            </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView

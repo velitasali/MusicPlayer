@@ -20,8 +20,8 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
-        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="?colorPrimary">
 
         <android.support.design.widget.AppBarLayout
@@ -31,7 +31,7 @@
             android:focusable="true"
             tools:ignore="UnusedAttribute">
 
-            <android.support.design.widget.CollapsingToolbarLayout
+            <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
@@ -45,7 +45,7 @@
                     android:id="@+id/toolbar"
                     style="@style/Toolbar48"
                     tools:ignore="UnusedAttribute" />
-            </android.support.design.widget.CollapsingToolbarLayout>
+            </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 
             <ViewStub
                 android:id="@+id/cab_stub"
@@ -86,8 +86,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tab_height"
         android:layout_weight="0"
-        android:paddingEnd="8dp"
         android:elevation="6dp"
+        android:paddingEnd="8dp"
         android:paddingLeft="60dp"
         android:paddingRight="8dp"
         android:paddingStart="60dp" />

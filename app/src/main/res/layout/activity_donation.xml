@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="96dp"
             app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
@@ -32,7 +32,7 @@
                 app:navigationIcon="@drawable/ic_close_white_24dp"
                 app:title="@string/support_development" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+        </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
@@ -46,6 +46,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/donation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="@string/donation_header"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="?attr/colorAccent" />
+
             <LinearLayout
                 android:id="@+id/progress_container"
                 android:layout_width="match_parent"
@@ -55,7 +64,7 @@
                 android:paddingBottom="@dimen/md_content_padding_top"
                 android:paddingLeft="@dimen/md_dialog_frame_margin"
                 android:paddingRight="@dimen/md_dialog_frame_margin"
-                android:paddingTop="@dimen/md_content_padding_top" >
+                android:paddingTop="@dimen/md_content_padding_top">
 
                 <ProgressBar
                     android:id="@+id/progress"
