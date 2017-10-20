@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.player.full;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
 import com.retro.musicplayer.backend.model.Song;
 
 import butterknife.BindView;
@@ -22,11 +22,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 
 /**
@@ -51,12 +52,9 @@ public class FullPlayerFragment extends AbsPlayerFragment
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-        ToolbarContentTintHelper.setToolbarContentColor(getContext(),
-                mToolbar,
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
                 Color.WHITE,
-                Color.WHITE,
-                Color.WHITE,
-                Color.WHITE);
+                getActivity());
     }
 
     @Nullable
@@ -70,8 +68,12 @@ public class FullPlayerFragment extends AbsPlayerFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setUpPlayerToolbar();
+        /*Hide status bar view for !full screen mode*/
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            view.findViewById(R.id.status_bar).setVisibility(View.GONE);
+        }
         setUpSubFragments();
+        setUpPlayerToolbar();
     }
 
     private void setUpSubFragments() {
@@ -118,9 +120,6 @@ public class FullPlayerFragment extends AbsPlayerFragment
     protected void toggleFavorite(Song song) {
         super.toggleFavorite(song);
         if (song.id == MusicPlayerRemote.getCurrentSong().id) {
-            //if (MusicUtil.isFavorite(getActivity(), song)) {
-            //this.playerAlbumCoverFragment.showHeartAnimation();
-            //}
             updateIsFavorite();
         }
     }
@@ -140,9 +139,11 @@ public class FullPlayerFragment extends AbsPlayerFragment
     @Override
     public void onPlayingMetaChanged() {
         updateIsFavorite();
-        updateLyrics();updateSong();
+        updateLyrics();
+        updateSong();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateLyrics() {
         if (updateLyricsAsyncTask != null) updateLyricsAsyncTask.cancel(false);
         final Song song = MusicPlayerRemote.getCurrentSong();
@@ -182,6 +183,7 @@ public class FullPlayerFragment extends AbsPlayerFragment
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateIsFavorite() {
         if (updateIsFavoriteTask != null) updateIsFavoriteTask.cancel(false);
         updateIsFavoriteTask = new AsyncTask<Song, Void, Boolean>() {

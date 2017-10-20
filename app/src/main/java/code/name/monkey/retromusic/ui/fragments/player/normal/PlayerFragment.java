@@ -123,9 +123,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     protected void toggleFavorite(Song song) {
         super.toggleFavorite(song);
         if (song.id == MusicPlayerRemote.getCurrentSong().id) {
-            //if (MusicUtil.isFavorite(getActivity(), song)) {
-            //this.playerAlbumCoverFragment.showHeartAnimation();
-            //}
             updateIsFavorite();
         }
     }

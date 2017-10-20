@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.misc.SimpleOnSeekbarChangeListener;
-
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -65,8 +63,6 @@ public class PlayerPlaybackControlsFragment extends AbsPlayerControlsFragment {
     AppCompatTextView title;
     @BindView(R.id.text)
     TextView text;
-    @BindView(R.id.playback_controls)
-    ViewGroup viewGroup;
     @BindView(R.id.volume_fragment_container)
     View mVolumeContainer;
     private Unbinder unbinder;
@@ -94,8 +90,8 @@ public class PlayerPlaybackControlsFragment extends AbsPlayerControlsFragment {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
         setUpMusicControllers();
-        if (PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getBoolean("toggle_volume", false)) {
+
+        if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
             mVolumeContainer.setVisibility(View.VISIBLE);
         } else {
             mVolumeContainer.setVisibility(View.GONE);

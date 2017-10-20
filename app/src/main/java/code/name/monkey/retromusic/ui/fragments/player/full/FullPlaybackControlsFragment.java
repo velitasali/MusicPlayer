@@ -29,6 +29,7 @@ import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.PlayPauseButtonOnClickHandler;
 import code.name.monkey.retromusic.misc.SimpleOnSeekbarChangeListener;
 import code.name.monkey.retromusic.service.MusicService;
+import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -56,6 +57,8 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @BindView(R.id.player_play_pause_button)
     ImageButton mPlayerPlayPauseFab;
     Unbinder unbinder;
+    private VolumeFragment mVolumeFragment;
+
     private int lastPlaybackControlsColor;
     private int lastDisabledPlaybackControlsColor;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
@@ -76,7 +79,6 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
         return view;
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -87,6 +89,9 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpMusicControllers();
+
+        mVolumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
+        mVolumeFragment.tintWhiteColor();
     }
 
     @Override
@@ -134,7 +139,7 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     public void setDark(int dark) {
         lastPlaybackControlsColor = Color.WHITE;
-        lastDisabledPlaybackControlsColor = ContextCompat.getColor(getContext(),R.color.md_grey_500);
+        lastDisabledPlaybackControlsColor = ContextCompat.getColor(getContext(), R.color.md_grey_500);
 
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) {
             setProgressBarColor(dark);
