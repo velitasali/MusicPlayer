@@ -19,10 +19,10 @@
         tools:ignore="PrivateResource">
 
         <ImageView
-            android:contentDescription="@string/retro"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_margin="8dp"
+            android:contentDescription="@string/retro"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
@@ -63,8 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingEnd="0dp"
-            android:paddingStart="72dp">
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp">
 
             <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/app_github"
