@@ -20,12 +20,13 @@
 
             <TextView
                 android:id="@+id/price"
+                fontPath="fonts/sans_bold.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                tools:text="$100" />
+                android:textStyle="bold"
+                tools:ignore="MissingPrefix" />
 
             <code.name.monkey.retromusic.views.WidthFitSquareLayout
                 android:layout_width="40dp"
@@ -44,16 +45,14 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
                 android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 tools:text="Title" />
 
             <TextView
                 android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="?android:textColorSecondary"
                 tools:text="description" />
