@@ -1,63 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/player_footer_frame"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/player_footer_frame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <SeekBar
+        android:id="@+id/player_progress_slider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/progress_container_height">
+        android:layout_height="match_parent"
+        android:maxHeight="3dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:progressDrawable="@drawable/color_progress_seek"
+        android:splitTrack="false"
+        android:thumb="@drawable/ic_action_thumb"
+        tools:progress="20" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp">
+
 
         <TextView
             android:id="@+id/player_song_current_progress"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical|left|end"
-            android:paddingLeft="8dp"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/ate_primary_text_dark"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@android:color/white"
             android:textSize="12sp"
-            tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="0:00"/>
+            android:textStyle="bold"
+            tools:text="22.00" />
+
 
         <TextView
             android:id="@+id/player_song_total_time"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center_vertical|right|end"
-            android:paddingRight="8dp"
-            android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/ate_primary_text_dark"
-            android:textSize="12sp"
-            tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="3:14"/>
-
-        <SeekBar
-            android:id="@+id/player_progress_slider"
-            style="@style/MusicProgressSlider"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/player_song_total_time"
-            android:layout_toRightOf="@id/player_song_current_progress"
-            android:maxHeight="3dp"
-            android:progressDrawable="@drawable/color_progress_seek"
-            android:splitTrack="false"
-            android:thumb="@drawable/ic_action_thumb"
-            tools:ignore="RtlHardcoded,UnusedAttribute"/>
-
-    </RelativeLayout>
+            android:layout_weight="0"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="22.00" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/player_media_controller_container"
@@ -77,7 +71,7 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_skip_previous_white_24dp"
-            tools:ignore="MissingPrefix"/>
+            tools:ignore="MissingPrefix" />
 
         <ImageButton
             android:id="@+id/player_next_button"
@@ -90,7 +84,7 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_skip_next_white_24dp"
-            tools:ignore="MissingPrefix"/>
+            tools:ignore="MissingPrefix" />
 
         <ImageButton
             android:id="@+id/player_repeat_button"
@@ -103,7 +97,7 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_repeat_white_24dp"
-            tools:ignore="MissingPrefix"/>
+            tools:ignore="MissingPrefix" />
 
         <ImageButton
             android:id="@+id/player_shuffle_button"
@@ -116,7 +110,7 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_shuffle_white_24dp"
-            tools:ignore="MissingPrefix"/>
+            tools:ignore="MissingPrefix" />
 
         <ImageButton
             android:id="@+id/player_play_pause_button"
@@ -127,8 +121,20 @@
             android:padding="22dp"
             android:scaleType="fitCenter"
             tools:ignore="MissingPrefix"
-            tools:src="@drawable/ic_pause_white_24dp"/>
+            tools:src="@drawable/ic_pause_white_24dp" />
 
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/volume_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/volume_fragment"
+            android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_volume" />
+    </FrameLayout>
 </LinearLayout>
