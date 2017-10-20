@@ -26,7 +26,9 @@ import code.name.monkey.retromusic.ui.fragments.MiniPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import code.name.monkey.retromusic.ui.fragments.player.flat.FlatPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.full.FullPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.plain.PlainPlayerFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
 /**
@@ -64,9 +66,12 @@ public abstract class AbsSlidingMusicPanelActivity
             case FLAT:
                 fragment = new FlatPlayerFragment();
                 break;
-            /*case FULL:
+            case PLAIN:
+                fragment = new PlainPlayerFragment();
+                break;
+            case FULL:
                 fragment = new FullPlayerFragment();
-                break;*/
+                break;
             case NORMAL:
             default:
                 fragment = new PlayerFragment();
