@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Artist;
@@ -23,9 +24,6 @@ import code.name.monkey.retromusic.glide.ArtistGlideRequest;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.SongMenuHelper;
-
-
-
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
@@ -95,6 +93,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 break;
             default:
                 holder.title.setText(dataSet.get(position).toString());
+                holder.title.setTextColor(ThemeStore.accentColor(activity));
                 break;
         }
     }
