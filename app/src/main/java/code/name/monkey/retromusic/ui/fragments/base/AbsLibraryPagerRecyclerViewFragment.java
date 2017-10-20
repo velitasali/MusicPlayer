@@ -70,17 +70,10 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
         }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                /*if (recyclerView.canScrollVertically(RecyclerView.NO_POSITION)) {
-                    getLibraryFragment().getMainActivity().getBottomNavigationView().setTranslationY(300);
-                } else {
-                    getLibraryFragment().getMainActivity().getBottomNavigationView().setTranslationY(0);
-                }*/
-            }
-        });
+
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+        params.bottomMargin = getResources().getDimensionPixelOffset(R.dimen.bottom_padding);
+        recyclerView.setLayoutParams(params);
     }
 
     protected void invalidateLayoutManager() {
