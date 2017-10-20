@@ -112,8 +112,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                         }
                         break;
                     case Intent.ACTION_SCREEN_ON:
-                        collapsePanel();
-                        //recreate();
+                        postRecreate();
                         break;
                 }
             }
@@ -142,9 +141,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
         setUpNavigationView();
 
-        /*if (checkUserName()) {
+        if (checkUserName()) {
             startActivityForResult(new Intent(this, UserInfoActivity.class), APP_USER_INFO_REQUEST);
-        }*/
+        }
 
         if (savedInstanceState == null) {
             setMusicChooser(PreferenceUtil.getInstance(this).getLastMusicChooser());
@@ -213,7 +212,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
 
     private void setUpNavigationView() {
-        //setupTitles();
+        setupTitles();
         mNavigationItems.setLayoutManager(new LinearLayoutManager(this));
         mNavigationItems.setItemAnimator(new DefaultItemAnimator());
         mNavigationItems.setAdapter(new NavigationItemsAdapter());
@@ -362,6 +361,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             case REQUEST_CODE_THEME:
             case APP_USER_INFO_REQUEST:
                 postRecreate();
+                setupTitles();
                 break;
         }
 
