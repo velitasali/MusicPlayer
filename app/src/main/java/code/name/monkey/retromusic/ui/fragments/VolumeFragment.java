@@ -1,7 +1,10 @@
 package code.name.monkey.retromusic.ui.fragments;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.database.ContentObserver;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.kabouzeid.appthemehelper.util.ColorUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,6 +118,20 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
         getActivity().getApplicationContext().getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, mSettingsContentObserver);
     }
 
+    public void tintWhiteColor() {
+        setProgressBarColor(Color.WHITE);
+    }
+
+    public void setProgressBarColor(int newColor) {
+        ColorStateList colorState = ColorStateList.valueOf(newColor);
+        volumeSeekbar.setProgressTintList(colorState);
+        volumeSeekbar.setThumbTintList(colorState);
+        volumeSeekbar.setSecondaryProgressTintList(ColorStateList.valueOf(ColorUtil.darkenColor(newColor)));
+
+        volumeDown.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+        volumeUp.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+    }
+
     private class SettingsContentObserver extends ContentObserver {
         int previousVolume;
         Context context;
@@ -126,12 +144,15 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
             audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-            previousVolume = curVolume;
+            int maxVolume = 0;
+            if (audioManager != null) {
+                maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                previousVolume = curVolume;
 
-            volumeSeekbar.setMax(maxVolume);
-            volumeSeekbar.setProgress(curVolume);
+                volumeSeekbar.setMax(maxVolume);
+                volumeSeekbar.setProgress(curVolume);
+            }
 
         }
 
