@@ -32,13 +32,13 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
     private void setFullscreen(boolean fullscreen) {
         final View view = getWindow().getDecorView();
-        final View statusBar = view.findViewById(R.id.status_bar);
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         if (fullscreen) {
+            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            final View statusBar = view.findViewById(R.id.status_bar);
             if (statusBar != null) {
                 statusBar.setVisibility(View.GONE);
             }
-            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
         } else {
             attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         }
@@ -73,8 +73,6 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
         changeBackgroundShape();
 
-
-        //ActivityUtils.toggleFullscreen(this, PreferenceUtil.getInstance(this).getFullScreenMode());
     }
 
     private void changeBackgroundShape() {
