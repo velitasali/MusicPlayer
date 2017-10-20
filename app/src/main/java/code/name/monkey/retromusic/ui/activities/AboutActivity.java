@@ -153,7 +153,7 @@ public class AboutActivity extends AbsBaseActivity {
         return new String(Character.toChars(unicode));
     }
 
-    @OnClick({R.id.gabriel_zegarra, R.id.app_github, R.id.aleksandar_tesic,
+    @OnClick({R.id.gabriel_zegarra, R.id.flaticon_link, R.id.app_github, R.id.aleksandar_tesic,
             R.id.google_plus_circle_btn, R.id.telegram_btn,
             R.id.karimAbourGooglePlus, R.id.karimAbourGithub, R.id.luisGomezGooglePlus,
             R.id.luisGomezTwitter, R.id.app_telegram_channel, R.id.app_google_plus,
@@ -161,6 +161,9 @@ public class AboutActivity extends AbsBaseActivity {
             R.id.app_translation, R.id.app_rate, R.id.app_share, R.id.material_design_link})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.flaticon_link:
+                openUrl(Constants.FLATICON_LINK);
+                break;
             case R.id.app_github:
                 openUrl(Constants.GITHUB_PROJECT);
                 break;
