@@ -72,7 +72,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
         try {
             for (int i = 0; i < 6; i++) {
                 jsonObject.put("title", "Coffee");
-                jsonObject.put("priceText", "$100");
+                jsonObject.put("price", "$100");
                 jsonObject.put("description", "" + i);
                 skuDetails.add(new SkuDetails(jsonObject));
             }
@@ -113,6 +113,8 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
         mBillingProcessor
                 = new BillingProcessor(this, BuildConfig.GOOGLE_PLAY_LICENSE_KEY, this);
         MDTintHelper.setTint(mProgressBar, ThemeStore.accentColor(this));
+
+        ((TextView) findViewById(R.id.donation)).setTextColor(ThemeStore.accentColor(this));
     }
 
     @Override
@@ -207,7 +209,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
             //noinspection ConstantConditions
             dialog.mProgressContainer.setVisibility(View.GONE);
             dialog.mListView.setItemAnimator(new DefaultItemAnimator());
-            dialog.mListView.setLayoutManager(new GridLayoutManager(dialog, 3));
+            dialog.mListView.setLayoutManager(new GridLayoutManager(dialog, 2));
             dialog.mListView.setAdapter(new SkuDetailsAdapter(dialog, skuDetails));
             dialog.mListView.setVisibility(View.VISIBLE);
         }
@@ -241,11 +243,11 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
                 case 2:
                     return R.drawable.ic_take_away_coffe_white_24dp;
                 case 3:
-                    return R.drawable.ic_hamburger_white_24dp;
+                    return R.drawable.ic_beer_white_24dp;
                 case 4:
-                    return R.drawable.ic_fast_food_white_24dp;
-                case 5:
                     return R.drawable.ic_fast_food_meal_white_24dp;
+                case 5:
+                    return R.drawable.ic_popcorn_white_24dp;
                 default:
                     return R.drawable.ic_cookie_white_24dp;
             }
@@ -261,7 +263,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
             SkuDetails skuDetails = skuDetailsList.get(i);
             if (skuDetails != null) {
-                viewHolder.title.setText(skuDetails.title.replace("(Retro Music Player (Beta))", "").trim());
+                viewHolder.title.setText(skuDetails.title.replace("(Retro Music Player)", "").trim());
                 viewHolder.text.setText(skuDetails.description);
                 viewHolder.text.setVisibility(View.GONE);
                 viewHolder.price.setText(skuDetails.priceText);
@@ -270,6 +272,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
                 final boolean purchased = donationsDialog.mBillingProcessor.isPurchased(skuDetails.productId);
                 int titleTextColor = purchased ? ATHUtil.resolveColor(donationsDialog, android.R.attr.textColorHint) : ThemeStore.textColorPrimary(donationsDialog);
                 int contentTextColor = purchased ? titleTextColor : ThemeStore.textColorSecondary(donationsDialog);
+
                 //noinspection ResourceAsColor
                 viewHolder.title.setTextColor(titleTextColor);
                 //noinspection ResourceAsColor
