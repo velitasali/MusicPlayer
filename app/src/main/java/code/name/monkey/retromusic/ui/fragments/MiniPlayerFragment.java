@@ -83,20 +83,11 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
     }
 
     private void setUpPlayPauseButton() {
-
-        //int accentColor = ThemeStore.accentColor(getContext());
-        //int darkenColor = ColorUtil.darkenColor(accentColor);
-        //boolean isDark = ColorUtil.isColorLight(darkenColor);
-
-        //int iconColor = MaterialValueHelper.getPrimaryTextColor(getContext(), isDark);
-        //miniPlayerTitle.setTextColor(iconColor);
-        //icon.setColorFilter(iconColor, PorterDuff.Mode.SRC_IN);
-
-        //TintHelper.setTintAuto(miniPlayerPlayPauseButton, iconColor, false);
-
         miniPlayerPlayPauseDrawable = new PlayPauseDrawable(getActivity());
         miniPlayerPlayPauseButton.setImageDrawable(miniPlayerPlayPauseDrawable);
-        miniPlayerPlayPauseButton.setColorFilter(ATHUtil.resolveColor(getActivity(), R.attr.iconColor, ThemeStore.textColorSecondary(getActivity())), PorterDuff.Mode.SRC_IN);
+        miniPlayerPlayPauseButton.setColorFilter(ATHUtil.resolveColor(getActivity(),
+                R.attr.iconColor,
+                ThemeStore.textColorSecondary(getActivity())), PorterDuff.Mode.SRC_IN);
         miniPlayerPlayPauseButton.setOnClickListener(new PlayPauseButtonOnClickHandler());
     }
 
