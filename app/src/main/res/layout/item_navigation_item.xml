@@ -16,11 +16,13 @@
         android:padding="16dp"/>
 
     <TextView
+        fontPath="fonts/sans_bold.ttf"
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Home"/>
+        tools:text="Home"
+        tools:ignore="MissingPrefix" />
 </LinearLayout>
