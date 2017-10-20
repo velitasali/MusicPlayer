@@ -3,7 +3,6 @@ package code.name.monkey.retromusic.ui.activities;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -20,7 +19,6 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
-import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.views.swipebtn.SwipeButton;
@@ -34,10 +32,8 @@ public class LockScreenActivity extends AbsMusicServiceActivity {
     ImageView image;
     @BindView(R.id.swipe_btn)
     SwipeButton mSwipeButton;
-    @NonNull
+
     private PlayerPlaybackControlsFragment mPlayerPlaybackControlsFragment;
-    @NonNull
-    private VolumeFragment mVolumeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +43,17 @@ public class LockScreenActivity extends AbsMusicServiceActivity {
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         setDrawUnderStatusbar(true);
         setContentView(R.layout.activity_lock_screen);
+
+        hideStatusBar();
+
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
 
         ButterKnife.bind(this);
 
-        //mPlayerAlbumCoverFragment = (PlayerAlbumCoverFragment) getSupportFragmentManager().findFragmentById(R.id.album_fragment);
-        //mPlayerAlbumCoverFragment.setCallbacks(this);
-
         mPlayerPlaybackControlsFragment = (PlayerPlaybackControlsFragment) getSupportFragmentManager().findFragmentById(R.id.playback_controls_fragment);
         mPlayerPlaybackControlsFragment.hideVolumeIfAvailable();
-
-        mVolumeFragment = (VolumeFragment) getSupportFragmentManager().findFragmentById(R.id.volume_fragment);
 
         mSwipeButton = findViewById(R.id.swipe_btn);
         mSwipeButton.setDisabledDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_outline_black_24dp));
