@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="58dp"
-             android:foreground="?attr/rectSelector"
-             tools:ignore="UnusedAttribute">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:foreground="?attr/rectSelector"
+    tools:ignore="UnusedAttribute">
 
     <code.name.monkey.retromusic.views.IconImageView
         android:id="@+id/drag_view"
@@ -16,7 +16,7 @@
         android:layout_marginStart="-8dp"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_drag_vertical_white_24dp"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_height="36dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                tools:ignore="ContentDescription"/>
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/image_text"
@@ -50,11 +50,11 @@
                 android:minHeight="40dp"
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </FrameLayout>
 
-        <code.name.monkey.retromusic.views.GradientTextView
+        <TextView
             android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,13 +65,13 @@
             android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         <code.name.monkey.retromusic.views.IconImageView
             android:id="@+id/menu"
             style="@style/OverFlowButton"
             android:layout_gravity="center_vertical"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
@@ -81,7 +81,7 @@
         android:layout_height="1dp"
         android:layout_gravity="bottom"
         android:background="?attr/dividerColor"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <View
         android:id="@+id/short_separator"
@@ -90,6 +90,6 @@
         android:layout_gravity="bottom"
         android:layout_marginLeft="72dp"
         android:layout_marginStart="72dp"
-        android:background="?attr/dividerColor"/>
+        android:background="?attr/dividerColor" />
 
 </FrameLayout>
