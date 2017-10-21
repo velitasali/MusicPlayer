@@ -113,6 +113,8 @@ public class SettingsActivity extends AbsBaseActivity
         TabLayoutUtil.setTabIconColors(mTabLayout, normalColor, selectedColor);
         mTabLayout.setTabTextColors(normalColor, selectedColor);
         mTabLayout.setSelectedTabIndicatorColor(ThemeStore.accentColor(this));
+
+        setResult(RESULT_CANCELED);
     }
 
     private void setupToolbar() {
@@ -236,7 +238,7 @@ public class SettingsActivity extends AbsBaseActivity
 
             TwoStatePreference toggleVolume = (TwoStatePreference) findPreference("toggle_volume");
             toggleVolume.setOnPreferenceChangeListener((preference, o) -> {
-                getActivity().recreate();
+                //getActivity().recreate();
                 getActivity().setResult(RESULT_OK);
                 return true;
             });
@@ -244,6 +246,7 @@ public class SettingsActivity extends AbsBaseActivity
             TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
             toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
                 getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
                 return true;
             });
 
@@ -255,7 +258,6 @@ public class SettingsActivity extends AbsBaseActivity
                 colorAppShortcuts.setOnPreferenceChangeListener((preference, newValue) -> {
                     // Save preference
                     PreferenceUtil.getInstance(getActivity()).setColoredAppShortcuts((Boolean) newValue);
-
                     // Update app shortcuts
                     new DynamicShortcutManager(getActivity()).updateDynamicShortcuts();
 
@@ -388,7 +390,7 @@ public class SettingsActivity extends AbsBaseActivity
             }
             TwoStatePreference twoSatePreference = (TwoStatePreference) findPreference("adaptive_color_app");
             twoSatePreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                getActivity().recreate();
+                //getActivity().recreate();
                 getActivity().setResult(RESULT_OK);
                 return true;
             });
