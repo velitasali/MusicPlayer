@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Looper;
 import android.support.annotation.IntDef;
 import android.text.Layout;
@@ -105,12 +106,9 @@ public class LyricView extends View {
     private float mDownY;
     private float mLastScrollY;
     private boolean mUserTouch = false;
-    Runnable hideIndicator = new Runnable() {
-        @Override
-        public void run() {
-            setUserTouch(false);
-            invalidateView();
-        }
+    Runnable hideIndicator = () -> {
+        setUserTouch(false);
+        invalidateView();
     };
     private int maxVelocity;
     private int mLineNumberUnderIndicator = 0;
@@ -521,14 +519,10 @@ public class LyricView extends View {
         float to = Math.min(Math.max(0, (mScrollY - distance)), (mLineCount - 1) * mLineHeight + mLineFeedRecord.get(mLineCount - 1) + (mEnableLineFeed ? mTextHeight : 0));
 
         mFlingAnimator = ValueAnimator.ofFloat(mScrollY, to);
-        mFlingAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mScrollY = (float) animation.getAnimatedValue();
-                measureCurrentLine();
-                invalidateView();
-            }
+        mFlingAnimator.addUpdateListener(animation -> {
+            mScrollY = (float) animation.getAnimatedValue();
+            measureCurrentLine();
+            invalidateView();
         });
 
         mFlingAnimator.addListener(new AnimatorListenerAdapter() {
@@ -597,6 +591,9 @@ public class LyricView extends View {
         mTextPaint = new TextPaint();
         mTextPaint.setDither(true);
         mTextPaint.setAntiAlias(true);
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/sans_regular.ttf");
+        mTextPaint.setTypeface(typeface);
+
         switch (mTextAlign) {
             case LEFT:
                 mTextPaint.setTextAlign(Paint.Align.LEFT);
@@ -680,12 +677,9 @@ public class LyricView extends View {
 
     private void smoothScrollTo(float toY) {
         final ValueAnimator animator = ValueAnimator.ofFloat(mScrollY, toY);
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mScrollY = (Float) valueAnimator.getAnimatedValue();
-                invalidateView();
-            }
+        animator.addUpdateListener(valueAnimator -> {
+            mScrollY = (Float) valueAnimator.getAnimatedValue();
+            invalidateView();
         });
 
         animator.addListener(new Animator.AnimatorListener() {
