@@ -16,12 +16,13 @@
         <item>dark</item>
         <item>black</item>
     </string-array>
+
     <array name="pref_auto_download_images_values">
         <item>always</item>
         <item>only_wifi</item>
         <item>never</item>
     </array>
-    <string name="dark_theme_name">Dark</string>
+
     <string-array name="pref_playlists_last_added_interval_titles">
         <item>@string/today</item>
         <item>@string/this_week</item>
@@ -116,15 +117,5 @@
         <item>https://cdn.techjuice.pk/wp-content/uploads/2016/07/9.png</item>
         <item>https://cdn.techjuice.pk/wp-content/uploads/2016/07/5.png</item>
         <item>https://cdn.techjuice.pk/wp-content/uploads/2016/07/1.png</item>
-    </string-array>
-    <string-array name="random">
-        <item>https://lh3.googleusercontent.com/0gDt03Hl3zhTD63cLgzhCgshxC79IMePN-93WavX6XW7hiEWJ0NoF2rv_rNUZ7p7f4W6aJFQ-rtxEAc=w1002-h440-rw</item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
     </string-array>
 </resources>
