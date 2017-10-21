@@ -67,6 +67,7 @@ public final class PreferenceUtil {
     private static final String INITIALIZED_BLACKLIST = "initialized_blacklist";
     private static final String ALBUM_DETAIL_SONG_SORT_ORDER = "album_detail_song_sort_order";
     private static final String ARTIST_DETAIL_SONG_SORT_ORDER = "artist_detail_song_sort_order";
+    private static final String TOGGLE_VOLUME = "toggle_volume";
     private static PreferenceUtil sInstance;
     private final SharedPreferences mPreferences;
 
@@ -434,7 +435,6 @@ public final class PreferenceUtil {
     }
 
 
-
     public boolean getFullScreenMode() {
         return mPreferences.getBoolean(TOGGLE_FULL_SCREEN, false);
     }
@@ -491,5 +491,9 @@ public final class PreferenceUtil {
         Editor edit = this.mPreferences.edit();
         edit.putString(ARTIST_DETAIL_SONG_SORT_ORDER, sortOrder);
         edit.apply();
+    }
+
+    public boolean getVolumeToggle() {
+        return mPreferences.getBoolean(TOGGLE_VOLUME, false);
     }
 }
