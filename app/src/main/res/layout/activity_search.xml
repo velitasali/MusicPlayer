@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2015 Google Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +14,13 @@
   limitations under the License.
   -->
 
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorPrimary"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -29,51 +28,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
+            app:expandedTitleGravity="top"
+            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleMarginTop="48dp"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="@string/action_search">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                style="@style/Toolbar48"
+                app:title="@string/action_search"
+                tools:ignore="UnusedAttribute" />
+        </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            tools:ignore="UnusedAttribute">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:transitionName="@string/transition_search_bar">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_view"
+                style="@style/SearchViewTheme"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:transitionName="@string/transition_search_bar">
+                android:layout_weight="1"
+                android:focusable="true"
+                android:iconifiedByDefault="false"
+                android:transitionGroup="true"
+                app:queryBackground="@null"
+                app:searchHintIcon="@null"
+                app:searchIcon="@null" />
 
-                <android.support.v7.widget.SearchView
-                    android:id="@+id/search_view"
-                    style="@style/SearchViewTheme"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:focusable="true"
-                    android:iconifiedByDefault="false"
-                    android:transitionGroup="true"
-                    app:queryBackground="@null"
-                    app:searchHintIcon="@null"
-                    app:searchIcon="@null"/>
-
-                <code.name.monkey.retromusic.views.IconImageView
-                    android:id="@+id/voice_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?roundSelector"
-                    android:padding="16dp"
-                    app:srcCompat="@drawable/ic_mic_white_24dp"/>
-            </LinearLayout>
-        </android.support.v7.widget.Toolbar>
+            <code.name.monkey.retromusic.views.IconImageView
+                android:id="@+id/voice_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?roundSelector"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_mic_white_24dp" />
+        </LinearLayout>
     </android.support.design.widget.AppBarLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/search_toolbar"
-        android:background="?android:attr/colorBackground"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
@@ -87,7 +94,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -96,6 +103,6 @@
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>
