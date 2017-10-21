@@ -18,12 +18,9 @@ import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.model.lyrics.Lyrics;
 
 import java.io.File;
-import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -51,6 +48,8 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     TextView mText;
     @BindView(R.id.lyrics)
     LyricView lyricView;
+    @BindView(R.id.lyrics_big)
+    LyricView lyricViewBig;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.offline_lyrics)
@@ -74,7 +73,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         setSupportActionBar(mToolbar);
 
         kygouClient = new KygouClient(this);
-        mUpdateHelper = new MusicProgressViewUpdateHelper(this, 700, 500);
+        mUpdateHelper = new MusicProgressViewUpdateHelper(this, 300, 100);
     }
 
     @Override
@@ -139,11 +138,16 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
             return;
         }
         lyricView.reset();
+        lyricViewBig.reset();
+
+
         if (LyricUtil.isLrcFileExist(title, artist)) {
             lyricView.setDefaultHint("Loading from local");
+            lyricViewBig.setDefaultHint("Loading from local");
             showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
         } else {
             lyricView.setDefaultHint("Loading from network");
+            lyricViewBig.setDefaultHint("Loading from network");
             long duration = MusicPlayerRemote.getSongDurationMillis();
             kygouClient.getApiService().searchLyric(title, String.valueOf(duration))
                     .subscribeOn(Schedulers.io())
@@ -151,7 +155,10 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                     .subscribe(this::parseKugouResult,
                             throwable -> {
                                 lyricView.setDefaultHint(getString(R.string.error_loading_lyrics_from_network));
+                                lyricViewBig.setDefaultHint(getString(R.string.error_loading_lyrics_from_network));
+
                                 lyricView.setVisibility(View.GONE);
+                                lyricViewBig.setVisibility(View.GONE);
                                 loadSongLyrics();
                             });
 
@@ -160,13 +167,21 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         lyricView.setOnPlayerClickListener((progress, content) -> {
             MusicPlayerRemote.seekTo((int) progress);
         });
+        lyricViewBig.setOnPlayerClickListener((progress, content) -> {
+            MusicPlayerRemote.seekTo((int) progress);
+        });
     }
 
     private void showLyricsLocal(File file) {
         if (file == null) {
             lyricView.reset();
+            lyricViewBig.reset();
         } else {
             lyricView.setLyricFile(file, "UTF-8");
+            lyricViewBig.setLyricFile(file, "UTF-8");
+
+            //lyricViewBig.setLineCount(3);
+            lyricViewBig.setTextSize(40);
         }
     }
 
@@ -178,7 +193,11 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
             loadLyricsFile(candidates);
         } else {
             lyricView.setDefaultHint(getString(R.string.no_lyrics_found));
+            lyricViewBig.setDefaultHint(getString(R.string.no_lyrics_found));
+
             lyricView.setVisibility(View.GONE);
+            lyricViewBig.setVisibility(View.GONE);
+
             loadSongLyrics();
         }
     }
@@ -190,7 +209,10 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 .subscribe(kuGouRawLyric -> {
                     if (kuGouRawLyric == null) {
                         lyricView.setDefaultHint(getString(R.string.no_lyrics_found));
+                        lyricViewBig.setDefaultHint(getString(R.string.no_lyrics_found));
+
                         lyricView.setVisibility(View.GONE);
+                        lyricViewBig.setVisibility(View.GONE);
                         loadSongLyrics();
                         return;
                     }
@@ -238,6 +260,15 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
+        if (item.getItemId() == R.id.action_lyrics) {
+            if (lyricViewBig.getVisibility() == View.INVISIBLE) {
+                lyricViewBig.setVisibility(View.VISIBLE);
+                lyricView.setVisibility(View.INVISIBLE);
+            } else {
+                lyricViewBig.setVisibility(View.INVISIBLE);
+                lyricView.setVisibility(View.VISIBLE);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -245,7 +276,6 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     @Override
     public void onUpdateProgressViews(int progress, int total) {
         lyricView.setCurrentTimeMillis(progress);
+        lyricViewBig.setCurrentTimeMillis(progress);
     }
-
-
 }
