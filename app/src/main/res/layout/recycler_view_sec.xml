@@ -19,14 +19,13 @@
 
         <TextView
             android:id="@+id/title"
-            fontpath="font/sans_bold.ttf"
+            fontPath="fonts/sans_bold.ttf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
             android:visibility="gone"
-            android:textStyle="bold"
             tools:ignore="MissingPrefix"
             tools:text="@string/songs"
             tools:visibility="visible" />
@@ -35,23 +34,19 @@
             android:id="@+id/see_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="4dp"
             android:layout_weight="0"
             android:background="@drawable/color_text_background_gradient"
+            android:elevation="2dp"
             android:paddingBottom="6dp"
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="6dp"
             android:text="See all"
             android:textColor="@color/md_white_1000"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:tooltipText="@string/tool_tip_see_all" />
     </LinearLayout>
-
-    <View
-        android:id="@+id/dash"
-        android:layout_width="48dp"
-        android:layout_height="2dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
