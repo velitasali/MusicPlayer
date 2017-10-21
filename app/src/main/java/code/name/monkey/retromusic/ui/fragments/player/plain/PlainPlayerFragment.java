@@ -64,6 +64,8 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     public void onPlayingMetaChanged() {
         super.onPlayingMetaChanged();
         updateSong();
+        updateLyrics();
+        updateIsFavorite();
     }
 
     private void updateSong() {
@@ -76,6 +78,8 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     public void onServiceConnected() {
         super.onServiceConnected();
         updateSong();
+        updateLyrics();
+        updateIsFavorite();
     }
 
     @Nullable
@@ -222,4 +226,5 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
             }
         }.execute();
     }
+
 }
