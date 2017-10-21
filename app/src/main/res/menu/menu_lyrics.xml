@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/edit_query"
-        android:icon="@drawable/ic_edit_white_24dp"
-        android:title="@string/edit"
-        android:visible="false"
+        android:id="@+id/action_lyrics"
+        android:icon="@drawable/ic_format_size_white_24dp"
+        android:title="@string/toggle_lyrics_size"
         app:showAsAction="always" />
 </menu>
