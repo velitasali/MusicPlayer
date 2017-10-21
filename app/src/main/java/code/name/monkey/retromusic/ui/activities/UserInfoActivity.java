@@ -1,35 +1,19 @@
 package code.name.monkey.retromusic.ui.activities;
 
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.kabouzeid.appthemehelper.ThemeStore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.fragments.intro.NameFragment;
-import code.name.monkey.retromusic.util.Compressor;
-import code.name.monkey.retromusic.util.ImageUtil;
-import code.name.monkey.retromusic.util.PreferenceUtil;
-import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-
-import static code.name.monkey.retromusic.Constants.USER_PROFILE;
 
 /**
  * Created by hemanths on 23/08/17.
@@ -37,23 +21,60 @@ import static code.name.monkey.retromusic.Constants.USER_PROFILE;
 
 public class UserInfoActivity extends AbsBaseActivity {
     private static final String TAG = "UserInfoActivity";
-
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
         ButterKnife.bind(this);
+
+        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new NameFragment(), TAG)
-                    .commit();
+            setFragment(new NameFragment(), false);
         }
+    }
+
+    public void setFragment(Fragment fragment, boolean addToBackStack) {
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment, TAG);
+        if (addToBackStack) {
+            transaction.addToBackStack(TAG);
+        }
+        transaction.commit();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager == null) {
+            return;
+        }
+        if (fragmentManager.getBackStackEntryCount() > 0) {
+            fragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
