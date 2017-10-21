@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -55,6 +56,10 @@ public class Util {
         } else {
             EQUALIZER_UUID = UUID.fromString("0bed4300-ddd6-11db-8f34-0002a5d5c51b");
         }
+    }
+
+    public static Uri getAlbumArtUri(long paramInt) {
+        return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), paramInt);
     }
 
     public static int getStatusBarHeight(final Context context) {
