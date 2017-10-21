@@ -189,7 +189,7 @@ public class HomeFragment extends AbsMainActivityFragment
         adapter = new HomeAdapter(getMainActivity());
         adapter.setHasStableIds(true);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
