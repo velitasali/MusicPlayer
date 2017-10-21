@@ -1,6 +1,5 @@
 package code.name.monkey.retromusic.ui.fragments.player;
 
-import android.animation.Animator;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
@@ -8,36 +7,29 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
+
+import com.retro.musicplayer.backend.transform.ParallaxPagerTransformer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-import code.name.monkey.retromusic.misc.SimpleAnimatorListener;
-import code.name.monkey.retromusic.transform.ParallaxPagerTransformer;
 import code.name.monkey.retromusic.ui.adapter.AlbumCoverPagerAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
-import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements ViewPager.OnPageChangeListener {
+public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
+        implements ViewPager.OnPageChangeListener {
     public static final String TAG = PlayerAlbumCoverFragment.class.getSimpleName();
     public static final long VISIBILITY_ANIM_DURATION = 300;
-
     @BindView(R.id.player_album_cover_viewpager)
     ViewPager viewPager;
-    @BindView(R.id.player_favorite_icon)
-    ImageView favoriteIcon;
     private Unbinder unbinder;
     private Callbacks callbacks;
     private int currentPosition;
-
     private AlbumCoverPagerAdapter.AlbumCoverFragment.ColorReceiver colorReceiver = new AlbumCoverPagerAdapter.AlbumCoverFragment.ColorReceiver() {
         @Override
         public void onColorReady(int color, int requestCode) {
@@ -46,6 +38,13 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
             }
         }
     };
+
+    public void removeSlideEffect() {
+        ParallaxPagerTransformer transformer = new ParallaxPagerTransformer(R.id.player_image);
+        transformer.setSpeed(0.3f);
+        viewPager.setPageTransformer(false, transformer);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +58,23 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager.addOnPageChangeListener(this);
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    if (callbacks != null) {
+                        callbacks.onFavoriteToggled();
+                        return true;
+                    }
+                    return super.onDoubleTap(e);
+                }
+            });
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
+            }
+        });
         viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
             private static final float MIN_SCALE = 0.85f;
             private static final float MIN_ALPHA = 0.5f;
@@ -97,6 +112,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
                 }
             }
         });
+
     }
 
     @Override
@@ -123,8 +139,10 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     private void updatePlayingQueue() {
         viewPager.setAdapter(new AlbumCoverPagerAdapter(getFragmentManager(), MusicPlayerRemote.getPlayingQueue()));
+        viewPager.getAdapter().notifyDataSetChanged();
         viewPager.setCurrentItem(MusicPlayerRemote.getPosition());
         onPageSelected(MusicPlayerRemote.getPosition());
+
     }
 
     @Override
@@ -146,38 +164,6 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     }
 
-    public void showHeartAnimation() {
-        favoriteIcon.clearAnimation();
-
-        favoriteIcon.setAlpha(0f);
-        favoriteIcon.setScaleX(0f);
-        favoriteIcon.setScaleY(0f);
-        favoriteIcon.setVisibility(View.VISIBLE);
-        favoriteIcon.setPivotX(favoriteIcon.getWidth() / 2);
-        favoriteIcon.setPivotY(favoriteIcon.getHeight() / 2);
-
-        favoriteIcon.animate()
-                .setDuration(ViewUtil.PHONOGRAPH_ANIM_TIME / 2)
-                .setInterpolator(new DecelerateInterpolator())
-                .scaleX(1f)
-                .scaleY(1f)
-                .alpha(1f)
-                .setListener(new SimpleAnimatorListener() {
-                    @Override
-                    public void onAnimationCancel(Animator animation) {
-                        favoriteIcon.setVisibility(View.INVISIBLE);
-                    }
-                })
-                .withEndAction(() -> favoriteIcon.animate()
-                        .setDuration(ViewUtil.PHONOGRAPH_ANIM_TIME / 2)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .scaleX(0f)
-                        .scaleY(0f)
-                        .alpha(0f)
-                        .start())
-                .start();
-    }
-
 
     private void notifyColorChange(int color) {
         if (callbacks != null) callbacks.onColorChanged(color);
@@ -185,13 +171,6 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
     public void setCallbacks(Callbacks listener) {
         callbacks = listener;
-    }
-
-    public void removeSlideEffect() {
-        ParallaxPagerTransformer transformer = new ParallaxPagerTransformer(R.id.player_image);
-        transformer.setSpeed(0.3f);
-        viewPager.setPageTransformer(false, transformer);
-
     }
 
 
