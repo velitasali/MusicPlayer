@@ -73,7 +73,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         setSupportActionBar(mToolbar);
 
         kygouClient = new KygouClient(this);
-        mUpdateHelper = new MusicProgressViewUpdateHelper(this, 300, 100);
+        mUpdateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
             lyricView.setLyricFile(file, "UTF-8");
             lyricViewBig.setLyricFile(file, "UTF-8");
 
-            //lyricViewBig.setLineCount(3);
+            //lyricViewBig.setLineCount(1);
             lyricViewBig.setTextSize(40);
         }
     }
