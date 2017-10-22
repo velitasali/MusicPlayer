@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ShareCompat;
@@ -24,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.ThemeStore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -44,11 +44,41 @@ public class AboutActivity extends AbsBaseActivity {
     private static List<Contributors> sList = new ArrayList<>();
 
     static {
-        sList.add(new Contributors(
-                R.string.luis_gomez,
-                R.string.spanish,
-                R.drawable.luis_gmzz
-        ));
+        sList.addAll(Arrays.asList(
+                new Contributors(
+                        R.string.luis_gomez,
+                        R.string.spanish,
+                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_5680585e0a1ce0.19084464.jpg"
+                ), new Contributors(
+                        R.string.jangbeyond,
+                        R.string.chinese_simplified,
+                        ""
+                ), new Contributors(
+                        R.string.cyvb,
+                        R.string.chinese_simplified,
+                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_59d046613b7780.42406832.jpg"
+                ), new Contributors(
+                        R.string.sota,
+                        R.string.japanese,
+                        ""
+                ), new Contributors(
+                        R.string.mobile46,
+                        R.string.turkish,
+                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_583d9ae7a83853.57176255.jpg"
+                ), new Contributors(
+                        R.string.mega_cavidan2003,
+                        R.string.turkish,
+                        ""
+                ), new Contributors(
+                        R.string.tommaso01c,
+                        R.string.italian,
+                        ""
+                ), new Contributors(
+                        R.string.emmanuelenukaj,
+                        R.string.italian,
+                        ""
+                ))
+        );
     }
 
     @BindView(R.id.toolbar)
@@ -243,10 +273,10 @@ public class AboutActivity extends AbsBaseActivity {
         public int title;
         @StringRes
         public int text;
-        @DrawableRes
-        public int image;
 
-        Contributors(@StringRes int title, @StringRes int text, @DrawableRes int image) {
+        public String image;
+
+        Contributors(@StringRes int title, @StringRes int text, String image) {
             this.title = title;
             this.text = text;
             this.image = image;
@@ -277,7 +307,9 @@ public class AboutActivity extends AbsBaseActivity {
             }
             if (holder.image != null) {
                 Glide.with(AboutActivity.this)
-                        .load(contributors.image).override(AVATAR_SIZE, AVATAR_SIZE)
+                        .load(contributors.image)
+                        .placeholder(R.drawable.ic_person_flat)
+                        .override(AVATAR_SIZE, AVATAR_SIZE)
                         .into(holder.image);
             }
         }
