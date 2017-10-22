@@ -200,7 +200,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
             if (dialog == null) return;
 
             if (skuDetails == null || skuDetails.isEmpty()) {
-                Toast.makeText(dialog, "Error loading items", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(dialog, "Error loading items", Toast.LENGTH_SHORT).show();
                 //dialog.finish();
                 dialog.mProgressContainer.setVisibility(View.GONE);
                 return;
