@@ -412,7 +412,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bitmap -> mUserImage.setImageBitmap(bitmap),
                         throwable -> mUserImage.setImageDrawable(ContextCompat
-                                .getDrawable(MainActivity.this, R.drawable.person_boy)));
+                                .getDrawable(MainActivity.this, R.drawable.ic_person_flat)));
     }
 
     class NavigationItemsAdapter extends RecyclerView.Adapter<NavigationItemsAdapter.ViewHolder> {
