@@ -1,6 +1,5 @@
 package code.name.monkey.retromusic;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
@@ -14,10 +13,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 public class RetroApplication extends MultiDexApplication {
 
     private static RetroApplication retroApplication;
-
-    public static Context getRetroApplication() {
-        return retroApplication.getApplicationContext();
-    }
 
     public static RetroApplication getInstance() {
         return retroApplication;
