@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="Language contributors"
+        android:text="@string/language_contributors"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         android:textColor="?colorAccent"/>
 
