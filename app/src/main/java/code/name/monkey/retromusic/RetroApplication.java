@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager;
+import code.name.monkey.retromusic.util.LanguageUtil;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 /**
@@ -32,5 +33,6 @@ public class RetroApplication extends MultiDexApplication {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             new DynamicShortcutManager(this).initDynamicShortcuts();
         }
+        //LanguageUtil.setForceEnglish(this);
     }
 }
