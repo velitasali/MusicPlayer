@@ -83,6 +83,16 @@ public class OrderablePlaylistSongAdapter extends PlaylistSongAdapter implements
         return dropPosition > 0;
     }
 
+    @Override
+    public void onItemDragStarted(int position) {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
+        notifyDataSetChanged();
+    }
+
     public interface OnMoveItemListener {
         void onMoveItem(int fromPosition, int toPosition);
     }
