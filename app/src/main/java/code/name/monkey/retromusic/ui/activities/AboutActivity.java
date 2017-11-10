@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,11 +31,27 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.Constants;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.retro.musicplayer.backend.RetroConstants.ALEKSANDAR_TESIC_GOOGLE_PLUS;
+import static com.retro.musicplayer.backend.RetroConstants.FLATICON_LINK;
+import static com.retro.musicplayer.backend.RetroConstants.GABRIEL_ZEGARRA_GOOGLE_PLUS;
+import static com.retro.musicplayer.backend.RetroConstants.GITHUB_PROJECT;
+import static com.retro.musicplayer.backend.RetroConstants.GOOGLE_PLUS_COMMUNITY;
+import static com.retro.musicplayer.backend.RetroConstants.GOOGLE_PLUS_PROFILE;
+import static com.retro.musicplayer.backend.RetroConstants.HEMANTH_TELEGRAM;
+import static com.retro.musicplayer.backend.RetroConstants.KARIM_GITHUB;
+import static com.retro.musicplayer.backend.RetroConstants.KARIM_GOOGLE_PLUS;
+import static com.retro.musicplayer.backend.RetroConstants.LUIS_GOMZ_GOOGLE_PLUS;
+import static com.retro.musicplayer.backend.RetroConstants.LUIS_GOMZ_TWITTER;
+import static com.retro.musicplayer.backend.RetroConstants.MATERIAL_DESIGN_ICONS;
+import static com.retro.musicplayer.backend.RetroConstants.MATERIAL_TECHJUICE_IMAGES;
+import static com.retro.musicplayer.backend.RetroConstants.RATE_ON_GOOGLE_PLAY;
+import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANNEL;
+import static com.retro.musicplayer.backend.RetroConstants.TRANSLATE;
 
 /**
  * @author Hemanth S (h4h13)
@@ -77,6 +94,10 @@ public class AboutActivity extends AbsBaseActivity {
                         R.string.emmanuelenukaj,
                         R.string.italian,
                         ""
+                ), new Contributors(
+                        R.string.paha_akos,
+                        R.string.hungarian,
+                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_59ee18abf180f2.69847271.jpg"
                 ))
         );
     }
@@ -192,52 +213,52 @@ public class AboutActivity extends AbsBaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.flaticon_link:
-                openUrl(Constants.FLATICON_LINK);
+                openUrl(FLATICON_LINK);
                 break;
             case R.id.app_github:
-                openUrl(Constants.GITHUB_PROJECT);
+                openUrl(GITHUB_PROJECT);
                 break;
             case R.id.material_design_city_wallpaper_link:
-                openUrl(Constants.MATERIAL_TECHJUICE_IMAGES);
+                openUrl(MATERIAL_TECHJUICE_IMAGES);
                 break;
             case R.id.material_design_link:
-                openUrl(Constants.MATERIAL_DESIGN_ICONS);
+                openUrl(MATERIAL_DESIGN_ICONS);
                 break;
             case R.id.app_google_plus:
-                openUrl(Constants.GOOGLE_PLUS_COMMUNITY);
+                openUrl(GOOGLE_PLUS_COMMUNITY);
                 break;
             case R.id.app_telegram_channel:
-                openUrl(Constants.TELEGRAM_CHANNEL);
+                openUrl(TELEGRAM_CHANNEL);
                 break;
             case R.id.google_plus_circle_btn:
-                openUrl(Constants.GOOGLE_PLUS_PROFILE);
+                openUrl(GOOGLE_PLUS_PROFILE);
                 break;
             case R.id.telegram_btn:
-                openUrl(Constants.HEMANTH_TELEGRAM);
+                openUrl(HEMANTH_TELEGRAM);
                 break;
             case R.id.karimAbourGooglePlus:
-                openUrl(Constants.KARIM_GOOGLE_PLUS);
+                openUrl(KARIM_GOOGLE_PLUS);
                 break;
             case R.id.karimAbourGithub:
-                openUrl(Constants.KARIM_GITHUB);
+                openUrl(KARIM_GITHUB);
                 break;
             case R.id.luisGomezGooglePlus:
-                openUrl(Constants.LUIS_GOMZ_GOOGLE_PLUS);
+                openUrl(LUIS_GOMZ_GOOGLE_PLUS);
                 break;
             case R.id.luisGomezTwitter:
-                openUrl(Constants.LUIS_GOMZ_TWITTER);
+                openUrl(LUIS_GOMZ_TWITTER);
                 break;
             case R.id.aleksandar_tesic:
-                openUrl(Constants.ALEKSANDAR_TESIC_GOOGLE_PLUS);
+                openUrl(ALEKSANDAR_TESIC_GOOGLE_PLUS);
                 break;
             case R.id.gabriel_zegarra:
-                openUrl(Constants.GABRIEL_ZEGARRA_GOOGLE_PLUS);
+                openUrl(GABRIEL_ZEGARRA_GOOGLE_PLUS);
                 break;
             case R.id.app_translation:
-                openUrl(Constants.TRANSLATE);
+                openUrl(TRANSLATE);
                 break;
             case R.id.app_rate:
-                openUrl(Constants.RATE_ON_GOOGLE_PLAY);
+                openUrl(RATE_ON_GOOGLE_PLAY);
                 break;
             case R.id.app_share:
                 shareApp();
@@ -308,7 +329,7 @@ public class AboutActivity extends AbsBaseActivity {
             if (holder.image != null) {
                 Glide.with(AboutActivity.this)
                         .load(contributors.image)
-                        .placeholder(R.drawable.ic_person_flat)
+                        .placeholder(ContextCompat.getDrawable(AboutActivity.this, R.drawable.ic_person_flat))
                         .override(AVATAR_SIZE, AVATAR_SIZE)
                         .into(holder.image);
             }
