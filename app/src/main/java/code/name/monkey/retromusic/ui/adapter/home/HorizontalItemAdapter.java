@@ -11,11 +11,15 @@ import com.bumptech.glide.Glide;
 import com.retro.musicplayer.backend.model.Song;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.annotation.Nullable;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 
 /**
@@ -23,27 +27,31 @@ import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
  */
 
 public class HorizontalItemAdapter extends RecyclerView.Adapter<HorizontalItemAdapter.ViewHolder> {
-    private final static int ARTIST = 1;
-    private final static int ALBUM = 2;
-    private final static int SONG = 3;
-    private static final int HEADER = 0;
+    private static final int SONG = 0;
+    private static final int VIEW_ALL = 1;
     private static final String TAG = "HorizontalItemAdapter";
     private AppCompatActivity activity;
-    private ArrayList<Song> dataSet = new ArrayList<>();
+    private List<Song> dataSet = new ArrayList<>();
 
-    public HorizontalItemAdapter(@NonNull AppCompatActivity activity, @NonNull ArrayList<Song> dataSet) {
+    public HorizontalItemAdapter(@NonNull AppCompatActivity activity) {
         this.activity = activity;
-        this.dataSet = dataSet;
     }
+
+    public void swapData(List<Song> songs) {
+        dataSet = songs;
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(activity).inflate(R.layout.item_image, parent, false));
+
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        Song song = dataSet.get(position);
+        Song song = (Song) dataSet.get(position);
         if (viewHolder.title != null) {
             viewHolder.title.setText(song.title);
         }
@@ -55,19 +63,26 @@ public class HorizontalItemAdapter extends RecyclerView.Adapter<HorizontalItemAd
 
     @Override
     public int getItemCount() {
-        return dataSet.size() < 10 ? dataSet.size() : 10;
+        return dataSet.size();
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
+        @Nullable
+        @BindView(R.id.view_playlist)
+        View mView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
 
         }
 
         @Override
         public void onClick(View view) {
             super.onClick(view);
-            MusicPlayerRemote.openQueue(dataSet, getAdapterPosition(), true);
+            ArrayList<Song> songs = new ArrayList<>();
+            songs.addAll(dataSet);
+            MusicPlayerRemote.openQueue(songs, getAdapterPosition(), true);
         }
     }
 }

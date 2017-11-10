@@ -5,8 +5,9 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,29 +56,36 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         int aColor = ThemeStore.accentColor(activity);
-        viewholder.dash.setBackgroundColor(aColor);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewholder.seeAll.setBackgroundTintList(ColorStateList.valueOf(aColor));
         } else {
             viewholder.seeAll.setBackgroundColor(aColor);
         }
+
         int color = MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(aColor));
         viewholder.seeAll.setTextColor(color);
-        viewholder.seeAll.setOnClickListener(v -> {
-            NavigationUtil.goToPlaylistNew(activity, playlist);
-        });
+        viewholder.seeAll.setOnClickListener(v -> NavigationUtil.goToPlaylistNew(activity, playlist));
+        TooltipCompat.setTooltipText(viewholder.seeAll, activity.getString(R.string.tool_tip_see_all));
 
         if (viewholder.recyclerView != null) {
-            viewholder.recyclerView.setHasFixedSize(true);
-            viewholder.recyclerView.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
+            viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
             viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+            viewholder.recyclerView.setNestedScrollingEnabled(false);
+            viewholder.recyclerView.setHasFixedSize(true);
+            HorizontalItemAdapter adapter = new HorizontalItemAdapter(activity);
+            viewholder.recyclerView.setAdapter(adapter);
             PlaylistSongsLoader.getPlaylistSongList(activity, playlist)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(songs -> viewholder.recyclerView.setAdapter(new HorizontalItemAdapter(activity, songs)));
+                    .subscribe(songs -> {
+                        if (songs.size() > 10) {
+                            adapter.swapData(songs.subList(0, 10));
+                        } else {
+                            adapter.swapData(songs);
+                        }
+
+                    });
         }
-
-
     }
 
     @Override
@@ -92,8 +100,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
-        @BindView(R.id.dash)
-        View dash;
         @BindView(R.id.see_all)
         TextView seeAll;
 
