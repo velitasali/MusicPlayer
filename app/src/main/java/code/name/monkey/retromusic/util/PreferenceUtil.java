@@ -56,6 +56,7 @@ public final class PreferenceUtil {
     public static final String AUTO_DOWNLOAD_IMAGES_POLICY = "auto_download_images_policy";
     public static final String START_DIRECTORY = "start_directory";
     public static final String SYNCHRONIZED_LYRICS_SHOW = "synchronized_lyrics_show";
+    public static final String TOGGLE_HEADSET = "toggle_headset";
     private static final String ADAPTIVE_COLOR_APP = "adaptive_color_app";
     private static final String LOCK_SCREEN = "lock_screen";
     private static final String USER_NAME = "user_name";
@@ -68,6 +69,8 @@ public final class PreferenceUtil {
     private static final String ALBUM_DETAIL_SONG_SORT_ORDER = "album_detail_song_sort_order";
     private static final String ARTIST_DETAIL_SONG_SORT_ORDER = "artist_detail_song_sort_order";
     private static final String TOGGLE_VOLUME = "toggle_volume";
+    private static final String LYRICS_OPTIONS = "lyrics_options";
+    private static final String TOGGLE_TAB_TITLES = "toggle_tab_titles";
     private static PreferenceUtil sInstance;
     private final SharedPreferences mPreferences;
 
@@ -495,5 +498,24 @@ public final class PreferenceUtil {
 
     public boolean getVolumeToggle() {
         return mPreferences.getBoolean(TOGGLE_VOLUME, false);
+    }
+
+    public int getLyricsOptions() {
+        return mPreferences
+                .getInt(LYRICS_OPTIONS, 1);
+    }
+
+    public void setLyricsOptions(int i) {
+        mPreferences.edit()
+                .putInt(LYRICS_OPTIONS, i)
+                .apply();
+    }
+
+    public boolean getHeadsetPlugged() {
+        return mPreferences.getBoolean(TOGGLE_HEADSET, false);
+    }
+
+    public boolean tabTitles() {
+        return mPreferences.getBoolean(TOGGLE_TAB_TITLES, false);
     }
 }
