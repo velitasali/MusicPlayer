@@ -3,6 +3,8 @@ package code.name.monkey.retromusic.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,7 +27,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.TintHelper;
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.contract.AlbumDetailsContract;
@@ -36,7 +40,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeleteSongsDialog;
@@ -45,14 +48,13 @@ import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.SortOrder.AlbumSongSortOrder;
-
-
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.activities.tageditor.AbsTagEditorActivity;
 import code.name.monkey.retromusic.ui.activities.tageditor.AlbumTagEditorActivity;
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -221,10 +223,16 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     private void setUpToolBar() {
         mToolbar.setTitle("");
-        setTitle(R.string.app_name);
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         setSupportActionBar(mToolbar);
-
+        setTitle(R.string.app_name);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                    ATHUtil.resolveColor(this, R.attr.iconColor),
+                    this);
+        } else {
+            ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, this);
+        }
     }
 
     private void loadAlbumCover() {
@@ -275,38 +283,6 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
         setUpSortOrderMenu(sortOrder.getSubMenu());
         return true;
     }
-
-   /* @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        final ArrayList<Song> songs = mAdapter.getDataSet();
-        switch (id) {
-            case R.id.action_play_next:
-                MusicPlayerRemote.playNext(songs);
-                return true;
-            case R.id.action_add_to_current_playing:
-                MusicPlayerRemote.enqueue(songs);
-                return true;
-            case R.id.action_add_to_playlist:
-                AddToPlaylistDialog.create(songs).show(getSupportFragmentManager(), "ADD_PLAYLIST");
-                return true;
-            case R.id.action_delete_from_device:
-                DeleteSongsDialog.create(songs).show(getSupportFragmentManager(), "DELETE_SONGS");
-                return true;
-            case android.R.id.home:
-                super.onBackPressed();
-                return true;
-            case R.id.action_tag_editor:
-                Intent intent = new Intent(this, AlbumTagEditorActivity.class);
-                intent.putExtra(AbsTagEditorActivity.EXTRA_ID, getAlbum().getId());
-                startActivityForResult(intent, TAG_EDITOR_REQUEST);
-                return true;
-            case R.id.action_go_to_artist:
-                NavigationUtil.goToArtist(this, getAlbum().getArtistId());
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
