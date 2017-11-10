@@ -24,16 +24,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by hemanths on 23/08/17.
  */
 
-public class KygouClient {
+public class KogouClient {
     public static final String BASE_URL = RetroConstants.BASE_API_URL_KUGOU;
 
     private KuGouApiService apiService;
 
-    public KygouClient(@NonNull Context context) {
+    public KogouClient(@NonNull Context context) {
         this(createDefaultOkHttpClientBuilder(context).build());
     }
 
-    public KygouClient(@NonNull Call.Factory client) {
+    public KogouClient(@NonNull Call.Factory client) {
         Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .callFactory(client)

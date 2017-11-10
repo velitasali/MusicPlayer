@@ -3,7 +3,6 @@ package com.retro.musicplayer.backend.loaders;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.retro.musicplayer.backend.R;
 
@@ -20,11 +19,9 @@ public class SearchLoader {
 
     public static Observable<ArrayList<Object>> searchAll(@NonNull Context context, @NonNull String query) {
         ArrayList<Object> results = new ArrayList<>();
-        Log.i(TAG, "searchAll: " + query);
         return Observable.create(e -> {
             if (!TextUtils.isEmpty(query)) {
                 SongLoader.getSongs(context, query).subscribe(songs -> {
-                    Log.i(TAG, "searchAll: " + songs.size());
                     if (!songs.isEmpty()) {
                         results.add(context.getResources().getString(R.string.songs));
                         results.addAll(songs);

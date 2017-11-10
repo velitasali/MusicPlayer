@@ -21,6 +21,10 @@ public class HomeLoader {
     public static Observable<ArrayList<Playlist>> getHomeLoader(Context context) {
         ArrayList<Playlist> playlists = new ArrayList<>();
 
+        new LastAddedPlaylist(context).getSongs(context).subscribe(songs -> {
+            if (songs.size() > 0)
+                playlists.add(new LastAddedPlaylist(context));
+        });
         new MyTopTracksPlaylist(context).getSongs(context).subscribe(songs -> {
             if (songs.size() > 0)
                 playlists.add(new MyTopTracksPlaylist(context));
@@ -31,20 +35,8 @@ public class HomeLoader {
                 playlists.add(new HistoryPlaylist(context));
         });
 
-        new LastAddedPlaylist(context).getSongs(context).subscribe(songs -> {
-            if (songs.size() > 0)
-                playlists.add(new LastAddedPlaylist(context));
-        });
-
-        /*LastAddedSongsLoader.getLastAddedArtists(context).subscribe(artists -> {
-            if (arrayList.size() > 0)
-                arrayList.add(new Home("Recent artists", (ArrayList) artists));
-        }).dispose();
-
-        LastAddedSongsLoader.getLastAddedAlbums(context).subscribe(albums -> {
-            if (albums.size() > 0) arrayList.add(new Home("Recent albums", (ArrayList) albums));
-        }).dispose();*/
-
+        PlaylistLoader.getAllPlaylists(context)
+                .subscribe(playlists1 -> playlists.addAll(playlists1));
         return Observable.just(playlists);
     }
 }
