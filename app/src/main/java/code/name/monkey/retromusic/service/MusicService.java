@@ -32,6 +32,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bumptech.glide.BitmapRequestBuilder;
@@ -190,6 +191,31 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         }
     };
     private ArrayList<Song> playlistSongs = new ArrayList<>();
+    private IntentFilter headsetReceiverIntentFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+    private boolean headsetReceiverRegistered = false;
+    private BroadcastReceiver headsetReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action != null) {
+                switch (action) {
+                    case Intent.ACTION_HEADSET_PLUG:
+                        int state = intent.getIntExtra("state", -1);
+                        switch (state) {
+                            case 0:
+                                Log.d(TAG, "Headset unplugged");
+                                pause();
+                                break;
+                            case 1:
+                                Log.d(TAG, "Headset plugged");
+                                play();
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+    };
 
     private static String getTrackUri(@NonNull Song song) {
         return MusicUtil.getSongFileUri(song.id).toString();
@@ -250,6 +276,11 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         mediaSession.setActive(true);
 
         sendBroadcast(new Intent("code.name.monkey.retromusic.RETRO_MUSIC_SERVICE_CREATED"));
+
+        registerHeadsetEvents();
+
+
+
     }
 
     private AudioManager getAudioManager() {
@@ -395,6 +426,10 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         if (becomingNoisyReceiverRegistered) {
             unregisterReceiver(becomingNoisyReceiver);
             becomingNoisyReceiverRegistered = false;
+        }
+        if (headsetReceiverRegistered) {
+            unregisterReceiver(headsetReceiver);
+            headsetReceiverRegistered = false;
         }
         mediaSession.setActive(false);
         quit();
@@ -1149,6 +1184,16 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
                 initNotification();
                 updateNotification();
                 break;
+            case PreferenceUtil.TOGGLE_HEADSET:
+                registerHeadsetEvents();
+                break;
+        }
+    }
+
+    private void registerHeadsetEvents() {
+        if (!headsetReceiverRegistered && PreferenceUtil.getInstance(this).getHeadsetPlugged()) {
+            registerReceiver(headsetReceiver, headsetReceiverIntentFilter);
+            headsetReceiverRegistered = true;
         }
     }
 
