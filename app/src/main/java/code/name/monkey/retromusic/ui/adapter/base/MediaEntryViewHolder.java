@@ -74,8 +74,8 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     protected void setImageTransitionName(@NonNull String transitionName) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && image != null) {
-            image.setTransitionName(transitionName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && imageContainer != null) {
+            imageContainer.setTransitionName(transitionName);
         }
     }
 
