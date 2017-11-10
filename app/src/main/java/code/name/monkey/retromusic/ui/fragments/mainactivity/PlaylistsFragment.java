@@ -8,13 +8,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.mvp.contract.PlaylistContract;
 import com.retro.musicplayer.backend.mvp.presenter.PlaylistPresenter;
 
 import java.util.ArrayList;
 
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewFragment;

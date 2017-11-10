@@ -12,13 +12,13 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.contract.SongContract;
 import com.retro.musicplayer.backend.mvp.presenter.SongPresenter;
 
 import java.util.ArrayList;
 
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.SortOrder.SongSortOrder;
 import code.name.monkey.retromusic.ui.adapter.song.ShuffleButtonSongAdapter;
