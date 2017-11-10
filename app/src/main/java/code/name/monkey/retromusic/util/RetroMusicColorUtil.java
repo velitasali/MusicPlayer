@@ -67,36 +67,6 @@ public class RetroMusicColorUtil {
         return backgroundColor;
     }
 
-    @ColorInt
-    public static int shiftBackgroundColorForDarkText(@ColorInt int backgroundColor) {
-        while (!ColorUtil.isColorLight(backgroundColor)) {
-            backgroundColor = ColorUtil.lightenColor(backgroundColor);
-        }
-        return backgroundColor;
-    }
-
-    public static int[] getMultipleColor(Palette palette) {
-        int[] colors = new int[2];
-        if (palette != null) {
-            if (palette.getVibrantSwatch() != null) {
-                colors[0] = palette.getVibrantSwatch().getRgb();
-            } else if (palette.getMutedSwatch() != null) {
-                colors[1] = palette.getMutedSwatch().getRgb();
-            } else if (palette.getDarkVibrantSwatch() != null) {
-                colors[0] = palette.getDarkVibrantSwatch().getRgb();
-            } else if (palette.getDarkMutedSwatch() != null) {
-                colors[1] = palette.getDarkMutedSwatch().getRgb();
-            } else if (palette.getLightVibrantSwatch() != null) {
-                colors[0] = palette.getLightVibrantSwatch().getRgb();
-            } else if (palette.getLightMutedSwatch() != null) {
-                colors[1] = palette.getLightMutedSwatch().getRgb();
-            } else if (!palette.getSwatches().isEmpty()) {
-                colors[0] = Collections.max(palette.getSwatches(), SwatchComparator.getInstance()).getRgb();
-            }
-        }
-        return colors;
-    }
-
     private static class SwatchComparator implements Comparator<Palette.Swatch> {
         private static SwatchComparator sInstance;
 
