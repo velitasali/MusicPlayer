@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.mvp.contract.SearchContract;
 import com.retro.musicplayer.backend.mvp.presenter.SearchPresenter;
 
@@ -30,7 +31,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.interfaces.LoaderIds;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
@@ -94,22 +94,19 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
             }
         });
         recyclerView.setAdapter(adapter);
-
-        recyclerView.setOnTouchListener((v, event) -> {
-            hideSoftKeyboard();
-            return false;
-        });
     }
 
     private void setupSearchView() {
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setQueryHint(getString(R.string.search_hint));
-        mSearchView.setImeOptions(mSearchView.getImeOptions() | EditorInfo.IME_ACTION_SEARCH |
-                EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
-        mSearchView.post(() -> mSearchView.setOnQueryTextListener(SearchActivity.this));
-        mSearchView.onActionViewExpanded();
-        mSearchView.setIconified(false);
+        if (searchManager != null) {
+            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            mSearchView.setQueryHint(getString(R.string.search_hint));
+            mSearchView.setImeOptions(mSearchView.getImeOptions() | EditorInfo.IME_ACTION_SEARCH |
+                    EditorInfo.IME_FLAG_NO_EXTRACT_UI | EditorInfo.IME_FLAG_NO_FULLSCREEN);
+            mSearchView.post(() -> mSearchView.setOnQueryTextListener(SearchActivity.this));
+            mSearchView.onActionViewExpanded();
+            mSearchView.setIconified(false);
+        }
     }
 
     @Override
@@ -119,7 +116,6 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
         if (!isMicSearch && getIntent().getBooleanExtra("mic_search", false)) {
             startMicSearch();
             isMicSearch = true;
-            return;
         }
     }
 
@@ -143,15 +139,8 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     private void setUpToolBar() {
         toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    public void onEnterAnimationComplete() {
-        super.onEnterAnimationComplete();
-        TransitionManager.beginDelayedTransition(mContainer);
         //noinspection ConstantConditions
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
