@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity.home;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -26,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.mvp.contract.HomeContract;
 import com.retro.musicplayer.backend.mvp.presenter.HomePresenter;
@@ -37,7 +39,6 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.interfaces.LibraryTabSelectedItem;
@@ -92,14 +93,15 @@ public class HomeFragment extends AbsMainActivityFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
         setStatusbarColorAuto(view);
@@ -250,22 +252,25 @@ public class HomeFragment extends AbsMainActivityFragment
     }
 
     private String getTimeOfTheDay() {
-        String message = "Good day.";
+        String message = getString(R.string.title_good_day);
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
         String[] images = new String[]{};
-        if (timeOfDay >= 0 && timeOfDay < 12) {
-            message = "Good morning";
+        if (timeOfDay >= 0 && timeOfDay < 6) {
+            message = getString(R.string.title_good_night);
+            images = getActivity().getResources().getStringArray(R.array.night);
+        } else if (timeOfDay >= 6 && timeOfDay < 12) {
+            message = getString(R.string.title_good_morning);
             images = getActivity().getResources().getStringArray(R.array.morning);
         } else if (timeOfDay >= 12 && timeOfDay < 16) {
-            message = "Good Afternoon.";
+            message = getString(R.string.title_good_afternoon);
             images = getActivity().getResources().getStringArray(R.array.after_noon);
         } else if (timeOfDay >= 16 && timeOfDay < 20) {
-            message = "Good Evening";
+            message = getString(R.string.title_good_evening);
             images = getActivity().getResources().getStringArray(R.array.evening);
         } else if (timeOfDay >= 20 && timeOfDay < 24) {
-            message = "Good Night";
+            message = getString(R.string.title_good_night);
             images = getActivity().getResources().getStringArray(R.array.night);
         }
         String day = images[new Random().nextInt(images.length)];
