@@ -20,13 +20,13 @@
         <TextView
             android:id="@+id/title"
             fontPath="fonts/sans_bold.ttf"
+            tools:ignore="MissingPrefix"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="18sp"
             android:visibility="gone"
-            tools:ignore="MissingPrefix"
             tools:text="@string/songs"
             tools:visibility="visible" />
 
@@ -42,7 +42,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:paddingTop="6dp"
-            android:text="See all"
+            android:text="View all"
             android:textColor="@color/md_white_1000"
             android:textSize="12sp"
             android:tooltipText="@string/tool_tip_see_all" />

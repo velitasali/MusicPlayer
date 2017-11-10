@@ -43,10 +43,12 @@
     <string name="tommaso01c" translatable="false">tommaso01c</string>
     <string name="italian" translatable="false">Italian</string>
     <string name="emmanuelenukaj" translatable="false">emmanuelenukaj</string>
-    <string name="spanish" translatable="false">Spanish (United States)</string>
     <string name="jangbeyond" translatable="false">Jangbeyond</string>
     <string name="chinese_simplified" translatable="false">Chinese Simplified</string>
     <string name="cyvb" translatable="false">Cyvb</string>
     <string name="sota" translatable="false">sota.0512.0213</string>
     <string name="japanese" translatable="false">Japanese</string>
+    <string name="hungarian" translatable="false">Hungarian</string>
+    <string name="paha_akos" translatable="false">Paha Ákos</string>
+    <string name="spanish" translatable="false">Spanish(US)</string>
 </resources>

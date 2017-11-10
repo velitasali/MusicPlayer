@@ -15,8 +15,8 @@
     <string name="action_go_to_artist">Ir al artista</string>
     <string name="action_go_to_start_directory">Ir al directorio de inicio</string>
     <string name="action_grant">Conceder</string>
-    <string name="action_grid_size">Tamaño de la cuadrícula</string>
-    <string name="action_grid_size_land">Tamaño de la cuadrícula (horizontal)</string>
+    <string name="action_grid_size">Tamaño de cuadrícula</string>
+    <string name="action_grid_size_land">Tamaño de cuadrícula (horizontal)</string>
     <string name="action_new_playlist">Nueva lista de reproducción...</string>
     <string name="action_next">Siguiente</string>
     <string name="action_play">Reproducir</string>
@@ -133,7 +133,6 @@
     <string name="inspired_designs_by">Diseños inspirados por</string>
     <string name="join_community">Unirse a la comunidad de Google+</string>
     <string name="join_community_summary">Si necesita ayuda o tiene preguntas, la comunidad de Retro Music en Google+ es un buen lugar para ir.</string>
-    <string name="just_show_your_name_on_home_screen">Solo muestra tu nombre en la pantalla de inicio</string>
     <string name="label_bit_rate">Velocidad de bits</string>
     <string name="label_details">Detalles</string>
     <string name="label_file_format">Formato</string>
@@ -154,7 +153,7 @@
     <string name="more">Más</string>
     <string name="my_name">Mi nombre</string>
     <string name="my_playlists">Mi lista de reproducción</string>
-    <string name="my_top_tracks">Mis más reproducidas</string>
+    <string name="my_top_tracks">Más reproducidas</string>
     <string name="never">Nunca</string>
     <string name="new_playlist_title">Nueva lista de reproducción</string>
     <string name="new_start_directory">%s es el nuevo directorio de inicio.</string>
@@ -197,18 +196,18 @@
     <string name="pref_summary_album_art_on_lockscreen">Utiliza la carátula del álbum que se reproduce como fondo de pantalla de bloqueo.</string>
     <string name="pref_summary_audio_ducking">Notificaciones, navegación, etc.</string>
     <string name="pref_summary_blurred_album_art">Desenfoca la carátula del álbum en la pantalla de bloqueo. Puede causar problemas con aplicaciones de terceros y widgets.</string>
-    <string name="pref_summary_classic_notification">Utilizar el diseño clásico de la notificación.</string>
-    <string name="pref_summary_colored_app">El color del fondo y botón de control cambia de acuerdo con la carátula del álbum en la pantalla de reproducción.</string>
+    <string name="pref_summary_classic_notification">Utiliza el diseño clásico de la notificación.</string>
+    <string name="pref_summary_colored_app">El color del fondo y del botón de control cambian de acuerdo con la carátula del álbum en la pantalla de reproducción.</string>
     <string name="pref_summary_colored_app_shortcuts">Colorea los accesos directos de la aplicación en el color de énfasis. Cada vez que cambias de color por favor activa esta opción</string>
     <string name="pref_summary_colored_navigation_bar">Colorea la barra de navegación con el color principal.</string>
     <string name="pref_summary_colored_notification">"Colorea la notificaci\u00f3n con el color vibrante de la car\u00e1tula del \u00e1lbum."</string>
-    <string name="pref_summary_exclude_songs">Excluir las canciones que son menores de 30 segundos.</string>
+    <string name="pref_summary_exclude_songs">Excluir canciones que duran menos de 30 segundos.</string>
     <string name="pref_summary_gapless_playback">"Puede causar problemas durante la reproducción en algunos dispositivos."</string>
     <string name="pref_summary_ignore_media_store_artwork">Puede aumentar la calidad de la carátula del álbum pero a veces puede tardar en cargar. Sólo actívalo si tienes problemas con carátulas de baja resolución.</string>
     <string name="pref_summary_lock_screen">Habilitar controles completos en la pantalla de bloqueo</string>
     <string name="pref_summary_lock_screen_app">Mostrar controles completos en la pantalla de bloqueo</string>
     <string name="pref_summary_open_source_licences">Detalles de la licencia para software de código abierto</string>
-    <string name="pref_summary_round_corners">Redondear esquinas en la ventana principal, caratula de álbum, etc.</string>
+    <string name="pref_summary_round_corners">Redondea esquinas en la ventana principal, carátula de álbum, etc.</string>
     <string name="pref_summary_toggle_bottom_bar_titles">Deshabilitar títulos de la barra de navegación inferior</string>
     <string name="pref_summary_toggle_full_screen">Habilitar esto para el modo inmersivo</string>
     <string name="pref_summary_toggle_volume">Si tiene espacio en la pantalla de reproducción, active los controles de volumen</string>
@@ -216,9 +215,10 @@
     <string name="pref_title_app_shortcuts">Accesos directos coloreados</string>
     <string name="pref_title_audio_ducking">Reducir volumen al recibir notificaciones</string>
     <string name="pref_title_auto_download_artist_images">Descarga automática de imágenes de artistas</string>
-    <string name="pref_title_blurred_album_art">Desenfocar imagen de álbum</string>
+    <string name="pref_title_blurred_album_art">Desenfocar carátula del álbum</string>
     <string name="pref_title_classic_notification">Diseño clásico de notificación</string>
     <string name="pref_title_colored_app">Color adaptativo</string>
+    <string name="dark_theme_name">Oscuro</string>
     <string name="pref_title_colored_notification">Notificación coloreada</string>
     <string name="pref_title_exclude_songs">Excluir canciones</string>
     <string name="pref_title_gapless_playback">Reproducción sin pausas</string>
@@ -227,7 +227,7 @@
     <string name="pref_title_ignore_media_store_artwork">Ignorar imágenes de la librería del sistema</string>
     <string name="pref_title_last_added_interval">Intervalo de lista de reproducción últimas agregadas</string>
     <string name="pref_title_lock_screen">Controles a pantalla completa</string>
-    <string name="pref_title_lock_screen_app">Pantalla de bloqueo Retro</string>
+    <string name="pref_title_lock_screen_app">Buenos días</string>
     <string name="pref_title_navigation_bar">Barra de navegación coloreada</string>
     <string name="pref_title_now_playing_screen_appearance">Apariencia</string>
     <string name="pref_title_open_source_licences">Licencias de código abierto</string>
@@ -269,7 +269,7 @@
     <string name="sort_order">Orden de clasificación</string>
     <string name="speech_not_supported">¡Lo siento! Su dispositivo no admite la entrada de voz</string>
     <string name="speech_prompt">Busca en tu biblioteca</string>
-    <string name="summary_material_design_city_wallpaper">Wallpapers de ciudades Matetial Design desde www.techjuice.pk website</string>
+    <string name="summary_material_design_city_wallpaper">Fondos de Pantalla de Ciudades Materia Desing en www.techjuice.pk</string>
     <string name="summary_material_design_icons">Todos los iconos que utilizamos están en el sitio web materialdesignicons.com</string>
     <string name="support_development">Apoyar el desarrollo</string>
     <string name="thank_you">Gracias!</string>
@@ -301,10 +301,7 @@
     <string name="volume_control">Control de volumen</string>
     <string name="web_search">Buscar en Internet</string>
     <string name="what_do_you_want_to_share">¿Qué es lo que deseas compartir?</string>
-    <string name="what_s_your_name">¿Cuál es tu nombre?</string>
-    <string name="wiki">Wiki</string>
     <string name="x_has_been_set_as_ringtone">Establecer %1$s como tono de llamada.</string>
     <string name="x_selected">%1$d seleccionado(s)</string>
     <string name="year">Año</string>
-
 </resources>

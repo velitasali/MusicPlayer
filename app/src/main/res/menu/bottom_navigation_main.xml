@@ -16,8 +16,8 @@
         android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/artists" />
     <item
-        android:id="@+id/action_playlist"
+        android:id="@+id/action_folders"
         android:enabled="true"
-        android:icon="@drawable/ic_playlist_play_black_24dp"
-        android:title="@string/playlists" />
+        android:icon="@drawable/ic_folder_white_24dp"
+        android:title="@string/folders" />
 </menu>

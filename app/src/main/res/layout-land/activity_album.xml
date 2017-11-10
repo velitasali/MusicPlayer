@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -44,19 +43,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <include layout="@layout/status_bar" />
+                    <include layout="@layout/shadow_statusbar_toolbar" />
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    style="@style/Toolbar48"
-                    app:navigationIcon="@drawable/ic_close_white_24dp" />
+                        <include layout="@layout/status_bar" />
+
+                        <android.support.v7.widget.Toolbar
+                            android:id="@+id/toolbar"
+                            style="@style/Toolbar48"
+                            app:navigationIcon="@drawable/ic_close_white_24dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
 
                 <RelativeLayout
                     android:id="@+id/title_container"
@@ -67,6 +73,7 @@
 
                     <TextView
                         android:id="@+id/title"
+                        fontPath="fonts/sans_bold.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="72dp"
@@ -75,6 +82,7 @@
                         android:paddingTop="8dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                         android:textColor="?android:attr/textColorPrimary"
+                        tools:ignore="MissingPrefix"
                         tools:text="Album Name" />
 
                     <TextView
@@ -103,7 +111,6 @@
 
                 </RelativeLayout>
 
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
@@ -117,9 +124,6 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <include layout="@layout/shadow_statusbar_toolbar" />
-
 
     <ImageButton
         android:id="@+id/play_songs"

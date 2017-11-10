@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,6 +44,8 @@
                     android:layout_marginStart="72dp"
                     android:maxLines="2"
                     android:paddingEnd="56dp"
+                    fontPath="fonts/sans_bold.ttf"
+                    tools:ignore="MissingPrefix"
                     android:paddingTop="24dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="?android:attr/textColorPrimary"
@@ -110,7 +112,7 @@
                 app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
 
         </RelativeLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 

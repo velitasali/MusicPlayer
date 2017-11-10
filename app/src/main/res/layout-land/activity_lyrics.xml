@@ -68,14 +68,21 @@
                         android:layout_height="wrap_content"
                         android:maxLines="2"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                    <Spinner
+                        android:id="@+id/lyrics_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:entries="@array/lyrics_options" />
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>
 
         <FrameLayout
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -94,17 +101,38 @@
                     android:visibility="gone" />
             </ScrollView>
 
-            <code.name.monkey.retromusic.views.LyricView
-                android:id="@+id/lyrics"
+            <FrameLayout
+                android:id="@+id/lyrics_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:fadeInFadeOut="true"
-                app:highlightColor="?android:attr/textColorPrimary"
-                app:hint="@string/no_lyrics_found"
-                app:hintColor="?colorAccent"
-                app:lineSpace="16dp"
-                app:textAlign="left"
-                app:textColor="@color/md_grey_500" />
+                android:layout_height="match_parent">
+
+                <code.name.monkey.retromusic.views.LyricView
+                    android:id="@+id/lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:fadeInFadeOut="true"
+                    app:highlightColor="?android:attr/textColorPrimary"
+                    app:hint="@string/no_lyrics_found"
+                    app:hintColor="?colorAccent"
+                    app:lineSpace="16dp"
+                    app:textAlign="left"
+                    app:textColor="@color/md_grey_500"
+                    app:textSize="18sp" />
+
+                <code.name.monkey.retromusic.views.LyricView
+                    android:id="@+id/lyrics_big"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    app:fadeInFadeOut="true"
+                    app:highlightColor="?android:attr/textColorPrimary"
+                    app:hint="@string/no_lyrics_found"
+                    app:hintColor="?colorAccent"
+                    app:lineSpace="200dp"
+                    app:textAlign="center"
+                    app:textColor="@color/md_grey_500"
+                    app:textSize="52sp" />
+            </FrameLayout>
         </FrameLayout>
     </LinearLayout>
 </LinearLayout>

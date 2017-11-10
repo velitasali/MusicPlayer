@@ -53,7 +53,7 @@
             android:maxHeight="3dp"
             android:progressDrawable="@drawable/color_progress_seek"
             android:splitTrack="false"
-            android:thumb="@drawable/ic_action_thumb"
+            android:thumb="@drawable/switch_thumb_material"
             tools:ignore="RtlHardcoded,UnusedAttribute" />
 
     </RelativeLayout>

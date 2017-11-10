@@ -43,6 +43,7 @@
                 android:id="@+id/toolbar"
                 style="@style/Toolbar48"
                 app:title="@string/action_search"
+                app:navigationIcon="@drawable/ic_close_white_24dp"
                 tools:ignore="UnusedAttribute" />
         </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 

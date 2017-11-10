@@ -47,7 +47,7 @@
     <string name="action_tag_editor">Tag editor</string>
 
     <string name="add_action">Add</string>
-    <string name="add_photo">Add  \nphoto</string>
+    <string name="add_photo">Add \nphoto</string>
     <string name="add_playlist_title">"Add to playlist"</string>
 
     <string name="added_title_to_playing_queue">"Added 1 title to the playing queue."</string>
@@ -89,7 +89,7 @@
     <string name="biography">Biography</string>
     <string name="biography_unavailable">Couldn\u2019t find the artists biography.</string>
 
-    <string name="black_theme_name">Quite black</string>
+    <string name="black_theme_name">Just black</string>
 
     <string name="blacklist">Blacklist</string>
 
@@ -184,7 +184,7 @@
     <string name="join_community">Join the Google Plus community</string>
     <string name="join_community_summary">If you need help or have questions, the Retro Music community on Google Plus is a good place to go.</string>
 
-    <string name="just_show_your_name_on_home_screen">Just show your name on home screen</string>
+    <string name="summary_user_info">Just show your name on home screen</string>
 
     <string name="label_bit_rate">Bitrate</string>
     <string name="label_details">Details</string>
@@ -203,7 +203,7 @@
 
     <string name="licenses">Licenses</string>
 
-    <string name="light_theme_name">White</string>
+    <string name="light_theme_name">Clearly White</string>
 
     <string name="listing_files">Listing files</string>
 
@@ -301,6 +301,7 @@
     <string name="pref_title_blurred_album_art">Blur album cover</string>
     <string name="pref_title_classic_notification">Classic notification design</string>
     <string name="pref_title_colored_app">Adaptive color</string>
+    <string name="dark_theme_name">Kinda Dark</string>
     <string name="pref_title_colored_notification">Colored notification</string>
     <string name="pref_title_exclude_songs">Exclude songs</string>
     <string name="pref_title_gapless_playback">Gapless playback</string>
@@ -369,13 +370,12 @@
 
     <string name="sort_order">Sort order</string>
 
-    <string name="spanish">Spanish</string>
 
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
     <string name="speech_prompt">Search your library</string>
 
     <string name="summary_material_design_city_wallpaper">Material design city wallpapers from www.techjuice.pk website</string>
-    <string name="summary_material_design_icons">For all icons we used from this website materialdesignicons.com</string>
+    <string name="summary_material_design_icons">For all icons we used from this websites www.flaticon.com or www.materialdesignicons.com</string>
 
     <string name="support_development">Support development</string>
 
@@ -425,9 +425,8 @@
     <string name="web_search">Web search</string>
 
     <string name="what_do_you_want_to_share">What do you want to share?</string>
-    <string name="what_s_your_name">What\'s Your Name</string>
+    <string name="title_user_info">What\'s Your Name</string>
 
-    <string name="wiki">Wiki</string>
 
     <string name="x_has_been_set_as_ringtone">Set %1$s as your ringtone.</string>
     <string name="x_selected">%1$d selected</string>
@@ -436,4 +435,23 @@
     <string name="reset_artist_image">Reset artist image</string>
     <string name="set_artist_image">Set artist image</string>
     <string name="edit">Edit</string>
+    <string name="donation_header">Buy me a</string>
+    <string name="plain">Plain</string>
+    <string name="title_user_info_theme">Choose a Theme</string>
+    <string name="summary_user_info_theme">Pick a theme that works for you. You can always change your theme from settings.</string>
+    <string name="tool_tip_see_all">Shuffle all songs</string>
+    <string name="toggle_lyrics_size">Toggle lyrics size</string>
+    <string name="title_good_night">Good night</string>
+    <string name="title_good_evening">Good evening</string>
+    <string name="title_good_afternoon">Good afternoon</string>
+    <string name="title_good_morning">Good morning</string>
+    <string name="title_good_day">Good day</string>
+    <string name="language_contributors">Language contributors</string>
+    <string name="simple">Simple</string>
+    <string name="pref_summary_toggle_headset">When headphone jack plugged it\'s starts playing</string>
+    <string name="pref_title_toggle_toggle_headset">Auto play</string>
+    <string name="pref_summary_tab_titles">Enable/ disable bottom tabs titles</string>
+    <string name="pref_title_toggle_tab_titles">Tab titles</string>
+    <string name="pref_summary_language_en">Change app language forcefully to english(this is testing for multiple language option)</string>
+    <string name="pref_title_toggle_language_en">English language</string>
 </resources>

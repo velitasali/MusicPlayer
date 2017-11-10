@@ -19,7 +19,7 @@
         android:paddingStart="24dp"
         android:progressDrawable="@drawable/color_progress_seek"
         android:splitTrack="false"
-        android:thumb="@drawable/ic_action_thumb"
+        android:thumb="@drawable/switch_thumb_material"
         tools:progress="20" />
 
     <LinearLayout
@@ -176,7 +176,8 @@
     <FrameLayout
         android:id="@+id/volume_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:visibility="gone">
 
         <fragment
             android:id="@+id/volume_fragment"

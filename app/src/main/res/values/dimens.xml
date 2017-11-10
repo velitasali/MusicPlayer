@@ -83,5 +83,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="app_widget_card_radius">2dp</dimen>
     <dimen name="material_component_lists_three_line_height">88dp</dimen>
     <dimen name="player_control_icon">78dp</dimen>
+    <dimen name="bottom_padding">48dp</dimen>
 
 </resources>

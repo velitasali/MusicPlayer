@@ -62,6 +62,8 @@
         <item name="contentInsetStartWithNavigation">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="android:layout_height">48dp</item>
+        <item name="android:titleTextAppearance">@style/ToolbarTextAppearance</item>
+        <item name="android:subtitleTextAppearance">@style/ToolbarTextAppearance</item>
     </style>
 
     <style name="SettingsTabsTextAppearance" parent="TextAppearance.Design.Tab">
@@ -73,6 +75,8 @@
     <style name="ExpandedTitleAppearance">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Display1</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="fontPath">fonts/sans_bold.ttf</item>
     </style>
 
     <style name="CollapsedTitleAppearance">
@@ -87,5 +91,9 @@
     <style name="FullScreenSubTitleAppearance">
         <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
+    </style>
+
+    <style name="ToolbarTextAppearance">
+        <item name="fontPath">fonts/sans_regular.ttf</item>
     </style>
 </resources>

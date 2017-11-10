@@ -67,6 +67,7 @@
 
                     <TextView
                         android:id="@+id/title"
+                        fontPath="fonts/sans_bold.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="72dp"
@@ -75,6 +76,7 @@
                         android:paddingTop="24dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                         android:textColor="?android:attr/textColorPrimary"
+                        tools:ignore="MissingPrefix"
                         tools:text="Album Name" />
 
                     <TextView
