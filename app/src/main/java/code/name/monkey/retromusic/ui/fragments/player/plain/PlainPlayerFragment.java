@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +27,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
@@ -84,7 +85,8 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plain_player, container, false);
         unbinder = ButterKnife.bind(this, view);
         /*Hide status bar view for !full screen mode*/
@@ -98,10 +100,6 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
         mToolbar.inflateMenu(R.menu.menu_player);
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
-
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                getActivity());
     }
 
     @Override
@@ -142,6 +140,10 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
         getCallbacks().onPaletteColorChanged();
         mLastColor = color;
         mPlainPlaybackControlsFragment.setDark(color);
+
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+                getActivity());
     }
 
     @Override

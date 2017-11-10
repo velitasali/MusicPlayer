@@ -4,7 +4,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
@@ -18,7 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
+import com.kabouzeid.appthemehelper.util.ColorUtil;
+import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.util.LyricUtil;
+import com.transitionseverywhere.TransitionManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +30,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
@@ -66,9 +68,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-        iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ?
-                Color.WHITE :
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor);
+
     }
 
     @Override
@@ -143,6 +143,12 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         mFlatPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
         lastColor = color;
+
+        TransitionManager.beginDelayedTransition(mToolbar);
+
+        iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ?
+                MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(color)) :
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor);
 
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, iconColor, getActivity());
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);

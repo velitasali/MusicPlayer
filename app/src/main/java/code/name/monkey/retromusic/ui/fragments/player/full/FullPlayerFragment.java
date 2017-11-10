@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +25,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
@@ -52,9 +52,7 @@ public class FullPlayerFragment extends AbsPlayerFragment
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                Color.WHITE,
-                getActivity());
+
     }
 
     @Nullable
@@ -109,6 +107,9 @@ public class FullPlayerFragment extends AbsPlayerFragment
     public void onColorChanged(int color) {
         lastColor = color;
         mFullPlaybackControlsFragment.setDark(color);
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                Color.WHITE,
+                getActivity());
     }
 
     @Override

@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +30,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
@@ -115,7 +115,9 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         mPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
         lastColor = color;
-
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+                getActivity());
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
@@ -182,13 +184,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         ToolbarColorizeHelper.colorizeToolbar(mToolbar,
                 ATHUtil.resolveColor(getContext(), R.attr.iconColor),
                 getActivity());
-
-       /* ToolbarContentTintHelper.setToolbarContentColor(getContext(),
-                mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                ThemeStore.textColorPrimary(getContext()),
-                ThemeStore.textColorSecondary(getContext()),
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor));*/
     }
 
     @Override
