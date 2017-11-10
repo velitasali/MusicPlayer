@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -21,9 +22,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 
 import butterknife.BindView;
@@ -202,10 +201,12 @@ public class LibraryFragment
             menu.removeItem(R.id.action_grid_size);
             menu.removeItem(R.id.action_colored_footers);
         }
-
-        Activity activity = getActivity();
-        if (activity == null) return;
-        ToolbarContentTintHelper.handleOnCreateOptionsMenu(getActivity(), mToolbar, menu, ATHToolbarActivity.getToolbarBackgroundColor(mToolbar));
+        new Handler().postDelayed(() -> {
+            Activity activity = getActivity();
+            if (activity == null) return;
+            ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
+        }, 1);
+        //ToolbarContentTintHelper.handleOnCreateOptionsMenu(getActivity(), mToolbar, menu, ATHToolbarActivity.getToolbarBackgroundColor(mToolbar));
     }
 
     private boolean isPlaylistPage() {
@@ -219,9 +220,15 @@ public class LibraryFragment
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        Activity activity = getActivity();
+        new Handler().postDelayed(() -> {
+            Activity activity = getActivity();
+            if (activity == null) return;
+            ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
+        }, 1);
+        /* Activity activity = getActivity();
         if (activity == null) return;
-        ToolbarContentTintHelper.handleOnPrepareOptionsMenu(activity, mToolbar);
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());*/
+        //ToolbarContentTintHelper.handleOnPrepareOptionsMenu(activity, mToolbar);
     }
 
     @Override
