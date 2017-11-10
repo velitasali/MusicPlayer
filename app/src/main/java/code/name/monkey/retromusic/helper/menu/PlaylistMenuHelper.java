@@ -18,7 +18,6 @@ import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeletePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.RenamePlaylistDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.util.PlaylistsUtil;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,38 +27,35 @@ import io.reactivex.schedulers.Schedulers;
  * @author Karim Abou Zeid (kabouzeid)
  */
 public class PlaylistMenuHelper {
-    public static final int MENU_RES = R.menu.menu_item_playlist;
 
-    public static boolean handleMenuClick(@NonNull AppCompatActivity activity, @NonNull final Playlist playlist, @NonNull MenuItem item) {
+    public static boolean handleMenuClick(@NonNull AppCompatActivity activity,
+                                          @NonNull final Playlist playlist,
+                                          @NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_play:
                 getPlaylistSongs(activity, playlist)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> MusicPlayerRemote.openQueue((ArrayList<Song>) songs, 0, true)).dispose();
+                        .subscribe(songs -> MusicPlayerRemote.openQueue((ArrayList<Song>) songs, 0, true));
                 return true;
             case R.id.action_play_next:
                 getPlaylistSongs(activity, playlist)
                         .observeOn(Schedulers.computation())
                         .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> {
-                            MusicPlayerRemote.playNext((ArrayList<Song>) songs);
-                        }).dispose();
+                        .subscribe(songs -> MusicPlayerRemote.playNext((ArrayList<Song>) songs));
                 return true;
             case R.id.action_add_to_playlist:
                 getPlaylistSongs(activity, playlist)
                         .observeOn(Schedulers.computation())
                         .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> {
-                            AddToPlaylistDialog.create((ArrayList<Song>) songs)
-                                    .show(activity.getSupportFragmentManager(), "ADD_PLAYLIST");
-                        }).dispose();
+                        .subscribe(songs -> AddToPlaylistDialog.create((ArrayList<Song>) songs)
+                                .show(activity.getSupportFragmentManager(), "ADD_PLAYLIST"));
                 return true;
             case R.id.action_add_to_current_playing:
                 getPlaylistSongs(activity, playlist)
                         .observeOn(Schedulers.computation())
                         .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> MusicPlayerRemote.enqueue((ArrayList<Song>) songs)).dispose();
+                        .subscribe(songs -> MusicPlayerRemote.enqueue((ArrayList<Song>) songs));
                 return true;
             case R.id.action_rename_playlist:
                 RenamePlaylistDialog.create(playlist.id).show(activity.getSupportFragmentManager(), "RENAME_PLAYLIST");
@@ -78,7 +74,7 @@ public class PlaylistMenuHelper {
                                 toast.setText(String.format(activity.getString(R.string.saved_playlist_to), file));
                                 toast.show();
                             }
-                        }).dispose();
+                        });
                 return true;
         }
         return false;
