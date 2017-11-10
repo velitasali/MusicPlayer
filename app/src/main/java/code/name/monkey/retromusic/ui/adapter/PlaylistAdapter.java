@@ -36,9 +36,8 @@ import code.name.monkey.retromusic.helper.menu.SongsMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
-import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
-import code.name.monkey.retromusic.util.RetroUtils;
+import code.name.monkey.retromusic.util.Util;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -113,13 +112,7 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
             }
         }
 
-        holder.songs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MusicPlayerRemote.openQueue(getSongs(playlist), 0, true);
-            }
-        });
-        //new LoadBitmapsFromSongs(activity, holder).execute(songs);
+        holder.songs.setOnClickListener(v -> MusicPlayerRemote.openQueue(getSongs(playlist), 0, true));
 
         if (songs != null) {
             loadBitmaps(songs)
@@ -133,13 +126,6 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
                         }
                     });
         }
-    }
-
-    private int getIconRes(Playlist playlist) {
-        if (playlist instanceof AbsSmartPlaylist) {
-            return ((AbsSmartPlaylist) playlist).iconRes;
-        }
-        return MusicUtil.isFavoritePlaylist(activity, playlist) ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_queue_music_white_24dp;
     }
 
     @Override
@@ -225,7 +211,7 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
             for (Song song : songs) {
                 try {
                     Bitmap bitmap = Glide.with(activity)
-                            .load(RetroUtils.getAlbumArtUri(song.albumId))
+                            .load(Util.getAlbumArtUri(song.albumId))
                             .asBitmap()
                             .into(500, 500)
                             .get();
@@ -245,42 +231,6 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
         });
     }
 
-    /*private class LoadBitmapsFromSongs extends AsyncTask<ArrayList<Song>, Void, ArrayList<Bitmap>> {
-        private final Context context;
-        private final ViewHolder holder;
-
-        LoadBitmapsFromSongs(Context context, ViewHolder holder) {
-            this.context = context;
-            this.holder = holder;
-        }
-
-        @SafeVarargs
-        @Override
-        protected final ArrayList<Bitmap> doInBackground(ArrayList<Song>... params) {
-            ArrayList<Song> songs = params[0];
-            ArrayList<Bitmap> bitmaps = new ArrayList<>();
-            for (Song song : songs) {
-                try {
-                    bitmaps.add(Glide.with(context).load(RetroUtils.getAlbumArtUri(song.albumId)).asBitmap().into(300, 300).get());
-                    if (bitmaps.size() == 4) return bitmaps;
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-            return bitmaps;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
-            super.onPostExecute(bitmaps);
-            if (bitmaps.size() > 0) {
-                for (Bitmap bitmap : bitmaps) {
-                    holder.multipleImage.addImage(bitmap);
-                }
-            }
-        }
-    }*/
-
     public class ViewHolder extends MediaEntryViewHolder {
         @BindView(R.id.gradient_background)
         View gradientBackground;
@@ -292,22 +242,6 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
         public ViewHolder(@NonNull View itemView, int itemViewType) {
             super(itemView);
 
-            /*if (itemViewType == SMART_PLAYLIST) {
-                if (shortSeparator != null) {
-                    shortSeparator.setVisibility(View.GONE);
-                }
-                itemView.setBackgroundColor(ATHUtil.resolveColor(activity, R.attr.cardBackgroundColor));
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    itemView.setElevation(activity.getResources().getDimensionPixelSize(R.dimen.card_elevation));
-                }
-            }
-
-            if (image != null) {
-                int iconPadding = activity.getResources().getDimensionPixelSize(R.dimen.material_component_bottom_sheet_edge_top_bottom_margins);
-                image.setPadding(iconPadding, iconPadding, iconPadding, iconPadding);
-                image.setColorFilter(ATHUtil.resolveColor(activity, R.attr.iconColor), PorterDuff.Mode.SRC_IN);
-            }*/
-
             if (menu != null) {
                 menu.setOnClickListener(view -> {
                     final Playlist playlist = dataSet.get(getAdapterPosition());
@@ -316,18 +250,15 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
                     if (playlist instanceof LastAddedPlaylist) {
                         popupMenu.getMenu().findItem(R.id.action_clear_playlist).setVisible(false);
                     }
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(@NonNull MenuItem item) {
-                            if (item.getItemId() == R.id.action_clear_playlist) {
-                                if (playlist instanceof AbsSmartPlaylist) {
-                                    ClearSmartPlaylistDialog.create((AbsSmartPlaylist) playlist).show(activity.getSupportFragmentManager(), "CLEAR_SMART_PLAYLIST_" + playlist.name);
-                                    return true;
-                                }
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == R.id.action_clear_playlist) {
+                            if (playlist instanceof AbsSmartPlaylist) {
+                                ClearSmartPlaylistDialog.create((AbsSmartPlaylist) playlist).show(activity.getSupportFragmentManager(), "CLEAR_SMART_PLAYLIST_" + playlist.name);
+                                return true;
                             }
-                            return PlaylistMenuHelper.handleMenuClick(
-                                    activity, dataSet.get(getAdapterPosition()), item);
                         }
+                        return PlaylistMenuHelper.handleMenuClick(
+                                activity, dataSet.get(getAdapterPosition()), item);
                     });
                     popupMenu.show();
                 });
