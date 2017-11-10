@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.util.TintHelper;
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.contract.ArtistDetailContract;
@@ -38,7 +39,6 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.glide.ArtistGlideRequest;
