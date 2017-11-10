@@ -23,6 +23,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemA
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.loaders.PlaylistLoader;
 import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
 import com.retro.musicplayer.backend.model.Playlist;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.Injection;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.PlaylistMenuHelper;
