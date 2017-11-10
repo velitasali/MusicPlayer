@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -117,6 +116,16 @@ public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAda
         return true;
     }
 
+    @Override
+    public void onItemDragStarted(int position) {
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends SongAdapter.ViewHolder implements DraggableItemViewHolder {
         @DraggableItemStateFlags
         private int mDragStateFlags;
@@ -147,14 +156,14 @@ public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAda
         }
 
         @Override
-        public void setDragStateFlags(@DraggableItemStateFlags int flags) {
-            mDragStateFlags = flags;
-        }
-
-        @Override
         @DraggableItemStateFlags
         public int getDragStateFlags() {
             return mDragStateFlags;
+        }
+
+        @Override
+        public void setDragStateFlags(@DraggableItemStateFlags int flags) {
+            mDragStateFlags = flags;
         }
     }
 }
