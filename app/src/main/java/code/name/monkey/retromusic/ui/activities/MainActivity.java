@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
 import com.retro.musicplayer.backend.loaders.ArtistSongLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
@@ -55,7 +56,6 @@ import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivi
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
-import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
@@ -67,7 +67,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static code.name.monkey.retromusic.Constants.USER_PROFILE;
+import static com.retro.musicplayer.backend.RetroConstants.USER_PROFILE;
+
 
 public class MainActivity extends AbsSlidingMusicPanelActivity {
     public static final int APP_INTRO_REQUEST = 2323;
@@ -77,10 +78,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
     private static final int HOME = 0;
     private static final int LIBRARY = 1;
-    private static final int FOLDERS = 2;
-    private static final int SUPPORT_DIALOG = 3;
-    private static final int SETTIINGS = 4;
-    private static final int ABOUT = 5;
+    private static final int SUPPORT_DIALOG = 2;
+    private static final int SETTIINGS = 3;
+    private static final int ABOUT = 4;
     @BindView(R.id.user_image)
     CircleImageView mUserImage;
     @Nullable
@@ -99,6 +99,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     TextView mWelcomeMessage;
     @BindView(R.id.navigation_item)
     RecyclerView mNavigationItems;
+    FirebaseAnalytics mFirebaseAnalytics;
     private boolean mBlockRequestPermissions;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -107,12 +108,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             if (action != null) {
                 switch (action) {
                     case Intent.ACTION_SCREEN_OFF:
+                        collapsePanel();
                         if (PreferenceUtil.getInstance(context).getLockScreen() && MusicPlayerRemote.isPlaying()) {
                             context.startActivity(new Intent(context, LockScreenActivity.class));
                         }
-                        break;
-                    case Intent.ACTION_SCREEN_ON:
-                        postRecreate();
                         break;
                 }
             }
@@ -123,6 +122,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         ButterKnife.bind(this);
         setBottomBarVisibility(View.VISIBLE);
 
@@ -157,7 +157,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         super.onResume();
         IntentFilter screenOnOff = new IntentFilter();
         screenOnOff.addAction(Intent.ACTION_SCREEN_OFF);
-        screenOnOff.addAction(Intent.ACTION_SCREEN_ON);
         registerReceiver(mBroadcastReceiver, screenOnOff);
     }
 
@@ -177,9 +176,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     private void setMusicChooser(int key) {
         PreferenceUtil.getInstance(this).setLastMusicChooser(key);
         switch (key) {
-            case FOLDERS:
-                setCurrentFragment(FoldersFragment.newInstance(this));
-                break;
             case HOME:
                 setCurrentFragment(HomeFragment.newInstance());
                 break;
@@ -256,8 +252,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                             case R.id.action_artist:
                                 mTabSelectedItem.selectedFragment(ArtistsFragment.newInstance());
                                 break;
-                            case R.id.action_playlist:
-                                mTabSelectedItem.selectedFragment(PlaylistsFragment.newInstance());
+                            case R.id.action_folders:
+                                mTabSelectedItem.selectedFragment(FoldersFragment.newInstance(MainActivity.this));
                                 break;
                         }
                     }
@@ -421,7 +417,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         NavigationItemsAdapter() {
             mList.add(new Pair<>(R.drawable.ic_home_white_24dp, R.string.home));
             mList.add(new Pair<>(R.drawable.ic_library_add_white_24dp, R.string.library));
-            mList.add(new Pair<>(R.drawable.ic_folder_white_24dp, R.string.folders));
             mList.add(new Pair<>(R.drawable.ic_favorite_white_24dp, R.string.support_development));
             mList.add(new Pair<>(R.drawable.ic_settings_white_24dp, R.string.action_settings));
             mList.add(new Pair<>(R.drawable.ic_help_white_24dp, R.string.action_about));
@@ -441,9 +436,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             viewHolder.itemView.setOnClickListener(view -> {
                 mDrawerLayout.closeDrawers();
                 switch (viewHolder.getAdapterPosition()) {
-                    case FOLDERS:
-                        new Handler().postDelayed(() -> setMusicChooser(FOLDERS), 200);
-                        break;
                     case HOME:
                         new Handler().postDelayed(() -> setMusicChooser(HOME), 200);
                         break;
