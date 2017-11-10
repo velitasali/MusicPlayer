@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
@@ -35,9 +37,10 @@ import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.TabLayoutUtil;
 import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import code.name.monkey.retromusic.Constants;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
@@ -51,6 +54,8 @@ import code.name.monkey.retromusic.ui.adapter.SettingsPagerAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import de.psdev.licensesdialog.LicensesDialog;
+
+import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
 
 /**
@@ -200,10 +205,26 @@ public class SettingsActivity extends AbsBaseActivity
                     .setIncludeOwnLicense(true).build().showAppCompat();
         }
 
+        public void setLangRecreate(String langval) {
+            Locale locale = new Locale(langval);
+            Locale.setDefault(locale);
+            Configuration configuration = new Configuration();
+            configuration.setLocale(locale);
+
+            getActivity().getBaseContext().getResources().updateConfiguration(configuration,
+                    getActivity().getBaseContext().getResources().getDisplayMetrics());
+
+            PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .edit()
+                    .putString("LANG", langval)
+                    .apply();
+            getActivity().recreate();
+        }
+
         private void invalidateSettings() {
             Preference findPreference = findPreference("changelog");
             findPreference.setOnPreferenceClickListener(preference -> {
-                openUrl(Constants.TELEGRAM_CHANGE_LOG);
+                openUrl(TELEGRAM_CHANGE_LOG);
                 return true;
             });
             findPreference = findPreference("day_dream");
@@ -247,6 +268,20 @@ public class SettingsActivity extends AbsBaseActivity
             toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
                 getActivity().recreate();
                 getActivity().setResult(RESULT_OK);
+                return true;
+            });
+            TwoStatePreference toggleLanguage = (TwoStatePreference) findPreference("language_en");
+            toggleLanguage.setOnPreferenceChangeListener((preference, o) -> {
+
+                String languageToLoad;
+                if ((Boolean) o) {
+                    languageToLoad = "en";
+                    Toast.makeText(getContext(), "English is set", Toast.LENGTH_SHORT).show();
+                } else {
+                    languageToLoad = Locale.getDefault().getDisplayLanguage();
+                    Toast.makeText(getContext(), "Local language is set", Toast.LENGTH_SHORT).show();
+                }
+                setLangRecreate(languageToLoad);
                 return true;
             });
 
@@ -325,7 +360,7 @@ public class SettingsActivity extends AbsBaseActivity
                             .canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                 }
             });
-            getListView().setBackgroundColor(ATHUtil.resolveColor(getActivity(), android.R.attr.colorPrimary));
+            getListView().setBackgroundColor(ATHUtil.resolveColor(getActivity(), R.attr.colorPrimary, R.color.md_white_1000));
             invalidateSettings();
             PreferenceUtil.getInstance(getActivity()).registerOnSharedPreferenceChangedListener(this);
         }
