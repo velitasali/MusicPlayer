@@ -72,6 +72,7 @@ public class CustomArtistImageUtil {
                         Toast.makeText(RetroApplication.getInstance(), e.toString(), Toast.LENGTH_LONG).show();
                     }
 
+                    @SuppressLint("StaticFieldLeak")
                     @Override
                     public void onResourceReady(final Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                         new AsyncTask<Void, Void, Void>() {
@@ -107,6 +108,7 @@ public class CustomArtistImageUtil {
                 });
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void resetCustomArtistImage(final Artist artist) {
         new AsyncTask<Void, Void, Void>() {
             @SuppressLint("ApplySharedPref")
