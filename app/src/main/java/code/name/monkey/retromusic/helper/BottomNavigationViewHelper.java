@@ -23,7 +23,7 @@ public class BottomNavigationViewHelper {
         setItemIconColors(view, color, ThemeStore.accentColor(context));
         setItemTextColors(view, color, ThemeStore.accentColor(context));
 
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
+        /*BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
 
         try {
             Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
@@ -34,7 +34,7 @@ public class BottomNavigationViewHelper {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
 
 
-                 /*TextView smallText = (TextView) item.findViewById(R.id.smallLabel);
+                 *//*TextView smallText = (TextView) item.findViewById(R.id.smallLabel);
                 smallText.setVisibility(View.GONE);
                 TextView largeLabel = (TextView) item.findViewById(R.id.largeLabel);
                 largeLabel.setVisibility(View.GONE);
@@ -42,7 +42,7 @@ public class BottomNavigationViewHelper {
                 AppCompatImageView icon = (AppCompatImageView) item.getChildAt(0);
 
                 FrameLayout.LayoutParams params = (BottomNavigationView.LayoutParams) icon.getLayoutParams();
-                params.gravity = Gravity.CENTER;*/
+                params.gravity = Gravity.CENTER;*//*
 
                 //noinspection RestrictedApi
                 item.setShiftingMode(false);
@@ -52,7 +52,7 @@ public class BottomNavigationViewHelper {
             }
         } catch (NoSuchFieldException | IllegalAccessException ignored) {
             ignored.printStackTrace();
-        }
+        }*/
     }
 
     private static void setItemIconColors(@NonNull BottomNavigationView view, @ColorInt int normalColor, @ColorInt int selectedColor) {
