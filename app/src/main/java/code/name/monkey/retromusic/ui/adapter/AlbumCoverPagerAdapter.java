@@ -3,7 +3,6 @@ package code.name.monkey.retromusic.ui.adapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -24,7 +23,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.misc.CustomFragmentStatePagerAdapter;
-
 import code.name.monkey.retromusic.ui.activities.LyricsActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
@@ -108,12 +106,13 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
                                  Bundle savedInstanceState) {
             int layout;
             switch (PreferenceUtil.getInstance(getContext()).getNowPlayingScreen()) {
+                case PLAIN:
                 case FLAT:
                     layout = R.layout.fragment_album_flat_cover;
                     break;
-                /*case FULL:
+                case FULL:
                     layout = R.layout.fragment_album_full_cover;
-                    break;*/
+                    break;
                 default:
                 case NORMAL:
                     layout = R.layout.fragment_album_cover;
@@ -137,9 +136,7 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
 
         @OnClick(R.id.player_image)
         void showLyrics() {
-            ActivityOptionsCompat optionsCompat =
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), albumCover, getString(R.string.transition_album_art));
-            startActivity(new Intent(getContext(), LyricsActivity.class), optionsCompat.toBundle());
+            startActivity(new Intent(getContext(), LyricsActivity.class));
         }
 
         @Override
