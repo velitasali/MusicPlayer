@@ -15,7 +15,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 
-
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
