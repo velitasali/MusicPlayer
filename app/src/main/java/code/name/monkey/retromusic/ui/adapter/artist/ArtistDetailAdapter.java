@@ -1,6 +1,7 @@
 package code.name.monkey.retromusic.ui.adapter.artist;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -77,7 +78,7 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             case ALBUMS:
                 ArtistDetailViewHolder holder = (ArtistDetailViewHolder) viewHolder;
                 if (holder.recyclerView != null) {
-                    holder.recyclerView.setLayoutManager(new LinearLayoutManager(mActivity, LinearLayoutManager.HORIZONTAL, false));
+                    holder.recyclerView.setLayoutManager(new GridLayoutManager(mActivity, 1, GridLayoutManager.HORIZONTAL, false));
                     try {
                         if (mList.get(i) instanceof ArrayList<?>) {
                             if (((ArrayList<?>) mList.get(i)).get(0) instanceof Album) {
@@ -87,6 +88,7 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
+                    holder.recyclerView.setNestedScrollingEnabled(false);
                 }
                 break;
             case SONGS:
@@ -102,6 +104,7 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     } catch (NullPointerException e) {
                         e.printStackTrace();
                     }
+                    songsHolder.recyclerView.setNestedScrollingEnabled(false);
                 }
                 break;
             case HEADER:
