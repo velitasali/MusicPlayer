@@ -30,7 +30,7 @@ public class ArtistSignatureUtil {
 
     @SuppressLint("CommitPrefEdits")
     public void updateArtistSignature(String artistName) {
-        mPreferences.edit().putLong(artistName, System.currentTimeMillis()).commit();
+        mPreferences.edit().putLong(artistName, System.currentTimeMillis()).apply();
     }
 
     public long getArtistSignatureRaw(String artistName) {
