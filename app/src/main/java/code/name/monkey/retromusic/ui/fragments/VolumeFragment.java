@@ -2,12 +2,12 @@ package code.name.monkey.retromusic.ui.fragments;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,14 +24,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
-
-import static android.content.Context.AUDIO_SERVICE;
+import code.name.monkey.retromusic.misc.volume.AudioVolumeObserver;
+import code.name.monkey.retromusic.misc.volume.OnAudioVolumeChangedListener;
 
 /**
  * Created by BlackFootSanji on 5/5/2017.
  */
 
-public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
+public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeListener, OnAudioVolumeChangedListener {
     private static final String TAG = "VolumeFragment";
     @BindView(R.id.volume_seekbar)
     SeekBar volumeSeekbar;
@@ -43,44 +43,75 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
     @BindView(R.id.volume_up)
     ImageView volumeUp;
     private Unbinder unbinder;
-    private SettingsContentObserver mSettingsContentObserver;
-    private AudioManager audioManager;
+    private AudioVolumeObserver mAudioVolumeObserver;
 
     public static VolumeFragment newInstance() {
-        Bundle args = new Bundle();
-        VolumeFragment fragment = new VolumeFragment();
-        fragment.setArguments(args);
-        return fragment;
+        return new VolumeFragment();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_volume, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        volumeSeekbar.setOnSeekBarChangeListener(this);
+
         setColor(ThemeStore.accentColor(getContext()));
-        setupSettingsContentObserver();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAudioVolumeObserver == null) {
+            mAudioVolumeObserver = new AudioVolumeObserver(getActivity());
+        }
+        mAudioVolumeObserver.register(AudioManager.STREAM_MUSIC, this);
+
+        AudioManager audioManager = getAudioManager();
+        if (audioManager != null) {
+            volumeSeekbar.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+            volumeSeekbar.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+        }
+        volumeSeekbar.setOnSeekBarChangeListener(this);
+    }
+
+    @Override
+    public void onAudioVolumeChanged(int currentVolume, int maxVolume) {
+        if (volumeSeekbar == null) {
+            return;
+        }
+        volumeSeekbar.setMax(maxVolume);
+        volumeSeekbar.setProgress(currentVolume);
+        volumeDown.setImageResource(currentVolume == 0 ? R.drawable.ic_volume_off_white_24dp : R.drawable.ic_volume_down_white_24dp);
+    }
+
+    private AudioManager getAudioManager() {
+        return (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        getActivity().getApplicationContext().getContentResolver().unregisterContentObserver(mSettingsContentObserver);
+        if (mAudioVolumeObserver != null) {
+            mAudioVolumeObserver.unregister();
+        }
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = getAudioManager();
+        if (audioManager != null) {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0);
+        }
         volumeDown.setImageResource(i == 0 ? R.drawable.ic_volume_off_white_24dp : R.drawable.ic_volume_down_white_24dp);
-        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, i, 0);
     }
 
     @Override
@@ -95,27 +126,23 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
 
     @OnClick({R.id.volume_down, R.id.volume_up})
     public void onViewClicked(View view) {
-        AudioManager audioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = getAudioManager();
         switch (view.getId()) {
             case R.id.volume_down:
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, 0);
+                if (audioManager != null) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, 0);
+                }
                 break;
             case R.id.volume_up:
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, 0);
+                if (audioManager != null) {
+                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, 0);
+                }
                 break;
         }
     }
 
     public void setColor(int color) {
         this.color = color;
-        //setProgressBarColor(volumeSeekbar, color);
-        //volumeSeekbar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-        //volumeSeekbar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-    }
-
-    private void setupSettingsContentObserver() {
-        mSettingsContentObserver = new SettingsContentObserver(getActivity(), new Handler());
-        getActivity().getApplicationContext().getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, mSettingsContentObserver);
     }
 
     public void tintWhiteColor() {
@@ -124,60 +151,15 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
 
     public void setProgressBarColor(int newColor) {
         ColorStateList colorState = ColorStateList.valueOf(newColor);
-        volumeSeekbar.setProgressTintList(colorState);
-        volumeSeekbar.setThumbTintList(colorState);
-        volumeSeekbar.setSecondaryProgressTintList(ColorStateList.valueOf(ColorUtil.darkenColor(newColor)));
-
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            volumeSeekbar.setProgressTintList(colorState);
+            volumeSeekbar.setThumbTintList(colorState);
+            volumeSeekbar.setSecondaryProgressTintList(ColorStateList.valueOf(ColorUtil.darkenColor(newColor)));
+        } else {
+            volumeSeekbar.getProgressDrawable().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            //volumeSeekbar.getThumb().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+        }
         volumeDown.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
         volumeUp.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
-    }
-
-    private class SettingsContentObserver extends ContentObserver {
-        int previousVolume;
-        Context context;
-
-        SettingsContentObserver(Context c, Handler handler) {
-            super(handler);
-            context = c;
-
-
-            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-
-            audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-            int maxVolume = 0;
-            if (audioManager != null) {
-                maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-                int curVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-                previousVolume = curVolume;
-
-                volumeSeekbar.setMax(maxVolume);
-                volumeSeekbar.setProgress(curVolume);
-            }
-
-        }
-
-        @Override
-        public boolean deliverSelfNotifications() {
-            return super.deliverSelfNotifications();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-
-            AudioManager audio = (AudioManager) context.getSystemService(AUDIO_SERVICE);
-            volumeSeekbar.setMax(audio.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-            int currentVolume = audio.getStreamVolume(AudioManager.STREAM_MUSIC);
-
-            int delta = previousVolume - currentVolume;
-
-            if (delta > 0) {
-                previousVolume = currentVolume;
-            } else if (delta < 0) {
-                previousVolume = currentVolume;
-            }
-            volumeSeekbar.setProgress(previousVolume);
-
-        }
     }
 }
