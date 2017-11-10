@@ -71,12 +71,7 @@ public class ToolbarColorizeHelper {
 
                                 //Important to set the color filter in seperate thread, by adding it to the message queue
                                 //Won't work otherwise.
-                                innerView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter);
-                                    }
-                                });
+                                innerView.post(() -> ((ActionMenuItemView) innerView).getCompoundDrawables()[finalK].setColorFilter(colorFilter));
                             }
                         }
                     }
@@ -120,10 +115,6 @@ public class ToolbarColorizeHelper {
     }
 
     private static void removeOnGlobalLayoutListener(View v, ViewTreeObserver.OnGlobalLayoutListener listener) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            v.getViewTreeObserver().removeGlobalOnLayoutListener(listener);
-        } else {
-            v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
-        }
+        v.getViewTreeObserver().removeOnGlobalLayoutListener(listener);
     }
 }
