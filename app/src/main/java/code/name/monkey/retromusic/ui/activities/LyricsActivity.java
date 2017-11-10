@@ -3,19 +3,22 @@ package code.name.monkey.retromusic.ui.activities;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.retro.musicplayer.backend.KogouLyricsFetcher;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.model.lyrics.Lyrics;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
 import java.io.File;
 
@@ -26,20 +29,23 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
-import code.name.monkey.retromusic.lastfm.rest.KygouClient;
-import code.name.monkey.retromusic.lastfm.rest.model.KuGouSearchLyricResult;
+import code.name.monkey.retromusic.lyrics.LyricsEngine;
+import code.name.monkey.retromusic.lyrics.LyricsWikiEngine;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
-import code.name.monkey.retromusic.util.LyricUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.views.LyricView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by hemanths on 23/08/17.
  */
 
-public class LyricsActivity extends AbsMusicServiceActivity implements MusicProgressViewUpdateHelper.Callback {
+public class LyricsActivity extends AbsMusicServiceActivity
+        implements MusicProgressViewUpdateHelper.Callback, AdapterView.OnItemSelectedListener,
+        KogouLyricsFetcher.KogouLyricsCallback {
+    private static final int KOGOU = 0;
+    private static final int WIKI = 1;
+    private static final int OFFLINE = 2;
     @BindView(R.id.image)
     ImageView mImage;
     @BindView(R.id.title)
@@ -54,9 +60,15 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     Toolbar mToolbar;
     @BindView(R.id.offline_lyrics)
     TextView mOfflineLyrics;
-    private KygouClient kygouClient;
+    @BindView(R.id.lyrics_options)
+    Spinner mLyricsOptions;
+    @BindView(R.id.lyrics_container)
+    View mLyricsContainer;
     private MusicProgressViewUpdateHelper mUpdateHelper;
     private AsyncTask updateLyricsAsyncTask;
+    private AsyncTask updateWikiLyricsAsyncTask;
+    private LyricsEngine mEngine = new LyricsWikiEngine();
+    private KogouLyricsFetcher mKogouLyricsFetcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +84,11 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         setSupportActionBar(mToolbar);
 
-        kygouClient = new KygouClient(this);
+        mKogouLyricsFetcher = new KogouLyricsFetcher(this, this);
         mUpdateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
+
+        mLyricsOptions.setOnItemSelectedListener(this);
+        mLyricsOptions.setSelection(PreferenceUtil.getInstance(this).getLyricsOptions());
     }
 
     @Override
@@ -86,7 +101,6 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     @Override
     public void onPlayingMetaChanged() {
         super.onPlayingMetaChanged();
-        loadLrcFile();
         loadDetails();
     }
 
@@ -105,7 +119,6 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        loadLrcFile();
         loadDetails();
     }
 
@@ -128,12 +141,21 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     protected void onDestroy() {
         super.onDestroy();
         lyricView.setOnPlayerClickListener(null);
+
+        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
+            updateLyricsAsyncTask.cancel(true);
+        }
+        if (updateWikiLyricsAsyncTask != null && !updateWikiLyricsAsyncTask.isCancelled()) {
+            updateWikiLyricsAsyncTask.cancel(true);
+        }
+
     }
 
     private void loadLrcFile() {
         Song song = MusicPlayerRemote.getCurrentSong();
         String title = song.title;
         String artist = song.artistName;
+
         if (lyricView == null) {
             return;
         }
@@ -146,21 +168,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
             lyricViewBig.setDefaultHint("Loading from local");
             showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
         } else {
-            lyricView.setDefaultHint("Loading from network");
-            lyricViewBig.setDefaultHint("Loading from network");
-            long duration = MusicPlayerRemote.getSongDurationMillis();
-            kygouClient.getApiService().searchLyric(title, String.valueOf(duration))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::parseKugouResult,
-                            throwable -> {
-                                lyricView.setDefaultHint(getString(R.string.error_loading_lyrics_from_network));
-                                lyricViewBig.setDefaultHint(getString(R.string.error_loading_lyrics_from_network));
-
-                                lyricView.setVisibility(View.GONE);
-                                lyricViewBig.setVisibility(View.GONE);
-                                loadSongLyrics();
-                            });
+            mKogouLyricsFetcher.loadLyrics(song, String.valueOf(MusicPlayerRemote.getSongDurationMillis()));
 
         }
 
@@ -179,50 +187,86 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         } else {
             lyricView.setLyricFile(file, "UTF-8");
             lyricViewBig.setLyricFile(file, "UTF-8");
-
-            //lyricViewBig.setLineCount(1);
             lyricViewBig.setTextSize(40);
         }
     }
 
-    private void parseKugouResult(KuGouSearchLyricResult kuGouSearchLyricResult) {
-        if (kuGouSearchLyricResult != null && kuGouSearchLyricResult.status == 200 &
-                kuGouSearchLyricResult.candidates != null &&
-                kuGouSearchLyricResult.candidates.size() != 0) {
-            KuGouSearchLyricResult.Candidates candidates = kuGouSearchLyricResult.candidates.get(0);
-            loadLyricsFile(candidates);
-        } else {
-            lyricView.setDefaultHint(getString(R.string.no_lyrics_found));
-            lyricViewBig.setDefaultHint(getString(R.string.no_lyrics_found));
+    private void hideLyrics() {
+        mLyricsContainer.setVisibility(View.GONE);
+    }
 
-            lyricView.setVisibility(View.GONE);
-            lyricViewBig.setVisibility(View.GONE);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        if (item.getItemId() == R.id.action_lyrics) {
+            if (lyricViewBig.getVisibility() == View.INVISIBLE) {
 
-            loadSongLyrics();
+                lyricViewBig.setVisibility(View.VISIBLE);
+                lyricView.setVisibility(View.INVISIBLE);
+            } else {
+
+                lyricViewBig.setVisibility(View.INVISIBLE);
+                lyricView.setVisibility(View.VISIBLE);
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onUpdateProgressViews(int progress, int total) {
+        lyricView.setCurrentTimeMillis(progress);
+        lyricViewBig.setCurrentTimeMillis(progress);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        PreferenceUtil.getInstance(this).setLyricsOptions(i);
+        switch (i) {
+            case KOGOU:
+                mOfflineLyrics.setVisibility(View.GONE);
+                loadLrcFile();
+                break;
+            case WIKI:
+                hideLyrics();
+                loadWikiLyrics();
+                break;
+            case OFFLINE:
+                hideLyrics();
+                loadSongLyrics();
+                break;
         }
     }
 
-    private void loadLyricsFile(KuGouSearchLyricResult.Candidates candidates) {
-        kygouClient.getApiService().getRawLyric(candidates.id, candidates.accesskey)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(kuGouRawLyric -> {
-                    if (kuGouRawLyric == null) {
-                        lyricView.setDefaultHint(getString(R.string.no_lyrics_found));
-                        lyricViewBig.setDefaultHint(getString(R.string.no_lyrics_found));
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
-                        lyricView.setVisibility(View.GONE);
-                        lyricViewBig.setVisibility(View.GONE);
-                        loadSongLyrics();
-                        return;
-                    }
-                    final Song song = MusicPlayerRemote.getCurrentSong();
-                    final String title = song.title;
-                    final String artist = song.artistName;
-                    String rawLyric = LyricUtil.decryptBASE64(kuGouRawLyric.content);
-                    LyricUtil.writeLrcToLoc(title, artist, rawLyric);
-                    new Handler().postDelayed(() -> showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist)), 1);
-                });
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void loadWikiLyrics() {
+        final Song song = MusicPlayerRemote.getCurrentSong();
+        String title = song.title;
+        String artist = song.artistName;
+        if (updateWikiLyricsAsyncTask != null) updateWikiLyricsAsyncTask.cancel(false);
+        updateWikiLyricsAsyncTask = new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return mEngine.getLyrics(artist, title);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                mOfflineLyrics.setVisibility(View.VISIBLE);
+                if (s == null) {
+                    return;
+                }
+                mOfflineLyrics.setText(s);
+            }
+        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -255,27 +299,14 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         }.execute();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        if (item.getItemId() == R.id.action_lyrics) {
-            if (lyricViewBig.getVisibility() == View.INVISIBLE) {
-                lyricViewBig.setVisibility(View.VISIBLE);
-                lyricView.setVisibility(View.INVISIBLE);
-            } else {
-                lyricViewBig.setVisibility(View.INVISIBLE);
-                lyricView.setVisibility(View.VISIBLE);
-            }
-        }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void onNoLyrics() {
+        hideLyrics();
     }
 
     @Override
-    public void onUpdateProgressViews(int progress, int total) {
-        lyricView.setCurrentTimeMillis(progress);
-        lyricViewBig.setCurrentTimeMillis(progress);
+    public void onLyrics(File file) {
+        showLyricsLocal(file);
     }
 }
