@@ -24,8 +24,6 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.menu.SongsMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
-
 import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -206,7 +204,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
                 toggleChecked(getAdapterPosition());
             } else {
                 Pair[] albumPairs = new Pair[]{
-                        Pair.create(image,
+                        Pair.create(imageContainer,
                                 activity.getResources().getString(R.string.transition_album_art)
                         )};
                 NavigationUtil.goToAlbum(activity, dataSet.get(getAdapterPosition()).getId(), albumPairs);
