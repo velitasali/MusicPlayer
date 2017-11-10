@@ -141,6 +141,7 @@ public class PlayingNotificationImpl extends PlayingNotification {
                                 int primary = MaterialValueHelper.getPrimaryTextColor(service, dark);
                                 int secondary = MaterialValueHelper.getSecondaryTextColor(service, dark);
 
+                                Bitmap close = createBitmap(Util.getTintedVectorDrawable(service, R.drawable.ic_close_white_24dp, primary), 1.5f);
                                 Bitmap prev = createBitmap(Util.getTintedVectorDrawable(service, R.drawable.ic_skip_previous_white_24dp, primary), 1.5f);
                                 Bitmap next = createBitmap(Util.getTintedVectorDrawable(service, R.drawable.ic_skip_next_white_24dp, primary), 1.5f);
                                 Bitmap playPause = createBitmap(Util.getTintedVectorDrawable(service, isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp, primary), 1.5f);
@@ -154,9 +155,12 @@ public class PlayingNotificationImpl extends PlayingNotification {
                                 notificationLayoutBig.setTextColor(R.id.title, primary);
                                 notificationLayoutBig.setTextColor(R.id.text, secondary);
                                 notificationLayoutBig.setTextColor(R.id.text2, secondary);
+
+                                notificationLayoutBig.setImageViewBitmap(R.id.action_quit, close);
                                 notificationLayoutBig.setImageViewBitmap(R.id.action_prev, prev);
                                 notificationLayoutBig.setImageViewBitmap(R.id.action_next, next);
                                 notificationLayoutBig.setImageViewBitmap(R.id.action_play_pause, playPause);
+
                             }
                         });
             }
@@ -182,6 +186,10 @@ public class PlayingNotificationImpl extends PlayingNotification {
         pendingIntent = buildPendingIntent(service,  ACTION_SKIP, serviceName);
         notificationLayout.setOnClickPendingIntent(R.id.action_next, pendingIntent);
         notificationLayoutBig.setOnClickPendingIntent(R.id.action_next, pendingIntent);
+
+        // Close
+        pendingIntent = buildPendingIntent(service,  ACTION_QUIT, serviceName);
+        notificationLayoutBig.setOnClickPendingIntent(R.id.action_quit, pendingIntent);
     }
 
     private PendingIntent buildPendingIntent(Context context, final String action, final ComponentName serviceName) {
