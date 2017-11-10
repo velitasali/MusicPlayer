@@ -10,7 +10,8 @@ public enum NowPlayingScreen {
     NORMAL(R.string.normal, R.drawable.np_normal, 0),
     FLAT(R.string.flat, R.drawable.np_flat, 1),
     FULL(R.string.full, R.drawable.np_full, 2),
-    PLAIN(R.string.plain, R.drawable.np_flat, 3);
+    PLAIN(R.string.plain, R.drawable.np_plain, 3),
+    SIMPLE(R.string.simple, R.drawable.np_flat, 4);
 
     @StringRes
     public final int titleRes;
