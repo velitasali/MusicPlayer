@@ -7,8 +7,9 @@
         <item>code_name_monkey_donate_4</item>
         <item>code_name_monkey_donate_5</item>
         <item>code_name_monkey_donate_6</item>
+        <item>code_name_monkey_donate_7</item>
     </string-array>
-    <string name="dev_info" translatable="false">hi i\'m hemanth s, love to be android developer, i\'m from hosur, tamil nadu, india.</string>
+    <string name="dev_info" translatable="false">Hi i\'m Hemanth s, love to be Android developer, i\'m from Hosur, Tamil Nadu, India.</string>
 
     <string name="luis_gomez" translatable="false">Luis Gomez</string>
     <string name="luis_gomez_summary" translatable="false">For making Play Store Illustrations and App icon</string>
@@ -51,4 +52,6 @@
     <string name="hungarian" translatable="false">Hungarian</string>
     <string name="paha_akos" translatable="false">Paha Ákos</string>
     <string name="spanish" translatable="false">Spanish(US)</string>
+    <string name="sans_bold" translatable="false">fonts/circular_std_black.otf</string>
+    <string name="sans_regular" translatable="false">fonts/circular_std_book.otf</string>
 </resources>

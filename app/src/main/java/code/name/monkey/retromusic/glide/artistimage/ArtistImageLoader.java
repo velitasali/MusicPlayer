@@ -9,7 +9,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
 import com.bumptech.glide.load.model.ModelLoaderFactory;
 import com.bumptech.glide.load.model.stream.StreamModelLoader;
-import code.name.monkey.retromusic.lastfm.rest.LastFMRestClient;
+import com.retro.musicplayer.backend.rest.LastFMRestClient;
 
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;

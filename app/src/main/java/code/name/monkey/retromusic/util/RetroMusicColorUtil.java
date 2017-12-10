@@ -10,8 +10,10 @@ import android.support.v7.graphics.Palette;
 
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -57,6 +59,18 @@ public class RetroMusicColorUtil {
             }
         }
         return fallback;
+    }
+
+    public static int getDominantColor(Bitmap bitmap, int defaultFooterColor) {
+        List<Palette.Swatch> swatchesTemp = Palette.from(bitmap).generate().getSwatches();
+        List<Palette.Swatch> swatches = new ArrayList<Palette.Swatch>(swatchesTemp);
+        Collections.sort(swatches, new Comparator<Palette.Swatch>() {
+            @Override
+            public int compare(Palette.Swatch swatch1, Palette.Swatch swatch2) {
+                return swatch2.getPopulation() - swatch1.getPopulation();
+            }
+        });
+        return swatches.size() > 0 ? swatches.get(0).getRgb() : defaultFooterColor;
     }
 
     @ColorInt

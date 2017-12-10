@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
 
@@ -44,6 +43,8 @@ public class PlaylistSongAdapter extends AbsOffsetSongAdapter {
                 holder.title.setText(MusicUtil.getPlaylistInfoString(activity, dataSet));
                 holder.title.setTextColor(textColor);
             }
+
+
             if (holder.text != null) {
                 holder.text.setVisibility(View.GONE);
             }
@@ -73,6 +74,7 @@ public class PlaylistSongAdapter extends AbsOffsetSongAdapter {
     public class ViewHolder extends AbsOffsetSongAdapter.ViewHolder {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
         }
 
         @Override
@@ -84,8 +86,7 @@ public class PlaylistSongAdapter extends AbsOffsetSongAdapter {
         protected boolean onSongMenuItemClick(MenuItem item) {
             if (item.getItemId() == R.id.action_go_to_album) {
                 Pair[] albumPairs = new Pair[]{
-                        Pair.create(image, activity.getString(R.string.transition_album_art))
-                };
+                        Pair.create(image, activity.getString(R.string.transition_album_art))};
                 NavigationUtil.goToAlbum(activity, dataSet.get(getAdapterPosition() - 1).albumId, albumPairs);
                 return true;
             }

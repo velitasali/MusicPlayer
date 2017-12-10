@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.ui.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class PlayingQueueActivity extends AbsMusicServiceActivity {
     TextView mPlayerQueueSubHeader;
     @BindString(R.string.queue)
     String queue;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class PlayingQueueActivity extends AbsMusicServiceActivity {
     private void setupToolbar() {
         mPlayerQueueSubHeader.setText(getUpNextAndQueueTime());
         mPlayerQueueSubHeader.setTextColor(ThemeStore.accentColor(this));
+        mAppBarLayout.setBackgroundColor(ThemeStore.primaryColor(this));
         mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         mToolbar.setNavigationIcon(mClose);
         setSupportActionBar(mToolbar);

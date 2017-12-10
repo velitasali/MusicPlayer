@@ -1,7 +1,5 @@
 package code.name.monkey.retromusic.ui.adapter.home;
 
-import android.content.res.ColorStateList;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,18 +12,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
 import com.retro.musicplayer.backend.model.Playlist;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -35,9 +33,11 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<Playlist> dataSet = new ArrayList<>();
     private AppCompatActivity activity;
+    private CompositeDisposable mDisposable;
 
     public HomeAdapter(@NonNull AppCompatActivity activity) {
         this.activity = activity;
+        mDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -56,37 +56,35 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         int aColor = ThemeStore.accentColor(activity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            viewholder.seeAll.setBackgroundTintList(ColorStateList.valueOf(aColor));
-        } else {
-            viewholder.seeAll.setBackgroundColor(aColor);
-        }
-
-        int color = MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(aColor));
-        viewholder.seeAll.setTextColor(color);
+        viewholder.seeAll.setTextColor(aColor);
+        viewholder.seeAll.setVisibility(View.VISIBLE);
         viewholder.seeAll.setOnClickListener(v -> NavigationUtil.goToPlaylistNew(activity, playlist));
+
         TooltipCompat.setTooltipText(viewholder.seeAll, activity.getString(R.string.tool_tip_see_all));
 
         if (viewholder.recyclerView != null) {
+            HorizontalItemAdapter adapter = new HorizontalItemAdapter(activity);
+
             viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
             viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
             viewholder.recyclerView.setNestedScrollingEnabled(false);
-            viewholder.recyclerView.setHasFixedSize(true);
-            HorizontalItemAdapter adapter = new HorizontalItemAdapter(activity);
             viewholder.recyclerView.setAdapter(adapter);
-            PlaylistSongsLoader.getPlaylistSongList(activity, playlist)
+
+            mDisposable.add(PlaylistSongsLoader.getPlaylistSongList(activity, playlist)
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(songs -> {
+                        //Collections.reverse(songs);
                         if (songs.size() > 10) {
                             adapter.swapData(songs.subList(0, 10));
                         } else {
                             adapter.swapData(songs);
                         }
 
-                    });
+                    }));
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -94,8 +92,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void swapData(@NonNull ArrayList<Playlist> data) {
-        dataSet.clear();
-        dataSet.addAll(data);
+        dataSet = data;
         notifyDataSetChanged();
     }
 

@@ -1,19 +1,20 @@
 package code.name.monkey.retromusic.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -23,6 +24,8 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemA
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
+import com.kabouzeid.appthemehelper.util.TintHelper;
 import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.loaders.PlaylistLoader;
 import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
@@ -42,13 +45,15 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.PlaylistMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
+import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.adapter.song.OrderablePlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.PlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -67,9 +72,15 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     @BindView(R.id.status_bar)
     View statusBar;
     @BindView(R.id.action_shuffle)
-    View shuffleButton;
+    FloatingActionButton shuffleButton;
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.root)
+    ViewGroup mViewGroup;
     private Playlist playlist;
     private MaterialCab cab;
     private SongAdapter adapter;
@@ -87,7 +98,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        hide();
+
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
@@ -99,8 +110,9 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
         playlist = getIntent().getExtras().getParcelable(EXTRA_PLAYLIST);
 
         mSongsPresenter = new PlaylistSongsPresenter(Injection.provideRepository(this), this, playlist);
-        setUpRecyclerView();
+
         setUpToolBar();
+        setUpRecyclerView();
     }
 
     public void showHeartAnimation() {
@@ -127,29 +139,6 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
                 .start();
     }
 
-    private void hide() {
-        shuffleButton.setScaleX(0);
-        shuffleButton.setScaleY(0);
-        shuffleButton.setEnabled(false);
-    }
-
-    private void showFab() {
-        shuffleButton.animate()
-                .setDuration(500)
-                .setInterpolator(new OvershootInterpolator())
-                .scaleX(1)
-                .scaleY(1)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-
-                    }
-                })
-                .start();
-        shuffleButton.setVisibility(View.VISIBLE);
-        shuffleButton.setEnabled(true);
-    }
 
     @Override
     protected View createContentView() {
@@ -181,7 +170,6 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
 
             recyclerViewDragDropManager.attachRecyclerView(recyclerView);
         }
-
         adapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onChanged() {
@@ -200,9 +188,29 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     private void setUpToolBar() {
         toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(playlist.name);
+
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+                int color;
+                switch (state) {
+                    default:
+                    case COLLAPSED:
+                    case EXPANDED:
+                    case IDLE:
+                        color = ATHUtil.resolveColor(PlaylistDetailActivity.this, android.R.attr.textColorPrimary);
+                        break;
+                }
+                mToolbarLayout.setExpandedTitleColor(color);
+                ToolbarColorizeHelper.colorizeToolbar(toolbar, color, PlaylistDetailActivity.this);
+            }
+        });
+        if (PreferenceUtil.getInstance(this).getAdaptiveColor())
+            TintHelper.setTintAuto(shuffleButton, ThemeStore.accentColor(this), true);
     }
 
     @Override
@@ -310,6 +318,12 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     }
 
     @Override
+    public void onPlayingMetaChanged() {
+        super.onPlayingMetaChanged();
+        mSongsPresenter.subscribe();
+    }
+
+    @Override
     public void loading() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
@@ -323,7 +337,6 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     @Override
     public void completed() {
         mProgressBar.setVisibility(View.GONE);
-        new Handler().postDelayed(this::showFab, 700);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -19,6 +20,9 @@ import android.widget.TextView;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
+import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
+import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,13 +31,11 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.PlayPauseButtonOnClickHandler;
-import code.name.monkey.retromusic.misc.SimpleOnSeekbarChangeListener;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.PlayPauseDrawable;
 
 /**
  * Created by hemanths on 20/09/17.
@@ -57,8 +59,11 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @BindView(R.id.player_play_pause_button)
     ImageButton mPlayerPlayPauseFab;
     Unbinder unbinder;
+    @BindView(R.id.title)
+    TextView mTitle;
+    @BindView(R.id.text)
+    TextView mText;
     private VolumeFragment mVolumeFragment;
-
     private int lastPlaybackControlsColor;
     private int lastDisabledPlaybackControlsColor;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
@@ -72,7 +77,8 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_full_player_controls, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -92,6 +98,7 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
         mVolumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
         mVolumeFragment.tintWhiteColor();
+
     }
 
     @Override
@@ -165,6 +172,19 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
         updatePlayPauseDrawableState(false);
         updateRepeatState();
         updateShuffleState();
+        updateSong();
+    }
+
+    private void updateSong() {
+        Song song = MusicPlayerRemote.getCurrentSong();
+        mTitle.setText(song.title);
+        mText.setText(song.artistName);
+    }
+
+    @Override
+    public void onPlayingMetaChanged() {
+        super.onPlayingMetaChanged();
+        updateSong();
     }
 
     @Override

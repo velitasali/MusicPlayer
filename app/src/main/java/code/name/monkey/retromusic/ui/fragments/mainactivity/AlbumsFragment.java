@@ -19,7 +19,7 @@ import com.retro.musicplayer.backend.mvp.presenter.AlbumPresenter;
 import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.helper.SortOrder.AlbumSortOrder;
+import com.retro.musicplayer.backend.helper.SortOrder.AlbumSortOrder;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;

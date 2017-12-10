@@ -13,28 +13,22 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <com.retro.musicplayer.backend.views.HeightFitSquareLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="match_parent">
 
-            <code.name.monkey.retromusic.views.WidthFitSquareLayout
+            <fragment
+                android:id="@+id/player_album_cover_fragment"
+                android:name="code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_player_album_cover" />
+        </com.retro.musicplayer.backend.views.HeightFitSquareLayout>
 
-                <fragment
-                    android:id="@+id/player_album_cover_fragment"
-                    android:name="code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:layout="@layout/fragment_player_album_cover" />
-            </code.name.monkey.retromusic.views.WidthFitSquareLayout>
-        </FrameLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical">
 
             <LinearLayout
@@ -61,12 +55,14 @@
 
                     <TextView
                         android:id="@+id/title"
+                        fontPath="@string/sans_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:textColor="?android:attr/textColorPrimary"
-                        android:textSize="28sp"
+                        android:textSize="24sp"
+                        tools:ignore="MissingPrefix"
                         tools:text="Title" />
 
                     <TextView
@@ -75,7 +71,6 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
                         android:textColor="?android:attr/textColorSecondary"
                         tools:text="Text" />
                 </LinearLayout>

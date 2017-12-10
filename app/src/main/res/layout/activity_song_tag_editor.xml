@@ -1,5 +1,4 @@
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,9 +16,10 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             app:contentScrim="@android:color/transparent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
 
-            <code.name.monkey.retromusic.views.WidthFitSquareLayout
+            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
                 android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -33,17 +33,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/default_album_art"/>
+                    app:srcCompat="@drawable/default_album_art" />
 
 
-            </code.name.monkey.retromusic.views.WidthFitSquareLayout>
+            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_close_white_24dp"/>
+                app:navigationIcon="@drawable/ic_close_white_24dp" />
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -75,7 +75,7 @@
                     android:inputType="text|textCapWords"
                     android:maxLines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -93,7 +93,7 @@
                     android:inputType="text|textCapWords"
                     android:maxLines="1"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -111,7 +111,7 @@
                     android:hint="@string/artist"
                     android:inputType="text|textCapWords"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -128,7 +128,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/genre"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -147,7 +147,7 @@
                     android:hint="@string/year"
                     android:inputType="text|number"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -166,7 +166,7 @@
                     android:hint="@string/track_hint"
                     android:inputType="text|number"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -183,7 +183,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/lyrics"
                     android:inputType="textMultiLine"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -194,7 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:text="@string/update"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -205,12 +205,12 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         app:backgroundTint="?colorAccent"
-        app:srcCompat="@drawable/ic_save_white_24dp"/>
+        app:srcCompat="@drawable/ic_save_white_24dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 </android.support.design.widget.CoordinatorLayout>
 

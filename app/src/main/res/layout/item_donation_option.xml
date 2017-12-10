@@ -28,7 +28,7 @@
                 android:textStyle="bold"
                 tools:ignore="MissingPrefix" />
 
-            <code.name.monkey.retromusic.views.WidthFitSquareLayout
+            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
                 android:layout_width="40dp"
                 android:layout_height="40dp">
 
@@ -39,7 +39,7 @@
                     android:scaleType="centerInside"
                     app:srcCompat="@drawable/ic_github_circle_white_24dp" />
 
-            </code.name.monkey.retromusic.views.WidthFitSquareLayout>
+            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
             <TextView
                 android:id="@+id/title"

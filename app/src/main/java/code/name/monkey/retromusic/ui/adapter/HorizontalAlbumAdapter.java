@@ -18,7 +18,6 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.HorizontalAdapterHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 
 /**
@@ -41,8 +40,6 @@ public class HorizontalAlbumAdapter extends AlbumAdapter {
     @Override
     protected void setColors(int color, ViewHolder holder) {
         if (holder.itemView != null) {
-            //CardView card = (CardView) holder.itemView;
-            //card.setCardBackgroundColor(color);
             if (holder.title != null) {
                 holder.title.setTextColor(MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(color)));
             }

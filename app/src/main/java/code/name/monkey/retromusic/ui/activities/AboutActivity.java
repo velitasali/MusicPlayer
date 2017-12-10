@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageButton;
@@ -34,6 +35,7 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.retro.musicplayer.backend.RetroConstants.ALEKSANDAR_TESIC_GOOGLE_PLUS;
@@ -107,8 +109,6 @@ public class AboutActivity extends AbsBaseActivity {
     @BindViews({R.id.iconProfile,
             R.id.karim_abou_zeid_profile,
             R.id.luis_gomez_profile,
-            R.id.aleksandar_tesic_profile,
-            R.id.gabriel_zegarra_profile,
             R.id.material_design_city})
     List<CircleImageView> profiles;
     @BindView(R.id.made_text)
@@ -131,12 +131,15 @@ public class AboutActivity extends AbsBaseActivity {
     TextView mContributors;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @BindView(R.id.root)
+    ViewGroup mViewGroup;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
         ButterKnife.bind(this);
 
         setStatusbarColorAuto();
@@ -166,7 +169,6 @@ public class AboutActivity extends AbsBaseActivity {
     }
 
     private void setUpToolbar() {
-
         mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setTitle(R.string.action_about);
         setSupportActionBar(mToolbar);
@@ -178,9 +180,9 @@ public class AboutActivity extends AbsBaseActivity {
         Glide.with(this).load(R.drawable.hemanth_s).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(0));
         Glide.with(this).load(R.drawable.karim_abou_zeid).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(1));
         Glide.with(this).load(R.drawable.luis_gmzz).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(2));
-        Glide.with(this).load(R.drawable.aleksandar_tesic).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(3));
-        Glide.with(this).load(R.drawable.gabriel_zegarra).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(4));
-        Glide.with(this).load(R.drawable.img_techjuice).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(5));
+        //Glide.with(this).load(R.drawable.aleksandar_tesic).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(3));
+        // Glide.with(this).load(R.drawable.gabriel_zegarra).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(4));
+        Glide.with(this).load(R.drawable.img_techjuice).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(3));
     }
 
     @SuppressLint("SetTextI18n")
@@ -189,7 +191,7 @@ public class AboutActivity extends AbsBaseActivity {
         int sun = 0x1F304;
         int heart = 0x1F60D;
 
-        madeText.setText(String.format("Made with love %s in india", getEmojiByUnicode(heart)));
+        madeText.setText(String.format("Made with love %s in India", getEmojiByUnicode(heart)));
     }
 
     private void openUrl(String url) {
@@ -204,7 +206,7 @@ public class AboutActivity extends AbsBaseActivity {
         return new String(Character.toChars(unicode));
     }
 
-    @OnClick({R.id.gabriel_zegarra, R.id.flaticon_link, R.id.app_github, R.id.aleksandar_tesic,
+    @OnClick({R.id.flaticon_link, R.id.app_github,
             R.id.google_plus_circle_btn, R.id.telegram_btn,
             R.id.karimAbourGooglePlus, R.id.karimAbourGithub, R.id.luisGomezGooglePlus,
             R.id.luisGomezTwitter, R.id.app_telegram_channel, R.id.app_google_plus,
@@ -274,19 +276,6 @@ public class AboutActivity extends AbsBaseActivity {
         if (shareIntent.resolveActivity(getPackageManager()) != null) {
             startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.action_share)));
         }
-        /*Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.app_share), getPackageName()));
-        sendIntent.setType("text/plain");
-
-
-        startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.action_share)));
-*/
-        /*Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, String.format(getString(R.string.app_share), getPackageName()));
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);*/
     }
 
     public static class Contributors {

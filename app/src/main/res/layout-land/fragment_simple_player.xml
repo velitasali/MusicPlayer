@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
@@ -11,6 +11,9 @@
         android:id="@+id/gradient_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
+    <include layout="@layout/shadow_statusbar_toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +33,7 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-            <code.name.monkey.retromusic.views.HeightFitSquareLayout
+            <com.retro.musicplayer.backend.views.HeightFitSquareLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -40,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:layout="@layout/fragment_player_album_cover" />
-            </code.name.monkey.retromusic.views.HeightFitSquareLayout>
+            </com.retro.musicplayer.backend.views.HeightFitSquareLayout>
 
 
             <FrameLayout
@@ -55,9 +58,9 @@
                     <android.support.v7.widget.Toolbar
                         android:id="@+id/player_toolbar"
                         style="@style/Toolbar48"
-                        app:navigationIcon="@drawable/ic_close_white_24dp"
                         android:layout_height="48dp"
-                        android:navigationIcon="@drawable/ic_close_white_24dp" />
+                        android:navigationIcon="@drawable/ic_close_white_24dp"
+                        app:navigationIcon="@drawable/ic_close_white_24dp" />
                 </FrameLayout>
 
                 <fragment

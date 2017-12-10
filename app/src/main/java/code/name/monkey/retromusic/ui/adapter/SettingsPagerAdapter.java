@@ -1,5 +1,7 @@
 package code.name.monkey.retromusic.ui.adapter;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -7,7 +9,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.SettingsActivity;
+import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 
 /**
@@ -15,13 +19,16 @@ import code.name.monkey.retromusic.ui.activities.SettingsActivity;
  */
 
 public class SettingsPagerAdapter extends FragmentStatePagerAdapter {
-    private String[] tabs = new String[]{"Normal", "Experimental"};
+    private Typeface mTypeface;
+    private String[] tabs;// = new String[]{.getString(R.string.normal), "Experimental"};
     private List<Fragment> mFragments = new ArrayList<>();
 
-    public SettingsPagerAdapter(FragmentManager fm) {
+    public SettingsPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
+        tabs = new String[]{context.getString(R.string.normal), context.getString(R.string.experimental)};
         mFragments.add(new SettingsActivity.SettingsFragment());
         mFragments.add(new SettingsActivity.AdvancedSettingsFragment());
+        mTypeface = Typeface.createFromAsset(context.getAssets(), context.getResources().getString(R.string.sans_regular));
     }
 
     @Override
@@ -31,7 +38,7 @@ public class SettingsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tabs[position];
+        return CalligraphyUtils.applyTypefaceSpan(tabs[position], mTypeface);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.kabouzeid.appthemehelper.util.TintHelper;
+import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
 import com.retro.musicplayer.backend.model.Song;
 
 import butterknife.BindView;
@@ -30,13 +33,11 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper.Callback;
 import code.name.monkey.retromusic.helper.PlayPauseButtonOnClickHandler;
-import code.name.monkey.retromusic.misc.SimpleOnSeekbarChangeListener;
-
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.PlayPauseDrawable;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 /**
  * Created by hemanths on 30/08/17.
@@ -59,7 +60,7 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
     @BindView(R.id.player_shuffle_button)
     ImageButton mPlayerShuffleButton;
     @BindView(R.id.player_play_pause_button)
-    ImageButton mPlayerPlayPauseFab;
+    ImageView mPlayerPlayPauseFab;
     Unbinder unbinder;
     @BindView(R.id.player_progress_slider)
     SeekBar progressSlider;
@@ -76,7 +77,8 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flat_player_playback_controls, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -145,10 +147,12 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
             updateTextColors(dark);
             setProgressBarColor(dark);
             TintHelper.setTintAuto(mPlayerPlayPauseFab, dark, true);
+
         } else {
             int accentColor = ThemeStore.accentColor(getContext());
             updateTextColors(accentColor);
             setProgressBarColor(accentColor);
+            TintHelper.setTintAuto(mPlayerPlayPauseFab, accentColor, true);
         }
 
         updateRepeatState();

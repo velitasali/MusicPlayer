@@ -2,7 +2,6 @@ package code.name.monkey.retromusic.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.bumptech.glide.BitmapRequestBuilder;
@@ -31,15 +30,12 @@ public class ArtistGlideRequest {
 
     public static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
     private static final DiskCacheStrategy DEFAULT_DISK_CACHE_STRATEGY = DiskCacheStrategy.SOURCE;
-    private static int DEFAULT_ERROR_IMAGE;
+    private static int DEFAULT_ERROR_IMAGE = R.drawable.default_artist_image;
 
-    static {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
-            DEFAULT_ERROR_IMAGE = R.drawable.default_album_art;
-        else DEFAULT_ERROR_IMAGE = R.drawable.default_artist_image;
-    }
-
-    public static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Artist artist, boolean noCustomImage, boolean forceDownload) {
+    public static DrawableTypeRequest createBaseRequest(RequestManager requestManager,
+                                                        Artist artist,
+                                                        boolean noCustomImage,
+                                                        boolean forceDownload) {
         boolean hasCustomImage = CustomArtistImageUtil.getInstance(RetroApplication.getInstance()).hasCustomArtistImage(artist);
         if (noCustomImage || !hasCustomImage) {
             return requestManager.load(new ArtistImage(artist.getName(), forceDownload));
@@ -92,7 +88,7 @@ public class ArtistGlideRequest {
                     .error(DEFAULT_ERROR_IMAGE)
                     .animate(DEFAULT_ANIMATION)
                     .priority(Priority.LOW)
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    //.override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .signature(createSignature(artist));
         }
     }

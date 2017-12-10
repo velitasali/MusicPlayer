@@ -7,8 +7,10 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTarget;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 
 
@@ -26,7 +28,9 @@ public abstract class RetroMusicColoredTarget extends BitmapPaletteTarget {
     @Override
     public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
         super.onResourceReady(resource, glideAnimation);
-        onColorReady(RetroMusicColorUtil.getColor(resource.getPalette(), getDefaultFooterColor()));
+        onColorReady(PreferenceUtil.getInstance(RetroApplication.getInstance()).isDominantColor() ?
+                RetroMusicColorUtil.getDominantColor(resource.getBitmap(), getDefaultFooterColor()) :
+                RetroMusicColorUtil.getColor(resource.getPalette(), getDefaultFooterColor()));
     }
 
     protected int getDefaultFooterColor() {

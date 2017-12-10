@@ -19,7 +19,6 @@ limitations under the License.
 import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.os.Build;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
+
+import com.kabouzeid.appthemehelper.ThemeStore;
 
 import java.util.ArrayList;
 
@@ -79,8 +80,8 @@ public class ToolbarColorizeHelper {
             }
 
             //Step 3: Changing the color of title and subtitle.
-            toolbarView.setTitleTextColor(toolbarIconsColor);
-            toolbarView.setSubtitleTextColor(toolbarIconsColor);
+            toolbarView.setTitleTextColor(ThemeStore.textColorPrimary(activity));
+            toolbarView.setSubtitleTextColor(ThemeStore.textColorSecondary(activity));
 
             //Step 4: Changing the color of the Overflow Menu icon.
             setOverflowButtonColor(activity, colorFilter);

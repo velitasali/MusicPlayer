@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -23,6 +22,8 @@ import android.view.ViewGroup;
 import com.afollestad.materialcab.MaterialCab;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
+import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
+import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 
 import butterknife.BindView;
@@ -33,11 +34,10 @@ import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-import code.name.monkey.retromusic.interfaces.LibraryTabSelectedItem;
-import code.name.monkey.retromusic.interfaces.MainActivityFragmentCallbacks;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
@@ -124,9 +124,6 @@ public class LibraryFragment
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         getActivity().setTitle(R.string.app_name);
         getMainActivity().setSupportActionBar(mToolbar);
-
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
-
     }
 
 
@@ -149,6 +146,10 @@ public class LibraryFragment
             cab.finish();
             return true;
         }
+        if (isPlaylistPage()) {
+            FoldersFragment foldersFragment = (FoldersFragment) mFragmentManager.findFragmentByTag(TAG);
+            return foldersFragment.handleBackPress();
+        }
         return false;
     }
 
@@ -159,14 +160,13 @@ public class LibraryFragment
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
 
         fragmentTransaction
-                .replace(R.id.fragment_container, fragment, LibraryFragment.TAG)
+                .replace(R.id.fragment_container, fragment, TAG)
                 .commit();
     }
 
     @NonNull
     @Override
     public MaterialCab openCab(int menuRes, MaterialCab.Callback callback) {
-        TransitionManager.beginDelayedTransition(mAppbar);
         if (cab != null && cab.isActive()) cab.finish();
         cab = new MaterialCab(getMainActivity(), R.id.cab_stub)
                 .setMenu(menuRes)
@@ -176,10 +176,17 @@ public class LibraryFragment
         return cab;
     }
 
+    private boolean isPlaylistPage() {
+        if (mFragmentManager == null) {
+            return false;
+        }
+        Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
+        return fragment == new PlaylistsFragment();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        //if (pager == null) return;
         inflater.inflate(R.menu.menu_main, menu);
         if (isPlaylistPage()) {
             menu.add(0, R.id.action_new_playlist, 0, R.string.new_playlist_title);
@@ -201,34 +208,23 @@ public class LibraryFragment
             menu.removeItem(R.id.action_grid_size);
             menu.removeItem(R.id.action_colored_footers);
         }
+        colorToolbar();
+    }
+
+    private void colorToolbar() {
         new Handler().postDelayed(() -> {
             Activity activity = getActivity();
             if (activity == null) return;
             ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
         }, 1);
-        //ToolbarContentTintHelper.handleOnCreateOptionsMenu(getActivity(), mToolbar, menu, ATHToolbarActivity.getToolbarBackgroundColor(mToolbar));
     }
 
-    private boolean isPlaylistPage() {
-        if (mFragmentManager == null) {
-            return false;
-        }
-        Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
-        return fragment == PlaylistsFragment.newInstance();
-    }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        new Handler().postDelayed(() -> {
-            Activity activity = getActivity();
-            if (activity == null) return;
-            ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
-        }, 1);
-        /* Activity activity = getActivity();
-        if (activity == null) return;
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());*/
-        //ToolbarContentTintHelper.handleOnPrepareOptionsMenu(activity, mToolbar);
+        colorToolbar();
+
     }
 
     @Override

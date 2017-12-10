@@ -26,23 +26,46 @@ import code.name.monkey.retromusic.util.Util;
 
 public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
+    private static final String TAG = "AbsThemeActivity";
+    private View mDecorView;
+
     public void hideStatusBar() {
         setFullscreen(PreferenceUtil.getInstance(this).getFullScreenMode());
     }
 
     private void setFullscreen(boolean fullscreen) {
-        final View view = getWindow().getDecorView();
+        final View statusBar = mDecorView.findViewById(R.id.status_bar);
+        if (statusBar != null) {
+            statusBar.setVisibility(fullscreen ? View.GONE : View.VISIBLE);
+        }
+
         WindowManager.LayoutParams attrs = getWindow().getAttributes();
         if (fullscreen) {
             attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            final View statusBar = view.findViewById(R.id.status_bar);
-            if (statusBar != null) {
-                statusBar.setVisibility(View.GONE);
-            }
         } else {
             attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
         }
         getWindow().setAttributes(attrs);
+
+       /* int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+        boolean isImmersiveModeEnabled =
+                ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
+        if (isImmersiveModeEnabled) {
+            Log.i(TAG, "Turning immersive mode mode off. ");
+        } else {
+            Log.i(TAG, "Turning immersive mode mode on.");
+        }
+        if (fullscreen) {
+            newUiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            newUiOptions |= View.SYSTEM_UI_FLAG_FULLSCREEN;
+            newUiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        } else {
+            newUiOptions &= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            newUiOptions &= View.SYSTEM_UI_FLAG_FULLSCREEN;
+            newUiOptions &= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        }
+        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);*/
     }
 
     @Override
@@ -55,6 +78,8 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mDecorView = getWindow().getDecorView();
+        hideStatusBar();
         // default theme
         if (!ThemeStore.isConfigured(this, 1)) {
             ThemeStore.editTheme(this)
@@ -72,6 +97,12 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         MaterialDialogsUtil.updateMaterialDialogsThemeSingleton(this);
 
         changeBackgroundShape();
+        int flags = getWindow().getDecorView().getSystemUiVisibility();
+        if (ThemeStore.coloredNavigationBar(this) &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !ATHUtil.isWindowBackgroundDark(this)) {
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+        }
+        getWindow().getDecorView().setSystemUiVisibility(flags);
 
     }
 

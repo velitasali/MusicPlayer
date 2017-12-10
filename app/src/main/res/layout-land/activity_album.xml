@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary">
@@ -12,128 +12,112 @@
         android:orientation="horizontal">
 
         <FrameLayout
-            android:id="@+id/image_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <code.name.monkey.retromusic.views.WidthFitSquareLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:transitionName="@string/transition_album_art">
+                app:cardCornerRadius="0dp"
+                app:cardPreventCornerOverlap="false">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_album_white_24dp" />
-            </code.name.monkey.retromusic.views.WidthFitSquareLayout>
-        </FrameLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <include layout="@layout/shadow_statusbar_toolbar" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <include layout="@layout/status_bar" />
-
-                        <android.support.v7.widget.Toolbar
-                            android:id="@+id/toolbar"
-                            style="@style/Toolbar48"
-                            app:navigationIcon="@drawable/ic_close_white_24dp" />
-
-                    </LinearLayout>
-                </FrameLayout>
-
-                <RelativeLayout
-                    android:id="@+id/title_container"
+                <com.retro.musicplayer.backend.views.WidthFitSquareLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="8dp">
+                    android:focusableInTouchMode="true">
 
-                    <TextView
-                        android:id="@+id/title"
-                        fontPath="fonts/sans_bold.ttf"
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:transitionName="@string/transition_album_art"
+                        app:srcCompat="@drawable/ic_album_white_24dp" />
+
+                </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </android.support.v7.widget.CardView>
+        </FrameLayout>
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_container">
+
+                <LinearLayout
+                    android:id="@+id/toolbar_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/status_bar" />
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:navigationIcon="@drawable/ic_keyboard_backspace_black_24dp"
+                        app:subtitleTextColor="?android:attr/textColorSecondary"
+                        app:titleTextColor="?android:attr/textColorPrimary" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/buttons_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/toolbar_container"
+                    android:layout_gravity="bottom|end"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <Button
+                        android:id="@+id/play_songs"
+                        style="@style/Base.Widget.AppCompat.Button.Colored"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="72dp"
-                        android:maxLines="2"
-                        android:paddingEnd="56dp"
-                        android:paddingTop="8dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:ignore="MissingPrefix"
-                        tools:text="Album Name" />
+                        android:text="@string/play_all"
+                        android:textAllCaps="false" />
 
-                    <TextView
-                        android:id="@+id/text"
+                    <Button
+                        android:id="@+id/action_shuffle_all"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="false"
-                        android:layout_alignStart="@+id/title"
-                        android:layout_below="@id/title"
-                        android:layout_marginTop="8dp"
-                        android:maxLines="1"
-                        android:paddingEnd="24dp"
-                        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
-                        android:textColor="?android:attr/textColorSecondary" />
+                        android:text="@string/action_shuffle_album"
+                        android:textAllCaps="false"
+                        android:textColor="?android:attr/textColorPrimary" />
+                </LinearLayout>
 
-
-                    <code.name.monkey.retromusic.views.IconImageView
-                        android:id="@+id/shuffle_songs"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:background="?roundSelector"
-                        android:padding="16dp"
-                        app:srcCompat="@drawable/ic_shuffle_white_24dp" />
-
-                </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_below="@id/buttons_container"
+                    android:background="?colorPrimary"
                     android:clipToPadding="false"
                     android:fadeScrollbars="true"
                     android:requiresFadingEdge="vertical"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical" />
-
-            </LinearLayout>
-        </ScrollView>
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/play_songs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/color_circle_gradient"
-        android:elevation="8dp"
-        android:padding="16dp"
-        app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:background="@drawable/shadow_down_strong" />
+
 </FrameLayout>

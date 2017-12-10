@@ -4,12 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
@@ -21,8 +16,6 @@ import code.name.monkey.retromusic.ui.fragments.intro.NameFragment;
 
 public class UserInfoActivity extends AbsBaseActivity {
     private static final String TAG = "UserInfoActivity";
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     private FragmentManager fragmentManager;
 
     @Override
@@ -33,10 +26,6 @@ public class UserInfoActivity extends AbsBaseActivity {
 
         ButterKnife.bind(this);
 
-        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
-        mToolbar.setTitle("");
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
@@ -70,11 +59,4 @@ public class UserInfoActivity extends AbsBaseActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

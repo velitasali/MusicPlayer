@@ -7,6 +7,27 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingBottom="8dp"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:textColor="@color/md_white_1000" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:alpha="0.75"
+        android:paddingBottom="16dp"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"
+        android:textColor="@color/md_white_1000" />
+
     <SeekBar
         android:id="@+id/player_progress_slider"
         android:layout_width="match_parent"
@@ -66,11 +87,11 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
             android:layout_toLeftOf="@+id/player_play_pause_button"
             android:layout_toStartOf="@+id/player_play_pause_button"
             android:background="?attr/roundSelector"
             android:padding="12dp"
-            android:layout_marginEnd="8dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_skip_previous_white_24dp"
             tools:ignore="MissingPrefix" />

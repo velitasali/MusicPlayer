@@ -8,9 +8,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,11 +27,8 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
-import code.name.monkey.retromusic.lyrics.LyricsEngine;
-import code.name.monkey.retromusic.lyrics.LyricsWikiEngine;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.util.MusicUtil;
-import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.views.LyricView;
 
 /**
@@ -41,11 +36,7 @@ import code.name.monkey.retromusic.views.LyricView;
  */
 
 public class LyricsActivity extends AbsMusicServiceActivity
-        implements MusicProgressViewUpdateHelper.Callback, AdapterView.OnItemSelectedListener,
-        KogouLyricsFetcher.KogouLyricsCallback {
-    private static final int KOGOU = 0;
-    private static final int WIKI = 1;
-    private static final int OFFLINE = 2;
+        implements MusicProgressViewUpdateHelper.Callback, KogouLyricsFetcher.KogouLyricsCallback {
     @BindView(R.id.image)
     ImageView mImage;
     @BindView(R.id.title)
@@ -60,15 +51,12 @@ public class LyricsActivity extends AbsMusicServiceActivity
     Toolbar mToolbar;
     @BindView(R.id.offline_lyrics)
     TextView mOfflineLyrics;
-    @BindView(R.id.lyrics_options)
-    Spinner mLyricsOptions;
     @BindView(R.id.lyrics_container)
     View mLyricsContainer;
     private MusicProgressViewUpdateHelper mUpdateHelper;
     private AsyncTask updateLyricsAsyncTask;
-    private AsyncTask updateWikiLyricsAsyncTask;
-    private LyricsEngine mEngine = new LyricsWikiEngine();
     private KogouLyricsFetcher mKogouLyricsFetcher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,13 +70,13 @@ public class LyricsActivity extends AbsMusicServiceActivity
         mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         mToolbar.setTitle(R.string.lyrics);
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
+
         setSupportActionBar(mToolbar);
 
         mKogouLyricsFetcher = new KogouLyricsFetcher(this, this);
         mUpdateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
 
-        mLyricsOptions.setOnItemSelectedListener(this);
-        mLyricsOptions.setSelection(PreferenceUtil.getInstance(this).getLyricsOptions());
+
     }
 
     @Override
@@ -135,6 +123,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
 
                     }
                 });
+
+        loadLrcFile();
     }
 
     @Override
@@ -145,10 +135,6 @@ public class LyricsActivity extends AbsMusicServiceActivity
         if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
             updateLyricsAsyncTask.cancel(true);
         }
-        if (updateWikiLyricsAsyncTask != null && !updateWikiLyricsAsyncTask.isCancelled()) {
-            updateWikiLyricsAsyncTask.cancel(true);
-        }
-
     }
 
     private void loadLrcFile() {
@@ -211,7 +197,6 @@ public class LyricsActivity extends AbsMusicServiceActivity
                 lyricView.setVisibility(View.VISIBLE);
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -219,54 +204,6 @@ public class LyricsActivity extends AbsMusicServiceActivity
     public void onUpdateProgressViews(int progress, int total) {
         lyricView.setCurrentTimeMillis(progress);
         lyricViewBig.setCurrentTimeMillis(progress);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        PreferenceUtil.getInstance(this).setLyricsOptions(i);
-        switch (i) {
-            case KOGOU:
-                mOfflineLyrics.setVisibility(View.GONE);
-                loadLrcFile();
-                break;
-            case WIKI:
-                hideLyrics();
-                loadWikiLyrics();
-                break;
-            case OFFLINE:
-                hideLyrics();
-                loadSongLyrics();
-                break;
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void loadWikiLyrics() {
-        final Song song = MusicPlayerRemote.getCurrentSong();
-        String title = song.title;
-        String artist = song.artistName;
-        if (updateWikiLyricsAsyncTask != null) updateWikiLyricsAsyncTask.cancel(false);
-        updateWikiLyricsAsyncTask = new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                return mEngine.getLyrics(artist, title);
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                mOfflineLyrics.setVisibility(View.VISIBLE);
-                if (s == null) {
-                    return;
-                }
-                mOfflineLyrics.setText(s);
-            }
-        }.execute();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -299,10 +236,10 @@ public class LyricsActivity extends AbsMusicServiceActivity
         }.execute();
     }
 
-
     @Override
     public void onNoLyrics() {
         hideLyrics();
+        loadSongLyrics();
     }
 
     @Override

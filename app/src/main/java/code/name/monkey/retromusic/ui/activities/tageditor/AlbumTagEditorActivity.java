@@ -1,5 +1,7 @@
 package code.name.monkey.retromusic.ui.activities.tageditor;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.provider.DocumentFile;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,12 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
+import com.kabouzeid.appthemehelper.util.ColorUtil;
+import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.rest.LastFMRestClient;
 
 import org.jaudiotagger.tag.FieldKey;
 
@@ -35,13 +43,18 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTranscoder;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
-import code.name.monkey.retromusic.lastfm.rest.LastFMRestClient;
-
+import code.name.monkey.retromusic.tagger.CheckDocumentPermissionsTask;
+import code.name.monkey.retromusic.tagger.TaggerTask;
+import code.name.monkey.retromusic.tagger.TaggerUtils;
 import code.name.monkey.retromusic.util.ImageUtil;
 import code.name.monkey.retromusic.util.LastFMUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroUtils;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -50,6 +63,7 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
 
     public static final String TAG = AlbumTagEditorActivity.class.getSimpleName();
     private static final float SCRIM_ADJUSTMENT = 0.075f;
+    private static final int DOCUMENT_TREE_REQUEST_CODE = 9002;
     @BindView(R.id.title)
     EditText albumTitle;
     @BindView(R.id.album_artist)
@@ -67,7 +81,13 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
     private Bitmap albumArtBitmap;
     private boolean deleteAlbumArt;
     private LastFMRestClient lastFMRestClient;
+    private boolean hasCheckedPermissions;
+    private List<DocumentFile> documentFiles = new ArrayList<>();
 
+    @Override
+    protected int getContentViewLayout() {
+        return R.layout.activity_album_tag_editor;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +147,7 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
                             .asBitmap()
                             .transcode(new BitmapPaletteTranscoder(AlbumTagEditorActivity.this), BitmapPaletteWrapper.class)
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .error(R.drawable.default_album)
+                            .error(R.drawable.default_album_art)
                             .into(new SimpleTarget<BitmapPaletteWrapper>() {
                                 @Override
                                 public void onLoadFailed(Exception e, Drawable errorDrawable) {
@@ -171,7 +191,7 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
 
     @Override
     protected void deleteImage() {
-        setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_album),
+        setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.default_album_art),
                 ContextCompat.getColor(AlbumTagEditorActivity.this, R.color.md_grey_500));
         deleteAlbumArt = true;
         dataChanged();
@@ -187,12 +207,92 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
         fieldKeyValueMap.put(FieldKey.GENRE, genre.getText().toString());
         fieldKeyValueMap.put(FieldKey.YEAR, year.getText().toString());
 
-        writeValuesToFiles(fieldKeyValueMap, deleteAlbumArt ? new ArtworkInfo(getId(), null) : albumArtBitmap == null ? null : new ArtworkInfo(getId(), albumArtBitmap));
-    }
 
-    @Override
-    protected int getContentViewLayout() {
-        return R.layout.activity_album_tag_editor;
+        List<String> paths = getSongPaths();
+        CheckDocumentPermissionsTask checkDocumentPermissionsTask =
+                new CheckDocumentPermissionsTask(paths, documentFiles, hasPermission -> {
+                    if (!hasPermission) {
+                        TaggerUtils.showChooseDocumentDialog(AlbumTagEditorActivity.this, (dialog1, which1) -> {
+                            if (RetroUtils.hasLollipop()) {
+                                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                                if (intent.resolveActivity(RetroApplication.getInstance().getPackageManager()) != null) {
+                                    startActivityForResult(intent, DOCUMENT_TREE_REQUEST_CODE);
+                                } else {
+                                    Toast.makeText(AlbumTagEditorActivity.this, "Permission needed", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }, hasCheckedPermissions);
+                        hasCheckedPermissions = true;
+                    } else {
+
+                        MaterialDialog saveProgressDialog = new MaterialDialog.Builder(this)
+                                .progressIndeterminateStyle(true)
+                                .content(getResources().getString(R.string.saving_tags))
+                                .cancelable(false)
+                                .progress(true, 0)
+                                .progressIndeterminateStyle(true)
+                                .build();
+
+                        /*final ProgressDialog saveProgressDialog = new ProgressDialog(this);
+                        saveProgressDialog.setMessage(getResources().getString(R.string.saving_tags));
+                        saveProgressDialog.setMax(paths.size());
+                        saveProgressDialog.setIndeterminate(false);
+                        saveProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                        saveProgressDialog.setCancelable(false);
+                        saveProgressDialog.show();*/
+
+
+                        TaggerTask.TagCompletionListener tagCompletionListener = new TaggerTask.TagCompletionListener() {
+                            @Override
+                            public void onSuccess() {
+                                saveProgressDialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure() {
+                                saveProgressDialog.dismiss();
+                                if (RetroUtils.hasKitKat() && !RetroUtils.hasLollipop()) {
+                                    Toast.makeText(AlbumTagEditorActivity.this, R.string.tag_error_kitkat, Toast.LENGTH_LONG).show();
+                                } else if (RetroUtils.hasLollipop()) {
+                                    Toast.makeText(AlbumTagEditorActivity.this, R.string.tag_error_lollipop, Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(AlbumTagEditorActivity.this, R.string.tag_edit_error, Toast.LENGTH_LONG).show();
+                                }
+                            }
+
+                            @Override
+                            public void onProgress(int progress) {
+                                saveProgressDialog.setProgress(progress);
+                            }
+                        };
+                        TaggerTask taggerTask = new TaggerTask()
+                                .showAlbum(true)
+                                //.showTrack(showTrack)
+                                .setPaths(paths)
+                                .setDocumentfiles(documentFiles)
+                                //.title(songTitle.getText().toString())
+                                .album(albumTitle.getText().toString())
+                                //.artist(artist.getText().toString())
+                                .albumArtist(albumArtist.getText().toString())
+                                .year(year.getText().toString())
+                                //.track(trackNumber.getText().toString())
+                                //.trackTotal(tra.getText().toString())
+                                //.disc(discEditText.getText().toString())
+                                //.discTotal(discTotalEditText.getText().toString())
+                                //.lyrics(lyrics.getText().toString())
+                                //.comment(commentEditText.getText().toString())
+                                .genre(genre.getText().toString())
+                                .listener(tagCompletionListener)
+                                .build();
+                        taggerTask.execute();
+
+                        writeValuesToFiles(fieldKeyValueMap, deleteAlbumArt ? new ArtworkInfo(getId(), null) : albumArtBitmap == null ? null : new ArtworkInfo(getId(), albumArtBitmap));
+
+                    }
+                });
+        checkDocumentPermissionsTask.execute();
+
+
     }
 
     @NonNull
@@ -253,6 +353,13 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
     @Override
     protected void setColors(int color) {
         super.setColors(color);
+        albumCollapsingToolbar.setContentScrimColor(color);
+        albumCollapsingToolbar.setStatusBarScrimColor(ColorUtil.darkenColor(color));
+        int iconColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ?
+                MaterialValueHelper.getPrimaryTextColor(this, ColorUtil.isColorLight(color)) :
+                ATHUtil.resolveColor(this, R.attr.iconColor);
+
+        ToolbarColorizeHelper.colorizeToolbar(toolbar, iconColor, this);
         //albumTitle.setTextColor(ToolbarContentTintHelper.toolbarTitleColor(this, color));
     }
 }

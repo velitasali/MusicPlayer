@@ -19,7 +19,7 @@ import code.name.monkey.retromusic.R;
  */
 public class ViewUtil {
 
-    public final static int PHONOGRAPH_ANIM_TIME = 1000;
+    public final static int RETRO_MUSIC_ANIM_TIME = 1000;
 
     public static void setStatusBarHeight(final Context context, View statusBar) {
         ViewGroup.LayoutParams lp = statusBar.getLayoutParams();

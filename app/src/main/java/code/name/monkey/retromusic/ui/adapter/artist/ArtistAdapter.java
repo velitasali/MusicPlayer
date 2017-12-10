@@ -1,6 +1,5 @@
 package code.name.monkey.retromusic.ui.adapter.artist;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.LayoutRes;
@@ -8,22 +7,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.graphics.Palette;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
+import com.retro.musicplayer.backend.DrawableGradient;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Song;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -32,14 +27,10 @@ import code.name.monkey.retromusic.glide.ArtistGlideRequest;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.helper.menu.SongsMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
-
 import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
-import code.name.monkey.retromusic.views.DrawableGradient;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -104,6 +95,7 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
         }
         if (holder.text != null) {
             holder.text.setText(MusicUtil.getArtistInfoStringSmall(activity, artist));
+            holder.text.setVisibility(View.GONE);
         }
 
         loadArtistImage(artist, holder);
@@ -145,7 +137,7 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
         }
     }
 
-    protected void loadArtistImage(Artist artist, final ViewHolder holder) {
+    private void loadArtistImage(Artist artist, final ViewHolder holder) {
         if (holder.image == null) return;
         ArtistGlideRequest.Builder.from(Glide.with(activity), artist)
                 .generatePalette(activity).build()

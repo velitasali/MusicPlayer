@@ -14,6 +14,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.DrawerLayout;
@@ -30,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
+import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
 import com.retro.musicplayer.backend.loaders.ArtistSongLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
@@ -49,13 +53,13 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.SearchQueryHelper;
-import code.name.monkey.retromusic.interfaces.LibraryTabSelectedItem;
-import code.name.monkey.retromusic.interfaces.MainActivityFragmentCallbacks;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.GenreFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
@@ -78,9 +82,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
     private static final int HOME = 0;
     private static final int LIBRARY = 1;
-    private static final int SUPPORT_DIALOG = 2;
-    private static final int SETTIINGS = 3;
-    private static final int ABOUT = 4;
+    private static final int FOLDERS = 2;
+    private static final int SUPPORT_DIALOG = 3;
+    private static final int SETTIINGS = 4;
+    private static final int ABOUT = 5;
     @BindView(R.id.user_image)
     CircleImageView mUserImage;
     @Nullable
@@ -123,6 +128,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         ButterKnife.bind(this);
         setBottomBarVisibility(View.VISIBLE);
 
@@ -150,6 +156,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         } else {
             restoreCurrentFragment();
         }
+
     }
 
     @Override
@@ -158,6 +165,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         IntentFilter screenOnOff = new IntentFilter();
         screenOnOff.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mBroadcastReceiver, screenOnOff);
+
+
     }
 
     @Override
@@ -177,11 +186,14 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         PreferenceUtil.getInstance(this).setLastMusicChooser(key);
         switch (key) {
             case HOME:
-                setCurrentFragment(HomeFragment.newInstance());
+                setCurrentFragment(HomeFragment.newInstance(), false);
+                break;
+            case FOLDERS:
+                setCurrentFragment(FoldersFragment.newInstance(this), false);
                 break;
             case LIBRARY:
             default:
-                setCurrentFragment(LibraryFragment.newInstance());
+                setCurrentFragment(LibraryFragment.newInstance(), false);
                 break;
         }
     }
@@ -212,6 +224,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         mNavigationItems.setLayoutManager(new LinearLayoutManager(this));
         mNavigationItems.setItemAnimator(new DefaultItemAnimator());
         mNavigationItems.setAdapter(new NavigationItemsAdapter());
+
     }
 
     @Override
@@ -223,9 +236,15 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         return contentView;
     }
 
-    public void setCurrentFragment(@Nullable Fragment fragment) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment, TAG).commit();
+    public void setCurrentFragment(@Nullable Fragment fragment, boolean isStackAdd) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment, TAG);
+        if (isStackAdd) {
+            fragmentTransaction.addToBackStack(TAG);
+        }
+        fragmentTransaction.commit();
+
         mCurrentFragment = (MainActivityFragmentCallbacks) fragment;
         mTabSelectedItem = (LibraryTabSelectedItem) fragment;
     }
@@ -243,6 +262,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                 .subscribe(menuItem -> {
                     if (mTabSelectedItem != null) {
                         switch (menuItem.getItemId()) {
+                            default:
                             case R.id.action_song:
                                 mTabSelectedItem.selectedFragment(SongsFragment.newInstance());
                                 break;
@@ -252,8 +272,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                             case R.id.action_artist:
                                 mTabSelectedItem.selectedFragment(ArtistsFragment.newInstance());
                                 break;
-                            case R.id.action_folders:
-                                mTabSelectedItem.selectedFragment(FoldersFragment.newInstance(MainActivity.this));
+                            case R.id.action_playlist:
+                                mTabSelectedItem.selectedFragment(PlaylistsFragment.newInstance());
                                 break;
                         }
                     }
@@ -271,7 +291,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         boolean handled = false;
 
         if (intent.getAction() != null &&
-                intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)) {
+                intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH) &&
+                intent.getExtras() != null) {
             final ArrayList<Song> songs = SearchQueryHelper.getSongs(this, intent.getExtras());
 
             if (MusicPlayerRemote.getShuffleMode() == MusicService.SHUFFLE_MODE_SHUFFLE) {
@@ -416,7 +437,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
 
         NavigationItemsAdapter() {
             mList.add(new Pair<>(R.drawable.ic_home_white_24dp, R.string.home));
-            mList.add(new Pair<>(R.drawable.ic_library_add_white_24dp, R.string.library));
+            mList.add(new Pair<>(R.drawable.ic_library_music_white_24dp, R.string.library));
+            mList.add(new Pair<>(R.drawable.ic_folder_white_24dp, R.string.folders));
             mList.add(new Pair<>(R.drawable.ic_favorite_white_24dp, R.string.support_development));
             mList.add(new Pair<>(R.drawable.ic_settings_white_24dp, R.string.action_settings));
             mList.add(new Pair<>(R.drawable.ic_help_white_24dp, R.string.action_about));
@@ -442,8 +464,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                     case LIBRARY:
                         new Handler().postDelayed(() -> setMusicChooser(LIBRARY), 200);
                         break;
+                    case FOLDERS:
+                        new Handler().postDelayed(() -> setMusicChooser(FOLDERS), 200);
+                        break;
                     case SUPPORT_DIALOG:
-                        //new Handler().postDelayed(() -> ViewUtil.showDonationDialog(MainActivity.this), 200);
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SupportDevelopmentActivity.class)), 200);
                         break;
                     case SETTIINGS:

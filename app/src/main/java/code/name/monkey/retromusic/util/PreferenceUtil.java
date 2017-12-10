@@ -4,16 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
+import com.retro.musicplayer.backend.helper.SortOrder;
 import com.retro.musicplayer.backend.util.FileUtil;
 
 import java.io.File;
 
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.helper.SortOrder;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
@@ -71,6 +72,13 @@ public final class PreferenceUtil {
     private static final String TOGGLE_VOLUME = "toggle_volume";
     private static final String LYRICS_OPTIONS = "lyrics_options";
     private static final String TOGGLE_TAB_TITLES = "toggle_tab_titles";
+    private static final String TOGGLE_NAVIGATION_BAR = "toggle_navigation_bar";
+    private static final String TOGGLE_STATUS_BAR = "toggle_status_bar";
+    private static final String ROUND_CORNERS = "corner_window";
+    private static final String DOMINANT_COLOR = "dominant_color";
+    private static final String SAF_SDCARD_URI = "saf_sdcard_uri";
+    private static final String TOGGLE_GENRE = "toggle_genre";
+    private static final String DOCUMENT_TREE_URI = "document_tree_uri";
     private static PreferenceUtil sInstance;
     private final SharedPreferences mPreferences;
 
@@ -98,6 +106,10 @@ public final class PreferenceUtil {
         }
     }
 
+    public boolean isRoundCorners() {
+        return mPreferences.getBoolean(ROUND_CORNERS, false);
+    }
+
     public void registerOnSharedPreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
         mPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
@@ -108,6 +120,14 @@ public final class PreferenceUtil {
 
     public final int getDefaultStartPage() {
         return Integer.parseInt(mPreferences.getString(DEFAULT_START_PAGE, "-1"));
+    }
+
+    public boolean getToggleNavigation() {
+        return mPreferences.getBoolean(TOGGLE_NAVIGATION_BAR, false);
+    }
+
+    public boolean getToggleStatusBar() {
+        return mPreferences.getBoolean(TOGGLE_STATUS_BAR, false);
     }
 
     public final int getLastPage() {
@@ -218,7 +238,6 @@ public final class PreferenceUtil {
                 .putString(ALBUM_SORT_ORDER, shortOrder)
                 .apply();
     }
-
 
     public final String getAlbumSongSortOrder() {
         return mPreferences.getString(ALBUM_SONG_SORT_ORDER,
@@ -437,7 +456,6 @@ public final class PreferenceUtil {
         mPreferences.edit().putString(USER_NAME, name).apply();
     }
 
-
     public boolean getFullScreenMode() {
         return mPreferences.getBoolean(TOGGLE_FULL_SCREEN, false);
     }
@@ -517,5 +535,32 @@ public final class PreferenceUtil {
 
     public boolean tabTitles() {
         return mPreferences.getBoolean(TOGGLE_TAB_TITLES, false);
+    }
+
+    public void setFullScreenLock(boolean b) {
+    }
+
+    public final String getSAFSDCardUri() {
+        return mPreferences.getString(SAF_SDCARD_URI, "");
+    }
+
+    public final void setSAFSDCardUri(Uri uri) {
+        mPreferences.edit().putString(SAF_SDCARD_URI, uri.toString()).apply();
+    }
+
+    public boolean isDominantColor() {
+        return mPreferences.getBoolean(DOMINANT_COLOR, false);
+    }
+
+    public boolean isGenreShown() {
+        return mPreferences.getBoolean(TOGGLE_GENRE, false);
+    }
+
+    public String getDocumentTreeUri() {
+        return mPreferences.getString(DOCUMENT_TREE_URI, "");
+    }
+
+    public void setDocumentTreeUri(String documentTreeUri) {
+        mPreferences.edit().putString(DOCUMENT_TREE_URI, documentTreeUri).apply();
     }
 }

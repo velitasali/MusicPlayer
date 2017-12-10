@@ -28,6 +28,16 @@
             android:key="toggle_full_screen"
             android:summary="@string/pref_summary_toggle_full_screen"
             android:title="@string/pref_title_toggle_full_screen" />
+        <!-- <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+             android:defaultValue="false"
+             android:key="toggle_status_bar"
+             android:summary="@string/pref_summary_toggle_status_bar"
+             android:title="@string/pref_title_toggle_status_bar" />
+         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+             android:defaultValue="false"
+             android:key="toggle_navigation_bar"
+             android:summary="@string/pref_summary_toggle_navigation_bar"
+             android:title="@string/pref_title_toggle_navigation_bar" />-->
         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
             android:defaultValue="false"
             android:key="toggle_headset"
@@ -43,5 +53,18 @@
             android:key="language_en"
             android:summary="@string/pref_summary_language_en"
             android:title="@string/pref_title_toggle_language_en" />
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+            android:defaultValue="false"
+            android:key="dominant_color"
+            android:summary="@string/pref_summary_dominant_color"
+            android:title="@string/pref_title_toggle_dominant_color" />
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+            android:defaultValue="false"
+            android:key="toggle_genre"
+            android:summary="@string/pref_summary_toggle_genre"
+            android:title="@string/pref_title_toggle_genre" />
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreference
+            android:key="external_storage_access"
+            android:title="@string/pref_title_external_storage_access" />
     </com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

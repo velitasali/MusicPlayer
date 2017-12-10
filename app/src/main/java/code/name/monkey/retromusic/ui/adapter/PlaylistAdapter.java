@@ -1,6 +1,7 @@
 package code.name.monkey.retromusic.ui.adapter;
 
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,20 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
 import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.model.smartplaylist.AbsSmartPlaylist;
 import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
-import com.stfalcon.multiimageview.MultiImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-import butterknife.BindView;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.ClearSmartPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeletePlaylistDialog;
@@ -36,11 +36,10 @@ import code.name.monkey.retromusic.helper.menu.SongsMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
+import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.Util;
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by BlackFootSanji on 9/19/2016.
@@ -96,11 +95,15 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
         ArrayList<Song> songs = getSongs(playlist);
         holder.itemView.setActivated(isChecked(playlist));
 
+
         if (holder.title != null) {
             holder.title.setText(playlist.name);
         }
         if (holder.text != null) {
             holder.text.setText(String.format(Locale.getDefault(), "%d Songs", songs.size()));
+        }
+        if (holder.image != null) {
+            holder.image.setImageResource(getIconRes(playlist));
         }
         if (holder.getAdapterPosition() == getItemCount() - 1) {
             if (holder.shortSeparator != null) {
@@ -111,21 +114,13 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
                 holder.shortSeparator.setVisibility(View.VISIBLE);
             }
         }
+    }
 
-        holder.songs.setOnClickListener(v -> MusicPlayerRemote.openQueue(getSongs(playlist), 0, true));
-
-        if (songs != null) {
-            loadBitmaps(songs)
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(bitmaps -> {
-                        if (bitmaps.size() > 0) {
-                            for (Bitmap bitmap : bitmaps) {
-                                holder.multipleImage.addImage(bitmap);
-                            }
-                        }
-                    });
+    private int getIconRes(Playlist playlist) {
+        if (playlist instanceof AbsSmartPlaylist) {
+            return ((AbsSmartPlaylist) playlist).iconRes;
         }
+        return MusicUtil.isFavoritePlaylist(activity, playlist) ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_queue_music_white_24dp;
     }
 
     @Override
@@ -186,7 +181,6 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
             if (playlist instanceof AbsCustomPlaylist) {
                 songs.addAll(((AbsCustomPlaylist) playlist).getSongs(activity).blockingFirst());
                 //((AbsCustomPlaylist) playlist).getSongs(activity).subscribe(this::setSongs);
-
             } else {
                 songs.addAll(PlaylistSongsLoader.getPlaylistSongList(activity, playlist.id).blockingFirst());
             }
@@ -232,16 +226,15 @@ public class PlaylistAdapter extends AbsMultiSelectAdapter<PlaylistAdapter.ViewH
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
-        @BindView(R.id.gradient_background)
-        View gradientBackground;
-        @BindView(R.id.multiple_images)
-        MultiImageView multipleImage;
-        @BindView(R.id.songs)
-        View songs;
 
         public ViewHolder(@NonNull View itemView, int itemViewType) {
             super(itemView);
 
+            if (image != null) {
+                int iconPadding = activity.getResources().getDimensionPixelSize(R.dimen.list_item_image_icon_padding);
+                image.setPadding(iconPadding, iconPadding, iconPadding, iconPadding);
+                image.setColorFilter(ATHUtil.resolveColor(activity, R.attr.iconColor), PorterDuff.Mode.SRC_IN);
+            }
             if (menu != null) {
                 menu.setOnClickListener(view -> {
                     final Playlist playlist = dataSet.get(getAdapterPosition());

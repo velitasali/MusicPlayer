@@ -18,21 +18,22 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="?colorPrimary"
+        android:background="@drawable/round_window"
         android:clickable="true"
         android:paddingTop="@dimen/status_bar_padding"
         tools:layout_gravity="">
 
         <LinearLayout
+            android:background="?colorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -85,10 +86,10 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/navigation_item"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:overScrollMode="never" />
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.ui.activities.UserInfoActivity;
 import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.ImageUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -41,7 +43,7 @@ import static com.retro.musicplayer.backend.RetroConstants.USER_PROFILE;
 
 public class NameFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 9002;
-    private static final int PROILE_ICON_SIZE = 400;
+    private static final int PROFILE_ICON_SIZE = 400;
     @BindView(R.id.name)
     EditText mName;
     @BindView(R.id.user_image)
@@ -56,7 +58,7 @@ public class NameFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.fragment_name, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -64,9 +66,10 @@ public class NameFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //noinspection ConstantConditions
         mName.setText(PreferenceUtil.getInstance(getActivity()).getUserName());
         if (!PreferenceUtil.getInstance(getActivity()).getProfileImage().isEmpty()) {
             loadImageFromStorage(PreferenceUtil.getInstance(getActivity()).getProfileImage());
@@ -82,9 +85,10 @@ public class NameFragment extends Fragment {
                     Toast.makeText(getActivity(), "Umm name is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                //noinspection ConstantConditions
                 PreferenceUtil.getInstance(getActivity()).setUserName(name);
                 getActivity().setResult(RESULT_OK);
-                //((UserInfoActivity) getActivity()).setFragment(new ChooseThemeFragment(),true);
+                //((UserInfoActivity) getActivity()).setFragment(new ChooseThemeFragment(), true);
                 getActivity().finish();
                 break;
         }
@@ -106,7 +110,7 @@ public class NameFragment extends Fragment {
             try {
                 Bitmap bitmap = ImageUtil
                         .getResizedBitmap(MediaStore.Images.Media
-                                .getBitmap(getActivity().getContentResolver(), uri), PROILE_ICON_SIZE);
+                                .getBitmap(getActivity().getContentResolver(), uri), PROFILE_ICON_SIZE);
                 String profileImagePath = saveToInternalStorage(bitmap);
                 PreferenceUtil.getInstance(getActivity()).saveProfileImage(profileImagePath);
                 loadImageFromStorage(profileImagePath);

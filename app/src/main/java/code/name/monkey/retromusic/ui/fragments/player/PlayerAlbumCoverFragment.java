@@ -61,12 +61,12 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
                 @Override
-                public boolean onDoubleTap(MotionEvent e) {
+                public boolean onSingleTapConfirmed(MotionEvent e) {
                     if (callbacks != null) {
-                        callbacks.onFavoriteToggled();
+                        callbacks.onToolbarToggled();
                         return true;
                     }
-                    return super.onDoubleTap(e);
+                    return super.onSingleTapConfirmed(e);
                 }
             });
 
@@ -178,5 +178,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
         void onColorChanged(int color);
 
         void onFavoriteToggled();
+
+        void onToolbarToggled();
     }
 }

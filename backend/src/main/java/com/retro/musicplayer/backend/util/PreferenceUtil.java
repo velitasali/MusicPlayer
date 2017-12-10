@@ -74,90 +74,8 @@ public final class PreferenceUtil {
     }
 
 
-    public void registerOnSharedPreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
-        mPreferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
-    }
-
-    public void unregisterOnSharedPreferenceChangedListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
-        mPreferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
-    }
-
-    public final int getDefaultStartPage() {
-        return Integer.parseInt(mPreferences.getString(DEFAULT_START_PAGE, "-1"));
-    }
-
-    public final int getLastPage() {
-        return mPreferences.getInt(LAST_PAGE, 0);
-    }
-
-    public void setLastPage(final int value) {
-        final Editor editor = mPreferences.edit();
-        editor.putInt(LAST_PAGE, value);
-        editor.apply();
-    }
-
-    public final int getLastMusicChooser() {
-        return mPreferences.getInt(LAST_MUSIC_CHOOSER, 0);
-    }
-
-    public void setLastMusicChooser(final int value) {
-        final Editor editor = mPreferences.edit();
-        editor.putInt(LAST_MUSIC_CHOOSER, value);
-        editor.apply();
-    }
-
-    public final boolean coloredNotification() {
-        return mPreferences.getBoolean(COLORED_NOTIFICATION, true);
-    }
-
-    public final boolean classicNotification() {
-        return mPreferences.getBoolean(CLASSIC_NOTIFICATION, false);
-    }
-
-    public void setClassicNotification(final boolean value) {
-        final Editor editor = mPreferences.edit();
-        editor.putBoolean(CLASSIC_NOTIFICATION, value);
-        editor.apply();
-    }
-
-    public void setColoredAppShortcuts(final boolean value) {
-        final Editor editor = mPreferences.edit();
-        editor.putBoolean(COLORED_APP_SHORTCUTS, value);
-        editor.apply();
-    }
-
-    public final boolean coloredAppShortcuts() {
-        return mPreferences.getBoolean(COLORED_APP_SHORTCUTS, true);
-    }
-
-    public final boolean gaplessPlayback() {
-        return mPreferences.getBoolean(GAPLESS_PLAYBACK, false);
-    }
-
-    public final boolean audioDucking() {
-        return mPreferences.getBoolean(AUDIO_DUCKING, true);
-    }
-
-    public final boolean albumArtOnLockscreen() {
-        return mPreferences.getBoolean(ALBUM_ART_ON_LOCKSCREEN, true);
-    }
-
-    public final boolean blurredAlbumArt() {
-        return mPreferences.getBoolean(BLURRED_ALBUM_ART, false);
-    }
-
-    public final boolean ignoreMediaStoreArtwork() {
-        return mPreferences.getBoolean(IGNORE_MEDIA_STORE_ARTWORK, false);
-    }
-
     public final String getArtistSortOrder() {
         return mPreferences.getString(ARTIST_SORT_ORDER, SortOrder.ArtistSortOrder.ARTIST_A_Z);
-    }
-
-    public void setArtistSortOrder(String sortOrder) {
-        Editor edit = this.mPreferences.edit();
-        edit.putString(ARTIST_SORT_ORDER, sortOrder);
-        edit.apply();
     }
 
     public final String getArtistSongSortOrder() {
@@ -174,61 +92,9 @@ public final class PreferenceUtil {
         return mPreferences.getString(ALBUM_SORT_ORDER, SortOrder.AlbumSortOrder.ALBUM_A_Z);
     }
 
-    public void setAlbumSortOrder(String shortOrder) {
-        mPreferences.edit()
-                .putString(ALBUM_SORT_ORDER, shortOrder)
-                .apply();
-    }
-
-
-    public final String getAlbumSongSortOrder() {
-        return mPreferences.getString(ALBUM_SONG_SORT_ORDER,
-                SortOrder.AlbumSongSortOrder.SONG_TRACK_LIST);
-    }
-
     public final String getSongSortOrder() {
         return mPreferences.getString(SONG_SORT_ORDER, SortOrder.SongSortOrder.SONG_A_Z);
     }
-
-    public void setSongSortOrder(String sortOrder) {
-        Editor edit = this.mPreferences.edit();
-        edit.putString(SONG_SORT_ORDER, sortOrder);
-        edit.apply();
-    }
-
-    public int getLastSleepTimerValue() {
-        return mPreferences.getInt(LAST_SLEEP_TIMER_VALUE, 30);
-    }
-
-    public void setLastSleepTimerValue(final int value) {
-        final Editor editor = mPreferences.edit();
-        editor.putInt(LAST_SLEEP_TIMER_VALUE, value);
-        editor.apply();
-    }
-
-    public long getNextSleepTimerElapsedRealTime() {
-        return mPreferences.getLong(NEXT_SLEEP_TIMER_ELAPSED_REALTIME, -1);
-    }
-
-    public void setNextSleepTimerElapsedRealtime(final long value) {
-        final Editor editor = mPreferences.edit();
-        editor.putLong(NEXT_SLEEP_TIMER_ELAPSED_REALTIME, value);
-        editor.apply();
-    }
-
-
-    public final boolean introShown() {
-        return mPreferences.getBoolean(INTRO_SHOWN, false);
-    }
-
-    public final String autoDownloadImagesPolicy() {
-        return mPreferences.getString(AUTO_DOWNLOAD_IMAGES_POLICY, "only_wifi");
-    }
-
-    public final boolean synchronizedLyricsShow() {
-        return mPreferences.getBoolean(SYNCHRONIZED_LYRICS_SHOW, true);
-    }
-
 
     public long getLastAddedCutoff() {
         final CalendarUtil calendarUtil = new CalendarUtil();
@@ -260,47 +126,6 @@ public final class PreferenceUtil {
         return mPreferences.getBoolean(ADAPTIVE_COLOR_APP, false);
     }
 
-    public boolean getLockScreen() {
-        return mPreferences.getBoolean(LOCK_SCREEN, false);
-    }
-
-    public String getUserName() {
-        return mPreferences.getString(USER_NAME, "");
-    }
-
-    public void setUserName(String name) {
-        mPreferences.edit().putString(USER_NAME, name).apply();
-    }
-
-
-    public boolean getFullScreenMode() {
-        return mPreferences.getBoolean(TOGGLE_FULL_SCREEN, false);
-    }
-
-    public int[] getGradientColors() {
-        return new int[]{
-                mPreferences.getInt(START_COLOR, 0),
-                mPreferences.getInt(END_COLOR, 0)
-        };
-    }
-
-    public void setGradientColors(int startColor, int endColor) {
-        mPreferences.edit()
-                .putInt(START_COLOR, startColor)
-                .putInt(END_COLOR, endColor)
-                .apply();
-    }
-
-    public void saveProfileImage(String profileImagePath) {
-        mPreferences.edit().putString(PROFILE_IMAGE_PATH, profileImagePath)
-                .apply();
-
-    }
-
-    public String getProfileImage() {
-        return mPreferences.getString(PROFILE_IMAGE_PATH, "");
-    }
-
     public void setInitializedBlacklist() {
         final Editor editor = mPreferences.edit();
         editor.putBoolean(INITIALIZED_BLACKLIST, true);
@@ -315,19 +140,9 @@ public final class PreferenceUtil {
         return mPreferences.getString(ALBUM_DETAIL_SONG_SORT_ORDER, SortOrder.AlbumSongSortOrder.SONG_TRACK_LIST);
     }
 
-    public void setAlbumDetailSongSortOrder(String sortOrder) {
-        Editor edit = this.mPreferences.edit();
-        edit.putString(ALBUM_DETAIL_SONG_SORT_ORDER, sortOrder);
-        edit.apply();
-    }
 
     public String getArtistDetailSongSortOrder() {
         return mPreferences.getString(ARTIST_DETAIL_SONG_SORT_ORDER, SortOrder.ArtistSongSortOrder.SONG_A_Z);
     }
 
-    public void setArtistDetailSongSortOrder(String sortOrder) {
-        Editor edit = this.mPreferences.edit();
-        edit.putString(ARTIST_DETAIL_SONG_SORT_ORDER, sortOrder);
-        edit.apply();
-    }
 }

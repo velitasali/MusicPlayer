@@ -20,16 +20,19 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.helper.BottomNavigationViewHelper;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.MiniPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import code.name.monkey.retromusic.ui.fragments.player.flat.FlatPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.full.FullPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.hmm.HmmPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.plain.PlainPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.simple.SimplePlayerFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.views.BottomNavigationViewEx;
+
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -43,7 +46,7 @@ public abstract class AbsSlidingMusicPanelActivity
         SlidingUpPanelLayout.PanelSlideListener, PlayerFragment.Callbacks {
     public static final String TAG = AbsSlidingMusicPanelActivity.class.getSimpleName();
     @BindView(R.id.bottom_navigation)
-    BottomNavigationView mBottomNavigationView;
+    BottomNavigationViewEx mBottomNavigationView;
     @BindView(R.id.sliding_layout)
     SlidingUpPanelLayout mSlidingUpPanelLayout;
     @BindView(R.id.root_layout)
@@ -68,6 +71,12 @@ public abstract class AbsSlidingMusicPanelActivity
                 break;
             case PLAIN:
                 fragment = new PlainPlayerFragment();
+                break;
+            case SIMPLE:
+                fragment = new SimplePlayerFragment();
+                break;
+            case TINY:
+                fragment = new HmmPlayerFragment();
                 break;
             case FULL:
                 fragment = new FullPlayerFragment();
@@ -103,16 +112,23 @@ public abstract class AbsSlidingMusicPanelActivity
 
         setupBottomView();
         mSlidingUpPanelLayout.addPanelSlideListener(this);
+
+
     }
 
     private void setupBottomView() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
-        BottomNavigationViewHelper.disableShiftMode(this, mBottomNavigationView);
+        mBottomNavigationView.enableAnimation(false);
+        mBottomNavigationView.enableItemShiftingMode(false);
+        mBottomNavigationView.enableShiftingMode(false);
+        mBottomNavigationView.setTextVisibility(PreferenceUtil.getInstance(this).tabTitles());
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
         if (currentNowPlayingScreen != PreferenceUtil.getInstance(this).getNowPlayingScreen()) {
             postRecreate();
         }
@@ -170,7 +186,7 @@ public abstract class AbsSlidingMusicPanelActivity
         super.setLightStatusbar(mLightStatusbar);
         super.setTaskDescriptionColor(mTaskColor);
         //setNavigationbarColor(ColorUtil.darkenColor(ThemeStore.primaryColor(this)));
-        setNavigationbarColor(ColorUtil.darkenColor(ThemeStore.primaryColor(this)));
+        setNavigationbarColor(ThemeStore.primaryColor(this));
         //super.setNavigationbarColor(mNavigationbarColor);
 
         mPlayerFragment.setMenuVisibility(false);
@@ -182,17 +198,28 @@ public abstract class AbsSlidingMusicPanelActivity
     public void onPanelExpanded(View panel) {
         // setting fragments values
         int playerFragmentColor = mPlayerFragment.getPaletteColor();
+
+
         if (PreferenceUtil.getInstance(this).getAdaptiveColor() || ATHUtil.isWindowBackgroundDark(this)
-                /*|| (currentNowPlayingScreen == NowPlayingScreen.FULL)*/) {
+                || (currentNowPlayingScreen == NowPlayingScreen.TINY)) {
             super.setLightStatusbar(false);
         } else
             super.setLightStatusbar(true);
+
         super.setTaskDescriptionColor(playerFragmentColor);
-        super.setNavigationbarColor(ColorUtil.darkenColor(ThemeStore.primaryColor(this)));
+        super.setNavigationbarColor(ThemeStore.primaryColor(this));
 
         mPlayerFragment.setMenuVisibility(true);
         mPlayerFragment.setUserVisibleHint(true);
         mPlayerFragment.onShow();
+    }
+
+    @Override
+    public void onPaletteColorChanged() {
+        if (getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+            int playerFragmentColor = mPlayerFragment.getPaletteColor();
+            super.setTaskDescriptionColor(playerFragmentColor);
+        }
     }
 
     private void setMiniPlayerAlphaProgress(@FloatRange(from = 0, to = 1) float progress) {
@@ -216,7 +243,6 @@ public abstract class AbsSlidingMusicPanelActivity
     }
 
     public void hideBottomBar(final boolean hide) {
-
         if (hide) {
             mSlidingUpPanelLayout.setPanelHeight(0);
             collapsePanel();
@@ -260,15 +286,6 @@ public abstract class AbsSlidingMusicPanelActivity
             return true;
         }
         return false;
-    }
-
-    @Override
-    public void onPaletteColorChanged() {
-        if (getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
-            int playerFragmentColor = mPlayerFragment.getPaletteColor();
-            super.setTaskDescriptionColor(playerFragmentColor);
-            //animateNavigationBarColor(playerFragmentColor);
-        }
     }
 
 

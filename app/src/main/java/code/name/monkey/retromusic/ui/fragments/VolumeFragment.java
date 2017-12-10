@@ -18,14 +18,14 @@ import android.widget.SeekBar;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
+import com.retro.musicplayer.backend.volume.AudioVolumeObserver;
+import com.retro.musicplayer.backend.volume.OnAudioVolumeChangedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.misc.volume.AudioVolumeObserver;
-import code.name.monkey.retromusic.misc.volume.OnAudioVolumeChangedListener;
 
 /**
  * Created by BlackFootSanji on 5/5/2017.

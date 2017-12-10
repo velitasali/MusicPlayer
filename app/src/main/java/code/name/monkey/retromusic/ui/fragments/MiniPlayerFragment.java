@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.GestureDetector;
@@ -28,7 +29,7 @@ import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.PlayPauseButtonOnClickHandler;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.PlayPauseDrawable;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
@@ -54,7 +55,7 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_mini_player, container, false);
     }
 
@@ -62,7 +63,6 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         unbinder = ButterKnife.bind(this, view);
-        //view.setBackgroundColor(ThemeStore.accentColor(getContext()));
         view.setOnTouchListener(new FlingPlayBackController(getActivity()));
         setUpMiniPlayer();
     }
@@ -140,7 +140,7 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
         }
     }
 
-    private static class FlingPlayBackController implements View.OnTouchListener {
+    public static class FlingPlayBackController implements View.OnTouchListener {
         GestureDetector flingPlayBackController;
 
         public FlingPlayBackController(Context context) {

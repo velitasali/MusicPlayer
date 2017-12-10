@@ -2,6 +2,7 @@ package com.retro.musicplayer.backend.providers.interfaces;
 
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Artist;
+import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.Song;
 
@@ -28,10 +29,15 @@ public interface Repository {
 
     Observable<ArrayList<Playlist>> getAllPlaylists();
 
+    Observable<ArrayList<Song>> getFavoriteSongs();
+
     Observable<ArrayList<Object>> search(String query);
 
     Observable<ArrayList<Song>> getPlaylistSongs(Playlist playlist);
 
     Observable<ArrayList<Playlist>> getHomeList();
 
+    Observable<ArrayList<Genre>> getAllGenres();
+
+    Observable<ArrayList<Song>> getGenre(int genreId);
 }

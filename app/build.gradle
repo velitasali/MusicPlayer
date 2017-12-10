@@ -20,8 +20,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
-        versionCode 87
-        versionName 'R - 1.0.100'
+        versionCode 102
+        versionName 'R - 1.1.110'
 
         multiDexEnabled true
 
@@ -85,7 +85,7 @@ android {
             def requested = details.requested
             if (requested.group == 'com.android.support') {
                 if (!requested.name.startsWith("multidex")) {
-                    details.useVersion '27.0.0'
+                    details.useVersion '27.0.2'
                 }
             }
         }
@@ -107,7 +107,8 @@ def getProperty(@Nullable Properties properties, String name) {
 }
 
 ext {
-    supportLibVersion = "27.0.0"
+    supportLibVersion = "27.0.1"
+    fireBase = "11.6.0"
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -152,5 +153,7 @@ dependencies {
     implementation project(':backend')
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
     implementation 'org.jsoup:jsoup:1.10.3'
-    implementation 'com.google.firebase:firebase-core:11.6.0'
+    implementation 'com.lucasurbas:listitemview:1.0.5'
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'
 }
+apply plugin: 'com.google.gms.google-services'

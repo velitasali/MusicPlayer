@@ -59,8 +59,8 @@ import code.name.monkey.retromusic.appwidgets.AppWidgetClassic;
 import code.name.monkey.retromusic.appwidgets.AppWidgetSmall;
 import code.name.monkey.retromusic.glide.BlurTransformation;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
-import code.name.monkey.retromusic.helper.ShuffleHelper;
-import code.name.monkey.retromusic.helper.StopWatch;
+import com.retro.musicplayer.backend.helper.ShuffleHelper;
+import com.retro.musicplayer.backend.helper.StopWatch;
 import code.name.monkey.retromusic.service.notification.PlayingNotification;
 import code.name.monkey.retromusic.service.notification.PlayingNotificationImpl;
 import code.name.monkey.retromusic.service.notification.PlayingNotificationImpl24;
@@ -234,6 +234,7 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         }
     }
 
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -278,7 +279,6 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         sendBroadcast(new Intent("code.name.monkey.retromusic.RETRO_MUSIC_SERVICE_CREATED"));
 
         registerHeadsetEvents();
-
 
 
     }
@@ -1100,6 +1100,8 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
         intent.putExtra("scrobbling_source", RETRO_MUSIC_PACKAGE_NAME);
 
         sendStickyBroadcast(intent);
+
+
     }
 
     private void sendChangeInternal(final String what) {

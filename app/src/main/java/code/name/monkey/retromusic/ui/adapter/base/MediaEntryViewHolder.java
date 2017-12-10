@@ -20,47 +20,36 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     @Nullable
     @BindView(R.id.image)
     public ImageView image;
-
     @Nullable
     @BindView(R.id.image_text)
     public TextView imageText;
-
     @Nullable
     @BindView(R.id.title)
     public TextView title;
-
     @Nullable
     @BindView(R.id.text)
     public TextView text;
-
     @Nullable
     @BindView(R.id.image_container)
     public ViewGroup imageContainer;
-
     @Nullable
     @BindView(R.id.menu)
     public View menu;
-
     @Nullable
     @BindView(R.id.separator)
     public View separator;
-
     @Nullable
     @BindView(R.id.short_separator)
     public View shortSeparator;
-
     @Nullable
     @BindView(R.id.drag_view)
     public View dragView;
-
     @Nullable
     @BindView(R.id.palette_color_container)
     public View paletteColorContainer;
-
     @BindView(R.id.time)
     @Nullable
     public TextView time;
-
     @BindView(R.id.recycler_view)
     @Nullable
     public RecyclerView recyclerView;

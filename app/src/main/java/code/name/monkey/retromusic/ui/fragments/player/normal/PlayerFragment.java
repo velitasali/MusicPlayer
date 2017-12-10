@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
+import com.retro.musicplayer.backend.DrawableGradient;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.util.LyricUtil;
 
@@ -35,7 +36,6 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.util.ViewUtil;
-import code.name.monkey.retromusic.views.DrawableGradient;
 
 /**
  * Created by hemanths on 18/08/17.
@@ -66,6 +66,12 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         return fragment;
     }
 
+    @Override
+    public void onToolbarToggled() {
+        //Toggle hiding toolbar for effect
+        toggleToolbar(toolbarContainer);
+    }
+
     private void colorize(int i) {
         if (valueAnimator != null) valueAnimator.cancel();
 
@@ -79,7 +85,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
                 colorBackground.setBackground(drawable);
             }
         });
-        valueAnimator.setDuration(ViewUtil.PHONOGRAPH_ANIM_TIME).start();
+        valueAnimator.setDuration(ViewUtil.RETRO_MUSIC_ANIM_TIME).start();
     }
 
     @Override
@@ -133,6 +139,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     public void onFavoriteToggled() {
         toggleFavorite(MusicPlayerRemote.getCurrentSong());
     }
+
 
     @Override
     public void onDestroyView() {

@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.model.Song;
@@ -41,12 +42,19 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
     View mView;
     @BindView(R.id.player_toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.toolbar_container)
+    FrameLayout toolbarContainer;
     private Unbinder mUnbinder;
     private SimplePlaybackControlsFragment mSimplePlaybackControlsFragment;
     private int mLastColor;
-
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
+
+    @Override
+    public void onToolbarToggled() {
+        //Toggle hiding toolbar for effect
+        toggleToolbar(toolbarContainer);
+    }
 
     @Override
     public void onDestroyView() {

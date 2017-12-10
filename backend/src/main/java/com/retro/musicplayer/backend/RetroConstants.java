@@ -48,7 +48,7 @@ public class RetroConstants {
 
     public static final String BASE_API_URL_KUGOU = "http://lyrics.kugou.com/";
     public static final String TELEGRAM_CHANGE_LOG = "https://t.me/retromusiclog";
-    public static final String TELEGRAM_CHANNEL = "https://t.me/retromusicandroid";
+    public static final String TELEGRAM_CHANNEL = "https://t.me/retromusicplayer";
     public static final String HEMANTH_TELEGRAM = "https://t.me/h4h13";
     public static final String USER_PROFILE = "profile.jpg";
     public static final String FLATICON_LINK = "https://www.flaticon.com/";

@@ -1,13 +1,12 @@
 package code.name.monkey.retromusic.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Color;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,19 +16,15 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.TintHelper;
+import com.kabouzeid.appthemehelper.ThemeStore;
 import com.retro.musicplayer.backend.Injection;
+import com.retro.musicplayer.backend.helper.SortOrder.AlbumSongSortOrder;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.contract.AlbumDetailsContract;
@@ -47,7 +42,6 @@ import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-import code.name.monkey.retromusic.helper.SortOrder.AlbumSongSortOrder;
 import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.activities.tageditor.AbsTagEditorActivity;
 import code.name.monkey.retromusic.ui.activities.tageditor.AlbumTagEditorActivity;
@@ -69,62 +63,36 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     Toolbar mToolbar;
     @BindView(R.id.image)
     ImageView image;
-    @BindView(R.id.title)
-    TextView title;
-    @BindView(R.id.text)
-    TextView text;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.play_songs)
-    ImageButton playSongs;
+    TextView playSongs;
+    @BindView(R.id.action_shuffle_all)
+    TextView shuffleSongs;
     @BindView(R.id.status_bar)
     View statusBar;
-    @BindView(R.id.shuffle_songs)
-    ImageView shuffleSongs;
     @BindView(R.id.container)
     ViewGroup mContainer;
-    @NonNull
+    @BindView(R.id.root)
+    ViewGroup mViewGroup;
     private AlbumDetailsPresenter mAlbumDetailsPresenter;
     private Album mAlbum;
     private SimpleSongAdapter mAdapter;
 
-    public void showHeartAnimation() {
-        playSongs.clearAnimation();
-
-        playSongs.setScaleX(0.9f);
-        playSongs.setScaleY(0.9f);
-        playSongs.setVisibility(View.VISIBLE);
-        playSongs.setPivotX(playSongs.getWidth() / 2);
-        playSongs.setPivotY(playSongs.getHeight() / 2);
-
-        playSongs.animate()
-                .setDuration(200)
-                .setInterpolator(new DecelerateInterpolator())
-                .scaleX(1.1f)
-                .scaleY(1.1f)
-                .withEndAction(() -> playSongs.animate()
-                        .setDuration(200)
-                        .setInterpolator(new AccelerateInterpolator())
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .alpha(1f)
-                        .start())
-                .start();
-    }
 
     @Override
     protected View createContentView() {
         return wrapSlidingMusicPanel(R.layout.activity_album);
     }
 
-    @OnClick({R.id.shuffle_songs, R.id.play_songs})
+    @OnClick({R.id.action_shuffle_all, R.id.play_songs})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.shuffle_songs:
+            case R.id.action_shuffle_all:
                 MusicPlayerRemote.openAndShuffleQueue(mAlbum.songs, true);
                 break;
             case R.id.play_songs:
-                showHeartAnimation();
+                //showHeartAnimation();
                 MusicPlayerRemote.openQueue(mAlbum.songs, 0, true);
                 break;
         }
@@ -140,9 +108,9 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
         setBottomBarVisibility(View.GONE);
 
-        hide();
         ViewUtil.setStatusBarHeight(this, statusBar);
 
         setUpToolBar();
@@ -174,39 +142,15 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     @Override
     public void completed() {
-        new Handler().postDelayed(this::showFab, 700);
-    }
 
-    private void hide() {
-        playSongs.setScaleX(0);
-        playSongs.setScaleY(0);
-        playSongs.setEnabled(false);
-    }
-
-    private void showFab() {
-        playSongs.animate()
-                .setDuration(500)
-                .setInterpolator(new OvershootInterpolator())
-                .scaleX(1)
-                .scaleY(1)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-
-                    }
-                })
-                .start();
-        playSongs.setVisibility(View.VISIBLE);
-        playSongs.setEnabled(true);
     }
 
     @Override
     public void showList(Album album) {
         mAlbum = album;
 
-        title.setText(album.getTitle());
-        text.setText(album.getArtistName());
+        mToolbar.setTitle(album.getTitle());
+        mToolbar.setSubtitle(album.getArtistName());
 
         loadAlbumCover();
         mAdapter = new SimpleSongAdapter(this, mAlbum.songs, R.layout.item_song);
@@ -224,15 +168,10 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     private void setUpToolBar() {
         mToolbar.setTitle("");
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
+        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(mToolbar);
         setTitle(R.string.app_name);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                    ATHUtil.resolveColor(this, R.attr.iconColor),
-                    this);
-        } else {
-            ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, this);
-        }
+
     }
 
     private void loadAlbumCover() {
@@ -261,19 +200,23 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
                 });
     }
 
-    private void setColors(int color) {
-        if (PreferenceUtil.getInstance(this).getAdaptiveColor()) {
-            TintHelper.setTintAuto(playSongs, color, true);
-        }
 
-        //mContainer.setBackgroundColor(color);
-        /*if (title != null) {
-            title.setTextColor(MaterialValueHelper.getPrimaryTextColor(this, ColorUtil.isColorLight(color)));
-        }
-        if (text != null) {
-            text.setTextColor(MaterialValueHelper.getSecondaryTextColor(this, ColorUtil.isColorLight(color)));
-        }*/
-        //statusBar.setBackgroundColor(ColorUtil.darkenColor(color));
+    private void setColors(int color) {
+        new Handler().postDelayed(() ->
+                ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                        PreferenceUtil.getInstance(this)
+                                .getAdaptiveColor() ? color :
+                                ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
+
+
+        int themeColor =
+                PreferenceUtil.getInstance(this).getAdaptiveColor() ?
+                        color :
+                        ThemeStore.accentColor(this);
+        ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
+        shuffleSongs.setTextColor(themeColor);
+        GradientDrawable gradientDrawable = (GradientDrawable) shuffleSongs.getBackground();
+        gradientDrawable.setStroke(8, color);
     }
 
     @Override
@@ -360,6 +303,12 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     private void setSaveSortOrder(String sortOrder) {
         PreferenceUtil.getInstance(this).setAlbumDetailSongSortOrder(sortOrder);
+        reload();
+    }
+
+    @Override
+    public void onMediaStoreChanged() {
+        super.onMediaStoreChanged();
         reload();
     }
 

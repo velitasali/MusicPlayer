@@ -14,7 +14,7 @@ import code.name.monkey.retromusic.ui.activities.MainActivity;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public abstract class AbsMainActivityFragment extends Fragment {
+public abstract class AbsMainActivityFragment extends AbsMusicServiceFragment {
 
     public MainActivity getMainActivity() {
         return (MainActivity) getActivity();

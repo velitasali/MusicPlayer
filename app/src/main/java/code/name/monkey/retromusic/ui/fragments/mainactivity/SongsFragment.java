@@ -13,6 +13,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import com.retro.musicplayer.backend.Injection;
+import com.retro.musicplayer.backend.helper.SortOrder.SongSortOrder;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.contract.SongContract;
 import com.retro.musicplayer.backend.mvp.presenter.SongPresenter;
@@ -20,7 +21,6 @@ import com.retro.musicplayer.backend.mvp.presenter.SongPresenter;
 import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.helper.SortOrder.SongSortOrder;
 import code.name.monkey.retromusic.ui.adapter.song.ShuffleButtonSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
@@ -50,11 +50,6 @@ public class SongsFragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         songPresenter = new SongPresenter(Injection.provideRepository(getContext()), this);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
     }
 
     @NonNull

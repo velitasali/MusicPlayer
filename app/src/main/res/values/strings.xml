@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-
+    <!-- <string name="pref_summary_toggle_status_bar">Hide only status bar</string>
+     <string name="pref_title_toggle_status_bar">Status bar</string>
+     <string name="pref_summary_toggle_navigation_bar">Hide only navigation bar</string>
+     <string name="pref_title_toggle_navigation_bar">Navigation bar</string>
+ -->
     <string name="accent_color">Accent color</string>
     <string name="accent_color_desc">The accent theme color, defaults to green.</string>
 
@@ -199,7 +203,7 @@
 
     <string name="lets_play_something">Let\'s play something</string>
 
-    <string name="library">Library</string>
+    <string name="library">Browse</string>
 
     <string name="licenses">Licenses</string>
 
@@ -232,8 +236,6 @@
     <string name="no_playlists">No playlists</string>
     <string name="no_results">No results</string>
     <string name="no_songs">No songs</string>
-
-    <string name="normal">Normal</string>
 
     <string name="not_listed_in_media_store"><![CDATA[<b>%s</b> is not listed in the media store.]]></string>
 
@@ -287,7 +289,7 @@
     <string name="pref_summary_exclude_songs">Exclude songs that are less than 30 secs. </string>
     <string name="pref_summary_gapless_playback">"Can cause playback issues on some devices."</string>
     <string name="pref_summary_ignore_media_store_artwork">Can increase the album cover quality but causes slower image loading times. Only enable this if you have problems with low resolution artworks.</string>
-    <string name="pref_summary_lock_screen">Enable full controls lock screen</string>
+
     <string name="pref_summary_lock_screen_app">Show full controls from the lock screen</string>
     <string name="pref_summary_open_source_licences">License details for open source software</string>
     <string name="pref_summary_round_corners">Corner edges for window, album art etc.</string>
@@ -309,7 +311,7 @@
     <string name="pref_title_gradient_color">Choose color</string>
     <string name="pref_title_ignore_media_store_artwork">Ignore Media Store covers</string>
     <string name="pref_title_last_added_interval">Last added playlist interval</string>
-    <string name="pref_title_lock_screen">Full screen Controls</string>
+    <string name="pref_title_lock_screen">Full screen controls</string>
     <string name="pref_title_lock_screen_app">Retro lock screen</string>
     <string name="pref_title_navigation_bar">Colored navigation bar</string>
     <string name="pref_title_now_playing_screen_appearance">Appearance</string>
@@ -437,9 +439,7 @@
     <string name="edit">Edit</string>
     <string name="donation_header">Buy me a</string>
     <string name="plain">Plain</string>
-    <string name="title_user_info_theme">Choose a Theme</string>
-    <string name="summary_user_info_theme">Pick a theme that works for you. You can always change your theme from settings.</string>
-    <string name="tool_tip_see_all">Shuffle all songs</string>
+    <string name="tool_tip_see_all">See all songs</string>
     <string name="toggle_lyrics_size">Toggle lyrics size</string>
     <string name="title_good_night">Good night</string>
     <string name="title_good_evening">Good evening</string>
@@ -454,4 +454,47 @@
     <string name="pref_title_toggle_tab_titles">Tab titles</string>
     <string name="pref_summary_language_en">Change app language forcefully to english(this is testing for multiple language option)</string>
     <string name="pref_title_toggle_language_en">English language</string>
+    <string name="see_all">See all</string>
+    <string name="for_you">For you</string>
+    <string name="play_all">Play all</string>
+    <string name="normal">Normal</string>
+    <string name="experimental">Experimental</string>
+    <string name="pref_summary_lock_screen">Shows lock screen controls for Retro music</string>
+    <string name="slide_unlock">Swipe to unlock</string>
+    <string name="primary_color_desc">The primary theme color, defaults to white.</string>
+    <string name="media_route_menu_title">Cast device</string>
+    <string name="tiny">Tiny</string>
+    <string name="pref_summary_dominant_color">Most dominant color will picks from album or artist art.</string>
+    <string name="pref_title_toggle_dominant_color">Dominant color</string>
+
+    <!-- SAF -->
+    <string name="saf_error_uri">Can\'t get SAF URI</string>
+    <string name="saf_write_failed">File write failed: %s</string>
+    <string name="saf_delete_failed">File delete failed: %s</string>
+    <string name="saf_pick_sdcard">SD card access required. Please pick root directory of SD card</string>
+    <string name="saf_pick_file">File access required. Pick %s</string>
+    <!-- SAF guide -->
+    <string name="saf_guide_slide1_title">%s needs SD card access</string>
+    <string name="saf_guide_slide1_description_before_o">Enable \'Show SD card\' in overflow menu</string>
+    <string name="saf_guide_slide1_description">Open navigation drawer</string>
+    <string name="saf_guide_slide2_title">Select your SD card in navigation drawer</string>
+    <string name="saf_guide_slide2_description">You need to select your SD card root directory</string>
+    <string name="saf_guide_slide3_title">Tap \'select\' button at the bottom of the screen</string>
+    <string name="deleting_songs">Deleting songs</string>
+    <string name="saf_guide_slide3_description">Do not open any subfolders</string>
+    <string name="pref_summary_toggle_genre">Don\'t want to show genre hide it</string>
+    <string name="pref_title_toggle_genre">Hide genre</string>
+    <string name="pref_title_external_storage_access">Give access  to external storage</string>
+
+
+    <!-- Message displayed when tag editing fails -->
+    <string name="tag_edit_error">An error occurred editing tags.</string>
+    <string name="tag_error_lollipop">An error occurred editing tags. If the file is stored on an SD Card, Retro Music might not have permission to access it.</string>
+    <string name="tag_error_kitkat">An error occurred editing tags. Is the file stored on an SD Card? If so, Google have made tag editing impossible for this file.</string>
+    <string name="tag_editor_document_tree_message">Select the external storage directory</string>
+    <string name="tag_editor_check_permission">Checking for permissions</string>
+    <string name="tag_editor_document_tree_permission_failed">It seems that we don\'t have permission to edit the files. Double check the directory in the file picker.</string>
+    <string name="tag_retrieve_error">An error occurred retrieving tags.</string>
+    <string name="edit_tags">Edit tags</string>
+    <string name="saving_tags">Saving tags</string>
 </resources>

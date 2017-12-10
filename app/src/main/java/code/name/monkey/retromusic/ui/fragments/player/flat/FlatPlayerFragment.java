@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,10 +16,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
+import com.retro.musicplayer.backend.DrawableGradient;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.util.LyricUtil;
 import com.transitionseverywhere.TransitionManager;
@@ -28,6 +31,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
+import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
+import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -35,7 +40,6 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.util.ViewUtil;
-import code.name.monkey.retromusic.views.DrawableGradient;
 
 /**
  * Created by hemanths on 02/09/17.
@@ -47,6 +51,8 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     Toolbar mToolbar;
     @BindView(R.id.gradient_background)
     View colorBackground;
+    @BindView(R.id.toolbar_container)
+    FrameLayout toolbarContainer;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
     private PlayerAlbumCoverFragment playerAlbumCoverFragment;
@@ -87,7 +93,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 colorBackground.setBackground(drawable);
             }
         });
-        valueAnimator.setDuration(ViewUtil.PHONOGRAPH_ANIM_TIME).start();
+        valueAnimator.setDuration(ViewUtil.RETRO_MUSIC_ANIM_TIME).start();
     }
 
     @Override
@@ -98,7 +104,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flat_player, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -144,13 +150,16 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         getCallbacks().onPaletteColorChanged();
         lastColor = color;
 
-        TransitionManager.beginDelayedTransition(mToolbar);
 
+        boolean isLight = ColorUtil.isColorLight(color);
+
+        TransitionManager.beginDelayedTransition(mToolbar);
         iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ?
-                MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(color)) :
+                MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) :
                 ATHUtil.resolveColor(getContext(), R.attr.iconColor);
 
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, iconColor, getActivity());
+
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
@@ -159,6 +168,11 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         toggleFavorite(MusicPlayerRemote.getCurrentSong());
     }
 
+    @Override
+    public void onToolbarToggled() {
+        //Toggle hiding toolbar for effect
+        //toggleToolbar(toolbarContainer);
+    }
 
     @Override
     protected void toggleFavorite(Song song) {

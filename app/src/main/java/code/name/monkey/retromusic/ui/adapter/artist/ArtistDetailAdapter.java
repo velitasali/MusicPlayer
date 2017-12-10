@@ -63,7 +63,7 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         switch (i) {
             case ALBUMS:
             case SONGS:
-                view = LayoutInflater.from(mActivity).inflate(R.layout.recycler_view, viewGroup, false);
+                view = LayoutInflater.from(mActivity).inflate(R.layout.fragment_main_activity_recycler_view, viewGroup, false);
                 break;
             case HEADER:
                 view = LayoutInflater.from(mActivity).inflate(R.layout.artist_sub_header, viewGroup, false);
@@ -82,7 +82,8 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     try {
                         if (mList.get(i) instanceof ArrayList<?>) {
                             if (((ArrayList<?>) mList.get(i)).get(0) instanceof Album) {
-                                holder.recyclerView.setAdapter(new HorizontalAlbumAdapter(mActivity, (ArrayList<Album>) mList.get(i), false, null));
+                                holder.recyclerView.setAdapter(new HorizontalAlbumAdapter(mActivity,
+                                        (ArrayList<Album>) mList.get(i), false, null));
                             }
                         }
                     } catch (NullPointerException e) {
@@ -98,7 +99,8 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     try {
                         if (mList.get(i) instanceof ArrayList<?>) {
                             if (((ArrayList<?>) mList.get(i)).get(0) instanceof Song) {
-                                songsHolder.recyclerView.setAdapter(new SimpleSongAdapter(mActivity, (ArrayList<Song>) mList.get(i), R.layout.item_song));
+                                songsHolder.recyclerView.setAdapter(new SimpleSongAdapter(mActivity,
+                                        (ArrayList<Song>) mList.get(i), R.layout.item_song));
                             }
                         }
                     } catch (NullPointerException e) {

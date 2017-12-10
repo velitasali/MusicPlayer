@@ -12,12 +12,13 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.retro.musicplayer.backend.interfaces.MusicServiceEventListener;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-import code.name.monkey.retromusic.interfaces.MusicServiceEventListener;
 
 import static com.retro.musicplayer.backend.RetroConstants.MEDIA_STORE_CHANGED;
 import static com.retro.musicplayer.backend.RetroConstants.META_CHANGED;

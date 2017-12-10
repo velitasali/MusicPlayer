@@ -6,6 +6,8 @@
 
     <style name="Theme.RetroMusic.Black" parent="Theme.RetroMusic.Base.Black" />
 
+    <style name="Theme.RetroMusic.Color" parent="Theme.RetroMusic.Base.Color" />
+
     <style name="Theme.RetroMusic.Notification" parent="@android:style/TextAppearance.StatusBar.EventContent" />
 
     <style name="Theme.RetroMusic.Notification.Title" parent="@android:style/TextAppearance.StatusBar.EventContent.Title" />
@@ -58,7 +60,6 @@
 
     <style name="Toolbar48" parent="Toolbar">
         <item name="layout_collapseMode">pin</item>
-        <item name="titleMarginStart">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
         <item name="contentInsetStart">0dp</item>
         <item name="android:layout_height">48dp</item>
@@ -95,5 +96,10 @@
 
     <style name="ToolbarTextAppearance">
         <item name="fontPath">fonts/sans_regular.ttf</item>
+    </style>
+
+    <style name="HintTextAppearance">
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

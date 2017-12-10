@@ -24,7 +24,7 @@
             android:maxHeight="3dp"
             android:padding="16dp"
             android:splitTrack="false"
-            android:thumb="@drawable/ic_action_thumb"
+            android:thumb="@drawable/switch_thumb_material"
             tools:progress="20"/>
 
     </LinearLayout>

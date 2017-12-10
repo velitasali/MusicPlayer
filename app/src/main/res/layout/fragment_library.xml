@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="?colorPrimary"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -18,13 +19,13 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?colorPrimary"
             tools:ignore="UnusedAttribute">
 
             <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
@@ -46,6 +47,7 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/Toolbar48"
+                    android:background="?colorPrimary"
                     tools:ignore="UnusedAttribute" />
 
             </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>

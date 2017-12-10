@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.retro.musicplayer.backend.Injection;
+import com.retro.musicplayer.backend.interfaces.LoaderIds;
 import com.retro.musicplayer.backend.mvp.contract.SearchContract;
 import com.retro.musicplayer.backend.mvp.presenter.SearchPresenter;
 
@@ -32,7 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.interfaces.LoaderIds;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.adapter.SearchAdapter;
 import code.name.monkey.retromusic.util.Util;
@@ -40,7 +40,6 @@ import code.name.monkey.retromusic.util.Util;
 public class SearchActivity extends AbsMusicServiceActivity implements SearchView.OnQueryTextListener, SearchContract.SearchView {
     public static final String TAG = SearchActivity.class.getSimpleName();
     public static final String QUERY = "query";
-    private static final int LOADER_ID = LoaderIds.SEARCH_ACTIVITY;
     private static final int REQ_CODE_SPEECH_INPUT = 9002;
     @BindView(R.id.voice_search)
     View micIcon;
@@ -52,7 +51,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     TextView empty;
     @BindView(R.id.search_view)
     SearchView mSearchView;
-    @BindView(R.id.container)
+    @BindView(R.id.root)
     CoordinatorLayout mContainer;
     private SearchPresenter mSearchPresenter;
     private SearchAdapter adapter;
@@ -66,7 +65,6 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
         setContentView(R.layout.activity_search);
         setDrawUnderStatusbar(true);
         ButterKnife.bind(this);
-
         mSearchPresenter = new SearchPresenter(Injection.provideRepository(this), this);
 
         setStatusbarColorAuto();
@@ -112,7 +110,10 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     @Override
     protected void onResume() {
         super.onResume();
+        //Log.i(TAG, "onResume: " + query);
         mSearchPresenter.subscribe();
+        mSearchPresenter.search(query);
+
         if (!isMicSearch && getIntent().getBooleanExtra("mic_search", false)) {
             startMicSearch();
             isMicSearch = true;
@@ -120,8 +121,8 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onDestroy() {
+        super.onDestroy();
         mSearchPresenter.unsubscribe();
     }
 
@@ -134,6 +135,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        mSearchPresenter.search(savedInstanceState.getString(QUERY, ""));
     }
 
     private void setUpToolBar() {

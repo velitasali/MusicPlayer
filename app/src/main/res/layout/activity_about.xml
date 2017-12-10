@@ -2,6 +2,8 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/root"
+    android:background="?colorPrimary"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
@@ -27,17 +29,17 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar48"
+                android:background="?colorPrimary"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_close_white_24dp"
                 app:title="@string/action_about" />
-            
+
         </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary"
         android:clipToPadding="false"
         android:isScrollContainer="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

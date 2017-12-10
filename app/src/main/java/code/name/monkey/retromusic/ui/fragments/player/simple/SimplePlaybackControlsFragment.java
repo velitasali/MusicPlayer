@@ -34,7 +34,7 @@ import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.PlayPauseDrawable;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 /**
  * @author Hemanth S (h4h13).

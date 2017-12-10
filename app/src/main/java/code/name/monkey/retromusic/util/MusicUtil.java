@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.util;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -192,8 +193,7 @@ public class MusicUtil {
         return albumArtDir;
     }
 
-
-    public static void deleteTracks(@NonNull final Context context, @NonNull final List<Song> songs) {
+    public static void deleteTracks(@NonNull final Activity activity, @NonNull final List<Song> songs, @Nullable final List<Uri> safUris, @Nullable final Runnable callback) {
         final String[] projection = new String[]{
                 BaseColumns._ID, MediaStore.MediaColumns.DATA
         };
@@ -208,7 +208,7 @@ public class MusicUtil {
         selection.append(")");
 
         try {
-            final Cursor cursor = context.getContentResolver().query(
+            final Cursor cursor = activity.getContentResolver().query(
                     MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection.toString(),
                     null, null);
             if (cursor != null) {
@@ -217,14 +217,74 @@ public class MusicUtil {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     final int id = cursor.getInt(0);
-                    SongLoader.getSong(context, id).subscribe(song -> {
+                    final Song song = SongLoader.getSong(activity, id).blockingFirst();
+                    MusicPlayerRemote.removeFromQueue(song);
+                    cursor.moveToNext();
+                }
+
+                // Step 2: Remove selected tracks from the database
+                activity.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                        selection.toString(), null);
+
+                // Step 3: Remove files from card
+                cursor.moveToFirst();
+                int i = 0;
+                while (!cursor.isAfterLast()) {
+                    final String name = cursor.getString(1);
+                    final Uri safUri = safUris == null || safUris.size() <= i ? null : safUris.get(i);
+                    SAFUtil.delete(activity, name, safUri);
+                    i++;
+                    cursor.moveToNext();
+                }
+                cursor.close();
+            }
+            activity.getContentResolver().notifyChange(Uri.parse("content://media"), null);
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, activity.getString(R.string.deleted_x_songs, songs.size()), Toast.LENGTH_SHORT).show();
+                    if (callback != null) {
+                        callback.run();
+                    }
+                }
+            });
+        } catch (SecurityException ignored) {
+        }
+    }
+
+    public static void deleteTracks(@NonNull final Activity activity, @NonNull final List<Song> songs) {
+        final String[] projection = new String[]{
+                BaseColumns._ID, MediaStore.MediaColumns.DATA
+        };
+        final StringBuilder selection = new StringBuilder();
+        selection.append(BaseColumns._ID + " IN (");
+        for (int i = 0; i < songs.size(); i++) {
+            selection.append(songs.get(i).id);
+            if (i < songs.size() - 1) {
+                selection.append(",");
+            }
+        }
+        selection.append(")");
+
+        try {
+            final Cursor cursor = activity.getContentResolver().query(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection.toString(),
+                    null, null);
+            if (cursor != null) {
+                // Step 1: Remove selected tracks from the current playlist, as well
+                // as from the album art cache
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    final int id = cursor.getInt(0);
+                    SongLoader.getSong(activity, id).subscribe(song -> {
                         MusicPlayerRemote.removeFromQueue(song);
                         cursor.moveToNext();
                     });
                 }
 
                 // Step 2: Remove selected tracks from the database
-                context.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                activity.getContentResolver().delete(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                         selection.toString(), null);
 
                 // Step 3: Remove files from card
@@ -247,8 +307,8 @@ public class MusicUtil {
                 }
                 cursor.close();
             }
-            context.getContentResolver().notifyChange(Uri.parse("content://media"), null);
-            Toast.makeText(context, context.getString(R.string.deleted_x_songs, songs.size()), Toast.LENGTH_SHORT).show();
+            activity.getContentResolver().notifyChange(Uri.parse("content://media"), null);
+            Toast.makeText(activity, activity.getString(R.string.deleted_x_songs, songs.size()), Toast.LENGTH_SHORT).show();
         } catch (SecurityException ignored) {
         }
     }

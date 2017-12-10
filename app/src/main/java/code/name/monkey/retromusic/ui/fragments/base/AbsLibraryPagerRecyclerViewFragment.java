@@ -21,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.helper.MusicPlayerRemote;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -71,6 +71,7 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
         }
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
 
     }
 

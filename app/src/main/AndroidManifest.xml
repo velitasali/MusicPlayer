@@ -115,11 +115,13 @@
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true" />
         <activity android:name=".ui.activities.SupportDevelopmentActivity" />
+        <activity android:name=".ui.activities.GenreDetailsActivity" />
 
         <service
             android:name=".service.MusicService"
             android:enabled="true" />
-        <!--<service
+
+        <service
             android:name=".service.daydream.RetroMusicAlbums"
             android:exported="true"
             android:label="Retro Music Albums"
@@ -128,8 +130,16 @@
                 <action android:name="android.service.dreams.DreamService"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
-        </service>-->
+        </service>
         <!-- Widgets -->
+        <!-- <receiver
+             android:name=".headset.HeadsetReceiver"
+             android:enabled="true"
+             android:exported="true">
+             <intent-filter>
+                 <action android:name="android.intent.action.HEADSET_PLUG" />
+             </intent-filter>
+         </receiver>-->
         <receiver android:name=".appwidgets.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -189,6 +199,8 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+
+
         <!--Widgets ends-->
 
         <!--
@@ -196,6 +208,10 @@
         #   META starts
         #
         -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />

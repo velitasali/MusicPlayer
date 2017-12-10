@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.kabouzeid.appthemehelper.ThemeStore;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.util.LyricUtil;
 
@@ -38,11 +41,11 @@ public class FullPlayerFragment extends AbsPlayerFragment
         implements PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.player_toolbar)
     Toolbar mToolbar;
-
+    @BindView(R.id.toolbar_container)
+    FrameLayout toolbarContainer;
     Unbinder unbinder;
     private int lastColor;
     private FullPlaybackControlsFragment mFullPlaybackControlsFragment;
-    private PlayerAlbumCoverFragment mPlayerAlbumCoverFragment;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
 
@@ -51,13 +54,13 @@ public class FullPlayerFragment extends AbsPlayerFragment
         mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
-
-
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_full, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -77,9 +80,9 @@ public class FullPlayerFragment extends AbsPlayerFragment
     private void setUpSubFragments() {
         mFullPlaybackControlsFragment = (FullPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
-        mPlayerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
-        mPlayerAlbumCoverFragment.setCallbacks(this);
-        mPlayerAlbumCoverFragment.removeSlideEffect();
+        PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
+        playerAlbumCoverFragment.setCallbacks(this);
+        playerAlbumCoverFragment.removeSlideEffect();
     }
 
     @Override
@@ -107,10 +110,8 @@ public class FullPlayerFragment extends AbsPlayerFragment
     public void onColorChanged(int color) {
         lastColor = color;
         mFullPlaybackControlsFragment.setDark(color);
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                Color.WHITE,
-                getActivity());
-    }
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
+       }
 
     @Override
     public void onFavoriteToggled() {
@@ -126,22 +127,25 @@ public class FullPlayerFragment extends AbsPlayerFragment
     }
 
     @Override
+    public void onToolbarToggled() {
+        //Toggle hiding toolbar for effect
+        //toggleToolbar(toolbarContainer);
+    }
+
+    @Override
     public void onServiceConnected() {
         updateIsFavorite();
         updateLyrics();
-        updateSong();
+
     }
 
-    private void updateSong() {
-        mToolbar.setTitle(MusicPlayerRemote.getCurrentSong().title);
-        mToolbar.setSubtitle(MusicPlayerRemote.getCurrentSong().artistName);
-    }
+
 
     @Override
     public void onPlayingMetaChanged() {
         updateIsFavorite();
         updateLyrics();
-        updateSong();
+
     }
 
     @SuppressLint("StaticFieldLeak")

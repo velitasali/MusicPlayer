@@ -13,44 +13,37 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
+        android:paddingEnd="0dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp">
 
         <TextView
             android:id="@+id/title"
             fontPath="fonts/sans_bold.ttf"
-            tools:ignore="MissingPrefix"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
-            android:visibility="gone"
+            tools:ignore="MissingPrefix"
             tools:text="@string/songs"
             tools:visibility="visible" />
 
-        <TextView
+        <Button
             android:id="@+id/see_all"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
             android:layout_weight="0"
-            android:background="@drawable/color_text_background_gradient"
-            android:elevation="2dp"
-            android:paddingBottom="6dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="6dp"
-            android:text="View all"
-            android:textColor="@color/md_white_1000"
-            android:textSize="12sp"
-            android:tooltipText="@string/tool_tip_see_all" />
+            android:text="@string/see_all"
+            android:textAllCaps="false"
+            android:visibility="gone" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false" />
 
 </LinearLayout>

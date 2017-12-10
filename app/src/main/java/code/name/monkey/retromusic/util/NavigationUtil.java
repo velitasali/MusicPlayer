@@ -10,15 +10,19 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.widget.Toast;
 
+import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.AlbumDetailsActivity;
 import code.name.monkey.retromusic.ui.activities.ArtistDetailActivity;
+import code.name.monkey.retromusic.ui.activities.GenreDetailsActivity;
 import code.name.monkey.retromusic.ui.activities.LyricsActivity;
 import code.name.monkey.retromusic.ui.activities.PlayingQueueActivity;
 import code.name.monkey.retromusic.ui.activities.PlaylistDetailActivity;
+
+import static code.name.monkey.retromusic.ui.activities.GenreDetailsActivity.EXTRA_GENRE_ID;
 
 public class NavigationUtil {
     public static void goToAlbum(@NonNull Activity activity, int i, @Nullable Pair... pairArr) {
@@ -61,5 +65,10 @@ public class NavigationUtil {
 
     public static void goToLyrics(Activity activity) {
         ActivityCompat.startActivity(activity, new Intent(activity, LyricsActivity.class), null);
+    }
+
+    public static void goToGenre(Activity activity, Genre genre) {
+        ActivityCompat.startActivity(activity, new Intent(activity, GenreDetailsActivity.class)
+                .putExtra(EXTRA_GENRE_ID, genre), null);
     }
 }

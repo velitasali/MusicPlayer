@@ -41,6 +41,7 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.BuildConfig;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.IconImageView;
 
@@ -63,7 +64,8 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
     Toolbar mToolbar;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBarLayout;
-
+    @BindView(R.id.root)
+    ViewGroup mViewGroup;
     private BillingProcessor mBillingProcessor;
     private AsyncTask skuDetailsLoadAsyncTask;
 
@@ -105,8 +107,6 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
 
-        mAppBarLayout.setBackgroundColor(ThemeStore.primaryColor(this));
-        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(view -> onBackPressed());
@@ -249,8 +249,10 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
                     return R.drawable.ic_fast_food_meal_white_24dp;
                 case 5:
                     return R.drawable.ic_popcorn_white_24dp;
+                case 6:
+                    return R.drawable.ic_card_giftcard_black_24dp;
                 default:
-                    return R.drawable.ic_cookie_white_24dp;
+                    return R.drawable.ic_card_giftcard_black_24dp;
             }
         }
 
@@ -276,9 +278,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
 
                 //noinspection ResourceAsColor
                 viewHolder.title.setTextColor(titleTextColor);
-                //noinspection ResourceAsColor
                 viewHolder.text.setTextColor(contentTextColor);
-                //noinspection ResourceAsColor
                 viewHolder.price.setTextColor(titleTextColor);
 
                 strikeThrough(viewHolder.title, purchased);

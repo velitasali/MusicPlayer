@@ -7,8 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -16,7 +14,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.ResultReceiver;
-import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -38,6 +35,26 @@ public class Util {
 
     public static Uri getAlbumArtUri(long paramInt) {
         return ContentUris.withAppendedId(Uri.parse("content://media/external/audio/albumart"), paramInt);
+    }
+
+    public static String EncodeString(String string) {
+        return string.replace("%", "%25")
+                .replace(".", "%2E")
+                .replace("#", "%23")
+                .replace("$", "%24")
+                .replace("/", "%2F")
+                .replace("[", "%5B")
+                .replace("]", "%5D");
+    }
+
+    public static String DecodeString(String string) {
+        return string.replace("%25", "%")
+                .replace("%2E", ".")
+                .replace("%23", "#")
+                .replace("%24", "$")
+                .replace("%2F", "/")
+                .replace("%5B", "[")
+                .replace("%5D", "]");
     }
 
     public static int getStatusBarHeight(final Context context) {

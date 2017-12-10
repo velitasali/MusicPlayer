@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.service.dreams.DreamService;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.retro.musicplayer.backend.model.Song;
-import com.transitionseverywhere.AutoTransition;
 import com.transitionseverywhere.ChangeText;
 import com.transitionseverywhere.TransitionManager;
 
@@ -30,10 +29,10 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -72,16 +71,11 @@ public class RetroMusicAlbums extends DreamService {
         }
     };
     private Unbinder unbinder;
-
+    private CompositeDisposable mDisposable;
 
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
-        // Allow user touch
-        setInteractive(true);
-
-        // Hide system UI
-        setFullscreen(true);
 
         View view = LayoutInflater.from(this).inflate(R.layout.dream_service, null);
         setContentView(view);
@@ -90,30 +84,52 @@ public class RetroMusicAlbums extends DreamService {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         GridLayoutManager layoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
 
-        getPlayingQueue()
+
+
+        mDisposable.add(getPlayingQueue()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(songs -> {
-                    mRecyclerView.setLayoutManager(layoutManager);
-                    ImagesAdapter imagesAdapter = new ImagesAdapter(songs);
-                    mRecyclerView.setAdapter(imagesAdapter);
-                });
+                    if (songs.size() > 0) {
+                        mRecyclerView.setLayoutManager(layoutManager);
+                        ImagesAdapter imagesAdapter = new ImagesAdapter(songs);
+                        mRecyclerView.setAdapter(imagesAdapter);
+                    } else {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mTitle != null) {
+                                    mTitle.setText("Play some music YO!");
+                                }
+                            }
+                        }, 1);
+                    }
+                }));
 
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        setInteractive(true);
+        setFullscreen(true);
+
+
+        mDisposable = new CompositeDisposable();
+
         IntentFilter iF = new IntentFilter();
         iF.addAction("com.android.music.musicservicecommand");
         iF.addAction("com.android.music.metachanged");
         registerReceiver(mBroadcastReceiver, iF);
+
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        mDisposable.clear();
         unregisterReceiver(mBroadcastReceiver);
     }
 
@@ -123,7 +139,6 @@ public class RetroMusicAlbums extends DreamService {
 
     class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder> {
 
-        private static final String TAG = "ImagesAdapter";
         private final ArrayList<Song> list;
 
         public ImagesAdapter(ArrayList<Song> songs) {

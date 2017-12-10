@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <code.name.monkey.retromusic.views.HeightFitSquareLayout
+                <com.retro.musicplayer.backend.views.HeightFitSquareLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
@@ -45,7 +45,7 @@
                             android:scaleType="centerCrop"
                             android:transitionName="@string/transition_album_art" />
                     </android.support.v7.widget.CardView>
-                </code.name.monkey.retromusic.views.HeightFitSquareLayout>
+                </com.retro.musicplayer.backend.views.HeightFitSquareLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -69,12 +69,6 @@
                         android:maxLines="2"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
-                    <Spinner
-                        android:id="@+id/lyrics_options"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:entries="@array/lyrics_options" />
                 </LinearLayout>
             </LinearLayout>
         </FrameLayout>

@@ -78,7 +78,12 @@ public class SettingsActivity extends AbsBaseActivity
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         switch (dialog.getTitle()) {
             case R.string.primary_color:
-                ThemeStore.editTheme(this).primaryColor(selectedColor).commit();
+                if (PreferenceUtil.getInstance(this).getGeneralTheme() == R.style.Theme_RetroMusic_Color) {
+                    Toast.makeText(this, "Hmm", Toast.LENGTH_SHORT).show();
+                    ThemeStore.editTheme(this)
+                            .primaryColor(selectedColor)
+                            .commit();
+                }
                 break;
             case R.string.accent_color:
                 ThemeStore.editTheme(this).accentColor(selectedColor).commit();
@@ -108,7 +113,7 @@ public class SettingsActivity extends AbsBaseActivity
 
         setupToolbar();
 
-        SettingsPagerAdapter settingsPagerAdapter = new SettingsPagerAdapter(getSupportFragmentManager());
+        SettingsPagerAdapter settingsPagerAdapter = new SettingsPagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(settingsPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
@@ -120,6 +125,7 @@ public class SettingsActivity extends AbsBaseActivity
         mTabLayout.setSelectedTabIndicatorColor(ThemeStore.accentColor(this));
 
         setResult(RESULT_CANCELED);
+
     }
 
     private void setupToolbar() {
@@ -153,6 +159,9 @@ public class SettingsActivity extends AbsBaseActivity
     }
 
     public static class AdvancedSettingsFragment extends ATEPreferenceFragmentCompat {
+        public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
+        Uri mCurrentDirectoryUri;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_advanced);
@@ -191,7 +200,11 @@ public class SettingsActivity extends AbsBaseActivity
                     }
                 }
             });
-            getListView().setBackgroundColor(ThemeStore.primaryColor(getContext()));
+
+            getListView().setBackgroundColor(
+                    ATHUtil.resolveColor(getContext(), R.attr.colorPrimary)
+            );
+
             invalidateSettings();
         }
 
@@ -221,19 +234,30 @@ public class SettingsActivity extends AbsBaseActivity
             getActivity().recreate();
         }
 
+
         private void invalidateSettings() {
             Preference findPreference = findPreference("changelog");
             findPreference.setOnPreferenceClickListener(preference -> {
                 openUrl(TELEGRAM_CHANGE_LOG);
                 return true;
             });
-            findPreference = findPreference("day_dream");
+
+            findPreference = findPreference("external_storage_access");
             findPreference.setVisible(false);
+            findPreference.setOnPreferenceClickListener(preference -> {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
+                return true;
+            });
+
+            findPreference = findPreference("day_dream");
+            //findPreference.setVisible(false);
             findPreference.setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Settings.ACTION_DREAM_SETTINGS);
                 startActivity(intent);
                 return true;
             });
+
             findPreference = findPreference("user_info");
             findPreference.setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(getContext(), UserInfoActivity.class));
@@ -270,6 +294,19 @@ public class SettingsActivity extends AbsBaseActivity
                 getActivity().setResult(RESULT_OK);
                 return true;
             });
+
+            /*TwoStatePreference toggleStatusBar = (TwoStatePreference) findPreference("toggle_full_screen");
+            toggleStatusBar.setOnPreferenceChangeListener((preference, o) -> {
+                getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
+                return true;
+            });
+            TwoStatePreference toggleNavigation = (TwoStatePreference) findPreference("toggle_full_screen");
+            toggleNavigation.setOnPreferenceChangeListener((preference, o) -> {
+                getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
+                return true;
+            });*/
             TwoStatePreference toggleLanguage = (TwoStatePreference) findPreference("language_en");
             toggleLanguage.setOnPreferenceChangeListener((preference, o) -> {
 
@@ -309,7 +346,8 @@ public class SettingsActivity extends AbsBaseActivity
         }
     }
 
-    public static class SettingsFragment extends ATEPreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class SettingsFragment extends ATEPreferenceFragmentCompat
+            implements SharedPreferences.OnSharedPreferenceChangeListener {
         private static void setSummary(@NonNull Preference preference) {
             setSummary(preference, PreferenceManager
                     .getDefaultSharedPreferences(preference.getContext())
@@ -360,7 +398,9 @@ public class SettingsActivity extends AbsBaseActivity
                             .canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                 }
             });
-            getListView().setBackgroundColor(ATHUtil.resolveColor(getActivity(), R.attr.colorPrimary, R.color.md_white_1000));
+            getListView().setBackgroundColor(
+                    ATHUtil.resolveColor(getContext(), R.attr.colorPrimary)
+            );
             invalidateSettings();
             PreferenceUtil.getInstance(getActivity()).registerOnSharedPreferenceChangedListener(this);
         }
@@ -370,16 +410,19 @@ public class SettingsActivity extends AbsBaseActivity
         }
 
         private void invalidateSettings() {
+
             final Preference generalTheme = findPreference("general_theme");
+
             setSummary(generalTheme);
             generalTheme.setOnPreferenceChangeListener((preference, newValue) -> {
                 setSummary(generalTheme, newValue);
+                String theme = (String) newValue;
                 ThemeStore.editTheme(getActivity())
-                        .activityTheme(PreferenceUtil.getThemeResFromPrefValue((String) newValue))
+                        .activityTheme(PreferenceUtil.getThemeResFromPrefValue(theme))
                         .commit();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                    getActivity().setTheme(PreferenceUtil.getThemeResFromPrefValue((String) newValue));
+                    getActivity().setTheme(PreferenceUtil.getThemeResFromPrefValue(theme));
                     new DynamicShortcutManager(getActivity()).updateDynamicShortcuts();
                 }
                 getActivity().recreate();
@@ -423,6 +466,7 @@ public class SettingsActivity extends AbsBaseActivity
                     return true;
                 });
             }
+
             TwoStatePreference twoSatePreference = (TwoStatePreference) findPreference("adaptive_color_app");
             twoSatePreference.setOnPreferenceChangeListener((preference, newValue) -> {
                 //getActivity().recreate();

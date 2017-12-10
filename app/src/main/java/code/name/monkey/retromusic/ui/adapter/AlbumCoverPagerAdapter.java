@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.adapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.retro.musicplayer.backend.misc.CustomFragmentStatePagerAdapter;
 import com.retro.musicplayer.backend.model.Song;
 
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
-import code.name.monkey.retromusic.misc.CustomFragmentStatePagerAdapter;
 import code.name.monkey.retromusic.ui.activities.LyricsActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
@@ -102,7 +103,7 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             int layout;
             switch (PreferenceUtil.getInstance(getContext()).getNowPlayingScreen()) {
@@ -110,6 +111,7 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
                 case FLAT:
                     layout = R.layout.fragment_album_flat_cover;
                     break;
+                case TINY:
                 case FULL:
                     layout = R.layout.fragment_album_full_cover;
                     break;

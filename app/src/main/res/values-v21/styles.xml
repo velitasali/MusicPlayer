@@ -8,12 +8,15 @@
     <style name="Theme.RetroMusic.Light" parent="Theme.RetroMusic.Base.Light">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
+
     </style>
 
     <style name="Theme.RetroMusic.Black" parent="Theme.RetroMusic.Base.Black">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
+
     </style>
+
 
     <style name="Theme.RetroMusic.Notification" parent="@android:style/TextAppearance.Material.Notification" />
 

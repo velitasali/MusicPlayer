@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +21,8 @@ import android.view.View;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 
+import java.util.Locale;
+
 import code.name.monkey.retromusic.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -27,6 +31,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public abstract class AbsBaseActivity extends AbsThemeActivity {
     public static final int PERMISSION_REQUEST = 100;
+    private static final String TAG = "AbsBaseActivity";
 
     static {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
@@ -37,16 +42,30 @@ public abstract class AbsBaseActivity extends AbsThemeActivity {
     private String[] permissions;
     private String permissionDeniedMessage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        changeLanguage();
         super.onCreate(savedInstanceState);
+
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         permissions = getPermissionsToRequest();
         hadPermissions = hasPermissions();
 
         setPermissionDeniedMessage(null);
+    }
+
+    private void changeLanguage() {
+        String lang = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString("LANG", "");
+        Configuration config = getBaseContext().getResources().getConfiguration();
+
+        if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
+            Locale locale = new Locale(lang);
+            Locale.setDefault(locale);
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
     }
 
     @Override
@@ -67,6 +86,7 @@ public abstract class AbsBaseActivity extends AbsThemeActivity {
                 onHasPermissionsChanged(hasPermissions);
             }
         }
+
     }
 
     protected void onHasPermissionsChanged(boolean hasPermissions) {
@@ -159,4 +179,5 @@ public abstract class AbsBaseActivity extends AbsThemeActivity {
             onHasPermissionsChanged(true);
         }
     }
+
 }

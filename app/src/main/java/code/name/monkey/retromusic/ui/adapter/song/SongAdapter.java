@@ -25,7 +25,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.SongMenuHelper;
 import code.name.monkey.retromusic.helper.menu.SongsMenuHelper;
 import code.name.monkey.retromusic.interfaces.CabHolder;
-
 import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -103,8 +102,8 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
                 holder.shortSeparator.setVisibility(View.GONE);
             }
         } else {
-            if (holder.shortSeparator != null) {
-                holder.shortSeparator.setVisibility(View.VISIBLE);
+            if (holder.separator != null) {
+                holder.separator.setVisibility(View.VISIBLE);
             }
         }
 
@@ -133,7 +132,6 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
 
     protected void loadAlbumCover(Song song, final ViewHolder holder) {
         if (holder.image == null) return;
-
         SongGlideRequest.Builder.from(Glide.with(activity), song)
                 .checkIgnoreMediaStore(activity)
                 .generatePalette(activity).build()
@@ -194,6 +192,15 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             setImageTransitionName(activity.getString(R.string.transition_album_art));
+
+            /*if (mItemView != null) {
+                mItemView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(MenuItem item) {
+                        SongMenuHelper.handleMenuClick(activity, dataSet.get(getAdapterPosition()), item.getItemId());
+                    }
+                });
+            }*/
 
             if (menu == null) {
                 return;

@@ -14,9 +14,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:background="@drawable/shadow_down_edited"
-        android:minHeight="128dp" />
+        android:layout_height="match_parent"
+        android:background="@color/eighty_percent_black_overlay" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,28 +30,29 @@
 
         </FrameLayout>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/player_toolbar"
-            style="@style/Toolbar48"
-            android:navigationIcon="@drawable/ic_close_white_24dp"
-            app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:subtitleTextAppearance="@style/FullScreenSubTitleAppearance"
-            app:titleMarginStart="0dp"
-            app:titleTextAppearance="@style/FullScreenTitleAppearance" />
+        <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/player_toolbar"
+                style="@style/Toolbar48"
+                android:navigationIcon="@drawable/ic_close_white_24dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetStartWithNavigation="0dp"
+                app:subtitleTextAppearance="@style/FullScreenSubTitleAppearance"
+                app:titleMarginStart="0dp"
+                app:titleTextAppearance="@style/FullScreenTitleAppearance" />
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="196dp"
-            android:layout_gravity="bottom"
-            android:background="@drawable/shadow_up_edited"
-            android:minHeight="128dp" />
 
         <fragment
             android:id="@+id/playback_controls_fragment"

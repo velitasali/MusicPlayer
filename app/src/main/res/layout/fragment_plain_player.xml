@@ -37,7 +37,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="26sp"
+                android:textSize="22sp"
                 tools:ignore="MissingPrefix"
                 tools:text="Title" />
 
@@ -47,12 +47,11 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="Text" />
         </LinearLayout>
 
-        <code.name.monkey.retromusic.views.WidthFitSquareLayout
+        <com.retro.musicplayer.backend.views.WidthFitSquareLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -62,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.retromusic.views.WidthFitSquareLayout>
+        </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

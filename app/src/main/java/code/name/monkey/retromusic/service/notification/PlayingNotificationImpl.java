@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -31,17 +30,28 @@ import com.retro.musicplayer.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
-
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 import code.name.monkey.retromusic.util.Util;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_QUIT;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
+
 public class PlayingNotificationImpl extends PlayingNotification {
 
     private Target<BitmapPaletteWrapper> target;
+
+    private static Bitmap createBitmap(Drawable drawable, float sizeMultiplier) {
+        Bitmap bitmap = Bitmap.createBitmap((int) (drawable.getIntrinsicWidth() * sizeMultiplier), (int) (drawable.getIntrinsicHeight() * sizeMultiplier), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bitmap);
+        drawable.setBounds(0, 0, c.getWidth(), c.getHeight());
+        drawable.draw(c);
+        return bitmap;
+    }
 
     @Override
     public synchronized void update() {
@@ -75,8 +85,9 @@ public class PlayingNotificationImpl extends PlayingNotification {
 
         Intent action = new Intent(service, MainActivity.class);
         action.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, 0);
-        final PendingIntent deleteIntent = buildPendingIntent(service,  ACTION_QUIT, null);
+        final PendingIntent deleteIntent = buildPendingIntent(service, ACTION_QUIT, null);
 
         final Notification notification = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -183,12 +194,12 @@ public class PlayingNotificationImpl extends PlayingNotification {
         notificationLayoutBig.setOnClickPendingIntent(R.id.action_play_pause, pendingIntent);
 
         // Next track
-        pendingIntent = buildPendingIntent(service,  ACTION_SKIP, serviceName);
+        pendingIntent = buildPendingIntent(service, ACTION_SKIP, serviceName);
         notificationLayout.setOnClickPendingIntent(R.id.action_next, pendingIntent);
         notificationLayoutBig.setOnClickPendingIntent(R.id.action_next, pendingIntent);
 
         // Close
-        pendingIntent = buildPendingIntent(service,  ACTION_QUIT, serviceName);
+        pendingIntent = buildPendingIntent(service, ACTION_QUIT, serviceName);
         notificationLayoutBig.setOnClickPendingIntent(R.id.action_quit, pendingIntent);
     }
 
@@ -196,13 +207,5 @@ public class PlayingNotificationImpl extends PlayingNotification {
         Intent intent = new Intent(action);
         intent.setComponent(serviceName);
         return PendingIntent.getService(context, 0, intent, 0);
-    }
-
-    private static Bitmap createBitmap(Drawable drawable, float sizeMultiplier) {
-        Bitmap bitmap = Bitmap.createBitmap((int) (drawable.getIntrinsicWidth() * sizeMultiplier), (int) (drawable.getIntrinsicHeight() * sizeMultiplier), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bitmap);
-        drawable.setBounds(0, 0, c.getWidth(), c.getHeight());
-        drawable.draw(c);
-        return bitmap;
     }
 }

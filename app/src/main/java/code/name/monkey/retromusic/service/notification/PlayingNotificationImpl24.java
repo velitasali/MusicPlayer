@@ -22,18 +22,20 @@ import com.retro.musicplayer.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
-
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
+import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
 
 public class PlayingNotificationImpl24 extends PlayingNotification {
+
 
     @Override
     public synchronized void update() {

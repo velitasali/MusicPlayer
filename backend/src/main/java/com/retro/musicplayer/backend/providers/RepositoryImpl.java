@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
 import com.retro.musicplayer.backend.loaders.ArtistLoader;
+import com.retro.musicplayer.backend.loaders.GenreLoader;
+import com.retro.musicplayer.backend.loaders.GenreSongsLoader;
 import com.retro.musicplayer.backend.loaders.HomeLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
@@ -12,6 +14,7 @@ import com.retro.musicplayer.backend.loaders.SearchLoader;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Artist;
+import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.providers.interfaces.Repository;
@@ -76,6 +79,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Observable<ArrayList<Song>> getFavoriteSongs() {
+        return null;
+    }
+
+    @Override
     public Observable<ArrayList<Object>> search(String query) {
         return SearchLoader.searchAll(context, query);
     }
@@ -90,6 +98,15 @@ public class RepositoryImpl implements Repository {
         return HomeLoader.getHomeLoader(context);
     }
 
+    @Override
+    public Observable<ArrayList<Genre>> getAllGenres() {
+        return GenreLoader.getAllGenres(context);
+    }
+
+    @Override
+    public Observable<ArrayList<Song>> getGenre(int genreId) {
+        return GenreSongsLoader.getGenreSongsList(context, genreId);
+    }
 
 
 }

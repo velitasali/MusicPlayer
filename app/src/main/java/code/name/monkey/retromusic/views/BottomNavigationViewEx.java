@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.internal.BottomNavigationItemView;
@@ -22,6 +23,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.kabouzeid.appthemehelper.ThemeStore;
+import com.kabouzeid.appthemehelper.util.ATHUtil;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -54,17 +58,17 @@ public class BottomNavigationViewEx extends BottomNavigationView {
 
     public BottomNavigationViewEx(Context context) {
         super(context);
-//        init();
+        tintColor(context);
     }
 
     public BottomNavigationViewEx(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        init();
+        tintColor(context);
     }
 
     public BottomNavigationViewEx(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-//        init();
+        tintColor(context);
     }
 
     /**
@@ -90,6 +94,22 @@ public class BottomNavigationViewEx extends BottomNavigationView {
     public static int dp2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+
+    private static void setItemIconColors(@NonNull BottomNavigationView view, @ColorInt int normalColor, @ColorInt int selectedColor) {
+        ColorStateList iconSl = new ColorStateList(new int[][]{{-16842912}, {16842912}}, new int[]{normalColor, selectedColor});
+        view.setItemIconTintList(iconSl);
+    }
+
+    private static void setItemTextColors(@NonNull BottomNavigationView view, @ColorInt int normalColor, @ColorInt int selectedColor) {
+        ColorStateList textSl = new ColorStateList(new int[][]{{-16842912}, {16842912}}, new int[]{normalColor, selectedColor});
+        view.setItemTextColor(textSl);
+    }
+
+    private void tintColor(Context context) {
+        int color = ATHUtil.resolveColor(context, android.R.attr.textColorSecondary);
+        setItemIconColors(this, color, ThemeStore.accentColor(context));
+        setItemTextColors(this, color, ThemeStore.accentColor(context));
     }
 
     private void init() {

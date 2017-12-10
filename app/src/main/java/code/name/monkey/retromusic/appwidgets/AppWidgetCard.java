@@ -142,7 +142,7 @@ public class AppWidgetCard extends BaseAppWidget {
                                 Drawable image;
 
                                 if (bitmap == null) {
-                                    image = service.getResources().getDrawable(R.drawable.default_album);
+                                    image = service.getResources().getDrawable(R.drawable.default_album_art);
                                 } else {
                                     image = new BitmapDrawable(bitmap);
                                 }

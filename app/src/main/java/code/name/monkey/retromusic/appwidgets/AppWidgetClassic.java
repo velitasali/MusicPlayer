@@ -112,7 +112,7 @@ public class AppWidgetClassic extends BaseAppWidget {
                             private void update(@Nullable Bitmap bitmap) {
                                 appWidgetView.setViewVisibility(R.id.image, View.VISIBLE);
                                 if (bitmap == null) {
-                                    appWidgetView.setImageViewResource(R.id.image, R.drawable.default_album);
+                                    appWidgetView.setImageViewResource(R.id.image, R.drawable.default_album_art);
                                 } else {
                                     appWidgetView.setImageViewBitmap(R.id.image, bitmap);
                                 }

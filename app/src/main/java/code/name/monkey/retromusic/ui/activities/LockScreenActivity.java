@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
+import com.retro.musicplayer.backend.swipebtn.SwipeButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +22,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.swipebtn.SwipeButton;
 
 /**
  * Created by hemanths on 20/08/17.

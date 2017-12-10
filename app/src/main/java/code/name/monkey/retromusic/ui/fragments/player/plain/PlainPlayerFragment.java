@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
@@ -43,11 +44,19 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     TextView mText;
     @BindView(R.id.player_toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.toolbar_container)
+    FrameLayout toolbarContainer;
     private Unbinder unbinder;
     private PlainPlaybackControlsFragment mPlainPlaybackControlsFragment;
     private int mLastColor;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
+
+    @Override
+    public void onToolbarToggled() {
+        //Toggle hiding toolbar for effect
+        toggleToolbar(toolbarContainer);
+    }
 
     @Override
     public void onDestroyView() {

@@ -17,7 +17,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
@@ -42,45 +42,56 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar48"
-                app:title="@string/action_search"
                 app:navigationIcon="@drawable/ic_close_white_24dp"
+                app:title="@string/action_search"
                 tools:ignore="UnusedAttribute" />
         </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:transitionName="@string/transition_search_bar">
+            android:transitionName="@string/transition_search_bar"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="6dp">
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/search_view"
-                style="@style/SearchViewTheme"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:focusable="true"
-                android:iconifiedByDefault="false"
-                android:transitionGroup="true"
-                app:queryBackground="@null"
-                app:searchHintIcon="@null"
-                app:searchIcon="@null" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <code.name.monkey.retromusic.views.IconImageView
-                android:id="@+id/voice_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?roundSelector"
-                android:padding="16dp"
-                app:srcCompat="@drawable/ic_mic_white_24dp" />
-        </LinearLayout>
+                <android.support.v7.widget.SearchView
+                    android:id="@+id/search_view"
+                    style="@style/SearchViewTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="48dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:iconifiedByDefault="false"
+                    android:transitionGroup="true"
+                    app:queryBackground="@null"
+                    app:searchHintIcon="@null"
+                    app:searchIcon="@null" />
+
+
+                <code.name.monkey.retromusic.views.IconImageView
+                    android:id="@+id/voice_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:background="?roundSelector"
+                    android:padding="12dp"
+                    app:srcCompat="@drawable/ic_mic_white_24dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </android.support.design.widget.AppBarLayout>
 
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/search_toolbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -100,7 +111,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"

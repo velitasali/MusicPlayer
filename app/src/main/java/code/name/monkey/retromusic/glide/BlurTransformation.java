@@ -16,7 +16,7 @@ import android.support.annotation.NonNull;
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import code.name.monkey.retromusic.BuildConfig;
-import code.name.monkey.retromusic.helper.StackBlur;
+import com.retro.musicplayer.backend.helper.StackBlur;
 import code.name.monkey.retromusic.util.ImageUtil;
 
 /**

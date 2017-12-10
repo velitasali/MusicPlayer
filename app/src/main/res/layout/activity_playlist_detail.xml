@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorPrimary"
     android:orientation="vertical"
     android:transitionGroup="true"
     tools:ignore="UnusedAttribute">
@@ -16,18 +18,19 @@
     </FrameLayout>
 
     <android.support.design.widget.CoordinatorLayout
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorPrimary">
+        android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
             tools:ignore="UnusedAttribute">
 
             <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
@@ -40,11 +43,6 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
                     style="@style/Toolbar48"
-                    android:elevation="0dp"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:layout_collapseMode="pin"
-                    app:titleMarginStart="0dp"
                     tools:ignore="UnusedAttribute" />
             </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 
@@ -59,7 +57,6 @@
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/colorPrimary"
             android:clipToPadding="false"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -77,16 +74,13 @@
 
         <include layout="@layout/horizontal_progress" />
 
-        <ImageButton
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/action_shuffle"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
-            android:background="@drawable/color_circle_gradient"
-            android:elevation="8dp"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_shuffle_white_24dp"
-            tools:ignore="ContentDescription" />
+            android:src="@drawable/ic_shuffle_white_24dp"
+            app:layout_behavior="code.name.monkey.retromusic.misc.ScrollAwareFABBehavior" />
     </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

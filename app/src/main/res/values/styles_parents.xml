@@ -30,6 +30,11 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
+    <style name="Theme.RetroMusic.Base.Color" parent="@style/Theme.RetroMusic.Base">
+        <item name="colorPrimary">@color/md_green_A400</item>
+        <item name="android:colorPrimary">@color/md_green_A400</item>
+    </style>
+
     <style name="Theme.RetroMusic.Base.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowActionBarOverlay">true</item>
         <item name="windowActionBarOverlay">true</item>
@@ -67,6 +72,7 @@
         <item name="md_background_color">@color/md_grey_900</item>
         <item name="colorPrimary">@color/md_black_1000</item>
     </style>
+
 
     <style name="FabParent">
         <item name="borderWidth">0dp</item>

@@ -6,8 +6,9 @@ import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.data.DataFetcher;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.ModelLoader;
-import code.name.monkey.retromusic.lastfm.rest.LastFMRestClient;
-import code.name.monkey.retromusic.lastfm.rest.model.LastFmArtist;
+import com.retro.musicplayer.backend.rest.LastFMRestClient;
+import com.retro.musicplayer.backend.rest.model.LastFmArtist;
+
 import code.name.monkey.retromusic.util.LastFMUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.Util;

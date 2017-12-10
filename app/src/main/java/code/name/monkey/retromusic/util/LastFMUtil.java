@@ -1,14 +1,12 @@
 package code.name.monkey.retromusic.util;
 
-import code.name.monkey.retromusic.lastfm.rest.model.LastFmAlbum.Album.Image;
-import code.name.monkey.retromusic.lastfm.rest.model.LastFmTrack;
+import com.retro.musicplayer.backend.rest.model.LastFmAlbum.Album.Image;
+import com.retro.musicplayer.backend.rest.model.LastFmArtist;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import code.name.monkey.retromusic.lastfm.rest.model.LastFmArtist;
 
 public class LastFMUtil {
 

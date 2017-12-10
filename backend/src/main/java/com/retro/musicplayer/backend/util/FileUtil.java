@@ -2,6 +2,7 @@ package com.retro.musicplayer.backend.util;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.retro.musicplayer.backend.loaders.SortedCursor;
 import com.retro.musicplayer.backend.model.Song;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -31,6 +33,17 @@ import io.reactivex.Observable;
  */
 public final class FileUtil {
     private FileUtil() {
+    }
+
+    public static byte[] readBytes(InputStream stream) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int count;
+        while ((count = stream.read(buffer)) != -1) {
+            baos.write(buffer, 0, count);
+        }
+        stream.close();
+        return baos.toByteArray();
     }
 
     @NonNull
@@ -201,5 +214,18 @@ public final class FileUtil {
         String ret = readFromStream(fin);
         fin.close();
         return ret;
+    }
+
+    public static boolean isExternalMemoryAvailable() {
+        Boolean isSDPresent = Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
+        Boolean isSDSupportedDevice = Environment.isExternalStorageRemovable();
+
+        if (isSDSupportedDevice && isSDPresent) {
+            // yes SD-card is present
+            return true;
+        } else {
+            return false;
+            // Sorry
+        }
     }
 }

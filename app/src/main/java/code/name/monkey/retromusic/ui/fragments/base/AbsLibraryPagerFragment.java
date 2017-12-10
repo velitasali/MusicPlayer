@@ -11,11 +11,6 @@ import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
  */
 public class AbsLibraryPagerFragment extends AbsMusicServiceFragment {
 
-    /* http://stackoverflow.com/a/2888433 */
-    @Override
-    public LoaderManager getLoaderManager() {
-        return getParentFragment().getLoaderManager();
-    }
 
     public LibraryFragment getLibraryFragment() {
         return (LibraryFragment) getParentFragment();
