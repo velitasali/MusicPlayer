@@ -251,7 +251,6 @@ public class SettingsActivity extends AbsBaseActivity
             });
 
             findPreference = findPreference("day_dream");
-            //findPreference.setVisible(false);
             findPreference.setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Settings.ACTION_DREAM_SETTINGS);
                 startActivity(intent);
@@ -322,20 +321,6 @@ public class SettingsActivity extends AbsBaseActivity
                 return true;
             });
 
-            TwoStatePreference colorAppShortcuts = (TwoStatePreference) findPreference("should_color_app_shortcuts");
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
-                colorAppShortcuts.setVisible(false);
-            } else {
-                colorAppShortcuts.setChecked(PreferenceUtil.getInstance(getActivity()).coloredAppShortcuts());
-                colorAppShortcuts.setOnPreferenceChangeListener((preference, newValue) -> {
-                    // Save preference
-                    PreferenceUtil.getInstance(getActivity()).setColoredAppShortcuts((Boolean) newValue);
-                    // Update app shortcuts
-                    new DynamicShortcutManager(getActivity()).updateDynamicShortcuts();
-
-                    return true;
-                });
-            }
 
             TwoStatePreference cornerWindow = (TwoStatePreference) findPreference("corner_window");
             cornerWindow.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -442,6 +427,23 @@ public class SettingsActivity extends AbsBaseActivity
                         .show();
                 return true;
             });
+
+            TwoStatePreference colorAppShortcuts = (TwoStatePreference) findPreference("should_color_app_shortcuts");
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
+                colorAppShortcuts.setVisible(false);
+            } else {
+                colorAppShortcuts.setChecked(PreferenceUtil.getInstance(getActivity()).coloredAppShortcuts());
+                colorAppShortcuts.setOnPreferenceChangeListener((preference, newValue) -> {
+                    // Save preference
+                    PreferenceUtil.getInstance(getActivity()).setColoredAppShortcuts((Boolean) newValue);
+                    // Update app shortcuts
+                    new DynamicShortcutManager(getActivity()).updateDynamicShortcuts();
+
+                    return true;
+                });
+            }
+
+
             final Preference autoDownloadImagesPolicy = findPreference("auto_download_images_policy");
             setSummary(autoDownloadImagesPolicy);
             autoDownloadImagesPolicy.setOnPreferenceChangeListener((preference, o) -> {
