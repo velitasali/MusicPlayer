@@ -20,11 +20,13 @@ import com.retro.musicplayer.backend.RetroConstants;
 import com.retro.musicplayer.backend.model.Song;
 
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 
 import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
 import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
@@ -69,7 +71,12 @@ public class PlayingNotificationImpl24 extends PlayingNotification {
                     @Override
                     public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
                         Palette palette = resource.getPalette();
-                        update(resource.getBitmap(), palette.getVibrantColor(palette.getMutedColor(Color.TRANSPARENT)));
+                        //update(resource.getBitmap(), palette.getVibrantColor(palette.getMutedColor(Color.TRANSPARENT)));
+
+                        update(resource.getBitmap(), PreferenceUtil.getInstance(RetroApplication.getInstance()).isDominantColor() ?
+                                RetroMusicColorUtil.getDominantColor(resource.getBitmap(), Color.TRANSPARENT) :
+                                RetroMusicColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT));
+
                     }
 
                     @Override

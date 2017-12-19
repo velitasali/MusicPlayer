@@ -114,7 +114,10 @@ public class PlayingNotificationImpl extends PlayingNotification {
                         .into(new SimpleTarget<BitmapPaletteWrapper>(bigNotificationImageSize, bigNotificationImageSize) {
                             @Override
                             public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
-                                update(resource.getBitmap(), RetroMusicColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT));
+                                update(resource.getBitmap(),
+                                        PreferenceUtil.getInstance(service).isDominantColor() ?
+                                                RetroMusicColorUtil.getDominantColor(resource.getBitmap(), Color.TRANSPARENT) :
+                                                RetroMusicColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT));
                             }
 
                             @Override
