@@ -39,6 +39,8 @@ import com.bumptech.glide.BitmapRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.retro.musicplayer.backend.helper.ShuffleHelper;
+import com.retro.musicplayer.backend.helper.StopWatch;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
 import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
 import com.retro.musicplayer.backend.model.Playlist;
@@ -59,8 +61,6 @@ import code.name.monkey.retromusic.appwidgets.AppWidgetClassic;
 import code.name.monkey.retromusic.appwidgets.AppWidgetSmall;
 import code.name.monkey.retromusic.glide.BlurTransformation;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
-import com.retro.musicplayer.backend.helper.ShuffleHelper;
-import com.retro.musicplayer.backend.helper.StopWatch;
 import code.name.monkey.retromusic.service.notification.PlayingNotification;
 import code.name.monkey.retromusic.service.notification.PlayingNotificationImpl;
 import code.name.monkey.retromusic.service.notification.PlayingNotificationImpl24;
@@ -95,7 +95,6 @@ import static com.retro.musicplayer.backend.RetroConstants.SHUFFLE_MODE_CHANGED;
  */
 public class MusicService extends Service implements SharedPreferences.OnSharedPreferenceChangeListener, Playback.PlaybackCallbacks {
     public static final String TAG = MusicService.class.getSimpleName();
-
 
     public static final String SAVED_POSITION = "POSITION";
     public static final String SAVED_POSITION_IN_TRACK = "POSITION_IN_TRACK";
@@ -1180,6 +1179,7 @@ public class MusicService extends Service implements SharedPreferences.OnSharedP
                 updateMediaSessionMetaData();
                 break;
             case PreferenceUtil.COLORED_NOTIFICATION:
+            case PreferenceUtil.DOMINANT_COLOR:
                 updateNotification();
                 break;
             case PreferenceUtil.CLASSIC_NOTIFICATION:
