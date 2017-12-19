@@ -6,19 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -35,7 +31,6 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
-import code.name.monkey.retromusic.util.PreferenceUtil;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.retro.musicplayer.backend.RetroConstants.ALEKSANDAR_TESIC_GOOGLE_PLUS;
@@ -60,49 +55,26 @@ import static com.retro.musicplayer.backend.RetroConstants.TRANSLATE;
  */
 public class AboutActivity extends AbsBaseActivity {
     private static final int AVATAR_SIZE = 200;
-    private static List<Contributors> sList = new ArrayList<>();
+    //private static List<Contributors> sList = new ArrayList<>();
 
-    static {
+    /*static {
         sList.addAll(Arrays.asList(
-                new Contributors(
-                        R.string.luis_gomez,
-                        R.string.spanish,
-                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_5680585e0a1ce0.19084464.jpg"
-                ), new Contributors(
-                        R.string.jangbeyond,
-                        R.string.chinese_simplified,
-                        ""
-                ), new Contributors(
-                        R.string.cyvb,
-                        R.string.chinese_simplified,
-                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_59d046613b7780.42406832.jpg"
-                ), new Contributors(
-                        R.string.sota,
-                        R.string.japanese,
-                        ""
-                ), new Contributors(
-                        R.string.mobile46,
-                        R.string.turkish,
-                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_583d9ae7a83853.57176255.jpg"
-                ), new Contributors(
-                        R.string.mega_cavidan2003,
-                        R.string.turkish,
-                        ""
-                ), new Contributors(
-                        R.string.tommaso01c,
-                        R.string.italian,
-                        ""
-                ), new Contributors(
-                        R.string.emmanuelenukaj,
-                        R.string.italian,
-                        ""
-                ), new Contributors(
-                        R.string.paha_akos,
-                        R.string.hungarian,
-                        "https://s3.amazonaws.com/oneskyapp.static/pic/avatar_59ee18abf180f2.69847271.jpg"
-                ))
-        );
-    }
+                new Contributors(R.string.luis_gomez),
+                new Contributors(R.string.jangbeyond),
+                new Contributors(R.string.cyvb),
+                new Contributors(R.string.sota),
+                new Contributors(R.string.mobile46),
+                new Contributors(R.string.mega_cavidan2003),
+                new Contributors(R.string.tommaso01c),
+                new Contributors(R.string.emmanuelenukaj),
+                new Contributors(R.string.hazratov_umidbek),
+                new Contributors(R.string.faisal_hanif),
+                new Contributors(R.string.overunique_1n00bB),
+                new Contributors(R.string.abangmalik),
+                new Contributors(R.string.taileo2012),
+                new Contributors(R.string.Mobile46),
+                new Contributors(R.string.paha_akos)));
+    }*/
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -113,28 +85,12 @@ public class AboutActivity extends AbsBaseActivity {
     List<CircleImageView> profiles;
     @BindView(R.id.made_text)
     TextView madeText;
-    @BindView(R.id.app_share)
-    AppCompatImageButton mAppShare;
-    @BindView(R.id.google_plus_circle_btn)
-    AppCompatImageButton mGooglePlusCircleBtn;
-    @BindView(R.id.telegram_btn)
-    AppCompatImageButton mTelegramBtn;
-    @BindView(R.id.karimAbourGooglePlus)
-    AppCompatImageButton mKarimAbourGooglePlus;
-    @BindView(R.id.karimAbourGithub)
-    AppCompatImageButton mKarimAbourGithub;
-    @BindView(R.id.luisGomezGooglePlus)
-    ImageButton mLuisGomezGooglePlus;
-    @BindView(R.id.luisGomezTwitter)
-    ImageButton mLuisGomezTwitter;
     @BindView(R.id.contributors)
     TextView mContributors;
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.root)
     ViewGroup mViewGroup;
-    @BindView(R.id.app_bar)
-    AppBarLayout mAppBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,9 +110,9 @@ public class AboutActivity extends AbsBaseActivity {
 
     private void setupContributors() {
         mContributors.setTextColor(ThemeStore.accentColor(this));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(new ContributorsAdapter(sList));
+        //mRecyclerView.setAdapter(new ContributorsAdapter(sList));
     }
 
     @Override
@@ -180,8 +136,6 @@ public class AboutActivity extends AbsBaseActivity {
         Glide.with(this).load(R.drawable.hemanth_s).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(0));
         Glide.with(this).load(R.drawable.karim_abou_zeid).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(1));
         Glide.with(this).load(R.drawable.luis_gmzz).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(2));
-        //Glide.with(this).load(R.drawable.aleksandar_tesic).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(3));
-        // Glide.with(this).load(R.drawable.gabriel_zegarra).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(4));
         Glide.with(this).load(R.drawable.img_techjuice).override(AVATAR_SIZE, AVATAR_SIZE).into(profiles.get(3));
     }
 
@@ -281,15 +235,9 @@ public class AboutActivity extends AbsBaseActivity {
     public static class Contributors {
         @StringRes
         public int title;
-        @StringRes
-        public int text;
 
-        public String image;
-
-        Contributors(@StringRes int title, @StringRes int text, String image) {
+        Contributors(@StringRes int title) {
             this.title = title;
-            this.text = text;
-            this.image = image;
         }
     }
 
@@ -311,16 +259,6 @@ public class AboutActivity extends AbsBaseActivity {
             Contributors contributors = mList.get(i);
             if (holder.title != null) {
                 holder.title.setText(contributors.title);
-            }
-            if (holder.text != null) {
-                holder.text.setText(contributors.text);
-            }
-            if (holder.image != null) {
-                Glide.with(AboutActivity.this)
-                        .load(contributors.image)
-                        .placeholder(ContextCompat.getDrawable(AboutActivity.this, R.drawable.ic_person_flat))
-                        .override(AVATAR_SIZE, AVATAR_SIZE)
-                        .into(holder.image);
             }
         }
 
