@@ -10,7 +10,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +113,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
 
     private void setUpToolBar() {
         mToolbar.setTitle(mGenre.name);
-        mToolbar.setSubtitle(mGenre.songCount + " Songs");
+        mToolbar.setSubtitle(mGenre.songCount+" " + (mGenre.songCount > 1 ? getString(R.string.songs) : getString(R.string.song)));
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(mToolbar);
@@ -211,8 +210,8 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
                 .subscribe(bitmaps -> {
                     for (Bitmap bitmap : bitmaps) {
                         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT,
-                                        ViewGroup.LayoutParams.MATCH_PARENT);
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT);
 
                         ImageView imageView = new ImageView(GenreDetailsActivity.this);
                         imageView.setLayoutParams(layoutParams);
@@ -228,7 +227,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
                     image.setOutAnimation(out);
                     image.startFlipping();
                     image.setAutoStart(true);
-                    image.setFlipInterval(1500);
+                    image.setFlipInterval(5000);
                 }));
     }
 }
