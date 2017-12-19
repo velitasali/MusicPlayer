@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
@@ -104,7 +103,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     TextView mWelcomeMessage;
     @BindView(R.id.navigation_item)
     RecyclerView mNavigationItems;
-    FirebaseAnalytics mFirebaseAnalytics;
+
     private boolean mBlockRequestPermissions;
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -127,7 +126,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
 
         ButterKnife.bind(this);
         setBottomBarVisibility(View.VISIBLE);
@@ -165,8 +164,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         IntentFilter screenOnOff = new IntentFilter();
         screenOnOff.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mBroadcastReceiver, screenOnOff);
-
-
     }
 
     @Override
