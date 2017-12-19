@@ -5,6 +5,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.kabouzeid.appthemehelper.util.TintHelper;
 import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +39,6 @@ import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -78,8 +80,9 @@ public class PlayerPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player_playback_controls, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
