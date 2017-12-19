@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,32 +28,24 @@ import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.loaders.LastAddedSongsLoader;
-import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.smartplaylist.HistoryPlaylist;
 import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
 import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
 import com.retro.musicplayer.backend.mvp.contract.HomeContract;
 import com.retro.musicplayer.backend.mvp.presenter.HomePresenter;
-import com.retro.musicplayer.backend.util.schedulers.BaseSchedulerProvider;
-import com.retro.musicplayer.backend.util.schedulers.SchedulerProvider;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Random;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
-import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
-import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
-import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
+import code.name.monkey.retromusic.ui.adapter.home.HomeAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -71,12 +62,8 @@ public class HomeFragment extends AbsMainActivityFragment
         implements MainActivityFragmentCallbacks, HomeContract.HomeView, LibraryTabSelectedItem {
     private static final String TAG = "HomeFragment";
 
-    @BindView(R.id.recycler_view_albums)
-    RecyclerView recyclerViewAlbums;
-    @BindView(R.id.recycler_view_artist)
-    RecyclerView recyclerViewArtists;
-    @BindView(R.id.recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.playlist_recycler_view)
+    RecyclerView mRecyclerView;
     Unbinder unbinder;
     @BindView(toolbar)
     Toolbar mToolbar;
@@ -90,16 +77,9 @@ public class HomeFragment extends AbsMainActivityFragment
     CollapsingToolbarLayout mToolbarLayout;
     @BindView(R.id.container)
     LinearLayout mContainer;
-    @BindView(R.id.genre_recycler_view)
-    RecyclerView genreRecyclerView;
-    @BindViews({R.id.album_container,
-            R.id.artist_container,
-            R.id.playlist_container})
-    List<ViewGroup> mViewGroups;
-    private PlaylistAdapter adapter;
     private HomePresenter mHomePresenter;
     private CompositeDisposable mDisposable;
-    private BaseSchedulerProvider mProvider;
+    private HomeAdapter mHomeAdapter;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -108,40 +88,10 @@ public class HomeFragment extends AbsMainActivityFragment
         return fragment;
     }
 
-    private void setupRecentArtists() {
-        recyclerViewArtists.setLayoutManager(new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false));
-        recyclerViewArtists.setItemAnimator(new DefaultItemAnimator());
-        mDisposable.add(LastAddedSongsLoader.getLastAddedArtists(getContext())
-                .subscribeOn(mProvider.io())
-                .observeOn(mProvider.ui())
-                .subscribe(artists -> {
-                    if (artists.size() > 0) {
-                        mViewGroups.get(1).setVisibility(View.VISIBLE);
-                        recyclerViewArtists.setAdapter(new ArtistAdapter(getMainActivity(), artists, R.layout.item_artist, false, null));
-                    }
-                }));
-    }
-
-    private void setupRecentAlbums() {
-        recyclerViewAlbums.setLayoutManager(new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false));
-        recyclerViewAlbums.setItemAnimator(new DefaultItemAnimator());
-        mDisposable.add(LastAddedSongsLoader.getLastAddedAlbums(getContext())
-                .subscribeOn(mProvider.io())
-                .observeOn(mProvider.ui())
-                .subscribe(albums -> {
-                    if (albums.size() > 0) {
-                        mViewGroups.get(0).setVisibility(View.VISIBLE);
-                        recyclerViewAlbums.setAdapter(new AlbumAdapter(getMainActivity(), albums, R.layout.item_image, false, null));
-                    }
-                }));
-    }
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDisposable = new CompositeDisposable();
-        mProvider = new SchedulerProvider();
         mHomePresenter = new HomePresenter(Injection.provideRepository(getContext()), this);
     }
 
@@ -187,11 +137,14 @@ public class HomeFragment extends AbsMainActivityFragment
         }
 
         setupToolbar();
-        setupRecyclerView();
-        setupRecentArtists();
-        setupRecentAlbums();
+
+        mHomeAdapter = new HomeAdapter(getMainActivity());
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setAdapter(mHomeAdapter);
 
     }
+
 
     @SuppressWarnings("ConstantConditions")
     private void setupToolbar() {
@@ -201,7 +154,7 @@ public class HomeFragment extends AbsMainActivityFragment
                 int color;
                 switch (state) {
                     case COLLAPSED:
-                        getMainActivity().setLightStatusbar(true);
+                        getMainActivity().setLightStatusbar(!ATHUtil.isWindowBackgroundDark(getContext()));
                         color = ATHUtil.resolveColor(getContext(), R.attr.iconColor);
                         break;
                     default:
@@ -222,14 +175,6 @@ public class HomeFragment extends AbsMainActivityFragment
         getMainActivity().setSupportActionBar(mToolbar);
 
         mTitle.setText(getTimeOfTheDay());
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private void setupRecyclerView() {
-        adapter = new PlaylistAdapter(getMainActivity(), new ArrayList<Playlist>(), R.layout.item_list, null);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
     }
 
     @OnClick(R.id.search)
@@ -275,9 +220,10 @@ public class HomeFragment extends AbsMainActivityFragment
         mHomePresenter.subscribe();
     }
 
+
     @Override
-    public void showList(ArrayList<Playlist> playlists) {
-        adapter.swapDataSet(playlists);
+    public void showAllThingsList(ArrayList<Object> homes) {
+        mHomeAdapter.swapData(homes);
     }
 
     @Override
