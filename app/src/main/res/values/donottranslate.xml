@@ -54,4 +54,10 @@
     <string name="spanish" translatable="false">Spanish(US)</string>
     <string name="sans_bold" translatable="false">fonts/circular_std_black.otf</string>
     <string name="sans_regular" translatable="false">fonts/circular_std_book.otf</string>
+    <string name="hazratov_umidbek" translatable="false">hazratov.umidbek</string>
+    <string name="faisal_hanif" translatable="false">Faisal Hanif</string>
+    <string name="overunique_1n00bB" translatable="false">overunique-1n00bB</string>
+    <string name="abangmalik" translatable="false">abangmalik</string>
+    <string name="taileo2012" translatable="false">taileo2012</string>
+    <string name="Mobile46" translatable="false">Mobile46</string>
 </resources>

@@ -24,7 +24,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
 
     @Override
     public void subscribe() {
-        loadHomes();
+        loadAllThings();
     }
 
     @Override
@@ -33,13 +33,13 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
     }
 
     @Override
-    public void loadHomes() {
-        disposable.add(repository.getHomeList()
+    public void loadAllThings() {
+        disposable.add(repository.getAllThings()
                 .subscribeOn(schedulerProvider.computation())
                 .observeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .doOnComplete(() -> view.completed())
-                .subscribe(homes -> view.showList(homes),
+                .subscribe(homes -> view.showAllThingsList(homes),
                         throwable -> view.showEmptyView()));
     }
 }

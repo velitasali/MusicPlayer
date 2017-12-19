@@ -6,6 +6,8 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.retro.musicplayer.backend.model.Album;
+import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.providers.HistoryStore;
 import com.retro.musicplayer.backend.providers.SongPlayCountStore;
@@ -129,5 +131,29 @@ public class TopAndRecentlyPlayedTracksLoader {
         }
 
         return null;
+    }
+
+    @NonNull
+    public static Observable<ArrayList<Album>> getTopAlbums(@NonNull Context context) {
+        return Observable.create(e -> {
+            getTopTracks(context).subscribe(songs -> {
+                if (songs.size() > 0) {
+                    e.onNext(AlbumLoader.splitIntoAlbums(songs));
+                }
+                e.onComplete();
+            });
+        });
+    }
+
+    @NonNull
+    public static Observable<ArrayList<Artist>> getTopArtists(@NonNull Context context) {
+        return Observable.create(e -> {
+            getTopAlbums(context).subscribe(albums -> {
+                if (albums.size() > 0) {
+                    e.onNext(ArtistLoader.splitIntoArtists(albums));
+                }
+                e.onComplete();
+            });
+        });
     }
 }

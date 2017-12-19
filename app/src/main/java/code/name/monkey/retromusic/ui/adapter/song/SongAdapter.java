@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.adapter.song;
 
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 /**
  * Created by hemanths on 13/08/17.
@@ -45,6 +47,7 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
 
     protected boolean usePalette = false;
     protected boolean showSectionName = true;
+    private Typeface mTypeface;
 
     public SongAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
         this(activity, dataSet, itemLayoutRes, usePalette, cabHolder, true);
@@ -58,6 +61,7 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
         this.usePalette = usePalette;
         this.showSectionName = showSectionName;
         setHasStableIds(true);
+        mTypeface = Typeface.createFromAsset(activity.getAssets(), activity.getString(R.string.sans_regular));
     }
 
     public void swapDataSet(ArrayList<Song> dataSet) {
@@ -183,7 +187,9 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return showSectionName ? MusicUtil.getSectionName(dataSet.get(position).title) : "";
+        return CalligraphyUtils.applyTypefaceSpan(
+                showSectionName ? MusicUtil.getSectionName(dataSet.get(position).title) : "",
+                mTypeface).toString();
     }
 
     public class ViewHolder extends MediaEntryViewHolder {

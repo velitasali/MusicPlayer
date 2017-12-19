@@ -7,11 +7,7 @@
             android:summary="@string/pref_summary_round_corners"
             android:title="@string/pref_title_round_corners" />
 
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
-            android:defaultValue="false"
-            android:key="should_color_app_shortcuts"
-            android:summary="@string/pref_summary_colored_app_shortcuts"
-            android:title="@string/pref_title_app_shortcuts" />
+
 
         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreference
             android:key="day_dream"
@@ -53,11 +49,7 @@
             android:key="language_en"
             android:summary="@string/pref_summary_language_en"
             android:title="@string/pref_title_toggle_language_en" />
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
-            android:defaultValue="false"
-            android:key="dominant_color"
-            android:summary="@string/pref_summary_dominant_color"
-            android:title="@string/pref_title_toggle_dominant_color" />
+
         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
             android:defaultValue="false"
             android:key="toggle_genre"

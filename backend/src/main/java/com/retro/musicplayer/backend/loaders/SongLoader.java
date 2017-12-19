@@ -22,6 +22,19 @@ import io.reactivex.Observable;
 
 public class SongLoader {
     protected static final String BASE_SELECTION = AudioColumns.IS_MUSIC + "=1" + " AND " + AudioColumns.TITLE + " != ''";
+    protected static final String[] BASE_PROJECTION = new String[]{
+            BaseColumns._ID,// 0
+            AudioColumns.TITLE,// 1
+            AudioColumns.TRACK,// 2
+            AudioColumns.YEAR,// 3
+            AudioColumns.DURATION,// 4
+            AudioColumns.DATA,// 5
+            AudioColumns.DATE_MODIFIED,// 6
+            AudioColumns.ALBUM_ID,// 7
+            AudioColumns.ALBUM,// 8
+            AudioColumns.ARTIST_ID,// 9
+            AudioColumns.ARTIST,// 10
+    };
 
     @NonNull
     public static Observable<ArrayList<Song>> getAllSongs(@NonNull Context context) {

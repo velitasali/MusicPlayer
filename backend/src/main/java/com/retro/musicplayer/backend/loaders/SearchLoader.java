@@ -21,25 +21,28 @@ public class SearchLoader {
         ArrayList<Object> results = new ArrayList<>();
         return Observable.create(e -> {
             if (!TextUtils.isEmpty(query)) {
-                SongLoader.getSongs(context, query).subscribe(songs -> {
-                    if (!songs.isEmpty()) {
-                        results.add(context.getResources().getString(R.string.songs));
-                        results.addAll(songs);
-                    }
-                });
+                SongLoader.getSongs(context, query)
+                        .subscribe(songs -> {
+                            if (!songs.isEmpty()) {
+                                results.add(context.getResources().getString(R.string.songs));
+                                results.addAll(songs);
+                            }
+                        });
 
-                ArtistLoader.getArtists(context, query).subscribe(artists -> {
-                    if (!artists.isEmpty()) {
-                        results.add(context.getResources().getString(R.string.artists));
-                        results.addAll(artists);
-                    }
-                });
-                AlbumLoader.getAlbums(context, query).subscribe(albums -> {
-                    if (!albums.isEmpty()) {
-                        results.add(context.getResources().getString(R.string.albums));
-                        results.addAll(albums);
-                    }
-                });
+                ArtistLoader.getArtists(context, query)
+                        .subscribe(artists -> {
+                            if (!artists.isEmpty()) {
+                                results.add(context.getResources().getString(R.string.artists));
+                                results.addAll(artists);
+                            }
+                        });
+                AlbumLoader.getAlbums(context, query)
+                        .subscribe(albums -> {
+                            if (!albums.isEmpty()) {
+                                results.add(context.getResources().getString(R.string.albums));
+                                results.addAll(albums);
+                            }
+                        });
             }
             e.onNext(results);
             e.onComplete();

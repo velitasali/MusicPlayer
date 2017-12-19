@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
 import com.retro.musicplayer.backend.loaders.ArtistLoader;
 import com.retro.musicplayer.backend.loaders.GenreLoader;
-import com.retro.musicplayer.backend.loaders.GenreSongsLoader;
 import com.retro.musicplayer.backend.loaders.HomeLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
@@ -99,13 +98,18 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Observable<ArrayList<Object>> getAllThings() {
+        return HomeLoader.getRecentAndTopThings(context);
+    }
+
+    @Override
     public Observable<ArrayList<Genre>> getAllGenres() {
         return GenreLoader.getAllGenres(context);
     }
 
     @Override
     public Observable<ArrayList<Song>> getGenre(int genreId) {
-        return GenreSongsLoader.getGenreSongsList(context, genreId);
+        return GenreLoader.getSongs(context, genreId);
     }
 
 

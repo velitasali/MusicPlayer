@@ -3,7 +3,7 @@
     <notice>
         <name>Phonograph</name>
         <url>https://github.com/kabouzeid/Phonograph</url>
-      <license>GNU General Public License 3.0</license>
+        <license>GNU General Public License 3.0</license>
     </notice>
     <notice>
         <name>RxAndroid</name>
@@ -12,25 +12,23 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-            <name>RecyclerView-FastScroll</name>
-            <url>https://github.com/timusus/RecyclerView-FastScroll</url>
-            <copyright>Copyright (C) 2015 Jake Wharton</copyright>
-            <license>Apache Software License 2.0</license>
-        </notice>
+        <name>RecyclerView-FastScroll</name>
+        <url>https://github.com/timusus/RecyclerView-FastScroll</url>
+        <copyright>Copyright (C) 2015 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
     <notice>
         <name>Calligraphy</name>
         <url>https://github.com/chrisjenx/Calligraphy</url>
         <copyright>Copyright 2013 Christopher Jenkins</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
-
     <notice>
-        <name>RxBinding</name>
-        <url>https://github.com/JakeWharton/RxBinding</url>
-        <copyright>Copyright 2013 Square, Inc.</copyright>
+        <name>Android-Snowfall</name>
+        <url>https://github.com/JetradarMobile/android-snowfall</url>
+        <copyright>Copyright 2016 JetRadar</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
-
     <notice>
         <name>Android Open Source Project</name>
         <url>http://developer.android.com/tools/support-library/index.html</url>
@@ -66,10 +64,10 @@
         <url>https://github.com/bumptech/glide</url>
     </notice>
     <notice>
-            <name>Material Contextual Action Bar</name>
-            <url>https://github.com/afollestad/material-cab</url>
-            <copyright>Copyright 2016 Aidan Follestad</copyright>
-            <license>Apache Software License 2.0</license>
+        <name>Material Contextual Action Bar</name>
+        <url>https://github.com/afollestad/material-cab</url>
+        <copyright>Copyright 2016 Aidan Follestad</copyright>
+        <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Advanced RecyclerView</name>
@@ -96,15 +94,21 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-            <name>MultiImageView</name>
-            <url>https://github.com/stfalcon-studio/MultiImageView</url>
-            <copyright>Copyright 2017 stfalcon.com</copyright>
-            <license>Apache Software License 2.0</license>
-        </notice>
+        <name>MultiImageView</name>
+        <url>https://github.com/stfalcon-studio/MultiImageView</url>
+        <copyright>Copyright 2017 stfalcon.com</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
     <notice>
-            <name>CircleImageView</name>
-            <url>https://github.com/hdodenhof/CircleImageView</url>
-            <copyright>Copyright 2014 - 2017 Henning Dodenhof</copyright>
-            <license>Apache Software License 2.0</license>
-        </notice>
+        <name>CircleImageView</name>
+        <url>https://github.com/hdodenhof/CircleImageView</url>
+        <copyright>Copyright 2014 - 2017 Henning Dodenhof</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>CircularImageView</name>
+        <url>https://github.com/lopspower/CircularImageView</url>
+        <copyright>Lopez Mikhael</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
 </notices>

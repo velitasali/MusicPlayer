@@ -37,6 +37,8 @@ public interface Repository {
 
     Observable<ArrayList<Playlist>> getHomeList();
 
+    Observable<ArrayList<Object>> getAllThings();
+
     Observable<ArrayList<Genre>> getAllGenres();
 
     Observable<ArrayList<Song>> getGenre(int genreId);

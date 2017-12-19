@@ -86,6 +86,12 @@
                             android:textColor="@color/md_white_1000" />
 
                     </LinearLayout>
+
+                    <com.jetradarmobile.snowfall.SnowfallView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:snowflakesNum="60" />
+
                 </FrameLayout>
 
                 <android.support.v7.widget.Toolbar
@@ -107,16 +113,37 @@
                     android:layout_margin="8dp"
                     app:cardCornerRadius="6dp">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_mic_white_24dp"
-                        android:drawablePadding="16dp"
-                        android:drawableStart="@drawable/ic_search_white_24dp"
-                        android:drawableTint="?attr/iconColor"
-                        android:padding="12dp"
-                        android:text="@string/search_hint"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:gravity="center_vertical"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp">
+
+                        <code.name.monkey.retromusic.views.IconImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:padding="8dp"
+                            app:srcCompat="@drawable/ic_search_white_24dp" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="16dp"
+                            android:drawableTint="?attr/iconColor"
+                            android:padding="12dp"
+                            android:text="@string/search_hint"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                        <code.name.monkey.retromusic.views.IconImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:padding="8dp"
+                            app:srcCompat="@drawable/ic_mic_white_24dp" />
+                    </LinearLayout>
                 </android.support.v7.widget.CardView>
             </FrameLayout>
         </android.support.design.widget.AppBarLayout>
@@ -135,135 +162,11 @@
 
                 <include layout="@layout/abs_playlists" />
 
-                <LinearLayout
-                    android:id="@+id/artist_container"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/playlist_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="12dp"
-                        android:background="?attr/dividerColor" />
-
-                    <TextView
-                        fontPath="fonts/sans_bold.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:text="@string/artists"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:ignore="MissingPrefix" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view_artist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/album_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="12dp"
-                        android:background="?attr/dividerColor" />
-
-                    <TextView
-                        fontPath="fonts/sans_bold.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp"
-                        android:text="@string/albums"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:ignore="MissingPrefix" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view_albums"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
-                </LinearLayout>
-
-                <LinearLayout
-
-                    android:id="@+id/playlist_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="12dp"
-                        android:background="?attr/dividerColor" />
-
-                    <TextView
-                        fontPath="fonts/sans_bold.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingEnd="16dp"
-                        android:paddingStart="16dp"
-                        android:paddingTop="8dp"
-                        android:text="@string/playlists"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:ignore="MissingPrefix" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/genre_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="4dp"
-                    android:visibility="gone">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_margin="12dp"
-                        android:background="?attr/dividerColor" />
-
-                    <TextView
-                        fontPath="fonts/sans_bold.ttf"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="8dp"
-                        android:paddingEnd="16dp"
-                        android:paddingStart="16dp"
-                        android:paddingTop="8dp"
-                        android:text="@string/genre"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="?android:attr/textColorPrimary"
-                        tools:ignore="MissingPrefix" />
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/genre_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false" />
-
-                </LinearLayout>
+                    android:nestedScrollingEnabled="false" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>

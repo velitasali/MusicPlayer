@@ -6,10 +6,11 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import com.retro.musicplayer.backend.loaders.SortOrder;
+import com.retro.musicplayer.backend.helper.SortOrder;
 
 
 public final class PreferenceUtil {
+    public static final String GENRE_SORT_ORDER = "genre_sort_order";
     public static final String GENERAL_THEME = "general_theme";
     public static final String DEFAULT_START_PAGE = "default_start_page";
     public static final String LAST_PAGE = "last_start_page";
@@ -73,6 +74,9 @@ public final class PreferenceUtil {
         return sInstance;
     }
 
+    public final String getGenreSortOrder() {
+        return mPreferences.getString(GENRE_SORT_ORDER, SortOrder.GenreSortOrder.GENRE_A_Z);
+    }
 
     public final String getArtistSortOrder() {
         return mPreferences.getString(ARTIST_SORT_ORDER, SortOrder.ArtistSortOrder.ARTIST_A_Z);

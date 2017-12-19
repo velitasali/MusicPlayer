@@ -30,7 +30,7 @@
                 android:name="code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_player_album_cover" />
+            com.retro.musicplayer.backend.views.WidthFitSquareLayoutusicplayer.backend.views.WidthFitSquareLayoutayout="@layout/fragment_player_album_cover" />
         </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
         <FrameLayout

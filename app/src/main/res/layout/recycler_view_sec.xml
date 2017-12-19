@@ -15,7 +15,8 @@
         android:paddingBottom="8dp"
         android:paddingEnd="0dp"
         android:paddingStart="16dp"
-        android:paddingTop="8dp">
+        android:paddingTop="8dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/title"
@@ -46,4 +47,9 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="12dp"
+        android:background="?attr/dividerColor" />
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.retro.musicplayer.backend.mvp.contract;
 
-import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.mvp.BasePresenter;
 import com.retro.musicplayer.backend.mvp.BaseView;
 
@@ -13,10 +12,10 @@ import java.util.ArrayList;
 
 public interface HomeContract {
     interface HomeView extends BaseView {
-        void showList(ArrayList<Playlist> homes);
+        void showAllThingsList(ArrayList<Object> homes);
     }
 
     interface HomePresenter extends BasePresenter<HomeView> {
-        void loadHomes();
+        void loadAllThings();
     }
 }

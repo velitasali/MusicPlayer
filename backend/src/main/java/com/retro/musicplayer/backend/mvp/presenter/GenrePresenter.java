@@ -41,15 +41,6 @@ public class GenrePresenter extends Presenter
         disposable.add(repository.getAllGenres()
                 .subscribeOn(schedulerProvider.computation())
                 .observeOn(schedulerProvider.ui())
-                .map(genres -> {
-                    ArrayList<Genre> list = new ArrayList<>();
-                    for (Genre genre : genres) {
-                        if (genre.songCount > 0) {
-                            list.add(genre);
-                        }
-                    }
-                    return list;
-                })
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(this::showList,
                         throwable -> view.showEmptyView(),
