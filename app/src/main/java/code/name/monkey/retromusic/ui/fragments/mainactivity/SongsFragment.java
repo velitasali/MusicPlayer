@@ -33,7 +33,7 @@ public class SongsFragment
         extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<SongAdapter, GridLayoutManager>
         implements SongContract.SongView {
     private static final String TAG = "Songs";
-    private SongPresenter songPresenter;
+    private SongPresenter mPresenter;
 
     public SongsFragment() {
         // Required empty public constructor
@@ -49,7 +49,7 @@ public class SongsFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songPresenter = new SongPresenter(Injection.provideRepository(getContext()), this);
+        mPresenter = new SongPresenter(Injection.provideRepository(getContext()), this);
     }
 
     @NonNull
@@ -89,7 +89,7 @@ public class SongsFragment
 
     @Override
     public void onMediaStoreChanged() {
-        songPresenter.loadSongs();
+        mPresenter.loadSongs();
     }
 
     @Override
@@ -137,13 +137,13 @@ public class SongsFragment
     public void onResume() {
         super.onResume();
         if (getAdapter().getDataSet().isEmpty())
-            songPresenter.subscribe();
+            mPresenter.subscribe();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        songPresenter.unsubscribe();
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 
     @Override
@@ -205,7 +205,7 @@ public class SongsFragment
     }
 
     private void reload() {
-        songPresenter.loadSongs();
+        mPresenter.loadSongs();
     }
 
     private void setUpSortOrderMenu(@NonNull SubMenu sortOrder) {

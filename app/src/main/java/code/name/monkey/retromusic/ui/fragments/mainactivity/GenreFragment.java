@@ -46,9 +46,10 @@ public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdap
         mPresenter.subscribe();
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onDestroy() {
+        super.onDestroy();
         mPresenter.unsubscribe();
     }
 

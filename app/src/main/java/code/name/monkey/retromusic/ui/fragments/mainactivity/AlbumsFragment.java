@@ -12,6 +12,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import com.retro.musicplayer.backend.Injection;
+import com.retro.musicplayer.backend.helper.SortOrder.AlbumSortOrder;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.mvp.contract.AlbumContract;
 import com.retro.musicplayer.backend.mvp.presenter.AlbumPresenter;
@@ -19,7 +20,6 @@ import com.retro.musicplayer.backend.mvp.presenter.AlbumPresenter;
 import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
-import com.retro.musicplayer.backend.helper.SortOrder.AlbumSortOrder;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -31,7 +31,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager> implements AlbumContract.AlbumView {
     public static final String TAG = AlbumsFragment.class.getSimpleName();
 
-    private AlbumPresenter albumPresenter;
+    private AlbumPresenter mPresenter;
 
     public static AlbumsFragment newInstance() {
         Bundle args = new Bundle();
@@ -108,13 +108,13 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
 
     @Override
     public void onMediaStoreChanged() {
-        albumPresenter.loadAlbums();
+        mPresenter.loadAlbums();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        albumPresenter = new AlbumPresenter(Injection.provideRepository(getContext()), this);
+        mPresenter = new AlbumPresenter(Injection.provideRepository(getContext()), this);
     }
 
     @Override
@@ -127,13 +127,13 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
     public void onResume() {
         super.onResume();
         if (getAdapter().getDataSet().isEmpty())
-            albumPresenter.subscribe();
+            mPresenter.subscribe();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        albumPresenter.unsubscribe();
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 
     @Override
@@ -185,7 +185,7 @@ public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFra
 
     private void setSaveSortOrder(String sortOrder) {
         PreferenceUtil.getInstance(getContext()).setAlbumSortOrder(sortOrder);
-        albumPresenter.loadAlbums();
+        mPresenter.loadAlbums();
     }
 
     @Override

@@ -55,7 +55,7 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
     RecyclerView genreRecyclerView;
     @BindView(R.id.genre_container)
     ViewGroup mViewGroup;
-    private PlaylistPresenter mPlaylistPresenter;
+    private PlaylistPresenter mPresenter;
     private PlaylistAdapter mPlaylistAdapter;
     private Unbinder unBinder;
     private CompositeDisposable mDisposable;
@@ -99,6 +99,7 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
         super.onDestroy();
         unBinder.unbind();
         mDisposable.clear();
+        mPresenter.unsubscribe();
     }
 
     @Override
@@ -107,7 +108,7 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
         setHasOptionsMenu(true);
         mDisposable = new CompositeDisposable();
         mProvider = new SchedulerProvider();
-        mPlaylistPresenter = new PlaylistPresenter(Injection.provideRepository(getContext()), this);
+        mPresenter = new PlaylistPresenter(Injection.provideRepository(getContext()), this);
     }
 
     @Override
@@ -134,11 +135,6 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
         mDisposable.add(GenreLoader.getAllGenres(getContext())
                 .subscribeOn(mProvider.io())
                 .observeOn(mProvider.ui())
-                .map(genres -> {
-                    ArrayList<Genre> list = new ArrayList<>();
-                    for (Genre genre : genres) if (genre.songCount > 0) list.add(genre);
-                    return list;
-                })
                 .subscribe(genres -> {
                     if (genres.size() > 0 && !PreferenceUtil.getInstance(getContext()).isGenreShown()) {
                         mViewGroup.setVisibility(View.VISIBLE);
@@ -151,19 +147,13 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
     public void onResume() {
         super.onResume();
         if (mPlaylistAdapter.getDataSet().isEmpty())
-            mPlaylistPresenter.subscribe();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mPlaylistPresenter.unsubscribe();
+            mPresenter.subscribe();
     }
 
     @Override
     public void onMediaStoreChanged() {
         super.onMediaStoreChanged();
-        mPlaylistPresenter.loadPlaylists();
+        mPresenter.loadPlaylists();
     }
 
     @Override

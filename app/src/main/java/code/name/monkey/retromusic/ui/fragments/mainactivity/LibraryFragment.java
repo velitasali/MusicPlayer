@@ -37,7 +37,6 @@ import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
-import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
@@ -140,15 +139,19 @@ public class LibraryFragment
         mUnBinder.unbind();
     }
 
+    private boolean isPlaylistPage() {
+        if (mFragmentManager == null) {
+            return false;
+        }
+        Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
+        return fragment == new PlaylistsFragment();
+    }
+
     @Override
     public boolean handleBackPress() {
         if (cab != null && cab.isActive()) {
             cab.finish();
             return true;
-        }
-        if (isPlaylistPage()) {
-            FoldersFragment foldersFragment = (FoldersFragment) mFragmentManager.findFragmentByTag(TAG);
-            return foldersFragment.handleBackPress();
         }
         return false;
     }
@@ -176,13 +179,6 @@ public class LibraryFragment
         return cab;
     }
 
-    private boolean isPlaylistPage() {
-        if (mFragmentManager == null) {
-            return false;
-        }
-        Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
-        return fragment == new PlaylistsFragment();
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

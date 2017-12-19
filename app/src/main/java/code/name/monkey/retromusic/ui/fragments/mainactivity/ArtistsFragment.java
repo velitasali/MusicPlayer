@@ -30,7 +30,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 
 public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<ArtistAdapter, GridLayoutManager> implements ArtistContract.ArtistView {
     public static final String TAG = ArtistsFragment.class.getSimpleName();
-    private ArtistPresenter mArtistPresenter;
+    private ArtistPresenter mPresenter;
 
     public static ArtistsFragment newInstance() {
 
@@ -44,7 +44,7 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mArtistPresenter = new ArtistPresenter(Injection.provideRepository(getContext()), this);
+        mPresenter = new ArtistPresenter(Injection.provideRepository(getContext()), this);
     }
 
     @NonNull
@@ -74,7 +74,7 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
 
     @Override
     public void onMediaStoreChanged() {
-        mArtistPresenter.loadArtists();
+        mPresenter.loadArtists();
     }
 
     @Override
@@ -122,13 +122,13 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
     public void onResume() {
         super.onResume();
         if (getAdapter().getDataSet().isEmpty())
-            mArtistPresenter.subscribe();
+            mPresenter.subscribe();
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        mArtistPresenter.unsubscribe();
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFr
 
     private void setSaveSortOrder(String sortOrder) {
         PreferenceUtil.getInstance(getContext()).setArtistSortOrder(sortOrder);
-        mArtistPresenter.loadArtists();
+        mPresenter.loadArtists();
     }
 
     @Override
