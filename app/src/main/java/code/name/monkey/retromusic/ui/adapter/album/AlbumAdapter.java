@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.adapter.album;
 
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -42,6 +44,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
     protected int itemLayoutRes;
 
     protected boolean usePalette = false;
+    private Typeface mTypeface;
 
     public AlbumAdapter(@NonNull AppCompatActivity activity, ArrayList<Album> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
         super(activity, cabHolder, R.menu.menu_media_selection);
@@ -49,8 +52,8 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
         this.dataSet = dataSet;
         this.itemLayoutRes = itemLayoutRes;
         this.usePalette = usePalette;
-
         setHasStableIds(true);
+        mTypeface = Typeface.createFromAsset(activity.getAssets(), activity.getString(R.string.sans_regular));
     }
 
     public void usePalette(boolean usePalette) {
@@ -185,7 +188,9 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return MusicUtil.getSectionName(dataSet.get(position).getTitle());
+        return CalligraphyUtils.applyTypefaceSpan(
+                MusicUtil.getSectionName(dataSet.get(position).getTitle()),
+                mTypeface).toString();
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
