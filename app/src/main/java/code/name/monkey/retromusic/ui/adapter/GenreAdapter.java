@@ -3,7 +3,6 @@ package code.name.monkey.retromusic.ui.adapter;
 import android.app.Activity;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +44,9 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
             holder.title.setText(genre.name);
         }
         if (holder.text != null) {
-            holder.text.setText(String.format(Locale.getDefault(), "%d Song", genre.songCount));
+            holder.text.setText(String.format(Locale.getDefault(), "%d %s", genre.songCount, genre.songCount > 1 ?
+                    mActivity.getString(R.string.songs) :
+                    mActivity.getString(R.string.song)));
         }
         if (holder.image != null) {
             holder.image.setImageResource(R.drawable.ic_recent_actors_white_24dp);
