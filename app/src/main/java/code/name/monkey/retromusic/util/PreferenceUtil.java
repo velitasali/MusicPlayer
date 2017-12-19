@@ -75,7 +75,7 @@ public final class PreferenceUtil {
     private static final String TOGGLE_NAVIGATION_BAR = "toggle_navigation_bar";
     private static final String TOGGLE_STATUS_BAR = "toggle_status_bar";
     private static final String ROUND_CORNERS = "corner_window";
-    private static final String DOMINANT_COLOR = "dominant_color";
+    public static final String DOMINANT_COLOR = "dominant_color";
     private static final String SAF_SDCARD_URI = "saf_sdcard_uri";
     private static final String TOGGLE_GENRE = "toggle_genre";
     private static final String DOCUMENT_TREE_URI = "document_tree_uri";
