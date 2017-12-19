@@ -14,7 +14,6 @@ import android.view.ViewTreeObserver;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import butterknife.BindView;
@@ -27,6 +26,7 @@ import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import code.name.monkey.retromusic.ui.fragments.player.flat.FlatPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.full.FullPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.hmm.HmmPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.holiday.HolidayPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.plain.PlainPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.simple.SimplePlayerFragment;
@@ -80,6 +80,9 @@ public abstract class AbsSlidingMusicPanelActivity
                 break;
             case FULL:
                 fragment = new FullPlayerFragment();
+                break;
+            case HOLIDAY:
+                fragment = new HolidayPlayerFragment();
                 break;
             case NORMAL:
             default:
@@ -199,9 +202,9 @@ public abstract class AbsSlidingMusicPanelActivity
         // setting fragments values
         int playerFragmentColor = mPlayerFragment.getPaletteColor();
 
-
         if (PreferenceUtil.getInstance(this).getAdaptiveColor() || ATHUtil.isWindowBackgroundDark(this)
                 || (currentNowPlayingScreen == NowPlayingScreen.TINY)) {
+
             super.setLightStatusbar(false);
         } else
             super.setLightStatusbar(true);
