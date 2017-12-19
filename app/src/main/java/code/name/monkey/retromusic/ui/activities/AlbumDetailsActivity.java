@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -66,9 +67,9 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.play_songs)
-    TextView playSongs;
+    Button playSongs;
     @BindView(R.id.action_shuffle_all)
-    TextView shuffleSongs;
+    Button shuffleSongs;
     @BindView(R.id.status_bar)
     View statusBar;
     @BindView(R.id.container)
@@ -209,14 +210,13 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
                                 ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
 
 
-        int themeColor =
-                PreferenceUtil.getInstance(this).getAdaptiveColor() ?
+        int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ?
                         color :
                         ThemeStore.accentColor(this);
         ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
         shuffleSongs.setTextColor(themeColor);
-        GradientDrawable gradientDrawable = (GradientDrawable) shuffleSongs.getBackground();
-        gradientDrawable.setStroke(8, color);
+        //GradientDrawable gradientDrawable = (GradientDrawable) shuffleSongs.getBackground();
+        //gradientDrawable.setStroke(8, color);
     }
 
     @Override
