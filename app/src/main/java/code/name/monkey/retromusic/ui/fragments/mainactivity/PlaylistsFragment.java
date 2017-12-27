@@ -1,6 +1,5 @@
 package code.name.monkey.retromusic.ui.fragments.mainactivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,11 +15,7 @@ import android.widget.TextView;
 
 import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.loaders.GenreLoader;
-import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.smartplaylist.HistoryPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
 import com.retro.musicplayer.backend.mvp.contract.PlaylistContract;
 import com.retro.musicplayer.backend.mvp.presenter.PlaylistPresenter;
 import com.retro.musicplayer.backend.util.schedulers.BaseSchedulerProvider;
@@ -30,13 +25,11 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.GenreAdapter;
 import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerFragment;
-import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -68,23 +61,6 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
         return fragment;
     }
 
-    @OnClick({R.id.history, R.id.last_added, R.id.top_tracks})
-    void onClicks(View view) {
-        Activity activity = getActivity();
-        if (activity != null) {
-            switch (view.getId()) {
-                case R.id.history:
-                    NavigationUtil.goToPlaylistNew(activity, new HistoryPlaylist(activity));
-                    break;
-                case R.id.last_added:
-                    NavigationUtil.goToPlaylistNew(activity, new LastAddedPlaylist(activity));
-                    break;
-                case R.id.top_tracks:
-                    NavigationUtil.goToPlaylistNew(activity, new MyTopTracksPlaylist(activity));
-                    break;
-            }
-        }
-    }
 
     @Nullable
     @Override
@@ -115,7 +91,7 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupPlaylists();
-        setupGenre();
+        if (!PreferenceUtil.getInstance(getContext()).isGenreShown()) setupGenre();//Prevent loading cost
     }
 
     private void setupPlaylists() {
@@ -136,7 +112,7 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
                 .subscribeOn(mProvider.io())
                 .observeOn(mProvider.ui())
                 .subscribe(genres -> {
-                    if (genres.size() > 0 && !PreferenceUtil.getInstance(getContext()).isGenreShown()) {
+                    if (genres.size() > 0) {
                         mViewGroup.setVisibility(View.VISIBLE);
                         genreAdapter.swapData(genres);
                     }

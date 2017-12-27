@@ -26,11 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.model.smartplaylist.HistoryPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
 import com.retro.musicplayer.backend.mvp.contract.HomeContract;
 import com.retro.musicplayer.backend.mvp.presenter.HomePresenter;
 
@@ -47,7 +43,6 @@ import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.adapter.home.HomeAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
-import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import io.reactivex.disposables.CompositeDisposable;
@@ -58,8 +53,9 @@ import static code.name.monkey.retromusic.R.id.toolbar;
  * Created by hemanths on 19/07/17.
  */
 
-public class HomeFragment extends AbsMainActivityFragment
-        implements MainActivityFragmentCallbacks, HomeContract.HomeView, LibraryTabSelectedItem {
+public class HomeFragment extends AbsMainActivityFragment implements
+        MainActivityFragmentCallbacks,
+        HomeContract.HomeView {
     private static final String TAG = "HomeFragment";
 
     @BindView(R.id.playlist_recycler_view)
@@ -104,21 +100,6 @@ public class HomeFragment extends AbsMainActivityFragment
         return view;
     }
 
-    @OnClick({R.id.history, R.id.last_added, R.id.top_tracks})
-    void onClicks(View view) {
-        switch (view.getId()) {
-            case R.id.history:
-                NavigationUtil.goToPlaylistNew(getMainActivity(), new HistoryPlaylist(getContext()));
-                break;
-            case R.id.last_added:
-                NavigationUtil.goToPlaylistNew(getMainActivity(), new LastAddedPlaylist(getContext()));
-                break;
-            case R.id.top_tracks:
-                NavigationUtil.goToPlaylistNew(getMainActivity(), new MyTopTracksPlaylist(getContext()));
-                break;
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -137,14 +118,15 @@ public class HomeFragment extends AbsMainActivityFragment
         }
 
         setupToolbar();
+        setupAdapter();
+    }
 
+    private void setupAdapter() {
         mHomeAdapter = new HomeAdapter(getMainActivity());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mHomeAdapter);
-
     }
-
 
     @SuppressWarnings("ConstantConditions")
     private void setupToolbar() {
@@ -194,9 +176,14 @@ public class HomeFragment extends AbsMainActivityFragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         mDisposable.clear();
         mHomePresenter.unsubscribe();
-        unbinder.unbind();
     }
 
     @Override
@@ -217,9 +204,9 @@ public class HomeFragment extends AbsMainActivityFragment
     @Override
     public void onResume() {
         super.onResume();
-        mHomePresenter.subscribe();
+        if (mHomeAdapter.getDataset().isEmpty())
+            mHomePresenter.subscribe();
     }
-
 
     @Override
     public void showAllThingsList(ArrayList<Object> homes) {
@@ -228,7 +215,7 @@ public class HomeFragment extends AbsMainActivityFragment
 
     @Override
     public void selectedFragment(Fragment fragment) {
-
+        /*ignore the method*/
     }
 
     private void loadTimeImage(String day) {

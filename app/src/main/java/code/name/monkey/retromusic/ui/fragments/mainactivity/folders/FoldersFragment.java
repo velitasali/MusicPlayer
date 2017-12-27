@@ -32,7 +32,6 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
 import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
-import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
 import com.retro.musicplayer.backend.interfaces.LoaderIds;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.misc.DialogAsyncTask;
@@ -67,10 +66,13 @@ import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 import code.name.monkey.retromusic.views.BreadCrumbLayout;
 
-public class FoldersFragment extends AbsMainActivityFragment
-        implements LibraryTabSelectedItem, MainActivityFragmentCallbacks, CabHolder,
-        BreadCrumbLayout.SelectionCallback, SongFileAdapter.Callbacks,
-        AppBarLayout.OnOffsetChangedListener, LoaderManager.LoaderCallbacks<List<File>> {
+public class FoldersFragment extends AbsMainActivityFragment implements
+        MainActivityFragmentCallbacks,
+        CabHolder,
+        BreadCrumbLayout.SelectionCallback,
+        SongFileAdapter.Callbacks,
+        AppBarLayout.OnOffsetChangedListener,
+        LoaderManager.LoaderCallbacks<List<File>> {
 
     public static final String TAG = FoldersFragment.class.getSimpleName();
     protected static final String PATH = "path";
@@ -170,7 +172,7 @@ public class FoldersFragment extends AbsMainActivityFragment
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(CRUMBS, breadCrumbs.getStateWrapper());
     }

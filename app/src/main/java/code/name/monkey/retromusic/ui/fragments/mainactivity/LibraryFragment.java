@@ -22,7 +22,6 @@ import android.view.ViewGroup;
 import com.afollestad.materialcab.MaterialCab;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 
@@ -50,9 +49,9 @@ import io.reactivex.schedulers.Schedulers;
  * Created by hemanths on 13/08/17.
  */
 
-public class LibraryFragment
-        extends AbsMainActivityFragment
-        implements CabHolder, MainActivityFragmentCallbacks, LibraryTabSelectedItem {
+public class LibraryFragment extends AbsMainActivityFragment implements
+        CabHolder,
+        MainActivityFragmentCallbacks {
 
     private static final String TAG = "LibraryFragment";
     @BindView(R.id.toolbar)
@@ -84,7 +83,9 @@ public class LibraryFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         mUnBinder = ButterKnife.bind(this, view);
         return view;
@@ -123,6 +124,7 @@ public class LibraryFragment
         mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         getActivity().setTitle(R.string.app_name);
         getMainActivity().setSupportActionBar(mToolbar);
+
     }
 
 
