@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BottomNavigationBehavior_Params">
-        <attr name="tabLayoutId" format="reference"/>
+        <attr name="tabLayoutId" format="reference" />
     </declare-styleable>
 
 
-    <attr name="roundSelector" format="reference"/>
-    <attr name="rectSelector" format="reference"/>
-    <attr name="rectSelectorStrong" format="reference"/>
+    <attr name="roundSelector" format="reference" />
+    <attr name="rectSelector" format="reference" />
+    <attr name="rectSelectorStrong" format="reference" />
 
-    <attr name="defaultFooterColor" format="color"/>
+    <attr name="defaultFooterColor" format="color" />
 
-    <attr name="toolbarPopupTheme" format="reference"/>
+    <attr name="toolbarPopupTheme" format="reference" />
 
-    <attr name="iconColor" format="color"/>
-    <attr name="dividerColor" format="color"/>
+    <attr name="iconColor" format="color" />
+    <attr name="dividerColor" format="color" />
+
+    <declare-styleable name="SpannedGridLayoutManager">
+        <attr name="android:orientation" />
+        <attr name="spanCount" />
+        <attr name="aspectRatio" format="string" />
+    </declare-styleable>
+
 </resources>

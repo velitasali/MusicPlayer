@@ -12,11 +12,6 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_player_album_cover" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/eighty_percent_black_overlay" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +48,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/shadow_up_edited" />
 
         <fragment
             android:id="@+id/playback_controls_fragment"

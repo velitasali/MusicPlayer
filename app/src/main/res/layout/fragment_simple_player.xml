@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <View
@@ -41,14 +40,13 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="wrap_content">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.player.simple.SimplePlaybackControlsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 tools:layout="@layout/fragment_simple_controls_fragment" />
         </FrameLayout>
 

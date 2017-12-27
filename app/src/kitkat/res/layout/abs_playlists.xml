@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        fontPath="fonts/sans_bold.ttf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:text="@string/for_you"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:ignore="MissingPrefix" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/history"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?rectSelector"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_transisition_3" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="520dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_access_time_white_24dp"
+                        app:tint="@color/md_white_1000" />
+
+                </android.support.v7.widget.CardView>
+            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/history"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/last_added"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?rectSelector"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_transisition_5" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="520dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_library_add_white_24dp"
+                        app:tint="@color/md_white_1000" />
+
+                </android.support.v7.widget.CardView>
+            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/last_added"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/top_tracks"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:foreground="?rectSelector"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/gradient_transisition_2" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="52dp"
+                        android:layout_height="520dp"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_trending_up_white_24dp"
+                        app:tint="@color/md_white_1000" />
+
+
+                </android.support.v7.widget.CardView>
+            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/my_top_tracks"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textColor="?android:attr/textColorPrimary" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="12dp"
+        android:background="?attr/dividerColor" />
+</LinearLayout>

@@ -8,6 +8,11 @@
             android:key="general_theme"
             android:title="@string/pref_title_general_theme" />
         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEColorPreference
+            android:key="primary_color"
+            android:persistent="false"
+            android:summary="@string/primary_color_desc"
+            android:title="@string/primary_color" />
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEColorPreference
             android:key="accent_color"
             android:persistent="false"
             android:summary="@string/accent_color_desc"

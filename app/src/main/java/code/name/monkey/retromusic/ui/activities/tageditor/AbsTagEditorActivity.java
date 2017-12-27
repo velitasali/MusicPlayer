@@ -107,6 +107,10 @@ public abstract class AbsTagEditorActivity extends AbsBaseActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(R.string.action_tag_editor);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setNavigationbarColorAuto();
+        setStatusbarColorAuto();
+        setTaskDescriptionColorAuto();
     }
 
     private void setUpViews() {

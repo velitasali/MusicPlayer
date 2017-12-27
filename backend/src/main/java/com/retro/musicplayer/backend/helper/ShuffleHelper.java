@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.retro.musicplayer.backend.model.Song;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,4 +23,6 @@ public class ShuffleHelper {
             Collections.shuffle(listToShuffle);
         }
     }
+
+
 }

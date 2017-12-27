@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorPrimary">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
-        android:background="?colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -31,7 +29,6 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 style="@style/Toolbar48"
-                android:background="?colorPrimary"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_close_white_24dp"
                 app:title="@string/support_development" />

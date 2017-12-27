@@ -53,6 +53,7 @@ public abstract class AbsBaseActivity extends AbsThemeActivity {
         hadPermissions = hasPermissions();
 
         setPermissionDeniedMessage(null);
+
     }
 
     private void changeLanguage() {

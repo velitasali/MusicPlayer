@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playback_controls"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
@@ -29,16 +29,16 @@
         android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingBottom="8dp"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
-        android:paddingBottom="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/md_grey_300" />
 
     <SeekBar
         android:id="@+id/player_progress_slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:maxHeight="3dp"
         android:paddingEnd="24dp"
         android:paddingStart="24dp"
@@ -85,6 +85,7 @@
         android:id="@+id/player_media_controller_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:minHeight="72dp"
         tools:ignore="ContentDescription,UnusedAttribute">
 
@@ -173,7 +174,7 @@
         android:id="@+id/volume_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:visibility="gone">
+        android:layout_weight="0">
 
         <fragment
             android:id="@+id/volume_fragment"

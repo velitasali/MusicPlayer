@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playback_controls"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="bottom"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
@@ -61,6 +61,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingEnd="16dp"
         android:paddingStart="16dp">
@@ -154,10 +155,17 @@
 
     </RelativeLayout>
 
-    <fragment
-        android:id="@+id/volume_fragment"
-        android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
+    <FrameLayout
+        android:id="@+id/volume_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_volume" />
+        tools:visibility="gone">
+
+        <fragment
+            android:id="@+id/volume_fragment"
+            android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_volume" />
+    </FrameLayout>
 </LinearLayout>

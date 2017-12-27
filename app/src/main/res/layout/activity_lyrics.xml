@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?colorPrimary"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -15,34 +13,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
-
-        <com.retro.musicplayer.backend.views.WidthFitSquareLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp">
-
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:transitionName="@string/transition_album_art"
-                    tools:ignore="ContentDescription" />
-            </android.support.v7.widget.CardView>
-        </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingEnd="0dp"
+            android:paddingStart="12dp">
 
             <TextView
                 android:id="@+id/title"
@@ -59,62 +39,119 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         </LinearLayout>
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_refresh_black_24dp" />
     </LinearLayout>
 
-
-    <FrameLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/offline_lyrics"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:lineSpacingExtra="3dp"
-                android:text="@string/no_lyrics_found"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="?android:attr/textColorPrimary"
-                android:visibility="gone" />
-        </ScrollView>
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
 
         <FrameLayout
-            android:id="@+id/lyrics_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient">
 
-            <code.name.monkey.retromusic.views.LyricView
-                android:id="@+id/lyrics"
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:fadeInFadeOut="true"
-                app:highlightColor="?android:attr/textColorPrimary"
-                app:hint="@string/no_lyrics_found"
-                app:hintColor="?colorAccent"
-                app:lineSpace="16dp"
-                app:textAlign="left"
-                app:textColor="@color/md_grey_500"
-                app:textSize="18sp" />
+                android:padding="16dp">
 
-            <code.name.monkey.retromusic.views.LyricView
-                android:id="@+id/lyrics_big"
+                <TextView
+                    android:id="@+id/offline_lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:lineSpacingExtra="3dp"
+                    android:text="@string/no_lyrics_found"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:visibility="gone" />
+            </ScrollView>
+
+            <FrameLayout
+                android:id="@+id/lyrics_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"
-                app:fadeInFadeOut="true"
-                app:highlightColor="?android:attr/textColorPrimary"
-                app:hint="@string/no_lyrics_found"
-                app:hintColor="?colorAccent"
-                app:lineSpace="250dp"
-                app:textAlign="center"
-                app:textColor="@color/md_grey_500"
-                app:textSize="52sp" />
-        </FrameLayout>
+                android:layout_height="match_parent">
 
-    </FrameLayout>
+                <code.name.monkey.retromusic.views.LyricView
+                    android:id="@+id/lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:fadeInFadeOut="true"
+                    app:highlightColor="@color/md_white_1000"
+                    app:hintColor="@color/md_white_1000"
+                    app:lineSpace="15dp"
+                    app:textAlign="left"
+                    app:textColor="@color/md_grey_300"
+                    app:textSize="24sp" />
+            </FrameLayout>
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/align_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?roundSelector"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_format_align_left_black_24dp" />
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/align_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?roundSelector"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_format_align_center_black_24dp" />
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/align_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?roundSelector"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_format_align_right_black_24dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/dec_font_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="?roundSelector"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_dec_font_size" />
+
+        <code.name.monkey.retromusic.views.IconImageView
+            android:id="@+id/inc_font_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="?roundSelector"
+            android:padding="16dp"
+            app:srcCompat="@drawable/ic_inc_font_size" />
+
+    </LinearLayout>
 </LinearLayout>

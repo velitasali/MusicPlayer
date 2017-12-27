@@ -19,7 +19,6 @@ import code.name.monkey.retromusic.dialogs.DeletePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.RenamePlaylistDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -33,29 +32,17 @@ public class PlaylistMenuHelper {
                                           @NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_play:
-                getPlaylistSongs(activity, playlist)
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> MusicPlayerRemote.openQueue((ArrayList<Song>) songs, 0, true));
+                MusicPlayerRemote.openQueue(getPlaylistSongs(activity, playlist), 9, true);
                 return true;
             case R.id.action_play_next:
-                getPlaylistSongs(activity, playlist)
-                        .observeOn(Schedulers.computation())
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> MusicPlayerRemote.playNext((ArrayList<Song>) songs));
+                MusicPlayerRemote.playNext(getPlaylistSongs(activity, playlist));
                 return true;
             case R.id.action_add_to_playlist:
-                getPlaylistSongs(activity, playlist)
-                        .observeOn(Schedulers.computation())
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> AddToPlaylistDialog.create((ArrayList<Song>) songs)
-                                .show(activity.getSupportFragmentManager(), "ADD_PLAYLIST"));
+                AddToPlaylistDialog.create(getPlaylistSongs(activity, playlist))
+                        .show(activity.getSupportFragmentManager(), "ADD_PLAYLIST");
                 return true;
             case R.id.action_add_to_current_playing:
-                getPlaylistSongs(activity, playlist)
-                        .observeOn(Schedulers.computation())
-                        .subscribeOn(AndroidSchedulers.mainThread())
-                        .subscribe(songs -> MusicPlayerRemote.enqueue((ArrayList<Song>) songs));
+                MusicPlayerRemote.enqueue(getPlaylistSongs(activity, playlist));
                 return true;
             case R.id.action_rename_playlist:
                 RenamePlaylistDialog.create(playlist.id).show(activity.getSupportFragmentManager(), "RENAME_PLAYLIST");
@@ -81,26 +68,14 @@ public class PlaylistMenuHelper {
     }
 
     @NonNull
-    private static Observable<ArrayList<? extends Song>> getPlaylistSongs(@NonNull Activity activity, Playlist playlist) {
+    private static ArrayList<Song> getPlaylistSongs(@NonNull Activity activity,
+                                                    @NonNull Playlist playlist) {
+        ArrayList<Song> songs = new ArrayList<>();
         if (playlist instanceof AbsCustomPlaylist) {
-            return Observable.create(e -> (
-                    (AbsCustomPlaylist) playlist)
-                    .getSongs(activity)
-                    .subscribe(songs -> {
-                                if (songs.size() > 0) {
-                                    e.onNext(songs);
-                                }
-                                e.onComplete();
-                            }
-                    ));
+            songs = ((AbsCustomPlaylist) playlist).getSongs(activity).blockingFirst();
         } else {
-            return Observable.create(e -> PlaylistSongsLoader.getPlaylistSongList(activity, playlist.id)
-                    .subscribe(playlistSongs -> {
-                        if (playlistSongs.size() > 0) {
-                            e.onNext(playlistSongs);
-                        }
-                        e.onComplete();
-                    }));
+            songs = PlaylistSongsLoader.getPlaylistSongList(activity, playlist).blockingFirst();
         }
+        return songs;
     }
 }

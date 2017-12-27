@@ -8,14 +8,13 @@ import com.retro.musicplayer.backend.RetroConstants;
 import com.retro.musicplayer.backend.rest.service.KuGouApiService;
 
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -54,19 +53,20 @@ public class KogouClient {
     }
 
     public static Interceptor createCacheControlInterceptor() {
-        return new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request modifiedRequest = chain.request().newBuilder()
-                        .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d", 31536000, 31536000))
-                        .build();
-                return chain.proceed(modifiedRequest);
-            }
+        return chain -> {
+            Request modifiedRequest = chain.request().newBuilder()
+                    .addHeader("Cache-Control", String.format("max-age=%d, max-stale=%d", 31536000, 31536000))
+                    .build();
+            return chain.proceed(modifiedRequest);
         };
     }
 
     public static OkHttpClient.Builder createDefaultOkHttpClientBuilder(Context context) {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         return new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
                 .cache(createDefaultCache(context))
                 .addInterceptor(createCacheControlInterceptor());
     }

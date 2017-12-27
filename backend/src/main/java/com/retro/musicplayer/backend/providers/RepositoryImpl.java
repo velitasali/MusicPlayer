@@ -17,10 +17,17 @@ import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.providers.interfaces.Repository;
+import com.retro.musicplayer.backend.rest.KogouClient;
+import com.retro.musicplayer.backend.rest.model.KuGouRawLyric;
+import com.retro.musicplayer.backend.rest.model.KuGouSearchLyricResult;
+import com.retro.musicplayer.backend.rest.service.KuGouApiService;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by hemanths on 11/08/17.
@@ -60,7 +67,6 @@ public class RepositoryImpl implements Repository {
     public Observable<Album> getAlbum(int albumId) {
         return AlbumLoader.getAlbum(context, albumId);
     }
-
 
     @Override
     public Observable<ArrayList<Artist>> getAllArtists() {
@@ -112,5 +118,29 @@ public class RepositoryImpl implements Repository {
         return GenreLoader.getSongs(context, genreId);
     }
 
-
+    @Override
+    public Observable<File> downloadLrcFile(String title, String artist, long duration) {
+        KuGouApiService service = new KogouClient(context).getApiService();
+        return service.searchLyric(title, String.valueOf(duration))
+                .subscribeOn(Schedulers.io())
+                .flatMap(kuGouSearchLyricResult -> {
+                    if (kuGouSearchLyricResult.status == 200
+                            && kuGouSearchLyricResult.candidates != null
+                            && kuGouSearchLyricResult.candidates.size() != 0) {
+                        KuGouSearchLyricResult.Candidates candidates = kuGouSearchLyricResult.candidates.get(0);
+                        return service.getRawLyric(candidates.id, candidates.accesskey);
+                    } else {
+                        return Observable.just(new KuGouRawLyric());
+                    }
+                }).map(kuGouRawLyric -> {
+                    if (kuGouRawLyric == null) {
+                        return null;
+                    }
+                    String rawLyric = LyricUtil.decryptBASE64(kuGouRawLyric.content);
+                    if (rawLyric != null && rawLyric.isEmpty()) {
+                        return null;
+                    }
+                    return LyricUtil.writeLrcToLoc(title, artist, rawLyric);
+                });
+    }
 }

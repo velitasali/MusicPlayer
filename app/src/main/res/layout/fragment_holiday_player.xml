@@ -27,7 +27,7 @@
     <LinearLayout
         android:id="@+id/now_playing_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <com.retro.musicplayer.backend.views.WidthFitSquareLayout
@@ -45,31 +45,31 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.player.holiday.HolidayPlaybackControlsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 tools:layout="@layout/fragment_holiday_controls_fragment" />
         </FrameLayout>
 
+        <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0">
 
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/player_toolbar"
+                style="@style/Toolbar48"
+                android:layout_height="48dp"
+                android:navigationIcon="@drawable/ic_close_white_24dp"
+                app:navigationIcon="@drawable/ic_close_white_24dp" />
+        </FrameLayout>
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/toolbar_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/player_toolbar"
-            style="@style/Toolbar48"
-            android:layout_height="48dp"
-            android:navigationIcon="@drawable/ic_close_white_24dp"
-            app:navigationIcon="@drawable/ic_close_white_24dp" />
-    </FrameLayout>
 </FrameLayout>

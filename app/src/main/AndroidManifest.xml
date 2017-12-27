@@ -116,6 +116,8 @@
             android:showOnLockScreen="true" />
         <activity android:name=".ui.activities.SupportDevelopmentActivity" />
         <activity android:name=".ui.activities.GenreDetailsActivity" />
+        <activity android:name=".ui.activities.ShareSongActivity" />
+        <activity android:name=".ui.activities.LicenseActivity" />
 
         <service
             android:name=".service.MusicService"
@@ -127,8 +129,8 @@
             android:label="Retro Music Albums"
             android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
-                <action android:name="android.service.dreams.DreamService"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
         <!-- Widgets -->
@@ -226,6 +228,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="e43869062d94e0d38d73e501496529c9d6a9f2cd" />
+
         <!--
        #
        #   META ends
@@ -240,6 +243,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-    </application>
 
+    </application>
 </manifest>

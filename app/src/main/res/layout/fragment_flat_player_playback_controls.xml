@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/playback_controls"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              tools:ignore="MissingPrefix">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playback_controls"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:paddingBottom="4dp"
         android:paddingEnd="8dp"
         android:paddingStart="8dp"
@@ -28,7 +29,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="0:00"/>
+            tools:text="0:00" />
 
 
         <TextView
@@ -43,7 +44,7 @@
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
             tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="3:14"/>
+            tools:text="3:14" />
 
         <SeekBar
             android:id="@+id/player_progress_slider"
@@ -56,7 +57,7 @@
             android:progressDrawable="@drawable/color_progress_seek"
             android:splitTrack="false"
             android:thumb="@drawable/switch_thumb_material"
-            tools:ignore="RtlHardcoded,UnusedAttribute"/>
+            tools:ignore="RtlHardcoded,UnusedAttribute" />
 
     </RelativeLayout>
 
@@ -64,6 +65,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingEnd="16dp"
         android:paddingStart="16dp">
@@ -82,7 +84,7 @@
             android:textAllCaps="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="12sp"
-            tools:text="Title"/>
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/title"
@@ -99,10 +101,9 @@
             android:textAllCaps="true"
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
-            tools:text="Title"/>
+            tools:text="Title" />
 
     </LinearLayout>
-
 
     <RelativeLayout
         android:id="@+id/player_media_controller_container"
@@ -124,7 +125,7 @@
             android:padding="16dp"
             android:scaleType="fitCenter"
             tools:ignore="MissingPrefix"
-            tools:src="@drawable/ic_pause_white_24dp"/>
+            tools:src="@drawable/ic_pause_white_24dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -141,7 +142,7 @@
                 android:padding="22dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_repeat_white_24dp"
-                tools:ignore="MissingPrefix"/>
+                tools:ignore="MissingPrefix" />
 
             <ImageButton
                 android:id="@+id/player_shuffle_button"
@@ -151,8 +152,23 @@
                 android:padding="22dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_shuffle_white_24dp"
-                tools:ignore="MissingPrefix"/>
+                tools:ignore="MissingPrefix" />
         </LinearLayout>
 
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/volume_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:visibility="visible">
+
+        <fragment
+            android:id="@+id/volume_fragment"
+            android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            tools:layout="@layout/fragment_volume" />
+    </FrameLayout>
 </LinearLayout>

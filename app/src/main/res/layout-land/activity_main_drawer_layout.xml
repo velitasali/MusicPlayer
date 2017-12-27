@@ -24,7 +24,7 @@
         tools:layout_gravity="">
 
         <LinearLayout
-            android:background="?colorPrimary"
+            android:background="?android:attr/windowBackground"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/anti_clickable"
+    android:background="?android:attr/windowBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?colorPrimary">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/gradient_background"
@@ -14,7 +14,7 @@
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/now_playing_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,29 +29,28 @@
                 android:id="@+id/player_album_cover_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-            com.retro.musicplayer.backend.views.WidthFitSquareLayoutusicplayer.backend.views.WidthFitSquareLayoutayout="@layout/fragment_player_album_cover" />
+                android:layout_height="match_parent"
+                tools:layout="@layout/fragment_album_cover" />
         </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
         <FrameLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/toolbar_container"
-            android:layout_below="@id/album_cover_container">
+            android:layout_height="wrap_content">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 tools:layout="@layout/fragment_player_playback_controls" />
         </FrameLayout>
 
         <FrameLayout
+            android:layout_weight="0"
             android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/player_toolbar"
@@ -60,6 +59,5 @@
                 android:navigationIcon="@drawable/ic_close_white_24dp"
                 app:navigationIcon="@drawable/ic_close_white_24dp" />
         </FrameLayout>
-    </RelativeLayout>
-
+    </LinearLayout>
 </FrameLayout>

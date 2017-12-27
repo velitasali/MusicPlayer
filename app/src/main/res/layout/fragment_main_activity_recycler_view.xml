@@ -8,10 +8,8 @@
     <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:overScrollMode="never"
         android:scrollbars="none" />
 
     <TextView

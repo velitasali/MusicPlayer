@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground">
 
     <com.retro.musicplayer.backend.views.WidthFitSquareLayout
         android:layout_width="match_parent"
@@ -102,10 +103,10 @@
                 fontPath="@string/sans_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="gone"
                 android:layout_gravity="end"
+                android:padding="16dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:visibility="gone"
                 tools:ignore="MissingPrefix" />
         </FrameLayout>
     </LinearLayout>

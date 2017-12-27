@@ -10,14 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/abs_playlists" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="16dp"
-            android:background="?attr/dividerColor" />
-
         <include layout="@layout/recycler_view_sec" />
 
         <LinearLayout
@@ -26,14 +18,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingBottom="4dp"
-            tools:visibility="visible"
-            android:visibility="gone">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="12dp"
-                android:background="?attr/dividerColor" />
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <TextView
                 fontPath="fonts/sans_bold.ttf"

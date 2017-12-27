@@ -6,6 +6,7 @@ import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Playlist;
 import com.retro.musicplayer.backend.model.Song;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
@@ -42,4 +43,6 @@ public interface Repository {
     Observable<ArrayList<Genre>> getAllGenres();
 
     Observable<ArrayList<Song>> getGenre(int genreId);
+
+    Observable<File> downloadLrcFile(final String title, final String artist, final long duration);
 }
