@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 
+import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import com.retro.musicplayer.backend.helper.SortOrder;
 import com.retro.musicplayer.backend.util.FileUtil;
 
@@ -16,7 +17,6 @@ import java.io.File;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
-import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
 public final class PreferenceUtil {
     public static final String GENERAL_THEME = "general_theme";
@@ -58,6 +58,7 @@ public final class PreferenceUtil {
     public static final String START_DIRECTORY = "start_directory";
     public static final String SYNCHRONIZED_LYRICS_SHOW = "synchronized_lyrics_show";
     public static final String TOGGLE_HEADSET = "toggle_headset";
+    public static final String DOMINANT_COLOR = "dominant_color";
     private static final String ADAPTIVE_COLOR_APP = "adaptive_color_app";
     private static final String LOCK_SCREEN = "lock_screen";
     private static final String USER_NAME = "user_name";
@@ -75,7 +76,6 @@ public final class PreferenceUtil {
     private static final String TOGGLE_NAVIGATION_BAR = "toggle_navigation_bar";
     private static final String TOGGLE_STATUS_BAR = "toggle_status_bar";
     private static final String ROUND_CORNERS = "corner_window";
-    public static final String DOMINANT_COLOR = "dominant_color";
     private static final String SAF_SDCARD_URI = "saf_sdcard_uri";
     private static final String TOGGLE_GENRE = "toggle_genre";
     private static final String DOCUMENT_TREE_URI = "document_tree_uri";
@@ -98,6 +98,8 @@ public final class PreferenceUtil {
         switch (themePrefValue) {
             case "dark":
                 return R.style.Theme_RetroMusic;
+            case "color":
+                return R.style.Theme_RetroMusic_Color;
             case "black":
                 return R.style.Theme_RetroMusic_Black;
             case "light":

@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.BaseColumns;
@@ -57,6 +58,27 @@ public class MusicUtil {
 
     public static Uri getSongFileUri(int songId) {
         return ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songId);
+    }
+
+    public static Bitmap getAlbumArtForAlbum(Context context, int albumId) {
+        Uri albumArtUri = MusicUtil.getMediaStoreAlbumCoverUri(albumId);
+        Bitmap bitmap = null;
+        int desWidth = 256;
+        int desHeight = 256;
+        if (bitmap != null) {
+            bitmap = ScalingUtil.createScaledBitmap(bitmap, desWidth,
+                    desHeight, ScalingUtil.ScalingLogic.FIT);
+        }
+        return bitmap;
+    }
+
+    public static int indexOfSongInList(List<Song> songs, int songId) {
+        for (int i = 0; i < songs.size(); i++) {
+            if (songs.get(i).id == songId) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @NonNull
@@ -373,25 +395,6 @@ public class MusicUtil {
     }
 
     public static void toggleFavorite(@NonNull final Context context, @NonNull final Song song) {
-       /* isFavorite(context, song).subscribe(aBoolean -> {
-            if (aBoolean) {
-                getFavoritesPlaylist(context)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(playlist1 -> {
-                            Toast.makeText(context, "Remove " + song.title, Toast.LENGTH_SHORT).show();
-                            PlaylistsUtil.removeFromPlaylist(context, song, playlist1.id);
-
-                        });
-            } else {
-                getOrCreateFavoritesPlaylist(context)
-                        .subscribe(playlist1 -> {
-                            Toast.makeText(context, "Add " + song.title, Toast.LENGTH_SHORT).show();
-                            PlaylistsUtil.addToPlaylist(context, song, playlist1.id, true);
-                        });
-            }
-        });*/
-
         if (isFavorite(context, song)) {
             PlaylistsUtil.removeFromPlaylist(context, song, getFavoritesPlaylist(context).blockingFirst().id);
         } else {
