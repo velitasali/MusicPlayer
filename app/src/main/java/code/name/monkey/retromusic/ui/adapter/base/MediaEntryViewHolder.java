@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.retro.musicplayer.backend.shadowimageview.ShadowImageView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
@@ -16,7 +18,8 @@ import code.name.monkey.retromusic.R;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class MediaEntryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+public class MediaEntryViewHolder extends RecyclerView.ViewHolder
+        implements View.OnClickListener, View.OnLongClickListener {
     @Nullable
     @BindView(R.id.image)
     public ImageView image;
@@ -54,6 +57,7 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     @Nullable
     public RecyclerView recyclerView;
 
+
     public MediaEntryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
@@ -63,8 +67,8 @@ public class MediaEntryViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     protected void setImageTransitionName(@NonNull String transitionName) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && imageContainer != null) {
-            imageContainer.setTransitionName(transitionName);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && image != null) {
+            image.setTransitionName(transitionName);
         }
     }
 
