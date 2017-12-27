@@ -1,7 +1,5 @@
 package code.name.monkey.retromusic.ui.adapter.artist;
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,14 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.retro.musicplayer.backend.DrawableGradient;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Song;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.ArtistGlideRequest;
@@ -94,47 +90,12 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
             holder.title.setText(artist.getName());
         }
         if (holder.text != null) {
-            holder.text.setText(MusicUtil.getArtistInfoStringSmall(activity, artist));
             holder.text.setVisibility(View.GONE);
         }
-
-        loadArtistImage(artist, holder);
-    }
-
-    private GradientDrawable.Orientation getGradientDirection() {
-        GradientDrawable.Orientation[] orientations = new GradientDrawable.Orientation[]{
-                GradientDrawable.Orientation.TL_BR,
-                GradientDrawable.Orientation.BL_TR,
-                GradientDrawable.Orientation.TR_BL,
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                GradientDrawable.Orientation.BOTTOM_TOP,
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                GradientDrawable.Orientation.RIGHT_LEFT,
-                GradientDrawable.Orientation.BR_TL
-        };
-        return orientations[new Random().nextInt(orientations.length)];
-    }
-
-    private void setColors(int color, ViewHolder holder) {
-        /*if (holder.paletteColorContainer != null) {
-            DrawableGradient drawableG = new DrawableGradient(getGradientDirection(),
-                    new int[]{ThemeStore.accentColor(activity), color}, 0);
-            //holder.paletteColorContainer.setBackground(drawableG);
-
-            if (holder.title != null) {
-                holder.title.setTextColor(MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(color)));
-            }
-            if (holder.text != null) {
-                holder.text.setTextColor(MaterialValueHelper.getSecondaryTextColor(activity, ColorUtil.isColorLight(color)));
-            }
-        }*/
-    }
-
-    private void setColors(int[] colors, ViewHolder holder) {
-        if (holder.paletteColorContainer != null) {
-            DrawableGradient drawableG = new DrawableGradient(getGradientDirection(), colors, 0);
-            holder.paletteColorContainer.setBackground(drawableG);
+        if (holder.shortSeparator != null) {
+            holder.shortSeparator.setVisibility(View.VISIBLE);
         }
+        loadArtistImage(artist, holder);
     }
 
     private void loadArtistImage(Artist artist, final ViewHolder holder) {
@@ -143,14 +104,8 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
                 .generatePalette(activity).build()
                 .into(new RetroMusicColoredTarget(holder.image) {
                     @Override
-                    public void onLoadCleared(Drawable placeholder) {
-                        super.onLoadCleared(placeholder);
-                        setColors(getDefaultFooterColor(), holder);
-                    }
-
-                    @Override
                     public void onColorReady(int color) {
-                        setColors(color, holder);
+
                     }
                 });
     }
@@ -196,7 +151,7 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
             super(itemView);
             setImageTransitionName(activity.getString(R.string.transition_artist_image));
             if (menu != null) {
-                menu.setVisibility(View.GONE);
+                menu.setVisibility(View.INVISIBLE);
             }
         }
 

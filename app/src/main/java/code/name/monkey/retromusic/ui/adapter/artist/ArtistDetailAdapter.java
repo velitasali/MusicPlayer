@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.ui.adapter.HorizontalAlbumAdapter;
+import code.name.monkey.retromusic.ui.adapter.album.HorizontalAlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
 import code.name.monkey.retromusic.util.PreferenceUtil;
