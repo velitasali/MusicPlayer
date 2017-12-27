@@ -34,7 +34,6 @@ import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
 import static com.retro.musicplayer.backend.RetroConstants.ACTION_STOP;
 import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
 /**
  * Used to control headset playback.
  * Single press: pause/resume
@@ -132,7 +131,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
                         // The service may or may not be running, but we need to send it
                         // a command.
-                        if (keycode == KeyEvent.KEYCODE_HEADSETHOOK) {
+                        if (keycode == KeyEvent.KEYCODE_HEADSETHOOK || keycode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
                             if (eventTime - mLastClickTime >= DOUBLE_CLICK) {
                                 mClickCounter = 0;
                             }
@@ -175,7 +174,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
         if (mWakeLock == null) {
             Context appContext = context.getApplicationContext();
             PowerManager pm = (PowerManager) appContext.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Retro Music headset button");
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Phonograph headset button");
             mWakeLock.setReferenceCounted(false);
         }
         if (DEBUG) Log.v(TAG, "Acquiring wake lock and sending " + msg.what);
