@@ -21,6 +21,7 @@ import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Song;
@@ -36,7 +37,6 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
@@ -113,7 +113,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
 
     private void setUpToolBar() {
         mToolbar.setTitle(mGenre.name);
-        mToolbar.setSubtitle(mGenre.songCount+" " + (mGenre.songCount > 1 ? getString(R.string.songs) : getString(R.string.song)));
+        mToolbar.setSubtitle(mGenre.songCount + " " + (mGenre.songCount > 1 ? getString(R.string.songs) : getString(R.string.song)));
         mToolbar.setNavigationOnClickListener(v -> onBackPressed());
         mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(mToolbar);
