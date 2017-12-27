@@ -31,10 +31,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.retro.musicplayer.backend.interfaces.LibraryTabSelectedItem;
+import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
 import com.retro.musicplayer.backend.loaders.AlbumLoader;
-import com.retro.musicplayer.backend.loaders.ArtistSongLoader;
+import com.retro.musicplayer.backend.loaders.ArtistLoader;
 import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
 import com.retro.musicplayer.backend.model.Song;
 
@@ -53,10 +53,8 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.SearchQueryHelper;
 import code.name.monkey.retromusic.service.MusicService;
-import code.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
-import code.name.monkey.retromusic.ui.fragments.mainactivity.GenreFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
@@ -89,8 +87,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     CircleImageView mUserImage;
     @Nullable
     MainActivityFragmentCallbacks mCurrentFragment;
-    @Nullable
-    LibraryTabSelectedItem mTabSelectedItem;
     @BindView(R.id.navigation_view)
     ViewGroup mNavigationView;
     @BindView(R.id.drawer_layout)
@@ -243,12 +239,11 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         fragmentTransaction.commit();
 
         mCurrentFragment = (MainActivityFragmentCallbacks) fragment;
-        mTabSelectedItem = (LibraryTabSelectedItem) fragment;
     }
 
     private void restoreCurrentFragment() {
-        mTabSelectedItem = (LibraryTabSelectedItem) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        mCurrentFragment = (MainActivityFragmentCallbacks) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        mCurrentFragment = (MainActivityFragmentCallbacks) getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
     }
 
     @Override
@@ -257,20 +252,20 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         Observable.just(item)
                 .throttleFirst(3, TimeUnit.SECONDS)
                 .subscribe(menuItem -> {
-                    if (mTabSelectedItem != null) {
+                    if (mCurrentFragment != null) {
                         switch (menuItem.getItemId()) {
                             default:
                             case R.id.action_song:
-                                mTabSelectedItem.selectedFragment(SongsFragment.newInstance());
+                                mCurrentFragment.selectedFragment(SongsFragment.newInstance());
                                 break;
                             case R.id.action_album:
-                                mTabSelectedItem.selectedFragment(AlbumsFragment.newInstance());
+                                mCurrentFragment.selectedFragment(AlbumsFragment.newInstance());
                                 break;
                             case R.id.action_artist:
-                                mTabSelectedItem.selectedFragment(ArtistsFragment.newInstance());
+                                mCurrentFragment.selectedFragment(ArtistsFragment.newInstance());
                                 break;
                             case R.id.action_playlist:
-                                mTabSelectedItem.selectedFragment(PlaylistsFragment.newInstance());
+                                mCurrentFragment.selectedFragment(PlaylistsFragment.newInstance());
                                 break;
                         }
                     }
@@ -288,10 +283,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         boolean handled = false;
 
         if (intent.getAction() != null &&
-                intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH) &&
-                intent.getExtras() != null) {
+                intent.getAction().equals(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH)) {
             final ArrayList<Song> songs = SearchQueryHelper.getSongs(this, intent.getExtras());
-
             if (MusicPlayerRemote.getShuffleMode() == MusicService.SHUFFLE_MODE_SHUFFLE) {
                 MusicPlayerRemote.openAndShuffleQueue(songs, true);
             } else {
@@ -307,25 +300,23 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             final int id = (int) parseIdFromIntent(intent, "playlistId", "playlist");
             if (id >= 0) {
                 int position = intent.getIntExtra("position", 0);
-                PlaylistSongsLoader.getPlaylistSongList(this, id).subscribe(songs1 ->
-                        MusicPlayerRemote.openQueue(songs1, position, true));
-
+                ArrayList<Song> songs = new ArrayList<>();
+                songs.addAll(PlaylistSongsLoader.getPlaylistSongList(this, id).blockingFirst());
+                MusicPlayerRemote.openQueue(songs, position, true);
                 handled = true;
             }
         } else if (MediaStore.Audio.Albums.CONTENT_TYPE.equals(mimeType)) {
             final int id = (int) parseIdFromIntent(intent, "albumId", "album");
             if (id >= 0) {
                 int position = intent.getIntExtra("position", 0);
-                AlbumLoader.getAlbum(this, id)
-                        .subscribe(album -> MusicPlayerRemote.openQueue(album.songs, position, true));
+                MusicPlayerRemote.openQueue(AlbumLoader.getAlbum(this, id).blockingFirst().songs, position, true);
                 handled = true;
             }
         } else if (MediaStore.Audio.Artists.CONTENT_TYPE.equals(mimeType)) {
             final int id = (int) parseIdFromIntent(intent, "artistId", "artist");
             if (id >= 0) {
                 int position = intent.getIntExtra("position", 0);
-                ArtistSongLoader.getArtistSongList(this, id)
-                        .subscribe(songs -> MusicPlayerRemote.openQueue(songs, position, true));
+                MusicPlayerRemote.openQueue(ArtistLoader.getArtist(this, id).blockingFirst().getSongs(), position, true);
                 handled = true;
             }
         }
@@ -334,7 +325,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         }
     }
 
-    private long parseIdFromIntent(@NonNull Intent intent, String longKey,
+    private long parseIdFromIntent(@NonNull Intent intent,
+                                   String longKey,
                                    String stringKey) {
         long id = intent.getLongExtra(longKey, -1);
         if (id < 0) {
