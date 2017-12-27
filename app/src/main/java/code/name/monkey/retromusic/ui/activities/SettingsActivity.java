@@ -28,7 +28,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
-import com.afollestad.materialdialogs.internal.ThemeSingleton;
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEColorPreference;
 import com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceFragmentCompat;
@@ -53,7 +52,6 @@ import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.SettingsPagerAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import de.psdev.licensesdialog.LicensesDialog;
 
 import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
@@ -78,12 +76,7 @@ public class SettingsActivity extends AbsBaseActivity
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         switch (dialog.getTitle()) {
             case R.string.primary_color:
-                if (PreferenceUtil.getInstance(this).getGeneralTheme() == R.style.Theme_RetroMusic_Color) {
-                    Toast.makeText(this, "Hmm", Toast.LENGTH_SHORT).show();
-                    ThemeStore.editTheme(this)
-                            .primaryColor(selectedColor)
-                            .commit();
-                }
+                ThemeStore.editTheme(this).primaryColor(selectedColor).commit();
                 break;
             case R.string.accent_color:
                 ThemeStore.editTheme(this).accentColor(selectedColor).commit();
@@ -160,21 +153,17 @@ public class SettingsActivity extends AbsBaseActivity
 
     public static class AdvancedSettingsFragment extends ATEPreferenceFragmentCompat {
         public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
-        Uri mCurrentDirectoryUri;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_advanced);
-            addPreferencesFromResource(R.xml.pref_blacklist);
             addPreferencesFromResource(R.xml.pref_others);
         }
 
         @Nullable
         @Override
         public DialogFragment onCreatePreferenceDialog(Preference preference) {
-            if (preference instanceof BlacklistPreference) {
-                return BlacklistPreferenceDialog.newInstance();
-            }
+
             return super.onCreatePreferenceDialog(preference);
         }
 
@@ -208,15 +197,6 @@ public class SettingsActivity extends AbsBaseActivity
             invalidateSettings();
         }
 
-        private void showLicenseDialog() {
-            new LicensesDialog.Builder(getContext()).setNotices(R.raw.licences)
-                    .setTitle(R.string.licenses)
-                    .setNoticesCssStyle(getString(R.string.license_dialog_style)
-                            .replace("{bg-color}", ThemeSingleton.get().darkTheme ? "424242" : "ffffff")
-                            .replace("{text-color}", ThemeSingleton.get().darkTheme ? "ffffff" : "000000")
-                            .replace("{license-bg-color}", ThemeSingleton.get().darkTheme ? "535353" : "eeeeee"))
-                    .setIncludeOwnLicense(true).build().showAppCompat();
-        }
 
         public void setLangRecreate(String langval) {
             Locale locale = new Locale(langval);
@@ -264,7 +244,7 @@ public class SettingsActivity extends AbsBaseActivity
             });
             findPreference = findPreference("open_source");
             findPreference.setOnPreferenceClickListener(preference -> {
-                showLicenseDialog();
+                startActivity(new Intent(getActivity(), LicenseActivity.class));
                 return true;
             });
             findPreference = findPreference("about");
@@ -287,25 +267,7 @@ public class SettingsActivity extends AbsBaseActivity
                 return true;
             });
 
-            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
-            toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
-                getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
-                return true;
-            });
 
-            /*TwoStatePreference toggleStatusBar = (TwoStatePreference) findPreference("toggle_full_screen");
-            toggleStatusBar.setOnPreferenceChangeListener((preference, o) -> {
-                getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
-                return true;
-            });
-            TwoStatePreference toggleNavigation = (TwoStatePreference) findPreference("toggle_full_screen");
-            toggleNavigation.setOnPreferenceChangeListener((preference, o) -> {
-                getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
-                return true;
-            });*/
             TwoStatePreference toggleLanguage = (TwoStatePreference) findPreference("language_en");
             toggleLanguage.setOnPreferenceChangeListener((preference, o) -> {
 
@@ -322,12 +284,6 @@ public class SettingsActivity extends AbsBaseActivity
             });
 
 
-            TwoStatePreference cornerWindow = (TwoStatePreference) findPreference("corner_window");
-            cornerWindow.setOnPreferenceChangeListener((preference, newValue) -> {
-                getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
-                return true;
-            });
         }
     }
 
@@ -341,7 +297,6 @@ public class SettingsActivity extends AbsBaseActivity
 
         private static void setSummary(Preference preference, @NonNull Object value) {
             String stringValue = value.toString();
-
             if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
@@ -356,6 +311,8 @@ public class SettingsActivity extends AbsBaseActivity
         public DialogFragment onCreatePreferenceDialog(Preference preference) {
             if (preference instanceof NowPlayingScreenPreference) {
                 return NowPlayingScreenPreferenceDialog.newInstance();
+            } else if (preference instanceof BlacklistPreference) {
+                return BlacklistPreferenceDialog.newInstance();
             }
             return super.onCreatePreferenceDialog(preference);
         }
@@ -369,6 +326,8 @@ public class SettingsActivity extends AbsBaseActivity
             addPreferencesFromResource(R.xml.pref_now_playing_screen);
             addPreferencesFromResource(R.xml.pref_notification);
             addPreferencesFromResource(R.xml.pref_playlists);
+            addPreferencesFromResource(R.xml.pref_window);
+            addPreferencesFromResource(R.xml.pref_blacklist);
         }
 
         @Override
@@ -383,9 +342,6 @@ public class SettingsActivity extends AbsBaseActivity
                             .canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                 }
             });
-            getListView().setBackgroundColor(
-                    ATHUtil.resolveColor(getContext(), R.attr.colorPrimary)
-            );
             invalidateSettings();
             PreferenceUtil.getInstance(getActivity()).registerOnSharedPreferenceChangedListener(this);
         }
@@ -395,8 +351,21 @@ public class SettingsActivity extends AbsBaseActivity
         }
 
         private void invalidateSettings() {
-
             final Preference generalTheme = findPreference("general_theme");
+
+            final ATEColorPreference primaryColorPref = (ATEColorPreference) findPreference("primary_color");
+            primaryColorPref.setVisible(PreferenceUtil.getInstance(getActivity()).getGeneralTheme() == R.style.Theme_RetroMusic_Color);
+            final int primaryColor = ThemeStore.primaryColor(getActivity());
+            primaryColorPref.setColor(primaryColor, ColorUtil.darkenColor(primaryColor));
+            primaryColorPref.setOnPreferenceClickListener(preference -> {
+                new ColorChooserDialog.Builder(((SettingsActivity) getActivity()), R.string.primary_color)
+                        .accentMode(false)
+                        .allowUserColorInput(true)
+                        .allowUserColorInputAlpha(false)
+                        .preselect(primaryColor)
+                        .show();
+                return true;
+            });
 
             setSummary(generalTheme);
             generalTheme.setOnPreferenceChangeListener((preference, newValue) -> {
@@ -443,6 +412,18 @@ public class SettingsActivity extends AbsBaseActivity
                 });
             }
 
+            TwoStatePreference cornerWindow = (TwoStatePreference) findPreference("corner_window");
+            cornerWindow.setOnPreferenceChangeListener((preference, newValue) -> {
+                getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
+                return true;
+            });
+            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
+            toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
+                getActivity().recreate();
+                getActivity().setResult(RESULT_OK);
+                return true;
+            });
 
             final Preference autoDownloadImagesPolicy = findPreference("auto_download_images_policy");
             setSummary(autoDownloadImagesPolicy);
