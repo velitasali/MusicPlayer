@@ -36,7 +36,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
  * Created by hemanths on 13/08/17.
  */
 
-public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, Song> implements MaterialCab.Callback, FastScrollRecyclerView.SectionedAdapter {
+public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, Song>
+        implements MaterialCab.Callback, FastScrollRecyclerView.SectionedAdapter {
 
     public static final String TAG = SongAdapter.class.getSimpleName();
 
