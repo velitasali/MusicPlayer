@@ -298,6 +298,6 @@ public class HmmPlayerFragment extends AbsPlayerFragment
     @Override
     public void onToolbarToggled() {
         //Toggle hiding toolbar for effect
-        toggleToolbar(toolbarContainer);
+        //toggleToolbar(toolbarContainer);
     }
 }

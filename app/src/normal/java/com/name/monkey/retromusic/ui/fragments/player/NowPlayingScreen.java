@@ -1,4 +1,4 @@
-package code.name.monkey.retromusic.ui.fragments.player;
+package com.name.monkey.retromusic.ui.fragments.player;
 
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;

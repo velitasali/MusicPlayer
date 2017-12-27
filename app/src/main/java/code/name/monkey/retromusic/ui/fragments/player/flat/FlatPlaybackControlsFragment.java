@@ -24,6 +24,7 @@ import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.kabouzeid.appthemehelper.util.TintHelper;
 import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +38,6 @@ import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 
 /**
  * Created by hemanths on 30/08/17.
@@ -64,6 +64,8 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
     Unbinder unbinder;
     @BindView(R.id.player_progress_slider)
     SeekBar progressSlider;
+    @BindView(R.id.volume_fragment_container)
+    View mVolumeContainer;
     private int lastPlaybackControlsColor;
     private int lastDisabledPlaybackControlsColor;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
@@ -88,6 +90,12 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpMusicControllers();
+
+        if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
+            mVolumeContainer.setVisibility(View.VISIBLE);
+        } else {
+            mVolumeContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override

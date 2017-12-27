@@ -1,12 +1,9 @@
-package code.name.monkey.retromusic.ui.fragments.player.normal;
+package code.name.monkey.retromusic.ui.fragments.player.blur;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -19,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.DrawableGradient;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.util.LyricUtil;
 
@@ -29,35 +28,40 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
+import code.name.monkey.retromusic.glide.SongGlideRequest;
+import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
+import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
-import code.name.monkey.retromusic.util.ViewUtil;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
- * Created by hemanths on 18/08/17.
+ * @author Hemanth S (h4h13).
  */
 
-public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
+public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.player_toolbar)
     Toolbar mToolbar;
     @BindView(R.id.gradient_background)
-    View colorBackground;
+    ImageView colorBackground;
     @Nullable
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
     @BindView(R.id.now_playing_container)
     ViewGroup mViewGroup;
+    @BindView(R.id.mask)
+    View mask;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
     private int lastColor;
-    private PlayerPlaybackControlsFragment mPlaybackControlsFragment;
+    private BlurPlaybackControlsFragment mPlaybackControlsFragment;
     private Unbinder unbinder;
-    private ValueAnimator valueAnimator;
 
     public static PlayerFragment newInstance() {
         Bundle args = new Bundle();
@@ -70,22 +74,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     public void onToolbarToggled() {
         //Toggle hiding toolbar for effect
         //toggleToolbar(toolbarContainer);
-    }
-
-    private void colorize(int i) {
-        if (valueAnimator != null) valueAnimator.cancel();
-
-        valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), android.R.color.transparent, i);
-        valueAnimator.addUpdateListener(animation -> {
-            GradientDrawable drawable = new DrawableGradient(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    new int[]{(int) animation.getAnimatedValue(), android.R.color.transparent},
-                    0);
-            if (colorBackground != null) {
-                colorBackground.setBackground(drawable);
-            }
-        });
-        valueAnimator.setDuration(ViewUtil.RETRO_MUSIC_ANIM_TIME).start();
     }
 
     @Override
@@ -121,10 +109,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         mPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
         lastColor = color;
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                getActivity());
-        if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
     }
 
     @Override
@@ -139,7 +124,6 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     public void onFavoriteToggled() {
         toggleFavorite(MusicPlayerRemote.getCurrentSong());
     }
-
 
     @Override
     public void onDestroyView() {
@@ -156,8 +140,9 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_player, container, false);
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_blur, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -178,7 +163,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     }
 
     private void setUpSubFragments() {
-        mPlaybackControlsFragment = (PlayerPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        mPlaybackControlsFragment = (BlurPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
         PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
         playerAlbumCoverFragment.setCallbacks(this);
@@ -189,9 +174,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                getActivity());
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
     }
 
     @Override
@@ -200,6 +183,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         //updateCurrentSong();
         updateIsFavorite();
         updateLyrics();
+        updateBlur();
     }
 
     @Override
@@ -208,6 +192,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         //updateQueuePosition();
         updateIsFavorite();
         updateLyrics();
+        updateBlur();
     }
 
     @Override
@@ -218,6 +203,37 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onMediaStoreChanged() {
         //updateQueue();
+    }
+
+    private void updateBlur() {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        SongGlideRequest.Builder.from(Glide.with(activity), MusicPlayerRemote.getCurrentSong())
+                .checkIgnoreMediaStore(activity)
+                .generatePalette(activity)
+                .build()
+                .transform(new BlurTransformation(activity, 200))
+                .listener(new RequestListener<Object, BitmapPaletteWrapper>() {
+                    @Override
+                    public boolean onException(Exception e, Object model, Target<BitmapPaletteWrapper> target, boolean isFirstResource) {
+                        mask.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(BitmapPaletteWrapper resource, Object model, Target<BitmapPaletteWrapper> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        mask.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(new RetroMusicColoredTarget(colorBackground) {
+                    @Override
+                    public void onColorReady(int color) {
+
+                    }
+                });
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -243,7 +259,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
                     Activity activity = getActivity();
                     if (mToolbar != null && activity != null)
                         if (mToolbar.getMenu().findItem(R.id.action_show_lyrics) == null) {
-                            int color = ATHUtil.resolveColor(activity, R.attr.iconColor, Color.TRANSPARENT);
+                            int color = Color.WHITE;
                             Drawable drawable = Util.getTintedVectorDrawable(activity, R.drawable.ic_comment_text_outline_white_24dp, color);
                             mToolbar.getMenu()
                                     .add(Menu.NONE, R.id.action_show_lyrics, Menu.NONE, R.string.action_show_lyrics)
@@ -280,7 +296,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
                 Activity activity = getActivity();
                 if (activity != null) {
                     int res = isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
-                    int color = ATHUtil.resolveColor(activity, R.attr.iconColor, Color.TRANSPARENT);
+                    int color = Color.WHITE;
                     Drawable drawable = Util.getTintedVectorDrawable(activity, res, color);
                     mToolbar.getMenu().findItem(R.id.action_toggle_favorite)
                             .setIcon(drawable)

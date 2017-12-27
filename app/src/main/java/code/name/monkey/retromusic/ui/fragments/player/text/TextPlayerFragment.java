@@ -1,15 +1,11 @@
-package code.name.monkey.retromusic.ui.fragments.player.normal;
+package code.name.monkey.retromusic.ui.fragments.player.text;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -18,10 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.DrawableGradient;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.util.LyricUtil;
 
@@ -36,79 +30,92 @@ import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
-import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
- * Created by hemanths on 18/08/17.
+ * @author Hemanth S (h4h13).
  */
 
-public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
+public class TextPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.player_toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.gradient_background)
-    View colorBackground;
-    @Nullable
-    @BindView(R.id.toolbar_container)
-    FrameLayout toolbarContainer;
-    @BindView(R.id.now_playing_container)
+    @BindView(R.id.album_cover_container)
     ViewGroup mViewGroup;
+    private Unbinder unbinder;
+    private int lastColor;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
-    private int lastColor;
-    private PlayerPlaybackControlsFragment mPlaybackControlsFragment;
-    private Unbinder unbinder;
-    private ValueAnimator valueAnimator;
+    private TextPlaybackControlsFragment mPlaybackControlsFragment;
 
-    public static PlayerFragment newInstance() {
-        Bundle args = new Bundle();
-        PlayerFragment fragment = new PlayerFragment();
-        fragment.setArguments(args);
-        return fragment;
+    private void setUpSubFragments() {
+        mPlaybackControlsFragment = (TextPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+
+        PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
+        playerAlbumCoverFragment.setCallbacks(this);
+    }
+
+    private void setUpPlayerToolbar() {
+        mToolbar.inflateMenu(R.menu.menu_player);
+        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        mToolbar.setOnMenuItemClickListener(this);
+
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+                getActivity());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_text_player, container, false);
+        unbinder = ButterKnife.bind(this, layout);
+         /*Adding margin to toolbar for !full screen mode*/
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
+            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
+            mViewGroup.setLayoutParams(params);
+        }
+        return layout;
     }
 
     @Override
-    public void onToolbarToggled() {
-        //Toggle hiding toolbar for effect
-        //toggleToolbar(toolbarContainer);
-    }
-
-    private void colorize(int i) {
-        if (valueAnimator != null) valueAnimator.cancel();
-
-        valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), android.R.color.transparent, i);
-        valueAnimator.addUpdateListener(animation -> {
-            GradientDrawable drawable = new DrawableGradient(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    new int[]{(int) animation.getAnimatedValue(), android.R.color.transparent},
-                    0);
-            if (colorBackground != null) {
-                colorBackground.setBackground(drawable);
-            }
-        });
-        valueAnimator.setDuration(ViewUtil.RETRO_MUSIC_ANIM_TIME).start();
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUpSubFragments();
+        setUpPlayerToolbar();
     }
 
     @Override
-    @ColorInt
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
+            updateLyricsAsyncTask.cancel(true);
+        }
+        if (updateIsFavoriteTask != null && !updateIsFavoriteTask.isCancelled()) {
+            updateIsFavoriteTask.cancel(true);
+        }
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @Override
     public int getPaletteColor() {
         return lastColor;
     }
 
     @Override
     public void onShow() {
-        mPlaybackControlsFragment.show();
+
     }
 
     @Override
     public void onHide() {
-        mPlaybackControlsFragment.hide();
-        onBackPressed();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkToggleToolbar(toolbarContainer);
     }
 
     @Override
@@ -119,12 +126,9 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
         lastColor = color;
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getActivity(), R.attr.iconColor),
                 getActivity());
-        if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
     @Override
@@ -142,82 +146,8 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
 
 
     @Override
-    public void onDestroyView() {
-        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
-            updateLyricsAsyncTask.cancel(true);
-        }
-        if (updateIsFavoriteTask != null && !updateIsFavoriteTask.isCancelled()) {
-            updateIsFavoriteTask.cancel(true);
-        }
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+    public void onToolbarToggled() {
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_player, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
-            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
-            mViewGroup.setLayoutParams(params);
-        }
-
-        setUpSubFragments();
-        setUpPlayerToolbar();
-    }
-
-    private void setUpSubFragments() {
-        mPlaybackControlsFragment = (PlayerPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
-
-        PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
-        playerAlbumCoverFragment.setCallbacks(this);
-    }
-
-    private void setUpPlayerToolbar() {
-        mToolbar.inflateMenu(R.menu.menu_player);
-        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        mToolbar.setOnMenuItemClickListener(this);
-
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                getActivity());
-    }
-
-    @Override
-    public void onServiceConnected() {
-        //updateQueue();
-        //updateCurrentSong();
-        updateIsFavorite();
-        updateLyrics();
-    }
-
-    @Override
-    public void onPlayingMetaChanged() {
-        //updateCurrentSong();
-        //updateQueuePosition();
-        updateIsFavorite();
-        updateLyrics();
-    }
-
-    @Override
-    public void onQueueChanged() {
-        //updateQueue();
-    }
-
-    @Override
-    public void onMediaStoreChanged() {
-        //updateQueue();
     }
 
     @SuppressLint("StaticFieldLeak")
