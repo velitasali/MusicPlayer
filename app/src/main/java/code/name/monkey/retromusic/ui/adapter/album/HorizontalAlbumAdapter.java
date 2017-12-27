@@ -1,4 +1,4 @@
-package code.name.monkey.retromusic.ui.adapter;
+package code.name.monkey.retromusic.ui.adapter.album;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
