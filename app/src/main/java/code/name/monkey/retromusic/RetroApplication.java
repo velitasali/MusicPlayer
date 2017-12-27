@@ -23,6 +23,7 @@ public class RetroApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         retroApplication = this;
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/circular_std_book.otf")
                 .setFontAttrId(R.attr.fontPath)
