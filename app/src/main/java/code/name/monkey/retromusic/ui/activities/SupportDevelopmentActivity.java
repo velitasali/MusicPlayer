@@ -41,7 +41,6 @@ import butterknife.OnClick;
 import code.name.monkey.retromusic.BuildConfig;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
-import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.IconImageView;
 
@@ -107,7 +106,9 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
 
+        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
         setSupportActionBar(mToolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(view -> onBackPressed());
 
