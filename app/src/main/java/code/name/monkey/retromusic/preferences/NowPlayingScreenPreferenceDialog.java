@@ -17,10 +17,11 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.bumptech.glide.Glide;
+import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
 import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 
@@ -59,7 +60,8 @@ public class NowPlayingScreenPreferenceDialog extends DialogFragment implements 
     }
 
     @Override
-    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+    public void onClick(@NonNull MaterialDialog dialog,
+                        @NonNull DialogAction which) {
         whichButtonClicked = which;
     }
 
@@ -94,24 +96,28 @@ public class NowPlayingScreenPreferenceDialog extends DialogFragment implements 
             this.context = context;
         }
 
+        @NonNull
         @Override
-        public Object instantiateItem(ViewGroup collection, int position) {
+        public Object instantiateItem(@NonNull ViewGroup collection
+                , int position) {
             NowPlayingScreen nowPlayingScreen = NowPlayingScreen.values()[position];
 
             LayoutInflater inflater = LayoutInflater.from(context);
             ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.preference_now_playing_screen_item, collection, false);
             collection.addView(layout);
 
-            ImageView image = ButterKnife.findById(layout, R.id.image);
-            TextView title = ButterKnife.findById(layout, R.id.title);
-            image.setImageResource(nowPlayingScreen.drawableResId);
+            ImageView image = layout.findViewById(R.id.image);
+            TextView title = layout.findViewById(R.id.title);
+            Glide.with(context).load(nowPlayingScreen.drawableResId).into(image);
             title.setText(nowPlayingScreen.titleRes);
 
             return layout;
         }
 
         @Override
-        public void destroyItem(ViewGroup collection, int position, Object view) {
+        public void destroyItem(@NonNull ViewGroup collection,
+                                int position,
+                                @NonNull Object view) {
             collection.removeView((View) view);
         }
 
@@ -121,7 +127,8 @@ public class NowPlayingScreenPreferenceDialog extends DialogFragment implements 
         }
 
         @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view,
+                                        @NonNull Object object) {
             return view == object;
         }
 
