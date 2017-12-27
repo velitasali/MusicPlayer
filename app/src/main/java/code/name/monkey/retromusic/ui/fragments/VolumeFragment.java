@@ -56,6 +56,7 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_volume, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         return view;
     }
 
