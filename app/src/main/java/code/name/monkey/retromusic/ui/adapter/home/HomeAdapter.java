@@ -15,6 +15,10 @@ import android.widget.TextView;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Playlist;
+import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.model.smartplaylist.HistoryPlaylist;
+import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
+import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
 
 import java.util.ArrayList;
 
@@ -24,7 +28,8 @@ import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
-import io.reactivex.disposables.CompositeDisposable;
+import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
+import code.name.monkey.retromusic.util.NavigationUtil;
 
 /**
  * Created by hemanths on 19/07/17.
@@ -32,26 +37,37 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int SUB_HEADER = 0;
-    private static final int DATA = 1;
+    private static final int ABS_PLAYLITS = 1;
+    private static final int DATA = 2;
     private ArrayList<Object> dataSet = new ArrayList<>();
     private AppCompatActivity activity;
-    private CompositeDisposable mDisposable;
 
     public HomeAdapter(@NonNull AppCompatActivity activity) {
         this.activity = activity;
-        mDisposable = new CompositeDisposable();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        return new ViewHolder(LayoutInflater.from(this.activity)
-                .inflate(i == 0 ? R.layout.sub_header : R.layout.recycler_view_sec, viewGroup, false));
+        switch (i) {
+            case ABS_PLAYLITS:
+                return new ViewHolder(LayoutInflater.from(activity)
+                        .inflate(R.layout.abs_playlists, viewGroup, false));
+            default:
+            case DATA:
+                return new ViewHolder(LayoutInflater.from(activity)
+                        .inflate(R.layout.recycler_view_sec, viewGroup, false));
+            case SUB_HEADER:
+                return new ViewHolder(LayoutInflater.from(activity)
+                        .inflate(R.layout.sub_header, viewGroup, false));
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
         if (dataSet.get(position) instanceof String) {
             return SUB_HEADER;
+        } else if (dataSet.get(position) instanceof Integer) {
+            return ABS_PLAYLITS;
         } else if (dataSet.get(position) instanceof ArrayList) {
             return DATA;
         }
@@ -62,6 +78,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
         ViewHolder viewholder = (ViewHolder) holder;
         switch (getItemViewType(i)) {
+            case ABS_PLAYLITS:
+                if (viewholder.history != null) {
+                    viewholder.history.setOnClickListener(view ->
+                            NavigationUtil.goToPlaylistNew(activity, new HistoryPlaylist(activity)));
+                }
+                if (viewholder.lastAdded != null) {
+                    viewholder.lastAdded.setOnClickListener(view ->
+                            NavigationUtil.goToPlaylistNew(activity, new LastAddedPlaylist(activity)));
+                }
+                if (viewholder.topTracks != null) {
+                    viewholder.topTracks.setOnClickListener(view ->
+                            NavigationUtil.goToPlaylistNew(activity, new MyTopTracksPlaylist(activity)));
+                }
+                break;
             case SUB_HEADER:
                 String title = (String) dataSet.get(i);
                 if (viewholder.title != null) {
@@ -70,6 +100,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case DATA:
                 ArrayList arrayList = (ArrayList) dataSet.get(i);
+                if (arrayList.isEmpty()) {
+                    return;
+                }
                 Object something = arrayList.get(0);
                 if (something instanceof Artist) {
                     if (viewholder.recyclerView != null) {
@@ -81,13 +114,26 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     if (viewholder.recyclerView != null) {
                         viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
                         viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        viewholder.recyclerView.setAdapter(new AlbumAdapter(activity, (ArrayList<Album>) arrayList, R.layout.item_image, false, null));
+                        viewholder.recyclerView.setAdapter(new AlbumAdapter(activity, (ArrayList<Album>) arrayList, R.layout.pager_item, false, null));
                     }
                 } else if (something instanceof Playlist) {
                     if (viewholder.recyclerView != null) {
                         viewholder.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
                         viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
                         viewholder.recyclerView.setAdapter(new PlaylistAdapter(activity, (ArrayList<Playlist>) arrayList, R.layout.item_list, null));
+                    }
+                } else if (something instanceof Song) {
+                    if (viewholder.recyclerView != null) {
+                        GridLayoutManager layoutManager = new GridLayoutManager(activity, 1, LinearLayoutManager.HORIZONTAL, false);
+                        /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                            @Override
+                            public int getSpanSize(int position) {
+                                return (position % 4 == 0 ? 3 : 1);
+                            }
+                        });*/
+                        viewholder.recyclerView.setLayoutManager(layoutManager);
+                        viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        viewholder.recyclerView.setAdapter(new SongAdapter(activity, (ArrayList<Song>) arrayList, R.layout.item_image, false, null));
                     }
                 }
                 break;
@@ -105,10 +151,24 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public ArrayList<Object> getDataset() {
+        return dataSet;
+    }
+
     public class ViewHolder extends MediaEntryViewHolder {
         @BindView(R.id.see_all)
         @Nullable
         TextView seeAll;
+
+        @BindView(R.id.history)
+        @Nullable
+        View history;
+        @BindView(R.id.last_added)
+        @Nullable
+        View lastAdded;
+        @BindView(R.id.top_tracks)
+        @Nullable
+        View topTracks;
 
         public ViewHolder(View itemView) {
             super(itemView);
