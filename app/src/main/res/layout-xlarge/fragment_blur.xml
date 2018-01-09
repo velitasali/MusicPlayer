@@ -21,7 +21,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shadow_up_edited" />
+        android:background="@drawable/shadow_up" />
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 

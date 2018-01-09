@@ -1,28 +1,20 @@
 package code.name.monkey.retromusic.ui.fragments.player.blur;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.util.LyricUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,15 +22,12 @@ import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
-import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
-import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
-import code.name.monkey.retromusic.util.Util;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -50,15 +39,12 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     Toolbar mToolbar;
     @BindView(R.id.gradient_background)
     ImageView colorBackground;
-    @Nullable
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
     @BindView(R.id.now_playing_container)
     ViewGroup mViewGroup;
-    @BindView(R.id.mask)
-    View mask;
-    private AsyncTask updateIsFavoriteTask;
-    private AsyncTask updateLyricsAsyncTask;
+    @BindView(R.id.anti_clickable)
+    ViewGroup mRoot;
     private int lastColor;
     private BlurPlaybackControlsFragment mPlaybackControlsFragment;
     private Unbinder unbinder;
@@ -105,11 +91,20 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     }
 
     @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    public int toolbarIconColor() {
+        return Color.WHITE;
+    }
+
+    @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
         lastColor = color;
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
     }
 
     @Override
@@ -127,12 +122,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onDestroyView() {
-        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
-            updateLyricsAsyncTask.cancel(true);
-        }
-        if (updateIsFavoriteTask != null && !updateIsFavoriteTask.isCancelled()) {
-            updateIsFavoriteTask.cancel(true);
-        }
+
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -179,30 +169,14 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onServiceConnected() {
-        //updateQueue();
-        //updateCurrentSong();
-        updateIsFavorite();
-        updateLyrics();
+        super.onServiceConnected();
         updateBlur();
     }
 
     @Override
     public void onPlayingMetaChanged() {
-        //updateCurrentSong();
-        //updateQueuePosition();
-        updateIsFavorite();
-        updateLyrics();
+        super.onPlayingMetaChanged();
         updateBlur();
-    }
-
-    @Override
-    public void onQueueChanged() {
-        //updateQueue();
-    }
-
-    @Override
-    public void onMediaStoreChanged() {
-        //updateQueue();
     }
 
     private void updateBlur() {
@@ -214,20 +188,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 .checkIgnoreMediaStore(activity)
                 .generatePalette(activity)
                 .build()
-                .transform(new BlurTransformation(activity, 200))
-                .listener(new RequestListener<Object, BitmapPaletteWrapper>() {
-                    @Override
-                    public boolean onException(Exception e, Object model, Target<BitmapPaletteWrapper> target, boolean isFirstResource) {
-                        mask.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(BitmapPaletteWrapper resource, Object model, Target<BitmapPaletteWrapper> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        mask.setVisibility(View.GONE);
-                        return false;
-                    }
-                })
+                .transform(new BlurTransformation(getActivity(), 200))
                 .into(new RetroMusicColoredTarget(colorBackground) {
                     @Override
                     public void onColorReady(int color) {
@@ -236,73 +197,5 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 });
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void updateLyrics() {
-        if (updateLyricsAsyncTask != null) updateLyricsAsyncTask.cancel(false);
-        final Song song = MusicPlayerRemote.getCurrentSong();
-        updateLyricsAsyncTask = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                mToolbar.getMenu().removeItem(R.id.action_show_lyrics);
-            }
 
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                return LyricUtil.isLrcFileExist(song.title, song.artistName);
-
-            }
-
-            @Override
-            protected void onPostExecute(Boolean l) {
-                if (l) {
-                    Activity activity = getActivity();
-                    if (mToolbar != null && activity != null)
-                        if (mToolbar.getMenu().findItem(R.id.action_show_lyrics) == null) {
-                            int color = Color.WHITE;
-                            Drawable drawable = Util.getTintedVectorDrawable(activity, R.drawable.ic_comment_text_outline_white_24dp, color);
-                            mToolbar.getMenu()
-                                    .add(Menu.NONE, R.id.action_show_lyrics, Menu.NONE, R.string.action_show_lyrics)
-                                    .setIcon(drawable)
-                                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                        }
-                } else {
-                    if (mToolbar != null) {
-                        mToolbar.getMenu().removeItem(R.id.action_show_lyrics);
-                    }
-                }
-
-            }
-        }.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void updateIsFavorite() {
-        if (updateIsFavoriteTask != null) updateIsFavoriteTask.cancel(false);
-        updateIsFavoriteTask = new AsyncTask<Song, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Song... params) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    return MusicUtil.isFavorite(getActivity(), params[0]);
-                } else {
-                    cancel(false);
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isFavorite) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    int res = isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
-                    int color = Color.WHITE;
-                    Drawable drawable = Util.getTintedVectorDrawable(activity, res, color);
-                    mToolbar.getMenu().findItem(R.id.action_toggle_favorite)
-                            .setIcon(drawable)
-                            .setTitle(isFavorite ? getString(R.string.action_remove_from_favorites) : getString(R.string.action_add_to_favorites));
-                }
-            }
-        }.execute(MusicPlayerRemote.getCurrentSong());
-    }
 }

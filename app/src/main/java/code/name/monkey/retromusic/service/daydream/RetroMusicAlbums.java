@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.service.dreams.DreamService;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.retro.musicplayer.backend.loaders.SongLoader;
 import com.retro.musicplayer.backend.model.Song;
-import com.transitionseverywhere.ChangeText;
-import com.transitionseverywhere.TransitionManager;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,7 @@ public class RetroMusicAlbums extends DreamService {
             String track = intent.getStringExtra("track");
             if (mViewGroup != null) {
                 mViewGroup.setVisibility(View.VISIBLE);
-                TransitionManager.beginDelayedTransition(mViewGroup, new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));
+                TransitionManager.beginDelayedTransition(mViewGroup);
                 if (mTitle != null) {
                     mTitle.setText(track);
                 }

@@ -45,6 +45,8 @@ import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.preferences.BlacklistPreference;
 import code.name.monkey.retromusic.preferences.BlacklistPreferenceDialog;
+import code.name.monkey.retromusic.preferences.LibraryPreference;
+import code.name.monkey.retromusic.preferences.LibraryPreferenceDialog;
 import code.name.monkey.retromusic.preferences.NowPlayingScreenPreference;
 import code.name.monkey.retromusic.preferences.NowPlayingScreenPreferenceDialog;
 import code.name.monkey.retromusic.service.MusicService;
@@ -260,13 +262,6 @@ public class SettingsActivity extends AbsBaseActivity
                 e.printStackTrace();
             }
 
-            TwoStatePreference toggleVolume = (TwoStatePreference) findPreference("toggle_volume");
-            toggleVolume.setOnPreferenceChangeListener((preference, o) -> {
-                //getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
-                return true;
-            });
-
 
             TwoStatePreference toggleLanguage = (TwoStatePreference) findPreference("language_en");
             toggleLanguage.setOnPreferenceChangeListener((preference, o) -> {
@@ -313,6 +308,8 @@ public class SettingsActivity extends AbsBaseActivity
                 return NowPlayingScreenPreferenceDialog.newInstance();
             } else if (preference instanceof BlacklistPreference) {
                 return BlacklistPreferenceDialog.newInstance();
+            } else if (preference instanceof LibraryPreference) {
+                return LibraryPreferenceDialog.newInstance();
             }
             return super.onCreatePreferenceDialog(preference);
         }
@@ -321,6 +318,7 @@ public class SettingsActivity extends AbsBaseActivity
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_general);
             addPreferencesFromResource(R.xml.pref_audio);
+            addPreferencesFromResource(R.xml.pref_ui);
             addPreferencesFromResource(R.xml.pref_images);
             addPreferencesFromResource(R.xml.pref_lockscreen);
             addPreferencesFromResource(R.xml.pref_now_playing_screen);
@@ -351,6 +349,7 @@ public class SettingsActivity extends AbsBaseActivity
         }
 
         private void invalidateSettings() {
+
             final Preference generalTheme = findPreference("general_theme");
 
             final ATEColorPreference primaryColorPref = (ATEColorPreference) findPreference("primary_color");

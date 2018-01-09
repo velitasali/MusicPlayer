@@ -28,7 +28,9 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
  * Created by hemanths on 12/08/17.
  */
 
-public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager> implements AlbumContract.AlbumView {
+public class AlbumsFragment
+        extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager>
+        implements AlbumContract.AlbumView {
     public static final String TAG = AlbumsFragment.class.getSimpleName();
 
     private AlbumPresenter mPresenter;

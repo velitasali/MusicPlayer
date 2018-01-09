@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/donation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:indeterminate="true" />
 
-                <TextView
+                <android.support.v7.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
@@ -106,8 +106,8 @@
                     android:gravity="center_horizontal"
                     android:orientation="vertical">
 
-                    <TextView
-                        fontPath="fonts/sans_bold.ttf"
+                    <android.support.v7.widget.AppCompatTextView
+                        fontPath="@string/sans_bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="16dp"
@@ -126,7 +126,7 @@
                         android:textColor="@color/md_white_1000" />
 
 
-                    <Button
+                    <android.support.v7.widget.AppCompatButton
                         android:id="@+id/donate"
                         style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                         android:layout_width="wrap_content"

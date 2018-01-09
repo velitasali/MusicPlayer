@@ -3,7 +3,7 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 
@@ -22,7 +22,7 @@ import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerView
  * @author Hemanth S (h4h13).
  */
 
-public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdapter, GridLayoutManager>
+public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdapter, LinearLayoutManager>
         implements GenreContract.GenreView {
     private GenrePresenter mPresenter;
 
@@ -55,8 +55,8 @@ public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdap
 
     @NonNull
     @Override
-    protected GridLayoutManager createLayoutManager() {
-        return new GridLayoutManager(getActivity(), 1);
+    protected LinearLayoutManager createLayoutManager() {
+        return new LinearLayoutManager(getActivity());
     }
 
     @NonNull

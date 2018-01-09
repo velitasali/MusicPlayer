@@ -2,16 +2,11 @@ package code.name.monkey.retromusic.ui.fragments.player.hmm;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
@@ -23,7 +18,6 @@ import com.afollestad.materialdialogs.internal.MDTintHelper;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.util.LyricUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,14 +32,14 @@ import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
-import code.name.monkey.retromusic.util.Util;
 
 /**
  * @author Hemanth S (h4h13).
  */
 
-public class HmmPlayerFragment extends AbsPlayerFragment
-        implements MusicProgressViewUpdateHelper.Callback, PlayerAlbumCoverFragment.Callbacks {
+public class HmmPlayerFragment extends AbsPlayerFragment implements
+        MusicProgressViewUpdateHelper.Callback,
+        PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.text)
@@ -62,9 +56,7 @@ public class HmmPlayerFragment extends AbsPlayerFragment
     private Unbinder unBinder;
     private int mLastColor;
     private HmmPlaybackControlsFragment mHmmPlaybackControlsFragment;
-    private AsyncTask updateIsFavoriteTask;
-    private AsyncTask updateLyricsAsyncTask;
-    private int iconColor;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,12 +85,6 @@ public class HmmPlayerFragment extends AbsPlayerFragment
 
     @Override
     public void onDestroyView() {
-        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
-            updateLyricsAsyncTask.cancel(true);
-        }
-        if (updateIsFavoriteTask != null && !updateIsFavoriteTask.isCancelled()) {
-            updateIsFavoriteTask.cancel(true);
-        }
         super.onDestroyView();
         unBinder.unbind();
     }
@@ -156,6 +142,17 @@ public class HmmPlayerFragment extends AbsPlayerFragment
     }
 
     @Override
+    public Toolbar getToolbar() {
+        return mToolbar;
+    }
+
+    @Override
+    public int toolbarIconColor() {
+        int iconColor = MaterialValueHelper.getSecondaryTextColor(getContext(), ColorUtil.isColorLight(mLastColor));
+        return iconColor;
+    }
+
+    @Override
     public void onUpdateProgressViews(int progress, int total) {
         mProgressBar.setMax(total);
 
@@ -190,88 +187,12 @@ public class HmmPlayerFragment extends AbsPlayerFragment
     public void onServiceConnected() {
         super.onServiceConnected();
         updateSong();
-        updateLyrics();
-        updateIsFavorite();
     }
 
     @Override
     public void onPlayingMetaChanged() {
         super.onPlayingMetaChanged();
         updateSong();
-        updateLyrics();
-        updateIsFavorite();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void updateLyrics() {
-        if (updateLyricsAsyncTask != null) updateLyricsAsyncTask.cancel(false);
-        final Song song = MusicPlayerRemote.getCurrentSong();
-        updateLyricsAsyncTask = new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                mToolbar.getMenu().removeItem(R.id.action_show_lyrics);
-            }
-
-            @Override
-            protected Boolean doInBackground(Void... params) {
-                return LyricUtil.isLrcFileExist(song.title, song.artistName);
-
-            }
-
-            @Override
-            protected void onPostExecute(Boolean l) {
-                if (l) {
-                    Activity activity = getActivity();
-                    if (mToolbar != null && activity != null) {
-                        if (mToolbar.getMenu().findItem(R.id.action_show_lyrics) == null) {
-                            // int color = ToolbarContentTintHelper.toolbarContentColor(activity, Color.TRANSPARENT);
-                            Drawable drawable = Util.getTintedVectorDrawable(activity,
-                                    R.drawable.ic_comment_text_outline_white_24dp,
-                                    iconColor);
-                            mToolbar.getMenu()
-                                    .add(Menu.NONE, R.id.action_show_lyrics, Menu.NONE, R.string.action_show_lyrics)
-                                    .setIcon(drawable)
-                                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-                        }
-                    } else {
-                        if (mToolbar != null) {
-                            mToolbar.getMenu().removeItem(R.id.action_show_lyrics);
-                        }
-                    }
-                }
-
-            }
-        }.execute();
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private void updateIsFavorite() {
-        if (updateIsFavoriteTask != null) updateIsFavoriteTask.cancel(false);
-        updateIsFavoriteTask = new AsyncTask<Song, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Song... params) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    return MusicUtil.isFavorite(getActivity(), params[0]);
-                } else {
-                    cancel(false);
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Boolean isFavorite) {
-                Activity activity = getActivity();
-                if (activity != null) {
-                    int res = isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
-                    Drawable drawable = Util.getTintedVectorDrawable(activity, res, iconColor);
-                    mToolbar.getMenu().findItem(R.id.action_toggle_favorite)
-                            .setIcon(drawable)
-                            .setTitle(isFavorite ? getString(R.string.action_remove_from_favorites) : getString(R.string.action_add_to_favorites));
-                }
-            }
-        }.execute(MusicPlayerRemote.getCurrentSong());
     }
 
     @Override
@@ -281,7 +202,7 @@ public class HmmPlayerFragment extends AbsPlayerFragment
         mHmmPlaybackControlsFragment.setDark(color);
         setProgressBarColor(color);
 
-        iconColor = MaterialValueHelper.getSecondaryTextColor(getContext(), ColorUtil.isColorLight(color));
+        int iconColor = MaterialValueHelper.getSecondaryTextColor(getContext(), ColorUtil.isColorLight(color));
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, iconColor, getActivity());
 
     }

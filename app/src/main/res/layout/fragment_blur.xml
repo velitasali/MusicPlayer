@@ -13,17 +13,11 @@
         android:scaleType="centerCrop"
         tools:src="@drawable/hemanth_s" />
 
-    <View
-        android:id="@+id/mask"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/md_black_1000"
-        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shadow_up_edited" />
+        android:background="@drawable/shadow_up" />
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 

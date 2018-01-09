@@ -72,7 +72,7 @@
 
         <TextView
             android:id="@+id/text"
-            fontPath="fonts/sans_bold.ttf"
+            fontPath="@string/sans_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/md_red_500"
@@ -88,7 +88,7 @@
 
         <TextView
             android:id="@+id/title"
-            fontPath="fonts/sans_bold.ttf"
+            fontPath="@string/sans_bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

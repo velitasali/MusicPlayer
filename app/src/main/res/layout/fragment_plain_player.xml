@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/title"
-                fontPath="fonts/sans_bold.ttf"
+                fontPath="@string/sans_bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"

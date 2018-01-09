@@ -96,11 +96,7 @@ public class BlurPlaybackControlsFragment extends AbsPlayerControlsFragment {
         unbinder = ButterKnife.bind(this, view);
         setUpMusicControllers();
 
-        if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
-            mVolumeContainer.setVisibility(View.VISIBLE);
-        } else {
-            mVolumeContainer.setVisibility(View.GONE);
-        }
+        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
 
         VolumeFragment mVolumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
         mVolumeFragment.tintWhiteColor();
@@ -166,8 +162,8 @@ public class BlurPlaybackControlsFragment extends AbsPlayerControlsFragment {
         lastDisabledPlaybackControlsColor = ContextCompat.getColor(getContext(), R.color.md_grey_500);
 
         TintHelper.setTint(progressSlider, Color.WHITE, false);
-        text.setTextColor(lastDisabledPlaybackControlsColor);
-        title.setTextColor(lastPlaybackControlsColor);
+        //text.setTextColor(lastDisabledPlaybackControlsColor);
+        //title.setTextColor(lastPlaybackControlsColor);
 
 
         songCurrentProgress.setTextColor(lastPlaybackControlsColor);

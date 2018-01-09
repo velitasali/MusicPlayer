@@ -1,7 +1,6 @@
 package code.name.monkey.retromusic.ui.activities;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -51,7 +50,6 @@ import code.name.monkey.retromusic.ui.adapter.song.OrderablePlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.PlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
-import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
@@ -209,8 +207,9 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
                 ToolbarColorizeHelper.colorizeToolbar(toolbar, color, PlaylistDetailActivity.this);
             }
         });
-        if (PreferenceUtil.getInstance(this).getAdaptiveColor())
-            TintHelper.setTintAuto(shuffleButton, ThemeStore.accentColor(this), true);
+
+        TintHelper.setTintAuto(shuffleButton, ThemeStore.accentColor(this), true);
+
     }
 
     @Override

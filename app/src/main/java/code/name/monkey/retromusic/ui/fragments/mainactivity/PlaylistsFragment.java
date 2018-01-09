@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.mainactivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,8 +38,8 @@ import io.reactivex.disposables.CompositeDisposable;
  * Created by hemanths on 19/08/17.
  */
 
-public class PlaylistsFragment extends AbsLibraryPagerFragment
-        implements PlaylistContract.PlaylistView {
+public class PlaylistsFragment extends AbsLibraryPagerFragment implements
+        PlaylistContract.PlaylistView {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -91,7 +92,8 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupPlaylists();
-        if (!PreferenceUtil.getInstance(getContext()).isGenreShown()) setupGenre();//Prevent loading cost
+        if (!PreferenceUtil.getInstance(getContext()).isGenreShown())
+            setupGenre();//Prevent loading cost
     }
 
     private void setupPlaylists() {
@@ -108,15 +110,19 @@ public class PlaylistsFragment extends AbsLibraryPagerFragment
         genreRecyclerView.setItemAnimator(new DefaultItemAnimator());
         genreRecyclerView.setAdapter(genreAdapter);
 
-        mDisposable.add(GenreLoader.getAllGenres(getContext())
-                .subscribeOn(mProvider.io())
-                .observeOn(mProvider.ui())
-                .subscribe(genres -> {
-                    if (genres.size() > 0) {
-                        mViewGroup.setVisibility(View.VISIBLE);
-                        genreAdapter.swapData(genres);
-                    }
-                }));
+        Context context = getActivity();
+        if (context != null) {
+            mDisposable.add(GenreLoader.getAllGenres(context)
+                    .subscribeOn(mProvider.io())
+                    .observeOn(mProvider.ui())
+                    .subscribe(genres -> {
+                        if (genres.size() > 0) {
+                            mViewGroup.setVisibility(View.VISIBLE);
+                            genreAdapter.swapData(genres);
+                        }
+                    }));
+        }
+
     }
 
     @Override

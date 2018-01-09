@@ -16,12 +16,12 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
 
-        renderscriptTargetApi 25
+        renderscriptTargetApi 27 //must match target sdk and build tools
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
-        versionCode 108
-        versionName 'R - 1.1.201'
+        versionCode 109
+        versionName 'R - 1.1.300'
 
         multiDexEnabled true
 
@@ -48,18 +48,18 @@ android {
     productFlavors {
         normal {
             versionCode defaultConfig.versionCode + 10000
-            versionName defaultConfig.versionName + " BETA 9"
+            versionName defaultConfig.versionName
             dimension "default"
         }
         kitkat {
             minSdkVersion 19
             targetSdkVersion 19
             versionCode defaultConfig.versionCode + 2000
-            versionName defaultConfig.versionName + " Beta 1"
+            versionName defaultConfig.versionName
             dimension "default"
         }
         pro {
-            versionName defaultConfig.versionName + " Beta 1"
+            versionName defaultConfig.versionName
             applicationId defaultConfig.applicationId + ".pro"
         }
     }
@@ -152,13 +152,10 @@ dependencies {
     implementation 'com.anjlab.android.iab.v3:library:1.0.44'
     implementation 'org.jsoup:jsoup:1.10.3'
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
-    implementation "com.google.firebase:firebase-core:$firebase"
 
     /*UI Library*/
     implementation 'com.github.jetradarmobile:android-snowfall:1.1.6'
-    implementation 'com.lucasurbas:listitemview:1.0.5'
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
-    implementation 'com.andkulikov:transitionseverywhere:1.7.6'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.1'
     implementation 'com.github.kabouzeid:app-theme-helper:1.3.7'

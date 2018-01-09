@@ -25,6 +25,7 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.MiniPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.blur.BlurPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.flat.FlatPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.full.FullPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.hmm.HmmPlayerFragment;
@@ -67,6 +68,9 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         currentNowPlayingScreen = PreferenceUtil.getInstance(this).getNowPlayingScreen();
         Fragment fragment; // must implement AbsPlayerFragment
         switch (currentNowPlayingScreen) {
+            case BLUR:
+                fragment = new BlurPlayerFragment();
+                break;
             case FLAT:
                 fragment = new FlatPlayerFragment();
                 break;
@@ -117,8 +121,8 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         setupBottomView();
         mSlidingUpPanelLayout.addPanelSlideListener(this);
 
-
     }
+
 
     private void setupBottomView() {
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);

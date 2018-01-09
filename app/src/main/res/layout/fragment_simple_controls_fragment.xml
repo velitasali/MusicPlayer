@@ -6,64 +6,63 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <FrameLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/title_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/title_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp">
-
-                <TextView
-                    android:id="@+id/title"
-                    fontPath="fonts/sans_bold.ttf"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="18sp"
-                    tools:ignore="MissingPrefix"
-                    tools:text="Title" />
-
-                <TextView
-                    android:id="@+id/text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:textColor="?android:attr/textColorSecondary"
-                    tools:text="Text" />
-            </LinearLayout>
-
+            android:orientation="vertical"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp">
 
             <TextView
-                android:id="@+id/player_song_current_progress"
-                android:layout_width="wrap_content"
+                android:id="@+id/title"
+                fontPath="f@string/sans_bold"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:padding="16dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="18sp"
+                tools:ignore="MissingPrefix"
+                tools:text="Title" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="?android:attr/textColorSecondary"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                tools:text="22.00/ 33.00" />
-
-
+                tools:text="Text" />
         </LinearLayout>
-    </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/player_song_current_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:padding="16dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="22.00/ 33.00" />
+
+    </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/player_media_controller_container"

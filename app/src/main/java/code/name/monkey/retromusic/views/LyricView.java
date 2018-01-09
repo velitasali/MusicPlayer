@@ -591,7 +591,7 @@ public class LyricView extends View {
         mTextPaint = new TextPaint();
         mTextPaint.setDither(true);
         mTextPaint.setAntiAlias(true);
-        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/sans_regular.ttf");
+        Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), "fonts/circular_std_book.otf");
         mTextPaint.setTypeface(typeface);
 
         switch (mTextAlign) {

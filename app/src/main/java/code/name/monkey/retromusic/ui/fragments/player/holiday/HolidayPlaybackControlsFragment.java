@@ -94,11 +94,7 @@ public class HolidayPlaybackControlsFragment extends AbsPlayerControlsFragment {
         super.onViewCreated(view, savedInstanceState);
         setUpMusicControllers();
 
-        if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
-            mVolumeContainer.setVisibility(View.VISIBLE);
-        } else {
-            mVolumeContainer.setVisibility(View.GONE);
-        }
+        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
 
         mVolumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
         mVolumeFragment.tintWhiteColor();

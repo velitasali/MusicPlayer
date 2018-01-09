@@ -71,12 +71,12 @@ public abstract class AbsSlidingMusicPanelActivity
         currentNowPlayingScreen = PreferenceUtil.getInstance(this).getNowPlayingScreen();
         Fragment fragment; // must implement AbsPlayerFragment
         switch (currentNowPlayingScreen) {
-            case CARD:
+            /*case CARD:
                 fragment = new CardPlayerFragment();
                 break;
             case TEXT:
                 fragment = new TextPlayerFragment();
-                break;
+                break;*/
             case BLUR:
                 fragment = new BlurPlayerFragment();
                 break;

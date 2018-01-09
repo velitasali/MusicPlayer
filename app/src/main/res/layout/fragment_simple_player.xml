@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
     <View
@@ -39,8 +40,9 @@
         </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
 
         <FrameLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
@@ -51,6 +53,7 @@
         </FrameLayout>
 
         <FrameLayout
+            android:layout_weight="0"
             android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

@@ -59,7 +59,7 @@
                         android:orientation="vertical"
                         android:paddingBottom="8dp">
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/title"
                             fontPath="@string/sans_bold"
                             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                             android:textStyle="bold"
                             tools:ignore="MissingPrefix" />
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

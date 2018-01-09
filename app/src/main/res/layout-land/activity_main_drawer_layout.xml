@@ -63,16 +63,16 @@
                         android:paddingEnd="16dp"
                         android:paddingStart="16dp">
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/today"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                             android:textColor="?android:attr/textColorSecondary" />
 
-                        <TextView
+                        <android.support.v7.widget.AppCompatTextView
                             android:id="@+id/welcome_message"
-                            fontPath="fonts/sans_bold.ttf"
+                            fontPath="@string/sans_bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.kabouzeid.appthemehelper.ATH;
 import com.kabouzeid.appthemehelper.ThemeStore;
@@ -15,6 +14,7 @@ import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.kabouzeid.appthemehelper.util.MaterialDialogsUtil;
+import com.retro.musicplayer.backend.systemui.SystemUiHelper;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -28,6 +28,7 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
     private static final String TAG = "AbsThemeActivity";
     private View mDecorView;
+    private SystemUiHelper uiHelper;
 
     public void hideStatusBar() {
         setFullscreen(PreferenceUtil.getInstance(this).getFullScreenMode());
@@ -37,35 +38,11 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         final View statusBar = mDecorView.findViewById(R.id.status_bar);
         if (statusBar != null) {
             statusBar.setVisibility(fullscreen ? View.GONE : View.VISIBLE);
-        }
 
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        if (fullscreen) {
-            attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        } else {
-            attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        }
-        getWindow().setAttributes(attrs);
-
-       /* int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
-        int newUiOptions = uiOptions;
-        boolean isImmersiveModeEnabled =
-                ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
-        if (isImmersiveModeEnabled) {
-            Log.i(TAG, "Turning immersive mode mode off. ");
-        } else {
-            Log.i(TAG, "Turning immersive mode mode on.");
         }
         if (fullscreen) {
-            newUiOptions |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            newUiOptions |= View.SYSTEM_UI_FLAG_FULLSCREEN;
-            newUiOptions |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        } else {
-            newUiOptions &= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            newUiOptions &= View.SYSTEM_UI_FLAG_FULLSCREEN;
-            newUiOptions &= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            uiHelper.hide();
         }
-        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);*/
     }
 
     @Override
@@ -76,10 +53,17 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         }
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDecorView = getWindow().getDecorView();
+
+        //System UI Helper for toggle full screen
+        uiHelper = new SystemUiHelper(this, SystemUiHelper.LEVEL_IMMERSIVE,
+                SystemUiHelper.FLAG_IMMERSIVE_STICKY);
+
         hideStatusBar();
+
         // default theme
         if (!ThemeStore.isConfigured(this, 1)) {
             ThemeStore.editTheme(this)
@@ -95,19 +79,13 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         super.onCreate(savedInstanceState);
 
         MaterialDialogsUtil.updateMaterialDialogsThemeSingleton(this);
-
         changeBackgroundShape();
-        int flags = getWindow().getDecorView().getSystemUiVisibility();
-        if (ThemeStore.coloredNavigationBar(this) &&
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && !ATHUtil.isWindowBackgroundDark(this)) {
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
-        }
-        getWindow().getDecorView().setSystemUiVisibility(flags);
 
     }
 
     private void changeBackgroundShape() {
-        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("corner_window", false)) {
+        if (PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("corner_window", false)) {
             getWindow().setBackgroundDrawableResource(R.drawable.round_window);
         } else {
             getWindow().setBackgroundDrawableResource(R.drawable.square_window);
@@ -161,7 +139,9 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
     }
 
     public void setNavigationbarColor(int color) {
-        if (ThemeStore.coloredNavigationBar(this)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            mDecorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        } else if (ThemeStore.coloredNavigationBar(this)) {
             ATH.setNavigationbarColor(this, color);
         } else {
             ATH.setNavigationbarColor(this, Color.BLACK);

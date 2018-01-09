@@ -93,7 +93,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState); 
         getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
         setStatusbarColorAuto(view);
         getMainActivity().setNavigationbarColorAuto();
@@ -348,4 +348,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements
         }
         return false;
     }
+
+
 }

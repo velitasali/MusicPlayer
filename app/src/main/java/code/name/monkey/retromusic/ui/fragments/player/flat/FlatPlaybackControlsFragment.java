@@ -91,11 +91,7 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
         super.onViewCreated(view, savedInstanceState);
         setUpMusicControllers();
 
-        if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
-            mVolumeContainer.setVisibility(View.VISIBLE);
-        } else {
-            mVolumeContainer.setVisibility(View.GONE);
-        }
+        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
     }
 
     @Override

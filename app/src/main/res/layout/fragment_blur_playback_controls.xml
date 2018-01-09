@@ -73,7 +73,7 @@
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="@color/md_white_1000"
             tools:text="Title" />
 
         <TextView
@@ -87,6 +87,7 @@
             android:maxLines="1"
             android:paddingEnd="24dp"
             android:paddingStart="24dp"
+            android:textColor="@color/md_white_1000"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>
 

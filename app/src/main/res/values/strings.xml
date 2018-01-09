@@ -5,6 +5,11 @@
      <string name="pref_summary_toggle_navigation_bar">Hide only navigation bar</string>
      <string name="pref_title_toggle_navigation_bar">Navigation bar</string>
  -->
+    <string name="pref_summary_library_categories">Configure visibility and order of library categories.</string>
+    <string name="edit_categories">Edit categories</string>
+    <string name="at_least_one_category_must_be_enabled">At least one category must be enabled.</string>
+    <string name="library_categories">Library categories</string>
+    <string name="pref_header_general">General</string>
     <string name="accent_color">Accent color</string>
     <string name="accent_color_desc">The accent theme color, defaults to green.</string>
     <string name="no_genres">No genres</string>
@@ -512,4 +517,8 @@
     <string name="action_toggle_favorite">Toggle favorite</string>
     <string name="card">Card</string>
     <string name="text">Text</string>
+    <string name="you_have_to_select_at_least_one_category">You have to select at least one category</string>
+    <string name="reset_action">Reset</string>
+    <string name="personalize">Personalize</string>
+
 </resources>

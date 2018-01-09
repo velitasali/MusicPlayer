@@ -1,14 +1,20 @@
 package code.name.monkey.retromusic.ui.fragments.base;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.retro.musicplayer.backend.interfaces.PaletteColorHolder;
 import com.retro.musicplayer.backend.model.Song;
+import com.retro.musicplayer.backend.util.LyricUtil;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
@@ -23,6 +29,7 @@ import code.name.monkey.retromusic.ui.activities.tageditor.SongTagEditorActivity
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import code.name.monkey.retromusic.util.Util;
 
 /**
  * Created by hemanths on 18/08/17.
@@ -32,6 +39,8 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
     public static final String TAG = AbsPlayerFragment.class.getSimpleName();
     private static boolean isToolbarShown = true;
     private Callbacks callbacks;
+    private AsyncTask updateIsFavoriteTask;
+    private AsyncTask updateLyricsAsyncTask;
 
     @Override
     public void onAttach(Context context) {
@@ -156,6 +165,102 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
     public abstract void onHide();
 
     public abstract boolean onBackPressed();
+
+    public abstract Toolbar getToolbar();
+
+    public abstract int toolbarIconColor();
+
+    @Override
+    public void onServiceConnected() {
+        updateIsFavorite();
+        updateLyrics();
+    }
+
+    @Override
+    public void onPlayingMetaChanged() {
+        updateIsFavorite();
+        updateLyrics();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
+            updateLyricsAsyncTask.cancel(true);
+        }
+        if (updateIsFavoriteTask != null && !updateIsFavoriteTask.isCancelled()) {
+            updateIsFavoriteTask.cancel(true);
+        }
+        super.onDestroyView();
+
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void updateLyrics() {
+        if (updateLyricsAsyncTask != null) updateLyricsAsyncTask.cancel(false);
+        final Song song = MusicPlayerRemote.getCurrentSong();
+        updateLyricsAsyncTask = new AsyncTask<Void, Void, Boolean>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                getToolbar().getMenu().removeItem(R.id.action_show_lyrics);
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                return LyricUtil.isLrcFileExist(song.title, song.artistName);
+
+            }
+
+            @Override
+            protected void onPostExecute(Boolean l) {
+                if (l) {
+                    Activity activity = getActivity();
+                    if (getToolbar() != null && activity != null)
+                        if (getToolbar().getMenu().findItem(R.id.action_show_lyrics) == null) {
+                            Drawable drawable = Util.getTintedVectorDrawable(activity, R.drawable.ic_comment_text_outline_white_24dp, toolbarIconColor());
+                            getToolbar().getMenu()
+                                    .add(Menu.NONE, R.id.action_show_lyrics, Menu.NONE, R.string.action_show_lyrics)
+                                    .setIcon(drawable)
+                                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                        }
+                } else {
+                    if (getToolbar() != null) {
+                        getToolbar().getMenu().removeItem(R.id.action_show_lyrics);
+                    }
+                }
+
+            }
+        }.execute();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void updateIsFavorite() {
+        if (updateIsFavoriteTask != null) updateIsFavoriteTask.cancel(false);
+        updateIsFavoriteTask = new AsyncTask<Song, Void, Boolean>() {
+            @Override
+            protected Boolean doInBackground(Song... params) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    return MusicUtil.isFavorite(getActivity(), params[0]);
+                } else {
+                    cancel(false);
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean isFavorite) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    int res = isFavorite ? R.drawable.ic_favorite_white_24dp : R.drawable.ic_favorite_border_white_24dp;
+                    Drawable drawable = Util.getTintedVectorDrawable(activity, res, toolbarIconColor());
+                    getToolbar().getMenu().findItem(R.id.action_toggle_favorite)
+                            .setIcon(drawable)
+                            .setTitle(isFavorite ? getString(R.string.action_remove_from_favorites) : getString(R.string.action_add_to_favorites));
+                }
+            }
+        }.execute(MusicPlayerRemote.getCurrentSong());
+    }
 
     public Callbacks getCallbacks() {
         return callbacks;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -54,13 +55,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:cardCornerRadius="8dp"
-        app:cardElevation="6dp"
+        app:cardElevation="8dp"
         app:cardUseCompatPadding="true">
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradient">
+            android:background="@drawable/gradient_5">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -75,7 +76,7 @@
                     android:lineSpacingExtra="3dp"
                     android:text="@string/no_lyrics_found"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColor="@color/md_white_1000"
                     android:visibility="gone" />
             </ScrollView>
 
@@ -94,12 +95,22 @@
                     app:lineSpace="15dp"
                     app:textAlign="left"
                     app:textColor="@color/md_grey_300"
-                    app:textSize="24sp" />
+                    app:textSize="18sp" />
             </FrameLayout>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:padding="16dp"
+                android:src="@drawable/ic_edit_white_24dp"
+                android:visibility="gone" />
         </FrameLayout>
     </android.support.v7.widget.CardView>
 
     <LinearLayout
+        android:id="@+id/actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"

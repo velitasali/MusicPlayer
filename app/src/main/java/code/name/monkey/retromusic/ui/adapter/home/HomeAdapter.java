@@ -6,12 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.retro.musicplayer.backend.loaders.SongLoader;
 import com.retro.musicplayer.backend.model.Album;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.model.Playlist;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
@@ -91,6 +95,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     viewholder.topTracks.setOnClickListener(view ->
                             NavigationUtil.goToPlaylistNew(activity, new MyTopTracksPlaylist(activity)));
                 }
+                if (viewholder.shuffle != null) {
+                    viewholder.shuffle.setOnClickListener(view ->
+                            MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(activity)
+                                    .blockingFirst(), true));
+                }
                 break;
             case SUB_HEADER:
                 String title = (String) dataSet.get(i);
@@ -99,44 +108,42 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 break;
             case DATA:
-                ArrayList arrayList = (ArrayList) dataSet.get(i);
-                if (arrayList.isEmpty()) {
-                    return;
-                }
-                Object something = arrayList.get(0);
-                if (something instanceof Artist) {
-                    if (viewholder.recyclerView != null) {
-                        viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
-                        viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        viewholder.recyclerView.setAdapter(new ArtistAdapter(activity, (ArrayList<Artist>) arrayList, R.layout.item_artist, false, null));
-                    }
-                } else if (something instanceof Album) {
-                    if (viewholder.recyclerView != null) {
-                        viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
-                        viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        viewholder.recyclerView.setAdapter(new AlbumAdapter(activity, (ArrayList<Album>) arrayList, R.layout.pager_item, false, null));
-                    }
-                } else if (something instanceof Playlist) {
-                    if (viewholder.recyclerView != null) {
-                        viewholder.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                        viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        viewholder.recyclerView.setAdapter(new PlaylistAdapter(activity, (ArrayList<Playlist>) arrayList, R.layout.item_list, null));
-                    }
-                } else if (something instanceof Song) {
-                    if (viewholder.recyclerView != null) {
-                        GridLayoutManager layoutManager = new GridLayoutManager(activity, 1, LinearLayoutManager.HORIZONTAL, false);
-                        /*layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                            @Override
-                            public int getSpanSize(int position) {
-                                return (position % 4 == 0 ? 3 : 1);
-                            }
-                        });*/
-                        viewholder.recyclerView.setLayoutManager(layoutManager);
-                        viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        viewholder.recyclerView.setAdapter(new SongAdapter(activity, (ArrayList<Song>) arrayList, R.layout.item_image, false, null));
-                    }
-                }
+                parseAllSections(i, viewholder);
                 break;
+        }
+    }
+
+    private void parseAllSections(int i, ViewHolder viewholder) {
+        if (viewholder.recyclerView != null) {
+            SnapHelper snapHelper = new LinearSnapHelper();
+            viewholder.recyclerView.setOnFlingListener(null);
+            snapHelper.attachToRecyclerView(viewholder.recyclerView);
+
+            ArrayList arrayList = (ArrayList) dataSet.get(i);
+            if (arrayList.isEmpty()) {
+                return;
+            }
+            Object something = arrayList.get(0);
+            if (something instanceof Artist) {
+                viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
+                viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                viewholder.recyclerView.setAdapter(new ArtistAdapter(activity, (ArrayList<Artist>) arrayList, R.layout.item_artist, false, null));
+            } else if (something instanceof Album) {
+                viewholder.recyclerView.setLayoutManager(new GridLayoutManager(activity, 1, GridLayoutManager.HORIZONTAL, false));
+                viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                viewholder.recyclerView.setAdapter(new AlbumAdapter(activity, (ArrayList<Album>) arrayList, R.layout.pager_item, false, null));
+            } else if (something instanceof Playlist) {
+                viewholder.recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                viewholder.recyclerView.setAdapter(new PlaylistAdapter(activity, (ArrayList<Playlist>) arrayList, R.layout.item_list, null));
+
+            } else if (something instanceof Song) {
+                GridLayoutManager layoutManager = new GridLayoutManager(activity, 1, LinearLayoutManager.HORIZONTAL, false);
+                viewholder.recyclerView.setLayoutManager(layoutManager);
+                viewholder.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                viewholder.recyclerView.setAdapter(new SongAdapter(activity, (ArrayList<Song>) arrayList, R.layout.item_image, false, null));
+
+            }
         }
     }
 
@@ -169,6 +176,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.top_tracks)
         @Nullable
         View topTracks;
+        @BindView(R.id.action_shuffle)
+        @Nullable
+        View shuffle;
 
         public ViewHolder(View itemView) {
             super(itemView);

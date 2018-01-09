@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.fragments.player.card;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,5 +63,15 @@ public class CardPlayerFragment extends AbsPlayerFragment {
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return null;
+    }
+
+    @Override
+    public int toolbarIconColor() {
+        return 0;
     }
 }

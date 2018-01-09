@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.activities;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +56,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
     View mLyricsContainer;
     @BindView(R.id.refresh)
     AppCompatImageView mRefresh;
+    @BindView(R.id.actions)
+    LinearLayout mActions;
     private MusicProgressViewUpdateHelper mUpdateHelper;
     private AsyncTask updateLyricsAsyncTask;
     private Repository loadLyrics;
@@ -174,6 +178,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
                         throwable -> {
                             mRefresh.clearAnimation();
                             showLyricsLocal(null);
+                            loadSongLyrics();
+                            hideLyrics();
                         }, () -> {
                             mRefresh.clearAnimation();
                             Toast.makeText(this, "Lyrics downloaded", Toast.LENGTH_SHORT).show();
@@ -183,8 +189,6 @@ public class LyricsActivity extends AbsMusicServiceActivity
     private void showLyricsLocal(File file) {
         if (file == null) {
             mLyricView.reset();
-            loadSongLyrics();
-            hideLyrics();
         } else {
             mLyricView.setLyricFile(file, "UTF-8");
         }
@@ -249,7 +253,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
             R.id.align_right,
             R.id.refresh,
             R.id.dec_font_size,
-            R.id.inc_font_size})
+            R.id.inc_font_size,
+            R.id.edit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.refresh:
@@ -257,8 +262,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
                 String title = song.title;
                 String artist = song.artistName;
                 mLyricView.reset();
-                LyricUtil.deleteLrcFile(title, artist);
-                callAgain(title, artist);
+                if (LyricUtil.deleteLrcFile(title, artist))
+                    callAgain(title, artist);
                 break;
             case R.id.align_left:
                 //mLyricView.setTextAlign(LyricView.LEFT);
@@ -273,10 +278,16 @@ public class LyricsActivity extends AbsMusicServiceActivity
                 fontSize--;
                 mLyricView.setTextSize(fontSize);
                 break;
+            case R.id.edit:
+                TransitionManager.beginDelayedTransition(findViewById(R.id.root));
+                mActions.setVisibility(mActions.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                break;
             case R.id.inc_font_size:
                 fontSize++;
                 mLyricView.setTextSize(fontSize);
                 break;
         }
     }
+
+
 }

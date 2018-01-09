@@ -14,4 +14,5 @@
     <string name="top_albums">Top albums</string>
     <string name="playlists">Playlists</string>
     <string name="suggestions">Suggestions</string>
+    <string name="genres">Genres</string>
 </resources>

@@ -33,6 +33,7 @@
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
+-dontwarn javax.annotation.**
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -69,3 +70,13 @@
 -keep public class android.support.design.internal.BottomNavigationPresenter { *; }
 -keep public class android.support.design.internal.BottomNavigationItemView { *; }
 
+
+-keep class com.wonderkiln.blurkit.** { *; }
+
+-dontwarn android.support.v8.renderscript.*
+-keepclassmembers class android.support.v8.renderscript.RenderScript {
+  native *** rsn*(...);
+  native *** n*(...);
+}
+
+-keep class org.jaudiotagger.** { *; }

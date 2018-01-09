@@ -63,6 +63,8 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     TextView mTitle;
     @BindView(R.id.text)
     TextView mText;
+    @BindView(R.id.volume_fragment_container)
+    View mVolumeContainer;
     private VolumeFragment mVolumeFragment;
     private int lastPlaybackControlsColor;
     private int lastDisabledPlaybackControlsColor;
@@ -94,8 +96,10 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setUpMusicControllers();
 
+        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
         mVolumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
         mVolumeFragment.tintWhiteColor();
 
