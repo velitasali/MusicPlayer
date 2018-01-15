@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 
 import com.kabouzeid.appthemehelper.ATH;
@@ -27,22 +28,21 @@ import code.name.monkey.retromusic.util.Util;
 public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
     private static final String TAG = "AbsThemeActivity";
+    SystemUiHelper uiHelper;
     private View mDecorView;
-    private SystemUiHelper uiHelper;
 
     public void hideStatusBar() {
-        setFullscreen(PreferenceUtil.getInstance(this).getFullScreenMode());
+        Log.i(TAG, "hideStatusBar: " + PreferenceUtil.getInstance(this).getFullScreenMode());
+        setFullscreen(PreferenceUtil.getInstance(this).getFullScreenMode() > 0);
     }
 
     private void setFullscreen(boolean fullscreen) {
         final View statusBar = mDecorView.findViewById(R.id.status_bar);
         if (statusBar != null) {
             statusBar.setVisibility(fullscreen ? View.GONE : View.VISIBLE);
-
         }
-        if (fullscreen) {
+        if (fullscreen)
             uiHelper.hide();
-        }
     }
 
     @Override
@@ -53,13 +53,13 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         }
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mDecorView = getWindow().getDecorView();
 
-        //System UI Helper for toggle full screen
-        uiHelper = new SystemUiHelper(this, SystemUiHelper.LEVEL_IMMERSIVE,
+
+        uiHelper = new SystemUiHelper(this,
+                PreferenceUtil.getInstance(this).getFullScreenMode(),
                 SystemUiHelper.FLAG_IMMERSIVE_STICKY);
 
         hideStatusBar();
