@@ -117,12 +117,27 @@
         <item>https://cdn.techjuice.pk/wp-content/uploads/2016/07/5.png</item>
         <item>https://cdn.techjuice.pk/wp-content/uploads/2016/07/1.png</item>
     </string-array>
-    <string-array name="lyrics_options">
-        <item>@string/kugou</item>
-        <item>@string/wiki</item>
-        <item>@string/offline</item>
+    <string-array name="pref_lyrics_options_list_titles">
+        <item>Offline</item>
+        <item>Lyrics Wiki</item>
+        <item>Kugou</item>
     </string-array>
-    <string name="kugou">Kugou</string>
-    <string name="wiki">Wiki</string>
-    <string name="offline">Offline</string>
+    <string-array name="pref_lyrics_options_list_values">
+        <item>offline</item>
+        <item>wiki</item>
+        <item>kugou</item>
+    </string-array>
+
+
+    <string-array name="pref_window_list_titles">
+        <item>Low profile</item>
+        <item>Hide status bar</item>
+        <item>Immersive</item>
+    </string-array>
+    <string-array name="pref_window_list_values">
+        <item>low</item>
+        <item>status</item>
+        <item>immersive</item>
+    </string-array>
+
 </resources>
