@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -55,6 +56,7 @@ import code.name.monkey.retromusic.helper.SearchQueryHelper;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.GenreFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
@@ -68,10 +70,15 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION;
+import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION_IN_TRACK;
+import static code.name.monkey.retromusic.service.MusicService.SAVED_REPEAT_MODE;
+import static code.name.monkey.retromusic.service.MusicService.SAVED_SHUFFLE_MODE;
+import static code.name.monkey.retromusic.service.MusicService.SHUFFLE_MODE_NONE;
 import static com.retro.musicplayer.backend.RetroConstants.USER_PROFILE;
 
 
-public class MainActivity extends AbsSlidingMusicPanelActivity {
+public class MainActivity extends AbsSlidingMusicPanelActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final int APP_INTRO_REQUEST = 2323;
     public static final int APP_USER_INFO_REQUEST = 9003;
     public static final int REQUEST_CODE_THEME = 9002;
@@ -80,8 +87,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
     private static final int HOME = 0;
     private static final int LIBRARY = 1;
     private static final int FOLDERS = 2;
-    private static final int SUPPORT_DIALOG = 3;
-    private static final int SETTIINGS = 4;
+    private static final int SUPPORT_DIALOG = 4;
+    private static final int SETTIINGS = 3;
     private static final int ABOUT = 5;
     @BindView(R.id.user_image)
     CircleImageView mUserImage;
@@ -160,6 +167,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
         IntentFilter screenOnOff = new IntentFilter();
         screenOnOff.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(mBroadcastReceiver, screenOnOff);
+        PreferenceUtil.getInstance(this).registerOnSharedPreferenceChangedListener(this);
     }
 
     @Override
@@ -169,6 +177,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             return;
         }
         unregisterReceiver(mBroadcastReceiver);
+        PreferenceUtil.getInstance(this).unregisterOnSharedPreferenceChangedListener(this);
     }
 
     private boolean checkUserName() {
@@ -266,6 +275,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                                 break;
                             case R.id.action_playlist:
                                 mCurrentFragment.selectedFragment(PlaylistsFragment.newInstance());
+                                break;
+                            case R.id.action_genre:
+                                mCurrentFragment.selectedFragment(GenreFragment.newInstance());
                                 break;
                         }
                     }
@@ -421,6 +433,22 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                                 .getDrawable(MainActivity.this, R.drawable.ic_person_flat)));
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equalsIgnoreCase(PreferenceUtil.LAST_MUSIC_CHOOSER) ||
+                key.equalsIgnoreCase(PreferenceUtil.LAST_PAGE) ||
+                key.equalsIgnoreCase(SAVED_SHUFFLE_MODE) ||
+                key.equalsIgnoreCase(SAVED_POSITION) ||
+                key.equalsIgnoreCase(SAVED_POSITION_IN_TRACK) ||
+                key.equalsIgnoreCase(SAVED_REPEAT_MODE)
+
+                ) {
+            return;
+        }
+        postRecreate();
+        setupTitles();
+    }
+
     class NavigationItemsAdapter extends RecyclerView.Adapter<NavigationItemsAdapter.ViewHolder> {
         List<Pair<Integer, Integer>> mList = new ArrayList<>();
 
@@ -428,15 +456,12 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
             mList.add(new Pair<>(R.drawable.ic_home_white_24dp, R.string.home));
             mList.add(new Pair<>(R.drawable.ic_library_music_white_24dp, R.string.library));
             mList.add(new Pair<>(R.drawable.ic_folder_white_24dp, R.string.folders));
-            mList.add(new Pair<>(R.drawable.ic_favorite_white_24dp, R.string.support_development));
             mList.add(new Pair<>(R.drawable.ic_settings_white_24dp, R.string.action_settings));
-            mList.add(new Pair<>(R.drawable.ic_help_white_24dp, R.string.action_about));
         }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(MainActivity.this)
-                    .inflate(R.layout.item_navigation_item, viewGroup, false));
+            return new ViewHolder(LayoutInflater.from(MainActivity.this).inflate(R.layout.item_navigation_item, viewGroup, false));
         }
 
         @Override
@@ -460,7 +485,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity {
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SupportDevelopmentActivity.class)), 200);
                         break;
                     case SETTIINGS:
-                        new Handler().postDelayed(() -> startActivityForResult(new Intent(MainActivity.this, SettingsActivity.class), REQUEST_CODE_THEME), 200);
+                        new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)), 200);
                         break;
                     case ABOUT:
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, AboutActivity.class)), 200);
