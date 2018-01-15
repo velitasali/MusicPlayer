@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 
 public interface HomeContract {
-    interface HomeView extends BaseView {
-        void showAllThingsList(ArrayList<Object> homes);
+    interface HomeView extends BaseView<ArrayList<Object>> {
+
     }
 
     interface HomePresenter extends BasePresenter<HomeView> {

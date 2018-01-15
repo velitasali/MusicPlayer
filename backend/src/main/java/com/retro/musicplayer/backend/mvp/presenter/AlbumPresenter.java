@@ -36,7 +36,7 @@ public class AlbumPresenter extends Presenter implements AlbumContract.Presenter
     }
 
     private void showList(@NonNull ArrayList<Album> albums) {
-        view.showList(albums);
+        view.showData(albums);
     }
 
     @Override

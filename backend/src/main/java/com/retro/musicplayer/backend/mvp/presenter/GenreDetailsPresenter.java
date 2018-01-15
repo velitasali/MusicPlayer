@@ -2,7 +2,6 @@ package com.retro.musicplayer.backend.mvp.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.retro.musicplayer.backend.model.Genre;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.mvp.Presenter;
 import com.retro.musicplayer.backend.mvp.contract.GenreDetailsContract;
@@ -53,7 +52,7 @@ public class GenreDetailsPresenter extends Presenter
 
     private void showGenre(ArrayList<Song> songs) {
         if (songs != null) {
-            view.showList(songs);
+            view.showData(songs);
         } else {
             view.showEmptyView();
         }

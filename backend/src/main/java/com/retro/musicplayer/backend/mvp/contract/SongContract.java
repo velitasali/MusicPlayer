@@ -14,8 +14,8 @@ import java.util.ArrayList;
 
 public interface SongContract {
 
-    interface SongView extends BaseView {
-        void showList(ArrayList<Song> songs);
+    interface SongView extends BaseView<ArrayList<Song>> {
+
     }
 
     interface Presenter extends BasePresenter<SongView> {

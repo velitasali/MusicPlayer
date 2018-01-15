@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 
 public interface GenreContract {
-    interface GenreView extends BaseView {
-        void showGenre(ArrayList<Genre> list);
+    interface GenreView extends BaseView<ArrayList<Genre>> {
+
     }
 
     interface Presenter extends BasePresenter<GenreView> {

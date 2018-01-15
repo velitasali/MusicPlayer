@@ -51,7 +51,7 @@ public class ArtistDetailsPresenter extends Presenter
 
     private void showArtist(Artist album) {
         if (album != null) {
-            view.showArtist(album);
+            view.showData(album);
         } else {
             view.showEmptyView();
         }

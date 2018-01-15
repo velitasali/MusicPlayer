@@ -46,7 +46,7 @@ public class SongPresenter extends Presenter implements SongContract.Presenter {
         if (songs.isEmpty()) {
             view.showEmptyView();
         } else {
-            view.showList(songs);
+            view.showData(songs);
         }
     }
 

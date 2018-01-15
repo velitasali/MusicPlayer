@@ -38,7 +38,7 @@ public class ArtistPresenter extends Presenter implements ArtistContract.Present
         if (songs.isEmpty()) {
             mView.showEmptyView();
         } else {
-            mView.showList(songs);
+            mView.showData(songs);
         }
     }
 

@@ -9,8 +9,6 @@ import com.retro.musicplayer.backend.providers.interfaces.Repository;
 
 import java.util.ArrayList;
 
-import io.reactivex.functions.Function;
-
 /**
  * @author Hemanth S (h4h13).
  */
@@ -47,11 +45,11 @@ public class GenrePresenter extends Presenter
                         () -> view.completed()));
     }
 
-    private void showList(@NonNull ArrayList<Genre> songs) {
-        if (songs.isEmpty()) {
+    private void showList(@NonNull ArrayList<Genre> genres) {
+        if (genres.isEmpty()) {
             view.showEmptyView();
         } else {
-            view.showGenre(songs);
+            view.showData(genres);
         }
     }
 }

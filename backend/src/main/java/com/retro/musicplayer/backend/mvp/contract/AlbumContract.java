@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public interface AlbumContract {
 
-    interface AlbumView extends BaseView {
-        void showList(ArrayList<Album> album);
+    interface AlbumView extends BaseView<ArrayList<Album>> {
+
     }
 
     interface Presenter extends BasePresenter<AlbumView> {

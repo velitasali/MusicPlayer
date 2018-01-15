@@ -50,7 +50,7 @@ public class PlaylistPresenter extends Presenter
         if (songs.isEmpty()) {
             mView.showEmptyView();
         } else {
-            mView.showList(songs);
+            mView.showData(songs);
         }
     }
 }

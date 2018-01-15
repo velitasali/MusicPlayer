@@ -11,8 +11,8 @@ import java.util.ArrayList;
  */
 
 public interface SearchContract {
-    interface SearchView extends BaseView {
-        void showList(ArrayList<Object> list);
+    interface SearchView extends BaseView<ArrayList<Object>> {
+
     }
 
     interface SearchPresenter extends BasePresenter<SearchView> {

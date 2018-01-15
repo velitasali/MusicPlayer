@@ -8,15 +8,12 @@ import com.retro.musicplayer.backend.mvp.BaseView;
 import java.util.ArrayList;
 
 
-
 /**
  * Created by hemanths on 16/08/17.
  */
 
 public interface ArtistContract {
-    interface ArtistView extends BaseView {
-
-        void showList(ArrayList<Artist> artists);
+    interface ArtistView extends BaseView<ArrayList<Artist>> {
 
     }
 

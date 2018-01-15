@@ -39,7 +39,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .observeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .doOnComplete(() -> view.completed())
-                .subscribe(homes -> view.showAllThingsList(homes),
+                .subscribe(homes -> view.showData(homes),
                         throwable -> view.showEmptyView()));
     }
 }

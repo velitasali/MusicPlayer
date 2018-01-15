@@ -2,6 +2,7 @@ package com.retro.musicplayer.backend.lyrics;
 
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * @author Hemanth S (h4h13).
@@ -17,6 +18,7 @@ public class ParseLyrics extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        Log.i(TAG, "doInBackground: ");
         LyricsEngine lyricsEngine = new LyricsWikiEngine();
         return lyricsEngine.getLyrics(strings[1], strings[0]);
     }

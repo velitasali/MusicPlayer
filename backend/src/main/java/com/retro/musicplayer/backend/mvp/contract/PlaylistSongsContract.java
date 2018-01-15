@@ -13,8 +13,8 @@ import java.util.ArrayList;
  */
 
 public interface PlaylistSongsContract {
-    interface PlaylistSongsView extends BaseView {
-        void showSongs(ArrayList<Song> songs);
+    interface PlaylistSongsView extends BaseView<ArrayList<Song>> {
+
     }
 
     interface Presenter extends BasePresenter<PlaylistSongsView> {

@@ -50,7 +50,7 @@ public class AlbumDetailsPresenter extends Presenter
 
     private void showAlbum(Album album) {
         if (album != null) {
-            view.showList(album);
+            view.showData(album);
         } else {
             view.showEmptyView();
         }

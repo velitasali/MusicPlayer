@@ -43,7 +43,7 @@ public class PlaylistSongsPresenter extends Presenter
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> mView.loading())
-                .subscribe(songs -> mView.showSongs(songs),
+                .subscribe(songs -> mView.showData(songs),
                         throwable -> mView.showEmptyView(),
                         () -> mView.completed()));
     }

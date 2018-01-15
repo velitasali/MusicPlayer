@@ -11,8 +11,8 @@ import com.retro.musicplayer.backend.mvp.BaseView;
  */
 
 public interface AlbumDetailsContract {
-    interface AlbumDetailsView extends BaseView {
-        void showList(Album album);
+    interface AlbumDetailsView extends BaseView<Album> {
+
     }
 
     interface Presenter extends BasePresenter<AlbumDetailsView> {

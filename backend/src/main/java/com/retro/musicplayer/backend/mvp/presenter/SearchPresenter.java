@@ -38,7 +38,7 @@ public class SearchPresenter extends Presenter implements SearchContract.SearchP
         if (albums.isEmpty()) {
             mView.showEmptyView();
         } else {
-            mView.showList(albums);
+            mView.showData(albums);
         }
     }
 
