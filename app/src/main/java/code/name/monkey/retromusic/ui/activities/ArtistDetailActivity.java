@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.TransitionManager;
-import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,9 +63,7 @@ import retrofit2.Response;
 
 public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implements ArtistDetailContract.ArtistsDetailsView {
     public static final String EXTRA_ARTIST_ID = "extra_artist_id";
-    private static final String TAG = "ArtistDetailActivity";
     private static final int REQUEST_CODE_SELECT_IMAGE = 9003;
-
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.image)
@@ -80,14 +77,13 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.play_songs)
-    Button playSongs;
+    AppCompatButton playSongs;
     @BindView(R.id.action_shuffle_all)
-    Button shuffleSongs;
+    AppCompatButton shuffleSongs;
     private Artist mArtist;
     private LastFMRestClient mLastFMRestClient;
     @Nullable
     private Spanned mBiography;
-    @NonNull
     private ArtistDetailsPresenter mArtistDetailsPresenter;
     private ArtistDetailAdapter mArtistDetailAdapter;
     private boolean forceDownload;
@@ -103,15 +99,16 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
         super.onCreate(bundle);
         ButterKnife.bind(this);
 
+        supportPostponeEnterTransition();
 
         mLastFMRestClient = new LastFMRestClient(this);
 
         setBottomBarVisibility(View.GONE);
+
         ViewUtil.setStatusBarHeight(this, mStatusBar);
 
         setUpViews();
 
-        supportPostponeEnterTransition();
 
         int artistID = getIntent().getIntExtra(EXTRA_ARTIST_ID, -1);
         mArtistDetailsPresenter = new ArtistDetailsPresenter(Injection.provideRepository(this),
@@ -181,7 +178,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     @Override
-    public void showArtist(Artist artist) {
+    public void showData(Artist artist) {
         supportStartPostponedEnterTransition();
         setArtist(artist);
     }
@@ -290,21 +287,11 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
 
         mArtistDetailAdapter.setColor(color);
 
-        int themeColor = PreferenceUtil.getInstance(this)
-                .getAdaptiveColor() ? color : ThemeStore.accentColor(this);
-        ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
+        int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this);
+        playSongs.setSupportBackgroundTintList(ColorStateList.valueOf(themeColor));
+        //ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
         shuffleSongs.setTextColor(themeColor);
 
-        if (PreferenceUtil.getInstance(this).getAdaptiveColor()) {
-            //TintHelper.setTintAuto(playSongs, color, true);
-        } else {
-            //GradientDrawable drawable = (GradientDrawable) playSongs.getDrawable();
-            //drawable.setColors(PreferenceUtil.getInstance(this).getGradientColors());
-
-           /* DrawableGradient drawableGradient = new DrawableGradient(GradientDrawable.Orientation.TL_BR,
-                    PreferenceUtil.getInstance(this).getGradientColors(), GradientDrawable.OVAL);
-            playSongs.setBackground(drawableGradient);*/
-        }
     }
 
     @OnClick({R.id.action_shuffle_all, R.id.play_songs})

@@ -2,11 +2,10 @@ package code.name.monkey.retromusic.ui.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +15,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
@@ -58,7 +55,6 @@ import code.name.monkey.retromusic.util.ViewUtil;
 
 public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implements AlbumDetailsContract.AlbumDetailsView {
     public static final String EXTRA_ALBUM_ID = "extra_album_id";
-    private static final String TAG = "AlbumDetailsActivity";
     private static final int TAG_EDITOR_REQUEST = 2001;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -67,9 +63,9 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     @BindView(R.id.play_songs)
-    Button playSongs;
+    AppCompatButton playSongs;
     @BindView(R.id.action_shuffle_all)
-    Button shuffleSongs;
+    AppCompatButton shuffleSongs;
     @BindView(R.id.status_bar)
     View statusBar;
     @BindView(R.id.container)
@@ -147,7 +143,7 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     @Override
-    public void showList(Album album) {
+    public void showData(Album album) {
         mAlbum = album;
 
         mToolbar.setTitle(album.getTitle());
@@ -203,20 +199,14 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
 
     private void setColors(int color) {
-        new Handler().postDelayed(() ->
-                ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                        PreferenceUtil.getInstance(this)
-                                .getAdaptiveColor() ? color :
-                                ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
+        new Handler().postDelayed(() -> ToolbarColorizeHelper.colorizeToolbar(mToolbar, PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
 
 
-        int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ?
-                        color :
-                        ThemeStore.accentColor(this);
-        ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
+        int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this);
+        playSongs.setSupportBackgroundTintList(ColorStateList.valueOf(themeColor));
+        //ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
         shuffleSongs.setTextColor(themeColor);
-        //GradientDrawable gradientDrawable = (GradientDrawable) shuffleSongs.getBackground();
-        //gradientDrawable.setStroke(8, color);
+
     }
 
     @Override
