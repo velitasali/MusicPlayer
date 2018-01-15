@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
+import com.retro.musicplayer.backend.lyrics.ParseLyrics;
 import com.retro.musicplayer.backend.model.Song;
 import com.retro.musicplayer.backend.model.lyrics.Lyrics;
 import com.retro.musicplayer.backend.providers.RepositoryImpl;
@@ -34,14 +35,16 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.util.MusicUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.views.LyricView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class LyricsActivity extends AbsMusicServiceActivity
-        implements MusicProgressViewUpdateHelper.Callback {
+public class LyricsActivity extends AbsMusicServiceActivity implements
+        MusicProgressViewUpdateHelper.Callback {
 
+    private static final String TAG = "LyricsActivity";
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.text)
@@ -64,6 +67,7 @@ public class LyricsActivity extends AbsMusicServiceActivity
     private CompositeDisposable mDisposable;
     private int fontSize = 20;
     private RotateAnimation rotateAnimation;
+    private AsyncTask<String, Void, String> mTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +147,9 @@ public class LyricsActivity extends AbsMusicServiceActivity
         mDisposable.clear();
         mLyricView.setOnPlayerClickListener(null);
 
+        if (mTask != null && !mTask.isCancelled()) {
+            mTask.cancel(true);
+        }
         if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
             updateLyricsAsyncTask.cancel(true);
         }
@@ -153,20 +160,54 @@ public class LyricsActivity extends AbsMusicServiceActivity
         String title = song.title;
         String artist = song.artistName;
 
+        loadLyricsProvider(title, artist);
+
         mTitle.setText(title);
         mText.setText(artist);
 
-        mLyricView.reset();
+    }
 
-        if (LyricUtil.isLrcFileExist(title, artist)) {
-            showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
-        } else {
-            callAgain(title, artist);
+    private void loadLyricsProvider(String title, String artist) {
+        hideLyrics(View.GONE);
+        switch (PreferenceUtil.getInstance(this).lyricsOptions()) {
+            case 0://Offline
+                loadSongLyrics();
+                break;
+            case 2://Kogou
+                mLyricView.reset();
+                if (LyricUtil.isLrcFileExist(title, artist)) {
+                    showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
+                } else {
+                    callAgain(title, artist);
+                }
+                break;
+            case 1://Lyrics Wiki
+                loadLyricsWIki(title, artist);
+                break;
         }
+
 
     }
 
-    private void callAgain(String title, String artist) {
+    private void loadLyricsWIki(String title, String artist) {
+        if (mTask != null) {
+            mTask.cancel(false);
+        }
+        mTask = new ParseLyrics(new ParseLyrics.LyricsCallback() {
+            @Override
+            public void onShowLyrics(String lyrics) {
+                mOfflineLyrics.setVisibility(View.VISIBLE);
+                mOfflineLyrics.setText(lyrics);
+            }
+
+            @Override
+            public void onError() {
+                loadSongLyrics();
+            }
+        }).execute(title, artist);
+    }
+
+    private void callAgain(final String title, final String artist) {
         mDisposable.clear();
         mDisposable.add(loadLyrics.downloadLrcFile(title, artist, MusicPlayerRemote.getSongDurationMillis())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -178,8 +219,8 @@ public class LyricsActivity extends AbsMusicServiceActivity
                         throwable -> {
                             mRefresh.clearAnimation();
                             showLyricsLocal(null);
-                            loadSongLyrics();
-                            hideLyrics();
+                            loadLyricsWIki(title, artist);
+                            hideLyrics(View.GONE);
                         }, () -> {
                             mRefresh.clearAnimation();
                             Toast.makeText(this, "Lyrics downloaded", Toast.LENGTH_SHORT).show();
@@ -190,12 +231,13 @@ public class LyricsActivity extends AbsMusicServiceActivity
         if (file == null) {
             mLyricView.reset();
         } else {
+            hideLyrics(View.VISIBLE);
             mLyricView.setLyricFile(file, "UTF-8");
         }
     }
 
-    private void hideLyrics() {
-        mLyricsContainer.setVisibility(View.GONE);
+    private void hideLyrics(int gone) {
+        mLyricsContainer.setVisibility(gone);
     }
 
     @Override
@@ -229,6 +271,7 @@ public class LyricsActivity extends AbsMusicServiceActivity
             protected void onPostExecute(Lyrics l) {
                 mOfflineLyrics.setVisibility(View.VISIBLE);
                 if (l == null) {
+                    mOfflineLyrics.setText(R.string.no_lyrics_found);
                     return;
                 }
                 mOfflineLyrics.setText(l.data);
@@ -288,6 +331,4 @@ public class LyricsActivity extends AbsMusicServiceActivity
                 break;
         }
     }
-
-
 }
