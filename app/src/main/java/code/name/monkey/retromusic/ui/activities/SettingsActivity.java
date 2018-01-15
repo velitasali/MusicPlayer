@@ -156,6 +156,23 @@ public class SettingsActivity extends AbsBaseActivity
     public static class AdvancedSettingsFragment extends ATEPreferenceFragmentCompat {
         public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
 
+        private static void setSummary(@NonNull Preference preference) {
+            setSummary(preference, PreferenceManager
+                    .getDefaultSharedPreferences(preference.getContext())
+                    .getString(preference.getKey(), ""));
+        }
+
+        private static void setSummary(Preference preference, @NonNull Object value) {
+            String stringValue = value.toString();
+            if (preference instanceof ListPreference) {
+                ListPreference listPreference = (ListPreference) preference;
+                int index = listPreference.findIndexOfValue(stringValue);
+                preference.setSummary(index >= 0 ? listPreference.getEntries()[index] : null);
+            } else {
+                preference.setSummary(stringValue);
+            }
+        }
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.pref_advanced);
@@ -199,7 +216,6 @@ public class SettingsActivity extends AbsBaseActivity
             invalidateSettings();
         }
 
-
         public void setLangRecreate(String langval) {
             Locale locale = new Locale(langval);
             Locale.setDefault(locale);
@@ -216,8 +232,15 @@ public class SettingsActivity extends AbsBaseActivity
             getActivity().recreate();
         }
 
-
         private void invalidateSettings() {
+            final Preference lyricsOptions = findPreference("lyrics_options");
+            setSummary(lyricsOptions);
+            lyricsOptions.setOnPreferenceChangeListener((preference, newValue) -> {
+                setSummary(lyricsOptions, newValue);
+                return true;
+            });
+
+
             Preference findPreference = findPreference("changelog");
             findPreference.setOnPreferenceClickListener(preference -> {
                 openUrl(TELEGRAM_CHANGE_LOG);
@@ -280,10 +303,11 @@ public class SettingsActivity extends AbsBaseActivity
 
 
         }
+
     }
 
-    public static class SettingsFragment extends ATEPreferenceFragmentCompat
-            implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class SettingsFragment extends ATEPreferenceFragmentCompat implements
+            SharedPreferences.OnSharedPreferenceChangeListener {
         private static void setSummary(@NonNull Preference preference) {
             setSummary(preference, PreferenceManager
                     .getDefaultSharedPreferences(preference.getContext())
@@ -350,7 +374,6 @@ public class SettingsActivity extends AbsBaseActivity
 
         private void invalidateSettings() {
 
-            final Preference generalTheme = findPreference("general_theme");
 
             final ATEColorPreference primaryColorPref = (ATEColorPreference) findPreference("primary_color");
             primaryColorPref.setVisible(PreferenceUtil.getInstance(getActivity()).getGeneralTheme() == R.style.Theme_RetroMusic_Color);
@@ -366,6 +389,7 @@ public class SettingsActivity extends AbsBaseActivity
                 return true;
             });
 
+            final Preference generalTheme = findPreference("general_theme");
             setSummary(generalTheme);
             generalTheme.setOnPreferenceChangeListener((preference, newValue) -> {
                 setSummary(generalTheme, newValue);
@@ -381,6 +405,14 @@ public class SettingsActivity extends AbsBaseActivity
                 getActivity().recreate();
                 return true;
             });
+
+            final Preference fullPreference = findPreference("toggle_full_screen");
+            setSummary(generalTheme);
+            fullPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                setSummary(fullPreference, newValue);
+                return true;
+            });
+
 
             ATEColorPreference accentColorPref = (ATEColorPreference) findPreference("accent_color");
             final int accentColor = ThemeStore.accentColor(getActivity());
@@ -417,12 +449,12 @@ public class SettingsActivity extends AbsBaseActivity
                 getActivity().setResult(RESULT_OK);
                 return true;
             });
-            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
+            /*TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
             toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
                 getActivity().recreate();
                 getActivity().setResult(RESULT_OK);
                 return true;
-            });
+            });*/
 
             final Preference autoDownloadImagesPolicy = findPreference("auto_download_images_policy");
             setSummary(autoDownloadImagesPolicy);
