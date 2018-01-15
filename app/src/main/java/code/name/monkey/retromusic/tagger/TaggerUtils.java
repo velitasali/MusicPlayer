@@ -79,7 +79,7 @@ public class TaggerUtils {
         return hasDocumentTreePermission;
     }
 
-    static DocumentFile getDocumentFile(Uri treeUri, final File file) {
+    private static DocumentFile getDocumentFile(Uri treeUri, final File file) {
         String baseFolder = getExtSdCardFolder(file);
 
         if (baseFolder == null) {
@@ -115,7 +115,7 @@ public class TaggerUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    static String getExtSdCardFolder(final File file) {
+    private static String getExtSdCardFolder(final File file) {
         String[] extSdPaths = getExtSdCardPaths();
         try {
             for (String extSdPath : extSdPaths) {
@@ -143,7 +143,7 @@ public class TaggerUtils {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    static String[] getExtSdCardPaths() {
+    private static String[] getExtSdCardPaths() {
         List<String> paths = new ArrayList<>();
         try {
             File[] externalFilesDirs = RetroApplication.getInstance().getExternalFilesDirs("external");

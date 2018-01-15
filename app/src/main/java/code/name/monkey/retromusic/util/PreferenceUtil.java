@@ -87,6 +87,7 @@ public final class PreferenceUtil {
     private static final String DOCUMENT_TREE_URI = "document_tree_uri";
     private static PreferenceUtil sInstance;
     private final SharedPreferences mPreferences;
+
     private PreferenceUtil(@NonNull final Context context) {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -166,13 +167,6 @@ public final class PreferenceUtil {
         return Integer.parseInt(mPreferences.getString(DEFAULT_START_PAGE, "-1"));
     }
 
-    public boolean getToggleNavigation() {
-        return mPreferences.getBoolean(TOGGLE_NAVIGATION_BAR, false);
-    }
-
-    public boolean getToggleStatusBar() {
-        return mPreferences.getBoolean(TOGGLE_STATUS_BAR, false);
-    }
 
     public final int getLastPage() {
         return mPreferences.getInt(LAST_PAGE, 0);
@@ -500,8 +494,38 @@ public final class PreferenceUtil {
         mPreferences.edit().putString(USER_NAME, name).apply();
     }
 
-    public boolean getFullScreenMode() {
-        return mPreferences.getBoolean(TOGGLE_FULL_SCREEN, false);
+    public int getFullScreenMode() {
+        switch (mPreferences.getString(TOGGLE_FULL_SCREEN, "low")) {
+            default:
+            case "low":
+                return 0;
+            case "status":
+                return 1;
+            case "lean":
+                return 2;
+            case "immersive":
+                return 3;
+        }
+    }
+
+    public void setFullScreenMode(int newValue) {
+        mPreferences.edit().putInt(TOGGLE_FULL_SCREEN, newValue).apply();
+    }
+
+    public int lyricsOptions() {
+        switch (mPreferences.getString(LYRICS_OPTIONS, "offline")) {
+            default:
+            case "offline":
+                return 0;
+            case "wiki":
+                return 1;
+            case "kugou":
+                return 2;
+        }
+    }
+
+    public boolean toggleStatusBar() {
+        return mPreferences.getBoolean(TOGGLE_STATUS_BAR, false);
     }
 
     public int[] getGradientColors() {
@@ -563,14 +587,11 @@ public final class PreferenceUtil {
     }
 
     public int getLyricsOptions() {
-        return mPreferences
-                .getInt(LYRICS_OPTIONS, 1);
+        return mPreferences.getInt(LYRICS_OPTIONS, 1);
     }
 
     public void setLyricsOptions(int i) {
-        mPreferences.edit()
-                .putInt(LYRICS_OPTIONS, i)
-                .apply();
+        mPreferences.edit().putInt(LYRICS_OPTIONS, i).apply();
     }
 
     public boolean getHeadsetPlugged() {
