@@ -62,9 +62,8 @@ import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
  * Created by BlackFootSanji on 2/19/2017.
  */
 
-public class SettingsActivity extends AbsBaseActivity
-        implements ColorChooserDialog.ColorCallback {
-    private static final String TAG = "Settings";
+public class SettingsActivity extends AbsBaseActivity implements
+        ColorChooserDialog.ColorCallback {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.app_bar)

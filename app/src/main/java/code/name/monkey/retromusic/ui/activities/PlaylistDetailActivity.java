@@ -339,7 +339,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     }
 
     @Override
-    public void showSongs(ArrayList<Song> songs) {
+    public void showData(ArrayList<Song> songs) {
         adapter.swapDataSet(songs);
     }
 

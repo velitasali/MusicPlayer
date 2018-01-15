@@ -50,8 +50,7 @@ import io.reactivex.schedulers.Schedulers;
  * @author Hemanth S (h4h13).
  */
 
-public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
-        implements GenreDetailsContract.GenreDetailsView {
+public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implements GenreDetailsContract.GenreDetailsView {
     public static final String EXTRA_GENRE_ID = "extra_genre_id";
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -180,7 +179,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity
     }
 
     @Override
-    public void showList(ArrayList<Song> songs) {
+    public void showData(ArrayList<Song> songs) {
         mSongs = songs;
         mSongAdapter.swapDataSet(mSongs);
     }

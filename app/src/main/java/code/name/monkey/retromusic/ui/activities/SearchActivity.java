@@ -201,7 +201,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     }
 
     @Override
-    public void showList(ArrayList<Object> list) {
+    public void showData(ArrayList<Object> list) {
         adapter.swapDataSet(list);
     }
 
