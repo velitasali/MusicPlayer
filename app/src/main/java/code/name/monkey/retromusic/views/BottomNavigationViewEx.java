@@ -30,6 +30,9 @@ import com.kabouzeid.appthemehelper.util.ATHUtil;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
+import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.util.PreferenceUtil;
+
 /**
  * Created by yu on 2016/11/10.
  */
@@ -106,6 +109,7 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         view.setItemTextColor(textSl);
     }
 
+
     private void tintColor(Context context) {
         int color = ATHUtil.resolveColor(context, android.R.attr.textColorSecondary);
         setItemIconColors(this, color, ThemeStore.accentColor(context));
@@ -169,8 +173,12 @@ public class BottomNavigationViewEx extends BottomNavigationView {
             TextView mLargeLabel = getField(button.getClass(), button, "mLargeLabel");
             TextView mSmallLabel = getField(button.getClass(), button, "mSmallLabel");
 
-            mLargeLabel.clearAnimation();
-            mSmallLabel.clearAnimation();
+            if (mLargeLabel != null) {
+                mLargeLabel.clearAnimation();
+            }
+            if (mSmallLabel != null) {
+                mSmallLabel.clearAnimation();
+            }
 
             // mShiftingMode
             boolean mShiftingMode = getField(button.getClass(), button, "mShiftingMode");

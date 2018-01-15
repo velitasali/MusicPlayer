@@ -35,4 +35,8 @@ public class SansFontCollapsingToolbarLayout extends CollapsingToolbarLayout {
         setCollapsedTitleTypeface(typefaceBold);
 
     }
+
+    public void setTitle(int i) {
+        setTitle(getContext().getString(i));
+    }
 }
