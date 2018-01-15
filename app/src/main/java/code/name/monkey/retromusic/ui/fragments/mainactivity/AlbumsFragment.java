@@ -3,7 +3,6 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.TransitionManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,9 +27,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
  * Created by hemanths on 12/08/17.
  */
 
-public class AlbumsFragment
-        extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager>
-        implements AlbumContract.AlbumView {
+public class AlbumsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<AlbumAdapter, GridLayoutManager> implements AlbumContract.AlbumView {
     public static final String TAG = AlbumsFragment.class.getSimpleName();
 
     private AlbumPresenter mPresenter;
@@ -41,7 +38,6 @@ public class AlbumsFragment
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     protected GridLayoutManager createLayoutManager() {
@@ -54,12 +50,7 @@ public class AlbumsFragment
         int itemLayoutRes = getItemLayoutRes();
         notifyLayoutResChanged(itemLayoutRes);
         ArrayList<Album> dataSet = getAdapter() == null ? new ArrayList<Album>() : getAdapter().getDataSet();
-        return new AlbumAdapter(
-                getLibraryFragment().getMainActivity(),
-                dataSet,
-                itemLayoutRes,
-                loadUsePalette(),
-                getLibraryFragment());
+        return new AlbumAdapter(getLibraryFragment().getMainActivity(), dataSet, itemLayoutRes, loadUsePalette(), getLibraryFragment());
     }
 
     @Override
@@ -126,8 +117,16 @@ public class AlbumsFragment
     }
 
     @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+            getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.albums);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
+        getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.albums);
         if (getAdapter().getDataSet().isEmpty())
             mPresenter.subscribe();
     }
@@ -140,14 +139,12 @@ public class AlbumsFragment
 
     @Override
     public void loading() {
-        TransitionManager.beginDelayedTransition(getRecyclerView());
-        if (!getAdapter().getDataSet().isEmpty())
-            getProgressBar().setVisibility(View.VISIBLE);
+        getProgressBar().setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyView() {
-        getAdapter().swapDataSet(new ArrayList<Album>());
+        getAdapter().swapDataSet(new ArrayList<>());
     }
 
     @Override
@@ -156,7 +153,7 @@ public class AlbumsFragment
     }
 
     @Override
-    public void showList(ArrayList<Album> albums) {
+    public void showData(ArrayList<Album> albums) {
         getAdapter().swapDataSet(albums);
     }
 

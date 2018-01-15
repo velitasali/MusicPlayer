@@ -53,9 +53,7 @@ import static code.name.monkey.retromusic.R.id.toolbar;
  * Created by hemanths on 19/07/17.
  */
 
-public class HomeFragment extends AbsMainActivityFragment implements
-        MainActivityFragmentCallbacks,
-        HomeContract.HomeView {
+public class HomeFragment extends AbsMainActivityFragment implements MainActivityFragmentCallbacks, HomeContract.HomeView {
     private static final String TAG = "HomeFragment";
 
     @BindView(R.id.playlist_recycler_view)
@@ -209,7 +207,7 @@ public class HomeFragment extends AbsMainActivityFragment implements
     }
 
     @Override
-    public void showAllThingsList(ArrayList<Object> homes) {
+    public void showData(ArrayList<Object> homes) {
         mHomeAdapter.swapData(homes);
     }
 

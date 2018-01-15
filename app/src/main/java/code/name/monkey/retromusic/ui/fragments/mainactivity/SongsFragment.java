@@ -4,6 +4,7 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.Menu;
@@ -29,9 +30,8 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SongsFragment
-        extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<SongAdapter, GridLayoutManager>
-        implements SongContract.SongView {
+@SuppressWarnings("ConstantConditions")
+public class SongsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<SongAdapter, GridLayoutManager> implements SongContract.SongView {
     private static final String TAG = "Songs";
     private SongPresenter mPresenter;
 
@@ -72,19 +72,9 @@ public class SongsFragment
         ArrayList<Song> dataSet = getAdapter() == null ? new ArrayList<Song>() : getAdapter().getDataSet();
 
         if (getGridSize() <= getMaxGridSizeForList()) {
-            return new ShuffleButtonSongAdapter(
-                    getLibraryFragment().getMainActivity(),
-                    dataSet,
-                    itemLayoutRes,
-                    usePalette,
-                    getLibraryFragment());
+            return new ShuffleButtonSongAdapter(getLibraryFragment().getMainActivity(), dataSet, itemLayoutRes, usePalette, getLibraryFragment());
         }
-        return new SongAdapter(
-                getLibraryFragment().getMainActivity(),
-                dataSet,
-                itemLayoutRes,
-                usePalette,
-                getLibraryFragment());
+        return new SongAdapter(getLibraryFragment().getMainActivity(), dataSet, itemLayoutRes, usePalette, getLibraryFragment());
     }
 
     @Override
@@ -136,23 +126,30 @@ public class SongsFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (getAdapter().getDataSet().isEmpty())
-            mPresenter.subscribe();
+        getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.songs);
+        if (getAdapter().getDataSet().isEmpty()) mPresenter.subscribe();
+    }
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+            getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.songs);
     }
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mPresenter.unsubscribe();
+        super.onDestroy();
     }
 
     @Override
     public void loading() {
-        getProgressBar().setVisibility(View.INVISIBLE);
+        getProgressBar().setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showList(ArrayList<Song> songs) {
+    public void showData(ArrayList<Song> songs) {
         getAdapter().swapDataSet(songs);
     }
 

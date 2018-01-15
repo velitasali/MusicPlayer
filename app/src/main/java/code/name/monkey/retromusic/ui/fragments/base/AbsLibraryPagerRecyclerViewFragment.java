@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.base;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -30,7 +31,7 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
 
     public static final String TAG = AbsLibraryPagerRecyclerViewFragment.class.getSimpleName();
     @BindView(R.id.container)
-    View container;
+    ViewGroup container;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     @Nullable
@@ -47,9 +48,7 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutRes(), container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -63,7 +62,10 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
 
         initLayoutManager();
         initAdapter();
+
         setUpRecyclerView();
+
+        progressBar.setProgressTintList(ColorStateList.valueOf(ThemeStore.accentColor(getActivity())));
     }
 
     private void setUpRecyclerView() {
@@ -116,6 +118,10 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
 
     protected RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+    public ViewGroup getContainer() {
+        return container;
     }
 
     @Override

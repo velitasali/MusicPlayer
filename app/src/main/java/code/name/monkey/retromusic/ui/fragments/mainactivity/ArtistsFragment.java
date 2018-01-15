@@ -12,6 +12,7 @@ import android.view.SubMenu;
 import android.view.View;
 
 import com.retro.musicplayer.backend.Injection;
+import com.retro.musicplayer.backend.helper.SortOrder.ArtistSortOrder;
 import com.retro.musicplayer.backend.model.Artist;
 import com.retro.musicplayer.backend.mvp.contract.ArtistContract;
 import com.retro.musicplayer.backend.mvp.presenter.ArtistPresenter;
@@ -19,7 +20,6 @@ import com.retro.musicplayer.backend.mvp.presenter.ArtistPresenter;
 import java.util.ArrayList;
 
 import code.name.monkey.retromusic.R;
-import com.retro.musicplayer.backend.helper.SortOrder.ArtistSortOrder;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -28,9 +28,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
  * Created by hemanths on 18/08/17.
  */
 
-public class ArtistsFragment
-        extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<ArtistAdapter, GridLayoutManager>
-        implements ArtistContract.ArtistView {
+public class ArtistsFragment extends AbsLibraryPagerRecyclerViewCustomGridSizeFragment<ArtistAdapter, GridLayoutManager> implements ArtistContract.ArtistView {
     public static final String TAG = ArtistsFragment.class.getSimpleName();
     private ArtistPresenter mPresenter;
 
@@ -61,12 +59,7 @@ public class ArtistsFragment
         int itemLayoutRes = getItemLayoutRes();
         notifyLayoutResChanged(itemLayoutRes);
         ArrayList<Artist> dataSet = getAdapter() == null ? new ArrayList<Artist>() : getAdapter().getDataSet();
-        return new ArtistAdapter(
-                getLibraryFragment().getMainActivity(),
-                dataSet,
-                itemLayoutRes,
-                loadUsePalette(),
-                getLibraryFragment());
+        return new ArtistAdapter(getLibraryFragment().getMainActivity(), dataSet, itemLayoutRes, loadUsePalette(), getLibraryFragment());
     }
 
     @Override
@@ -121,10 +114,17 @@ public class ArtistsFragment
     }
 
     @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+            getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.artists);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        if (getAdapter().getDataSet().isEmpty())
-            mPresenter.subscribe();
+        getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.artists);
+        if (getAdapter().getDataSet().isEmpty()) mPresenter.subscribe();
     }
 
     @Override
@@ -135,26 +135,21 @@ public class ArtistsFragment
 
     @Override
     public void loading() {
-        TransitionManager.beginDelayedTransition(getRecyclerView());
-        if (!getAdapter().getDataSet().isEmpty())
-            getProgressBar().setVisibility(View.VISIBLE);
+        getProgressBar().setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyView() {
-        TransitionManager.beginDelayedTransition(getRecyclerView());
         getAdapter().swapDataSet(new ArrayList<>());
     }
 
     @Override
     public void completed() {
-        TransitionManager.beginDelayedTransition(getRecyclerView());
         getProgressBar().setVisibility(View.GONE);
     }
 
     @Override
-    public void showList(ArrayList<Artist> artists) {
-        TransitionManager.beginDelayedTransition(getRecyclerView());
+    public void showData(ArrayList<Artist> artists) {
         getAdapter().swapDataSet(artists);
     }
 

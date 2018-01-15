@@ -41,6 +41,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
+import code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -49,15 +50,14 @@ import io.reactivex.schedulers.Schedulers;
  * Created by hemanths on 13/08/17.
  */
 
-public class LibraryFragment extends AbsMainActivityFragment implements
-        CabHolder,
-        MainActivityFragmentCallbacks {
-
+public class LibraryFragment extends AbsMainActivityFragment implements CabHolder, MainActivityFragmentCallbacks {
     private static final String TAG = "LibraryFragment";
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.appbar)
     AppBarLayout mAppbar;
+    @BindView(R.id.collapsing_toolbar)
+    SansFontCollapsingToolbarLayout mCollapsingToolbar;
     private Unbinder mUnBinder;
     private MaterialCab cab;
     private FragmentManager mFragmentManager;
@@ -67,6 +67,10 @@ public class LibraryFragment extends AbsMainActivityFragment implements
         LibraryFragment fragment = new LibraryFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public SansFontCollapsingToolbarLayout getToolbar() {
+        return mCollapsingToolbar;
     }
 
     public void addOnAppBarOffsetChangedListener(AppBarLayout.OnOffsetChangedListener onOffsetChangedListener) {
@@ -83,9 +87,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         mUnBinder = ButterKnife.bind(this, view);
         return view;
@@ -93,7 +95,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState); 
+        super.onViewCreated(view, savedInstanceState);
         getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
         setStatusbarColorAuto(view);
         getMainActivity().setNavigationbarColorAuto();

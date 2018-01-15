@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 
 import com.retro.musicplayer.backend.Injection;
 import com.retro.musicplayer.backend.model.Genre;
@@ -17,13 +18,13 @@ import java.util.ArrayList;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.GenreAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewFragment;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 
 /**
  * @author Hemanth S (h4h13).
  */
 
-public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdapter, LinearLayoutManager>
-        implements GenreContract.GenreView {
+public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdapter, LinearLayoutManager> implements GenreContract.GenreView {
     private GenrePresenter mPresenter;
 
     public static GenreFragment newInstance() {
@@ -41,9 +42,17 @@ public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdap
     }
 
     @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+            getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.genres);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        mPresenter.subscribe();
+        getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.genres);
+        if (getAdapter().getDataSet().isEmpty()) mPresenter.subscribe();
     }
 
 
@@ -67,23 +76,24 @@ public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdap
 
     @Override
     public void loading() {
+        getProgressBar().setVisibility(View.VISIBLE);
+    }
 
+    @Override
+    public void showData(ArrayList<Genre> songs) {
+        getAdapter().swapDataSet(songs);
     }
 
     @Override
     public void showEmptyView() {
-        getAdapter().swapData(new ArrayList<>());
+        getAdapter().swapDataSet(new ArrayList<Genre>());
     }
 
     @Override
     public void completed() {
-
+        getProgressBar().setVisibility(View.GONE);
     }
 
-    @Override
-    public void showGenre(ArrayList<Genre> list) {
-        getAdapter().swapData(list);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -91,5 +101,10 @@ public class GenreFragment extends AbsLibraryPagerRecyclerViewFragment<GenreAdap
         menu.removeItem(R.id.action_sort_order);
         menu.removeItem(R.id.action_grid_size);
         menu.removeItem(R.id.action_new_playlist);
+    }
+
+    @Override
+    protected int getEmptyMessage() {
+        return R.string.no_genres;
     }
 }
