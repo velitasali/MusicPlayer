@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.bumptech.glide.BitmapRequestBuilder;
@@ -28,14 +29,11 @@ import code.name.monkey.retromusic.util.CustomArtistImageUtil;
  */
 public class ArtistGlideRequest {
 
-    public static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
+    static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
     private static final DiskCacheStrategy DEFAULT_DISK_CACHE_STRATEGY = DiskCacheStrategy.SOURCE;
-    private static int DEFAULT_ERROR_IMAGE = R.drawable.default_artist_image;
+    private static int DEFAULT_ERROR_IMAGE =  R.drawable.default_artist_image;
 
-    public static DrawableTypeRequest createBaseRequest(RequestManager requestManager,
-                                                        Artist artist,
-                                                        boolean noCustomImage,
-                                                        boolean forceDownload) {
+    static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Artist artist, boolean noCustomImage, boolean forceDownload) {
         boolean hasCustomImage = CustomArtistImageUtil.getInstance(RetroApplication.getInstance()).hasCustomArtistImage(artist);
         if (noCustomImage || !hasCustomImage) {
             return requestManager.load(new ArtistImage(artist.getName(), forceDownload));
@@ -44,7 +42,7 @@ public class ArtistGlideRequest {
         }
     }
 
-    public static Key createSignature(Artist artist) {
+    static Key createSignature(Artist artist) {
         return ArtistSignatureUtil.getInstance(RetroApplication.getInstance()).getArtistSignature(artist.getName());
     }
 
@@ -88,7 +86,7 @@ public class ArtistGlideRequest {
                     .error(DEFAULT_ERROR_IMAGE)
                     .animate(DEFAULT_ANIMATION)
                     .priority(Priority.LOW)
-                    //.override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .signature(createSignature(artist));
         }
     }
@@ -96,7 +94,7 @@ public class ArtistGlideRequest {
     public static class BitmapBuilder {
         private final Builder builder;
 
-        public BitmapBuilder(Builder builder) {
+        BitmapBuilder(Builder builder) {
             this.builder = builder;
         }
 
@@ -117,7 +115,7 @@ public class ArtistGlideRequest {
         final Context context;
         private final Builder builder;
 
-        public PaletteBuilder(Builder builder, Context context) {
+        PaletteBuilder(Builder builder, Context context) {
             this.builder = builder;
             this.context = context;
         }

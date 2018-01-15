@@ -20,16 +20,17 @@ import code.name.monkey.retromusic.glide.palette.BitmapPaletteTranscoder;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
 public class SongGlideRequest {
 
-    public static final DiskCacheStrategy DEFAULT_DISK_CACHE_STRATEGY = DiskCacheStrategy.NONE;
-    public static final int DEFAULT_ERROR_IMAGE = R.drawable.default_album_art;
-    public static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
+    static final DiskCacheStrategy DEFAULT_DISK_CACHE_STRATEGY = DiskCacheStrategy.NONE;
+    static final int DEFAULT_ERROR_IMAGE = R.drawable.default_album_art;
+    static final int DEFAULT_ANIMATION = android.R.anim.fade_in;
 
-    public static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Song song, boolean ignoreMediaStore) {
+    static DrawableTypeRequest createBaseRequest(RequestManager requestManager, Song song, boolean ignoreMediaStore) {
         if (ignoreMediaStore) {
             return requestManager.load(new AudioFileCover(song.data));
         } else {
@@ -37,7 +38,7 @@ public class SongGlideRequest {
         }
     }
 
-    public static Key createSignature(Song song) {
+    static Key createSignature(Song song) {
         return new MediaStoreSignature("", song.dateModified, 0);
     }
 
@@ -67,7 +68,7 @@ public class SongGlideRequest {
             return ignoreMediaStore(PreferenceUtil.getInstance(context).ignoreMediaStoreArtwork());
         }
 
-        public Builder ignoreMediaStore(boolean ignoreMediaStore) {
+        Builder ignoreMediaStore(boolean ignoreMediaStore) {
             this.ignoreMediaStore = ignoreMediaStore;
             return this;
         }
@@ -85,7 +86,7 @@ public class SongGlideRequest {
     public static class BitmapBuilder {
         private final Builder builder;
 
-        public BitmapBuilder(Builder builder) {
+        BitmapBuilder(Builder builder) {
             this.builder = builder;
         }
 
@@ -104,7 +105,7 @@ public class SongGlideRequest {
         final Context context;
         private final Builder builder;
 
-        public PaletteBuilder(Builder builder, Context context) {
+        PaletteBuilder(Builder builder, Context context) {
             this.builder = builder;
             this.context = context;
         }

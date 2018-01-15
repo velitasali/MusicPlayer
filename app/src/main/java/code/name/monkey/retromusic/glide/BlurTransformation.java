@@ -15,15 +15,16 @@ import android.support.annotation.NonNull;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import code.name.monkey.retromusic.BuildConfig;
 import com.retro.musicplayer.backend.helper.StackBlur;
+
+import code.name.monkey.retromusic.BuildConfig;
 import code.name.monkey.retromusic.util.ImageUtil;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
 public class BlurTransformation extends BitmapTransformation {
-    public static final float DEFAULT_BLUR_RADIUS = 5f;
+    static final float DEFAULT_BLUR_RADIUS = 5f;
 
     private Context context;
     private float blurRadius;
