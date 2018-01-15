@@ -32,6 +32,10 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
         mItemLayoutRes = itemLayoutRes;
     }
 
+    public ArrayList<Genre> getDataSet() {
+        return mGenres;
+    }
+
     @Override
     public GenreAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(mActivity).inflate(mItemLayoutRes, parent, false));
@@ -61,7 +65,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.ViewHolder> 
         return mGenres.size();
     }
 
-    public void swapData(ArrayList<Genre> list) {
+    public void swapDataSet(ArrayList<Genre> list) {
         mGenres = list;
         notifyDataSetChanged();
     }
