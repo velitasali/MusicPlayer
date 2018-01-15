@@ -3,7 +3,6 @@ package code.name.monkey.retromusic.ui.fragments.player.normal;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.graphics.drawable.GradientDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -112,7 +111,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
 
     @Override
     public int toolbarIconColor() {
-        return  ATHUtil.resolveColor(getContext(), R.attr.iconColor);
+        return ATHUtil.resolveColor(getContext(), R.attr.iconColor);
     }
 
     @Override
@@ -157,7 +156,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         super.onViewCreated(view, savedInstanceState);
 
         /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             mViewGroup.setLayoutParams(params);

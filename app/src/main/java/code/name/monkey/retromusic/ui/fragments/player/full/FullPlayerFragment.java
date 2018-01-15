@@ -1,7 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.player.full;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -22,7 +21,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 
 /**
  * Created by hemanths on 14/09/17.
@@ -59,7 +57,7 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         setUpSubFragments();

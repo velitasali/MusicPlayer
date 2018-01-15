@@ -122,7 +122,6 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onDestroyView() {
-
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -142,7 +141,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         super.onViewCreated(view, savedInstanceState);
 
         /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()< 1) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             mViewGroup.setLayoutParams(params);
@@ -184,15 +183,18 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         if (activity == null) {
             return;
         }
+        colorBackground.clearColorFilter();
         SongGlideRequest.Builder.from(Glide.with(activity), MusicPlayerRemote.getCurrentSong())
                 .checkIgnoreMediaStore(activity)
                 .generatePalette(activity)
                 .build()
-                .transform(new BlurTransformation(getActivity(), 200))
+                .transform(new BlurTransformation(getActivity(), 150))
                 .into(new RetroMusicColoredTarget(colorBackground) {
                     @Override
                     public void onColorReady(int color) {
-
+                        if (color == getDefaultFooterColor()) {
+                            colorBackground.setColorFilter(color);
+                        }
                     }
                 });
     }

@@ -89,7 +89,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         super.onViewCreated(view, savedInstanceState);
 
         /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         setUpPlayerToolbar();

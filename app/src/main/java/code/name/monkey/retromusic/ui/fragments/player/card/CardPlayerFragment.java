@@ -31,7 +31,7 @@ public class CardPlayerFragment extends AbsPlayerFragment {
         View layout = inflater.inflate(R.layout.fragment_card_player, container, false);
         unbinder = ButterKnife.bind(this, layout);
         /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             //mViewGroup.setLayoutParams(params);
