@@ -2,6 +2,16 @@
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="Advanced">
 
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEListPreference
+            android:defaultValue="offline"
+            android:entries="@array/pref_lyrics_options_list_titles"
+            android:entryValues="@array/pref_lyrics_options_list_values"
+            android:key="lyrics_options"
+            android:negativeButtonText="@null"
+            android:persistent="false"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_lyrics_options" />
+
         <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreference
             android:key="day_dream"
             android:summary="@string/pref_summary_day_dream"

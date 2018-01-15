@@ -6,10 +6,13 @@
             android:key="corner_window"
             android:summary="@string/pref_summary_round_corners"
             android:title="@string/pref_title_round_corners" />
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
-            android:defaultValue="false"
+        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEListPreference
+            android:defaultValue="low"
+            android:entries="@array/pref_window_list_titles"
+            android:entryValues="@array/pref_window_list_values"
             android:key="toggle_full_screen"
             android:summary="@string/pref_summary_toggle_full_screen"
             android:title="@string/pref_title_toggle_full_screen" />
+
     </com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>
