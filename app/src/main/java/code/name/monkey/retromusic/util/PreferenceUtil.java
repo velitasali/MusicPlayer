@@ -37,8 +37,8 @@ public final class PreferenceUtil {
     public static final String DOMINANT_COLOR = "dominant_color";
     private static final String GENERAL_THEME = "general_theme";
     private static final String DEFAULT_START_PAGE = "default_start_page";
-    private static final String LAST_PAGE = "last_start_page";
-    private static final String LAST_MUSIC_CHOOSER = "last_music_chooser";
+    public static final String LAST_PAGE = "last_start_page";
+    public static final String LAST_MUSIC_CHOOSER = "last_music_chooser";
     private static final String ARTIST_SORT_ORDER = "artist_sort_order";
     private static final String ARTIST_SONG_SORT_ORDER = "artist_song_sort_order";
     private static final String ARTIST_ALBUM_SORT_ORDER = "artist_album_sort_order";
@@ -79,8 +79,6 @@ public final class PreferenceUtil {
     private static final String TOGGLE_VOLUME = "toggle_volume";
     private static final String LYRICS_OPTIONS = "lyrics_options";
     private static final String TOGGLE_TAB_TITLES = "toggle_tab_titles";
-    private static final String TOGGLE_NAVIGATION_BAR = "toggle_navigation_bar";
-    private static final String TOGGLE_STATUS_BAR = "toggle_status_bar";
     private static final String ROUND_CORNERS = "corner_window";
     private static final String SAF_SDCARD_URI = "saf_sdcard_uri";
     private static final String TOGGLE_GENRE = "toggle_genre";
@@ -514,18 +512,14 @@ public final class PreferenceUtil {
 
     public int lyricsOptions() {
         switch (mPreferences.getString(LYRICS_OPTIONS, "offline")) {
-            default:
-            case "offline":
-                return 0;
             case "wiki":
                 return 1;
             case "kugou":
                 return 2;
+            default:
+            case "offline":
+                return 0;
         }
-    }
-
-    public boolean toggleStatusBar() {
-        return mPreferences.getBoolean(TOGGLE_STATUS_BAR, false);
     }
 
     public int[] getGradientColors() {
