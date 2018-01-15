@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.app.SupportActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.kabouzeid.appthemehelper.ThemeStore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,27 +55,6 @@ import static com.retro.musicplayer.backend.RetroConstants.TRANSLATE;
  */
 public class AboutActivity extends AbsBaseActivity {
     private static final int AVATAR_SIZE = 200;
-    //private static List<Contributors> sList = new ArrayList<>();
-
-    /*static {
-        sList.addAll(Arrays.asList(
-                new Contributors(R.string.luis_gomez),
-                new Contributors(R.string.jangbeyond),
-                new Contributors(R.string.cyvb),
-                new Contributors(R.string.sota),
-                new Contributors(R.string.mobile46),
-                new Contributors(R.string.mega_cavidan2003),
-                new Contributors(R.string.tommaso01c),
-                new Contributors(R.string.emmanuelenukaj),
-                new Contributors(R.string.hazratov_umidbek),
-                new Contributors(R.string.faisal_hanif),
-                new Contributors(R.string.overunique_1n00bB),
-                new Contributors(R.string.abangmalik),
-                new Contributors(R.string.taileo2012),
-                new Contributors(R.string.Mobile46),
-                new Contributors(R.string.paha_akos)));
-    }*/
-
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindViews({R.id.iconProfile,
@@ -160,7 +139,7 @@ public class AboutActivity extends AbsBaseActivity {
         return new String(Character.toChars(unicode));
     }
 
-    @OnClick({R.id.flaticon_link, R.id.app_github,
+    @OnClick({R.id.flaticon_link, R.id.app_github, R.id.support_container,
             R.id.google_plus_circle_btn, R.id.telegram_btn,
             R.id.karimAbourGooglePlus, R.id.karimAbourGithub, R.id.luisGomezGooglePlus,
             R.id.luisGomezTwitter, R.id.app_telegram_channel, R.id.app_google_plus,
@@ -168,6 +147,9 @@ public class AboutActivity extends AbsBaseActivity {
             R.id.app_translation, R.id.app_rate, R.id.app_share, R.id.material_design_link})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.support_container:
+                startActivity(new Intent(this, SupportDevelopmentActivity.class));
+                break;
             case R.id.flaticon_link:
                 openUrl(FLATICON_LINK);
                 break;
