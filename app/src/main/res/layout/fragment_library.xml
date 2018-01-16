@@ -30,6 +30,7 @@
             <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="96dp"
+                android:id="@+id/collapsing_toolbar"
                 app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
                 app:expandedTitleGravity="top"
                 app:expandedTitleMarginStart="16dp"
