@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <padding
+                android:bottom="256dp"
+                android:left="256dp"
+                android:right="256dp"
+                android:top="256dp" />
+            <size
+                android:width="1024dp"
+                android:height="1024dp" />
+            <gradient
+                android:angle="135"
+                android:endColor="@color/md_green_A700"
+                android:startColor="@color/md_blue_A200" />
+        </shape>
+    </item>
+    <item>
+        <rotate
+            android:drawable="@drawable/ic_artist_white_24dp"
+            android:fromDegrees="0"
+            android:toDegrees="0" />
+    </item>
+</layer-list>

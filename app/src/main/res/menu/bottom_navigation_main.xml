@@ -19,6 +19,11 @@
     <item
         android:id="@+id/action_playlist"
         android:enabled="true"
-        android:icon="@drawable/ic_favorite_white_24dp"
-        android:title="@string/for_you" />
+        android:icon="@drawable/ic_playlist_play_white_24dp"
+        android:title="@string/playlists" />
+    <item
+        android:id="@+id/action_genre"
+        android:enabled="true"
+        android:icon="@drawable/ic_recent_actors_white_24dp"
+        android:title="@string/genres" />
 </menu>

@@ -30,9 +30,6 @@ import com.kabouzeid.appthemehelper.util.ATHUtil;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 
-import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.util.PreferenceUtil;
-
 /**
  * Created by yu on 2016/11/10.
  */

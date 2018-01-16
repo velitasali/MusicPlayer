@@ -35,10 +35,10 @@ public final class PreferenceUtil {
     public static final String BLURRED_ALBUM_ART = "blurred_album_art";
     public static final String TOGGLE_HEADSET = "toggle_headset";
     public static final String DOMINANT_COLOR = "dominant_color";
-    private static final String GENERAL_THEME = "general_theme";
-    private static final String DEFAULT_START_PAGE = "default_start_page";
     public static final String LAST_PAGE = "last_start_page";
     public static final String LAST_MUSIC_CHOOSER = "last_music_chooser";
+    private static final String GENERAL_THEME = "general_theme";
+    private static final String DEFAULT_START_PAGE = "default_start_page";
     private static final String ARTIST_SORT_ORDER = "artist_sort_order";
     private static final String ARTIST_SONG_SORT_ORDER = "artist_song_sort_order";
     private static final String ARTIST_ALBUM_SORT_ORDER = "artist_album_sort_order";
@@ -492,18 +492,8 @@ public final class PreferenceUtil {
         mPreferences.edit().putString(USER_NAME, name).apply();
     }
 
-    public int getFullScreenMode() {
-        switch (mPreferences.getString(TOGGLE_FULL_SCREEN, "low")) {
-            default:
-            case "low":
-                return 0;
-            case "status":
-                return 1;
-            case "lean":
-                return 2;
-            case "immersive":
-                return 3;
-        }
+    public boolean getFullScreenMode() {
+        return mPreferences.getBoolean(TOGGLE_FULL_SCREEN, false);
     }
 
     public void setFullScreenMode(int newValue) {

@@ -72,7 +72,7 @@ public abstract class AbsSlidingMusicPanelActivity
         Fragment fragment; // must implement AbsPlayerFragment
         switch (currentNowPlayingScreen) {
             /*case CARD:
-                fragment = new CardPlayerFragment();
+                fragment = new SolidPlayerFragment();
                 break;
             case TEXT:
                 fragment = new TextPlayerFragment();

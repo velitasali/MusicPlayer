@@ -15,6 +15,7 @@ public enum NowPlayingScreen {
     TINY(R.string.tiny, R.drawable.np_tiny, 5),
     HOLIDAY(R.string.holiday, R.drawable.np_normal, 6),
     BLUR(R.string.blur, R.drawable.np_normal, 7);
+    //SOLID(R.string.solid, R.drawable.np_normal, 8);
 
     @StringRes
     public final int titleRes;

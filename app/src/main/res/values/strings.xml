@@ -208,7 +208,7 @@
 
     <string name="lets_play_something">Let\'s play something</string>
 
-    <string name="library">Browse</string>
+    <string name="library">Library</string>
 
     <string name="licenses">Licenses</string>
 
@@ -520,5 +520,7 @@
     <string name="you_have_to_select_at_least_one_category">You have to select at least one category</string>
     <string name="reset_action">Reset</string>
     <string name="personalize">Personalize</string>
+    <string name="support_development_summary">If your enjoy using Retro Music Player consider donation as support to my work.</string>
+    <string name="solid">Solid</string>
 
 </resources>
