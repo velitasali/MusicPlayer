@@ -158,7 +158,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
         } else {
             restoreCurrentFragment();
         }
-
     }
 
     @Override
