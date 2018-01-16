@@ -57,13 +57,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 
 import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
-
-/**
- * Created by BlackFootSanji on 2/19/2017.
- */
-
-public class SettingsActivity extends AbsBaseActivity implements
-        ColorChooserDialog.ColorCallback {
+public class SettingsActivity extends AbsBaseActivity implements ColorChooserDialog.ColorCallback {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.app_bar)
@@ -193,24 +187,20 @@ public class SettingsActivity extends AbsBaseActivity implements
         }
 
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             getListView().setPadding(0, 0, 0, 0);
             getListView().addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    if (recyclerView.canScrollVertically(RecyclerView.NO_POSITION)) {
-                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(8f);
-                    } else {
-                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(0f);
+                    if (getActivity() != null) {
+                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                     }
                 }
             });
 
-            getListView().setBackgroundColor(
-                    ATHUtil.resolveColor(getContext(), R.attr.colorPrimary)
-            );
+            getListView().setBackgroundColor(ATHUtil.resolveColor(getContext(), R.attr.colorPrimary));
 
             invalidateSettings();
         }
@@ -224,21 +214,11 @@ public class SettingsActivity extends AbsBaseActivity implements
             getActivity().getBaseContext().getResources().updateConfiguration(configuration,
                     getActivity().getBaseContext().getResources().getDisplayMetrics());
 
-            PreferenceManager.getDefaultSharedPreferences(getContext())
-                    .edit()
-                    .putString("LANG", langval)
-                    .apply();
+            PreferenceManager.getDefaultSharedPreferences(getContext()).edit().putString("LANG", langval).apply();
             getActivity().recreate();
         }
 
         private void invalidateSettings() {
-            final Preference lyricsOptions = findPreference("lyrics_options");
-            setSummary(lyricsOptions);
-            lyricsOptions.setOnPreferenceChangeListener((preference, newValue) -> {
-                setSummary(lyricsOptions, newValue);
-                return true;
-            });
-
 
             Preference findPreference = findPreference("changelog");
             findPreference.setOnPreferenceClickListener(preference -> {
@@ -352,15 +332,16 @@ public class SettingsActivity extends AbsBaseActivity implements
         }
 
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
             getListView().setPadding(0, 0, 0, 0);
             getListView().addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView
-                            .canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
+                    if (getActivity() != null) {
+                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
+                    }
                 }
             });
             invalidateSettings();
@@ -372,7 +353,12 @@ public class SettingsActivity extends AbsBaseActivity implements
         }
 
         private void invalidateSettings() {
-
+            final Preference lyricsOptions = findPreference("lyrics_options");
+            setSummary(lyricsOptions);
+            lyricsOptions.setOnPreferenceChangeListener((preference, newValue) -> {
+                setSummary(lyricsOptions, newValue);
+                return true;
+            });
 
             final ATEColorPreference primaryColorPref = (ATEColorPreference) findPreference("primary_color");
             primaryColorPref.setVisible(PreferenceUtil.getInstance(getActivity()).getGeneralTheme() == R.style.Theme_RetroMusic_Color);
@@ -402,13 +388,6 @@ public class SettingsActivity extends AbsBaseActivity implements
                     new DynamicShortcutManager(getActivity()).updateDynamicShortcuts();
                 }
                 getActivity().recreate();
-                return true;
-            });
-
-            final Preference fullPreference = findPreference("toggle_full_screen");
-            setSummary(generalTheme);
-            fullPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                setSummary(fullPreference, newValue);
                 return true;
             });
 
@@ -448,12 +427,11 @@ public class SettingsActivity extends AbsBaseActivity implements
                 getActivity().setResult(RESULT_OK);
                 return true;
             });
-            /*TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
+            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
             toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
                 getActivity().recreate();
-                getActivity().setResult(RESULT_OK);
                 return true;
-            });*/
+            });
 
             final Preference autoDownloadImagesPolicy = findPreference("auto_download_images_policy");
             setSummary(autoDownloadImagesPolicy);
