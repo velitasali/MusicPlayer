@@ -1,6 +1,10 @@
 package com.name.monkey.retromusic.ui.activities.base;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
@@ -11,10 +15,10 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.PathInterpolator;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
 import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -34,6 +38,7 @@ import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.plain.PlainPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.simple.SimplePlayerFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ViewUtil;
 import code.name.monkey.retromusic.views.BottomNavigationViewEx;
 
 
@@ -43,9 +48,7 @@ import code.name.monkey.retromusic.views.BottomNavigationViewEx;
  *         Do not use {@link #setContentView(int)}. Instead wrap your layout with
  *         {@link #wrapSlidingMusicPanel(int)} first and then return it in {@link #createContentView()}
  */
-public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener,
-        SlidingUpPanelLayout.PanelSlideListener, PlayerFragment.Callbacks {
+public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SlidingUpPanelLayout.PanelSlideListener, PlayerFragment.Callbacks {
     public static final String TAG = AbsSlidingMusicPanelActivity.class.getSimpleName();
     @BindView(R.id.bottom_navigation)
     BottomNavigationViewEx mBottomNavigationView;
@@ -58,6 +61,9 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
     private NowPlayingScreen currentNowPlayingScreen;
     private AbsPlayerFragment mPlayerFragment;
     private MiniPlayerFragment mMiniPlayerFragment;
+    //private int mNavigationbarColor;
+    private ValueAnimator navigationBarColorAnimator;
+    private ArgbEvaluator mArgbEvaluator = new ArgbEvaluator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,13 +124,16 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
             }
         });
 
+        if (PreferenceUtil.getInstance(this).isGenreShown())
+            mBottomNavigationView.getMenu().removeItem(R.id.action_genre);
+
         setupBottomView();
         mSlidingUpPanelLayout.addPanelSlideListener(this);
 
     }
 
-
     private void setupBottomView() {
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
         mBottomNavigationView.enableAnimation(false);
         mBottomNavigationView.enableItemShiftingMode(false);
@@ -136,7 +145,6 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
     @Override
     protected void onResume() {
         super.onResume();
-
         if (currentNowPlayingScreen != PreferenceUtil.getInstance(this).getNowPlayingScreen()) {
             postRecreate();
         }
@@ -194,9 +202,7 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         // restore values
         super.setLightStatusbar(mLightStatusbar);
         super.setTaskDescriptionColor(mTaskColor);
-        setNavigationbarColor(ColorUtil.darkenColor(ThemeStore.primaryColor(this)));
-        //setNavigationbarColor(ThemeStore.primaryColor(this));
-        //super.setNavigationbarColor(mNavigationbarColor);
+        super.setNavigationbarColor(ThemeStore.primaryColor(this));
 
         mPlayerFragment.setMenuVisibility(false);
         mPlayerFragment.setUserVisibleHint(false);
@@ -208,16 +214,13 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         // setting fragments values
         int playerFragmentColor = mPlayerFragment.getPaletteColor();
 
-        if (PreferenceUtil.getInstance(this).getAdaptiveColor() ||
-                ATHUtil.isWindowBackgroundDark(this) ||
-                (currentNowPlayingScreen == NowPlayingScreen.TINY)) {
-
+        if (PreferenceUtil.getInstance(this).getAdaptiveColor() || ATHUtil.isWindowBackgroundDark(this) || (currentNowPlayingScreen == NowPlayingScreen.TINY)) {
             super.setLightStatusbar(false);
         } else
             super.setLightStatusbar(true);
 
         super.setTaskDescriptionColor(playerFragmentColor);
-        super.setNavigationbarColor(ColorUtil.darkenColor(ThemeStore.primaryColor(this)));
+        super.setNavigationbarColor(ThemeStore.primaryColor(this));
 
         mPlayerFragment.setMenuVisibility(true);
         mPlayerFragment.setUserVisibleHint(true);
@@ -229,6 +232,7 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         if (getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
             int playerFragmentColor = mPlayerFragment.getPaletteColor();
             super.setTaskDescriptionColor(playerFragmentColor);
+            //animateNavigationBarColor(playerFragmentColor);
         }
     }
 
@@ -298,7 +302,6 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         return false;
     }
 
-
     @Override
     public void setLightStatusbar(boolean enabled) {
         mLightStatusbar = enabled;
@@ -312,6 +315,38 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
         mTaskColor = color;
         if (getPanelState() == null || getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
             super.setTaskDescriptionColor(color);
+        }
+    }
+
+
+    private void animateNavigationBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (navigationBarColorAnimator != null) navigationBarColorAnimator.cancel();
+            navigationBarColorAnimator = ValueAnimator.ofArgb(getWindow().getNavigationBarColor(), color).setDuration(ViewUtil.RETRO_MUSIC_ANIM_TIME);
+            navigationBarColorAnimator.setInterpolator(new PathInterpolator(0.4f, 0f, 1f, 1f));
+            navigationBarColorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    AbsSlidingMusicPanelActivity.super.setNavigationbarColor((Integer) animation.getAnimatedValue());
+                }
+            });
+            navigationBarColorAnimator.start();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (navigationBarColorAnimator != null) navigationBarColorAnimator.cancel(); // just in case
+    }
+
+    @Override
+    public void setNavigationbarColor(int color) {
+        //this.mNavigationbarColor = color;
+        if (getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            if (navigationBarColorAnimator != null) navigationBarColorAnimator.cancel();
+            super.setNavigationbarColor(color);
         }
     }
 
