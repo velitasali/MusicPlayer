@@ -18,6 +18,7 @@ import android.widget.SeekBar;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
 import com.kabouzeid.appthemehelper.util.ColorUtil;
+import com.kabouzeid.appthemehelper.util.TintHelper;
 import com.retro.musicplayer.backend.volume.AudioVolumeObserver;
 import com.retro.musicplayer.backend.volume.OnAudioVolumeChangedListener;
 
@@ -162,5 +163,10 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
         }
         volumeDown.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
         volumeUp.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
+    }
+
+    public void dominantColor(int dark) {
+        volumeSeekbar.setThumb(null);
+        TintHelper.setTint(volumeSeekbar, dark, true);
     }
 }
