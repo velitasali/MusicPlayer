@@ -141,7 +141,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         super.onViewCreated(view, savedInstanceState);
 
         /*Adding margin to toolbar for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()< 1) {
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             mViewGroup.setLayoutParams(params);

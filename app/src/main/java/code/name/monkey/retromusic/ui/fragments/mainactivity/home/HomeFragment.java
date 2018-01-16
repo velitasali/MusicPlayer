@@ -109,7 +109,7 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
         getMainActivity().hideStatusBar();
 
         /*Adding margin to toolbar for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mToolbar.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             mToolbar.setLayoutParams(params);

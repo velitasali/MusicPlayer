@@ -57,7 +57,7 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         setUpSubFragments();

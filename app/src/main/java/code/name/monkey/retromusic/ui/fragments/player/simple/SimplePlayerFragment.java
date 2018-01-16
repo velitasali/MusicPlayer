@@ -55,7 +55,7 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
         View view = inflater.inflate(R.layout.fragment_simple_player, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode() ) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         return view;

@@ -348,6 +348,6 @@ public class PlayerPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     public void hideVolumeIfAvailable() {
-        mVolumeContainer.setVisibility(View.GONE);
+        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
     }
 }

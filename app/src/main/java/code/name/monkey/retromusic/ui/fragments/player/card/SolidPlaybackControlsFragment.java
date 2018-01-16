@@ -1,10 +1,7 @@
 package code.name.monkey.retromusic.ui.fragments.player.card;
 
 import android.animation.ObjectAnimator;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ClipDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +18,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
 import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
 import com.kabouzeid.appthemehelper.util.TintHelper;
 import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
@@ -36,6 +32,7 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.service.MusicService;
+import code.name.monkey.retromusic.ui.fragments.VolumeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -43,7 +40,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
+public class SolidPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     @BindView(R.id.player_play_pause_fab)
     ImageButton playPauseFab;
@@ -67,6 +64,7 @@ public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
     TextView text;
     @BindView(R.id.volume_fragment_container)
     View mVolumeContainer;
+    VolumeFragment volumeFragment;
     private Unbinder unbinder;
     private PlayPauseDrawable playerFabPlayPauseDrawable;
     private int lastPlaybackControlsColor;
@@ -83,7 +81,7 @@ public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_card_playback_controls, container, false);
+        View view = inflater.inflate(R.layout.fragment_solid_playback_controls, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -99,6 +97,7 @@ public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
         } else {
             mVolumeContainer.setVisibility(View.GONE);
         }
+        volumeFragment = (VolumeFragment) getChildFragmentManager().findFragmentById(R.id.volume_fragment);
     }
 
     @Override
@@ -157,25 +156,15 @@ public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     @Override
     public void setDark(int dark) {
-        int color = ATHUtil.resolveColor(getActivity(), android.R.attr.colorBackground);
-        /*if (ColorUtil.isColorLight(color)) {
-            lastPlaybackControlsColor = MaterialValueHelper
-                    .getSecondaryTextColor(getActivity(), true);
-            lastDisabledPlaybackControlsColor = MaterialValueHelper
-                    .getSecondaryDisabledTextColor(getActivity(), true);
-        } else {
-            lastPlaybackControlsColor = MaterialValueHelper
-                    .getPrimaryTextColor(getActivity(), false);
-            lastDisabledPlaybackControlsColor = MaterialValueHelper
-                    .getPrimaryDisabledTextColor(getActivity(), false);
-        }*/
-        lastPlaybackControlsColor = MaterialValueHelper
-                .getPrimaryTextColor(getActivity(), false);
-        lastDisabledPlaybackControlsColor = MaterialValueHelper
-                .getPrimaryDisabledTextColor(getActivity(), false);
+
+        TintHelper.setTint(progressSlider, dark, true);
+        volumeFragment.dominantColor(dark);
+
+        lastPlaybackControlsColor = MaterialValueHelper.getPrimaryTextColor(getActivity(), false);
+        lastDisabledPlaybackControlsColor = MaterialValueHelper.getPrimaryDisabledTextColor(getActivity(), false);
+
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) {
             TintHelper.setTintAuto(playPauseFab, dark, true);
-            setProgressBarColor(progressSlider, dark);
             text.setTextColor(dark);
         } else {
             text.setTextColor(ThemeStore.accentColor(getContext()));
@@ -183,12 +172,6 @@ public class CardPlaybackControlsFragment extends AbsPlayerControlsFragment {
         updateRepeatState();
         updateShuffleState();
         updatePrevNextColor();
-    }
-
-    public void setProgressBarColor(SeekBar progressBar, int newColor) {
-        LayerDrawable ld = (LayerDrawable) progressBar.getProgressDrawable();
-        ClipDrawable clipDrawable = (ClipDrawable) ld.findDrawableByLayerId(android.R.id.progress);
-        clipDrawable.setColorFilter(newColor, PorterDuff.Mode.SRC_IN);
     }
 
     private void setUpPlayPauseFab() {

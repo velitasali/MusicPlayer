@@ -1,7 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.player.holiday;
 
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -62,7 +61,7 @@ public class HolidayPlayerFragment extends AbsPlayerFragment implements PlayerAl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
        /*Adding margin to mToolbar for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() < 1) {
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
             params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
             mViewGroup.setLayoutParams(params);
