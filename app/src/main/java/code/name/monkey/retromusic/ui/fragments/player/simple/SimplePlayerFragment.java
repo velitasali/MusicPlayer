@@ -20,6 +20,7 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 
 /**
  * @author Hemanth S (h4h13).
@@ -55,7 +56,7 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
         View view = inflater.inflate(R.layout.fragment_simple_player, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         /*Hide status bar view for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode() ) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() ) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         return view;
@@ -129,5 +130,9 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
         mToolbar.inflateMenu(R.menu.menu_player);
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
+
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+                getActivity());
     }
 }

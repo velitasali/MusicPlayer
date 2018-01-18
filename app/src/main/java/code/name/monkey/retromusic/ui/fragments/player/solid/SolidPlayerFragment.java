@@ -1,4 +1,4 @@
-package code.name.monkey.retromusic.ui.fragments.player.card;
+package code.name.monkey.retromusic.ui.fragments.player.solid;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;

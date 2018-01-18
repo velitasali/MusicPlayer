@@ -65,10 +65,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
 
         valueAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), android.R.color.transparent, i);
         valueAnimator.addUpdateListener(animation -> {
-            GradientDrawable drawable = new DrawableGradient(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    new int[]{(int) animation.getAnimatedValue(), android.R.color.transparent},
-                    0);
+            GradientDrawable drawable = new DrawableGradient(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{(int) animation.getAnimatedValue(), android.R.color.transparent}, 0);
             if (colorBackground != null) {
                 colorBackground.setBackground(drawable);
             }

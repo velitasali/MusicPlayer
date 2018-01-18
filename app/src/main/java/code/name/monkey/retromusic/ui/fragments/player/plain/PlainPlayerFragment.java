@@ -21,6 +21,7 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 
 /**
  * @author Hemanth S (h4h13).
@@ -76,7 +77,7 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
         View view = inflater.inflate(R.layout.fragment_plain_player, container, false);
         unbinder = ButterKnife.bind(this, view);
         /*Hide status bar view for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         return view;
@@ -86,6 +87,10 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
         mToolbar.inflateMenu(R.menu.menu_player);
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
+
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
+                getActivity());
     }
 
     @Override
@@ -133,10 +138,9 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     @Override
     public void onColorChanged(int color) {
+        mPlainPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
         mLastColor = color;
-        mPlainPlaybackControlsFragment.setDark(color);
-
     }
 
     @Override

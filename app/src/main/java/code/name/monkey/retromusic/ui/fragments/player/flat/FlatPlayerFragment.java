@@ -60,7 +60,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-
+        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
     }
 
     private void colorize(int i) {
@@ -89,7 +89,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         super.onViewCreated(view, savedInstanceState);
 
         /*Hide status bar view for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         setUpPlayerToolbar();
@@ -126,9 +126,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public int toolbarIconColor() {
         boolean isLight = ColorUtil.isColorLight(lastColor);
-        return PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ?
-                MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) :
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor);
+        return PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ? MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) : ATHUtil.resolveColor(getContext(), R.attr.iconColor);
     }
 
     @Override
@@ -141,12 +139,8 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         boolean isLight = ColorUtil.isColorLight(color);
 
         //TransitionManager.beginDelayedTransition(mToolbar);
-        int iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ?
-                MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) :
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor);
-
+        int iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ? MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) : ATHUtil.resolveColor(getContext(), R.attr.iconColor);
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, iconColor, getActivity());
-
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 

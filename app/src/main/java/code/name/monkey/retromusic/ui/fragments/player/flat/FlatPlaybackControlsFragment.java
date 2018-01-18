@@ -79,8 +79,7 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flat_player_playback_controls, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -146,18 +145,11 @@ public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implem
             lastPlaybackControlsColor = MaterialValueHelper.getPrimaryTextColor(getActivity(), false);
             lastDisabledPlaybackControlsColor = MaterialValueHelper.getPrimaryDisabledTextColor(getActivity(), false);
         }
-
-        if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) {
-            updateTextColors(dark);
-            setProgressBarColor(dark);
-            TintHelper.setTintAuto(mPlayerPlayPauseFab, dark, true);
-
-        } else {
-            int accentColor = ThemeStore.accentColor(getContext());
-            updateTextColors(accentColor);
-            setProgressBarColor(accentColor);
-            TintHelper.setTintAuto(mPlayerPlayPauseFab, accentColor, true);
-        }
+        int accentColor = ThemeStore.accentColor(getContext());
+        boolean b = PreferenceUtil.getInstance(getContext()).getAdaptiveColor();
+        updateTextColors(b ? dark : accentColor);
+        setProgressBarColor(b ? dark : accentColor);
+        TintHelper.setTintAuto(mPlayerPlayPauseFab, b ? dark : accentColor, true);
 
         updateRepeatState();
         updateShuffleState();

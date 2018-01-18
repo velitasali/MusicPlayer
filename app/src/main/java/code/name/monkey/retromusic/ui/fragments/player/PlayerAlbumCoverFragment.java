@@ -1,6 +1,7 @@
 package code.name.monkey.retromusic.ui.fragments.player;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -47,7 +48,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player_album_cover, container, false);
         unbinder = ButterKnife.bind(this, view);
@@ -58,6 +59,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager.addOnPageChangeListener(this);
+        viewPager.setPageMargin(100);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -79,7 +81,9 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
             private static final float MIN_SCALE = 0.85f;
             private static final float MIN_ALPHA = 0.5f;
 
-            public void transformPage(View view, float position) {
+            @Override
+            public void transformPage(@NonNull View view, float position) {
+
                 int pageWidth = view.getWidth();
                 int pageHeight = view.getHeight();
 
