@@ -1,5 +1,6 @@
 package code.name.monkey.retromusic.ui.activities;
 
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,10 +17,7 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment;
-
-/**
- * Created by hemanths on 20/08/17.
- */
+import code.name.monkey.retromusic.util.PreferenceUtil;
 
 public class LockScreenActivity extends AbsMusicServiceActivity implements PlayerAlbumCoverFragment.Callbacks {
 
@@ -31,12 +29,10 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setDrawUnderStatusbar(true);
         setContentView(R.layout.activity_lock_screen);
-
         hideStatusBar();
-
         setStatusbarColorAuto();
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
@@ -49,11 +45,13 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
         mPlayerPlaybackControlsFragment = (PlayerPlaybackControlsFragment) getSupportFragmentManager().findFragmentById(R.id.playback_controls_fragment);
         mPlayerPlaybackControlsFragment.hideVolumeIfAvailable();
 
-        mSwipeButton = findViewById(R.id.swipe_btn);
+        swipButtonSetup();
+    }
+
+    private void swipButtonSetup() {
         mSwipeButton.setDisabledDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_outline_black_24dp));
         mSwipeButton.setEnabledDrawable(ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp));
         mSwipeButton.setOnActiveListener(this::finish);
-
     }
 
     @Override
@@ -64,14 +62,20 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
 
 
     private void changeColor(int color) {
-        Drawable drawable = ContextCompat.getDrawable(LockScreenActivity.this, R.drawable.shape_rounded_edit);
+        int colorPrimary = MaterialValueHelper.getPrimaryTextColor(this, ColorUtil.isColorLight(color));
+        mSwipeButton.setCenterTextColor(colorPrimary);
+
+        Drawable drawable = ContextCompat.getDrawable(LockScreenActivity.this, R.drawable.lockscreen_gradient);
         if (drawable != null) {
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            if (PreferenceUtil.getInstance(this).getAdaptiveColor()) {
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+            } else {
+                mSwipeButton.setCenterTextColor(Color.WHITE);
+            }
             mSwipeButton.setBackground(drawable);
         }
 
-        int colorPrimary = MaterialValueHelper.getPrimaryTextColor(this, ColorUtil.isColorLight(color));
-        mSwipeButton.setCenterTextColor(colorPrimary);
+
     }
 
     @Override
@@ -83,6 +87,7 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
     @Override
     public void onColorChanged(int color) {
         mPlayerPlaybackControlsFragment.setDark(color);
+        changeColor(color);
     }
 
     @Override
