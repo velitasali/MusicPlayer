@@ -1,9 +1,11 @@
 package code.name.monkey.retromusic.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.transition.TransitionManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -24,6 +26,7 @@ import com.retro.musicplayer.backend.model.lyrics.Lyrics;
 import com.retro.musicplayer.backend.providers.RepositoryImpl;
 import com.retro.musicplayer.backend.providers.interfaces.Repository;
 import com.retro.musicplayer.backend.util.LyricUtil;
+import com.retro.musicplayer.backend.views.LyricView;
 
 import java.io.File;
 
@@ -36,15 +39,12 @@ import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.views.LyricView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class LyricsActivity extends AbsMusicServiceActivity implements
-        MusicProgressViewUpdateHelper.Callback {
+public class LyricsActivity extends AbsMusicServiceActivity implements MusicProgressViewUpdateHelper.Callback {
 
-    private static final String TAG = "LyricsActivity";
     @BindView(R.id.title)
     TextView mTitle;
     @BindView(R.id.text)
@@ -65,7 +65,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
     private AsyncTask updateLyricsAsyncTask;
     private Repository loadLyrics;
     private CompositeDisposable mDisposable;
-    private int fontSize = 20;
+    private float fontSize = 17.0f;
     private RotateAnimation rotateAnimation;
     private AsyncTask<String, Void, String> mTask;
 
@@ -85,6 +85,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
         setupToolbar();
         setupLyricsView();
         setupWakelock();
+        rotate();
 
     }
 
@@ -94,20 +95,21 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
 
     private void setupLyricsView() {
         mDisposable = new CompositeDisposable();
-        //mLyricView.setLineSpace(15.0f);
-        mLyricView.setTextSize(fontSize);
-        //mLyricView.setTranslationY(DensityUtil.getScreenWidth(getActivity()) + DensityUtil.dip2px(getActivity(), 120));
-        mLyricView.setOnPlayerClickListener(new LyricView.OnPlayerClickListener() {
-            @Override
-            public void onPlayerClicked(long progress, String content) {
-                MusicPlayerRemote.seekTo((int) progress);
-            }
+        mLyricView.setLineSpace(15.0f);
+        mLyricView.setTextSize(17.0f);
+        mLyricView.setPlayable(true);
+        //mLyricView.setTranslationY(DensityUtil.getScreenWidth(this) + DensityUtil.dip2px(this, 120));
+        mLyricView.setOnPlayerClickListener((progress, content) -> {
+            MusicPlayerRemote.seekTo((int) progress);
+            MusicPlayerRemote.pauseSong();
         });
-        rotate();
-        //mLyricView.setTouchable(true);
-        //mLyricView.setPlayable(true);
 
-        //mLyricView.setDefaultColor(Color.WHITE);
+        mLyricView.setHighLightTextColor(ThemeStore.accentColor(this));
+        mLyricView.setDefaultColor(ContextCompat.getColor(this, R.color.md_grey_300));
+        mLyricView.setTouchable(false);
+        mLyricView.setHintColor(Color.WHITE);
+
+
     }
 
     private void setupToolbar() {
@@ -174,7 +176,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
                 loadSongLyrics();
                 break;
             case 2://Kogou
-                mLyricView.reset();
+                mLyricView.reset("No lyrics");
                 if (LyricUtil.isLrcFileExist(title, artist)) {
                     showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
                 } else {
@@ -229,7 +231,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
 
     private void showLyricsLocal(File file) {
         if (file == null) {
-            mLyricView.reset();
+            mLyricView.reset("No lyrics");
         } else {
             hideLyrics(View.VISIBLE);
             mLyricView.setLyricFile(file, "UTF-8");
@@ -291,10 +293,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
 
     }
 
-    @OnClick({R.id.align_left,
-            R.id.align_center,
-            R.id.align_right,
-            R.id.refresh,
+    @OnClick({R.id.refresh,
             R.id.dec_font_size,
             R.id.inc_font_size,
             R.id.edit})
@@ -304,21 +303,15 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
                 Song song = MusicPlayerRemote.getCurrentSong();
                 String title = song.title;
                 String artist = song.artistName;
-                mLyricView.reset();
+                mLyricView.reset("No lyrics");
                 if (LyricUtil.deleteLrcFile(title, artist))
                     callAgain(title, artist);
                 break;
-            case R.id.align_left:
-                //mLyricView.setTextAlign(LyricView.LEFT);
-                break;
-            case R.id.align_center:
-                // mLyricView.setTextAlign(LyricView.CENTER);
-                break;
-            case R.id.align_right:
-                //mLyricView.setTextAlign(LyricView.RIGHT);
-                break;
             case R.id.dec_font_size:
                 fontSize--;
+                if (fontSize <= 17.0f) {
+                    fontSize = 17.0f;
+                }
                 mLyricView.setTextSize(fontSize);
                 break;
             case R.id.edit:
@@ -327,6 +320,9 @@ public class LyricsActivity extends AbsMusicServiceActivity implements
                 break;
             case R.id.inc_font_size:
                 fontSize++;
+                if (fontSize >= 40.0f) {
+                    fontSize = 40.0f;
+                }
                 mLyricView.setTextSize(fontSize);
                 break;
         }
