@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_vertical"
-    android:paddingEnd="8dp"
-    android:paddingStart="8dp"
     tools:ignore="MissingPrefix">
 
     <SeekBar
