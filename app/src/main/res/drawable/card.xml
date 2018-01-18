@@ -7,8 +7,8 @@
                 android:bottom="5dp"
                 android:left="8dp"
                 android:right="8dp"
-                android:top="8dp"/>
-            <solid android:color="@android:color/transparent"/>
+                android:top="8dp" />
+            <solid android:color="@android:color/transparent" />
         </shape>
     </item>
 
@@ -18,9 +18,9 @@
                 android:bottom="1dp"
                 android:left="0dp"
                 android:right="0dp"
-                android:top="0dp"/>
-            <solid android:color="#55d4d4d4"/>
-            <corners android:radius="@dimen/card_elevation"/>
+                android:top="0dp" />
+            <solid android:color="#55d4d4d4" />
+            <corners android:radius="@dimen/card_elevation" />
         </shape>
     </item>
     <item>
@@ -29,17 +29,16 @@
                 android:bottom="1dp"
                 android:left="0dp"
                 android:right="0dp"
-                android:top="0dp"/>
-            <solid android:color="#55dddddd"/>
-            <corners android:radius="@dimen/card_elevation"/>
+                android:top="0dp" />
+            <solid android:color="#55dddddd" />
+            <corners android:radius="@dimen/card_elevation" />
         </shape>
     </item>
 
     <item>
         <shape>
-            <solid android:color="@android:color/white"/>
-            <corners android:radius="@dimen/card_elevation"/>
+            <solid android:color="@android:color/white" />
+            <corners android:radius="@dimen/card_elevation" />
         </shape>
     </item>
-
 </layer-list>

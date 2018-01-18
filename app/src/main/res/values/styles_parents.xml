@@ -66,6 +66,8 @@
         <item name="android:actionOverflowButtonStyle">@style/Widget.ActionButton.Overflow</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 
     <style name="Theme.RetroMusic.Base.Black" parent="@style/Theme.RetroMusic.Base">

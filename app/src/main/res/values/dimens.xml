@@ -82,5 +82,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="material_component_lists_three_line_height">88dp</dimen>
     <dimen name="player_control_icon">78dp</dimen>
     <dimen name="bottom_padding">48dp</dimen>
+    <dimen name="lock_screen_cover_width">360dp</dimen>
 
 </resources>

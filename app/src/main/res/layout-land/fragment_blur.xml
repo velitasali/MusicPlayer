@@ -49,7 +49,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/status_bar_padding">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
