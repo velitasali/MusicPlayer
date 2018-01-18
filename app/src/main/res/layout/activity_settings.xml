@@ -30,7 +30,7 @@
                 android:title="@string/action_settings"
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@drawable/ic_close_white_24dp"
-                app:title="@string/action_settings" >
+                app:title="@string/action_settings">
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/tabs"
