@@ -57,7 +57,7 @@
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
-                android:name="code.name.monkey.retromusic.ui.fragments.player.card.SolidPlaybackControlsFragment"
+                android:name="code.name.monkey.retromusic.ui.fragments.player.solid.SolidPlaybackControlsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_solid_playback_controls" />
