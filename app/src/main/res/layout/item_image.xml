@@ -37,6 +37,5 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
-        android:padding="8dp"
-        tools:ignore="MissingPrefix" />
+        android:padding="8dp"  />
 </LinearLayout>

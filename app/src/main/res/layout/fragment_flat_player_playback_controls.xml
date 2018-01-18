@@ -17,7 +17,7 @@
         android:paddingStart="8dp"
         android:paddingTop="4dp">
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/player_song_current_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             tools:text="0:00" />
 
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/player_song_total_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
             tools:ignore="RtlHardcoded,RtlSymmetry"
             tools:text="3:14" />
 
-        <SeekBar
+        <android.support.v7.widget.AppCompatSeekBar
             android:id="@+id/player_progress_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         android:paddingEnd="16dp"
         android:paddingStart="16dp">
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/text"
             fontPath="@string/sans_bold"
             android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
             android:textSize="12sp"
             tools:text="Title" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/title"
             fontPath="@string/sans_bold"
             android:layout_width="wrap_content"
@@ -114,13 +114,13 @@
         android:paddingStart="16dp"
         tools:ignore="ContentDescription,UnusedAttribute">
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/player_play_pause_button"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_centerVertical="true"
             android:layout_marginTop="8dp"
-            android:background="@drawable/square_play_button_design"
+            android:background="?colorAccent"
             android:foreground="?attr/rectSelector"
             android:padding="16dp"
             android:scaleType="fitCenter"
@@ -134,7 +134,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="8dp">
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/player_repeat_button"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
@@ -144,7 +144,7 @@
                 app:srcCompat="@drawable/ic_repeat_white_24dp"
                 tools:ignore="MissingPrefix" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/player_shuffle_button"
                 android:layout_width="72dp"
                 android:layout_height="72dp"
