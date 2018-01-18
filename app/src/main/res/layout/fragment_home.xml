@@ -86,10 +86,10 @@
 
                     </LinearLayout>
 
-                    <com.jetradarmobile.snowfall.SnowfallView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:snowflakesNum="60" />
+                    <!-- <com.jetradarmobile.snowfall.SnowfallView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         app:snowflakesNum="60" />-->
 
                 </FrameLayout>
 
