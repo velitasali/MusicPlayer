@@ -173,13 +173,13 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
     @Override
     public void onServiceConnected() {
         updateIsFavorite();
-        updateLyrics();
+        //updateLyrics();
     }
 
     @Override
     public void onPlayingMetaChanged() {
         updateIsFavorite();
-        updateLyrics();
+        //updateLyrics();
     }
 
     @Override
