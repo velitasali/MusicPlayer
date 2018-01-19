@@ -26,12 +26,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.loaders.AlbumLoader;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.rest.LastFMRestClient;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.loaders.AlbumLoader;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.rest.LastFMRestClient;
 
 import org.jaudiotagger.tag.FieldKey;
 

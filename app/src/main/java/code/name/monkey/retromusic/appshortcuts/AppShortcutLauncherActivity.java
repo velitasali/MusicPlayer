@@ -4,17 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.ShuffleAllPlaylist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
+import code.name.monkey.backend.model.smartplaylist.MyTopTracksPlaylist;
+import code.name.monkey.backend.model.smartplaylist.ShuffleAllPlaylist;
 
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.LastAddedShortcutType;
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.ShuffleAllShortcutType;
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.TopTracksShortcutType;
 import code.name.monkey.retromusic.service.MusicService;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
+import static code.name.monkey.backend.RetroConstants.*;
 
 /**
  * @author Adrian Campos

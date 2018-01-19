@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.DrawableGradient;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.DrawableGradient;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -131,9 +131,9 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onColorChanged(int color) {
+        lastColor = color;
         mFlatPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
-        lastColor = color;
 
 
         boolean isLight = ColorUtil.isColorLight(color);

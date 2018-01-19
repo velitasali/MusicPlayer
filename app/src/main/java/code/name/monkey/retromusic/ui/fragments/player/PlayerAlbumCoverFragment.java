@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.retro.musicplayer.backend.transform.ParallaxPagerTransformer;
+import code.name.monkey.backend.transform.ParallaxPagerTransformer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +22,9 @@ import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment
-        implements ViewPager.OnPageChangeListener {
+public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
+        ViewPager.OnPageChangeListener {
+
     public static final String TAG = PlayerAlbumCoverFragment.class.getSimpleName();
     public static final long VISIBILITY_ANIM_DURATION = 300;
     @BindView(R.id.player_album_cover_viewpager)

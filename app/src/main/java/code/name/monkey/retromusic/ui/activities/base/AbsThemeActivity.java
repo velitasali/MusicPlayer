@@ -8,20 +8,16 @@ import android.support.annotation.ColorInt;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 
-import com.kabouzeid.appthemehelper.ATH;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialDialogsUtil;
+import code.name.monkey.backend.util.Util;
 
+import code.name.monkey.appthemehelper.ATH;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.common.ATHToolbarActivity;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialDialogsUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.Util;
-
-/**
- * @author Karim Abou Zeid (kabouzeid)
- */
 
 public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
@@ -29,10 +25,17 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
 
     public void toggleFullscreenMode(boolean isFullscreen) {
         View decorView = getWindow().getDecorView();
+        int systemUiVisibility = decorView.getSystemUiVisibility();
         if (isFullscreen) {
-            int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            decorView.setSystemUiVisibility(uiOptions);
+            systemUiVisibility = systemUiVisibility |
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         }
+        decorView.setSystemUiVisibility(systemUiVisibility);
     }
 
     public void hideStatusBar() {
@@ -139,7 +142,7 @@ public abstract class AbsThemeActivity extends ATHToolbarActivity {
         } else {
             ATH.setNavigationbarColor(this, Color.BLACK);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && ColorUtil.isColorLight(ThemeStore.navigationBarColor(this))) {
+        if (Util.isOreo() && ColorUtil.isColorLight(ThemeStore.navigationBarColor(this))) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
         }
     }

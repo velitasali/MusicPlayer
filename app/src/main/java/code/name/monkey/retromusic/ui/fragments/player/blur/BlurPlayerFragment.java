@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,8 +103,9 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
         lastColor = color;
+        getCallbacks().onPaletteColorChanged();
+
     }
 
     @Override

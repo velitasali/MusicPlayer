@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

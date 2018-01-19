@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.CategoryInfo;
+import code.name.monkey.backend.model.CategoryInfo;
 
 import java.util.ArrayList;
 

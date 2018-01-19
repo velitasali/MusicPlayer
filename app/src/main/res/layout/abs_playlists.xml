@@ -20,7 +20,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+            <code.name.monkey.backend.views.WidthFitSquareLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -33,14 +33,15 @@
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_access_time_white_24dp"
                     app:tint="@color/md_white_1000" />
-            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/history"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -51,7 +52,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+            <code.name.monkey.backend.views.WidthFitSquareLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -64,14 +65,15 @@
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_library_add_white_24dp"
                     app:tint="@color/md_white_1000" />
-            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/last_added"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -82,7 +84,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+            <code.name.monkey.backend.views.WidthFitSquareLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -95,14 +97,15 @@
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_trending_up_white_24dp"
                     app:tint="@color/md_white_1000" />
-            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/my_top_tracks"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -113,7 +116,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+            <code.name.monkey.backend.views.WidthFitSquareLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -126,14 +129,47 @@
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_shuffle_white_24dp"
                     app:tint="@color/md_white_1000" />
-            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/shuffle"
-                android:textColor="?android:attr/textColorPrimary" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/timer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <code.name.monkey.backend.views.WidthFitSquareLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/abs_timer"
+                    android:elevation="2dp"
+                    android:padding="16dp"
+                    app:srcCompat="@drawable/ic_timer_white_24dp"
+                    app:tint="@color/md_white_1000" />
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/action_sleep_timer"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </LinearLayout>

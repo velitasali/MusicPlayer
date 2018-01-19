@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -115,8 +115,8 @@ public class HolidayPlayerFragment extends AbsPlayerFragment implements PlayerAl
     @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
         lastColor = color;
+        getCallbacks().onPaletteColorChanged();
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
 
     }

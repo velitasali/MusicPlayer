@@ -33,11 +33,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.loaders.AlbumLoader;
-import com.retro.musicplayer.backend.loaders.ArtistLoader;
-import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.loaders.AlbumLoader;
+import code.name.monkey.backend.loaders.ArtistLoader;
+import code.name.monkey.backend.loaders.PlaylistSongsLoader;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.util.Util;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -64,7 +65,6 @@ import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFrag
 import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
 import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.Util;
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -74,8 +74,7 @@ import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION;
 import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION_IN_TRACK;
 import static code.name.monkey.retromusic.service.MusicService.SAVED_REPEAT_MODE;
 import static code.name.monkey.retromusic.service.MusicService.SAVED_SHUFFLE_MODE;
-import static code.name.monkey.retromusic.service.MusicService.SHUFFLE_MODE_NONE;
-import static com.retro.musicplayer.backend.RetroConstants.USER_PROFILE;
+import static code.name.monkey.backend.RetroConstants.USER_PROFILE;
 
 
 public class MainActivity extends AbsSlidingMusicPanelActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -154,7 +153,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
         }
 
         if (savedInstanceState == null) {
-            setMusicChooser(PreferenceUtil.getInstance(this).getLastMusicChooser());
+            setMusicChooser(HOME);
         } else {
             restoreCurrentFragment();
         }
@@ -184,17 +183,16 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
     }
 
     private void setMusicChooser(int key) {
-        PreferenceUtil.getInstance(this).setLastMusicChooser(key);
         switch (key) {
-            case HOME:
-                setCurrentFragment(HomeFragment.newInstance(), false);
-                break;
             case FOLDERS:
                 setCurrentFragment(FoldersFragment.newInstance(this), false);
                 break;
             case LIBRARY:
-            default:
                 setCurrentFragment(LibraryFragment.newInstance(), false);
+                break;
+            default:
+            case HOME:
+                setCurrentFragment(HomeFragment.newInstance(), false);
                 break;
         }
     }

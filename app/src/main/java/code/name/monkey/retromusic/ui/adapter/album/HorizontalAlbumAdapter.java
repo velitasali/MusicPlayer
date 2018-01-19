@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.model.Album;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.model.Album;
 
 import java.util.ArrayList;
 

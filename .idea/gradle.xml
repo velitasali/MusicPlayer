@@ -9,7 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/backend" />
+            <option value="$PROJECT_DIR$/appthemehelper" />
+            <option value="$PROJECT_DIR$/back-end" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

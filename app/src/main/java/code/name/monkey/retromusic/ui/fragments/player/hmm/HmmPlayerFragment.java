@@ -15,9 +15,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.internal.MDTintHelper;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -197,8 +197,8 @@ public class HmmPlayerFragment extends AbsPlayerFragment implements
 
     @Override
     public void onColorChanged(int color) {
-        getCallbacks().onPaletteColorChanged();
         mLastColor = color;
+        getCallbacks().onPaletteColorChanged();
         mHmmPlaybackControlsFragment.setDark(color);
         setProgressBarColor(color);
 

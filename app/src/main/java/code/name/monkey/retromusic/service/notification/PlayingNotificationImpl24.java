@@ -16,8 +16,8 @@ import android.text.TextUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.retro.musicplayer.backend.RetroConstants;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.RetroConstants;
+import code.name.monkey.backend.model.Song;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;
@@ -28,9 +28,9 @@ import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
+import static code.name.monkey.backend.RetroConstants.ACTION_REWIND;
+import static code.name.monkey.backend.RetroConstants.ACTION_SKIP;
+import static code.name.monkey.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

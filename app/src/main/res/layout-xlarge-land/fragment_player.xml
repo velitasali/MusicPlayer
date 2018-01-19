@@ -20,7 +20,7 @@
         android:layout_gravity="center_horizontal"
         android:orientation="vertical">
 
-        <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+        <code.name.monkey.backend.views.WidthFitSquareLayout
             android:id="@+id/album_cover_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+        </code.name.monkey.backend.views.WidthFitSquareLayout>
 
         <fragment
             android:id="@+id/playback_controls_fragment"

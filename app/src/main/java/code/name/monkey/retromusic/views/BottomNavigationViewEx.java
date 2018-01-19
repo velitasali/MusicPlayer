@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;

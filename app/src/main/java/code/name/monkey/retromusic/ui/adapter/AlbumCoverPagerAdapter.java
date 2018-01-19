@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.retro.musicplayer.backend.misc.CustomFragmentStatePagerAdapter;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.misc.CustomFragmentStatePagerAdapter;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

@@ -28,7 +28,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.retro.musicplayer.backend.model.Playlist;
+import code.name.monkey.backend.model.Playlist;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;

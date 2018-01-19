@@ -3,7 +3,7 @@ package code.name.monkey.retromusic.preferences;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEDialogPreference;
+import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEDialogPreference;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

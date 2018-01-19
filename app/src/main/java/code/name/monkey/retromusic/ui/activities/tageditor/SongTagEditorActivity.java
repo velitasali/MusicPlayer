@@ -17,16 +17,16 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.TintHelper;
-import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
-import com.retro.musicplayer.backend.loaders.SongLoader;
-import com.retro.musicplayer.backend.rest.LastFMRestClient;
-import com.retro.musicplayer.backend.rest.model.LastFmTrack.Track;
-import com.retro.musicplayer.backend.rest.model.LastFmTrack.Track.Album;
-import com.retro.musicplayer.backend.rest.model.LastFmTrack.Track.Album.Attr;
-import com.retro.musicplayer.backend.rest.model.LastFmTrack.Track.Toptags;
-import com.retro.musicplayer.backend.rest.model.LastFmTrack.Track.Wiki;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.rest.LastFMRestClient;
+import code.name.monkey.backend.rest.model.LastFmTrack.Track;
+import code.name.monkey.backend.rest.model.LastFmTrack.Track.Album;
+import code.name.monkey.backend.rest.model.LastFmTrack.Track.Album.Attr;
+import code.name.monkey.backend.rest.model.LastFmTrack.Track.Toptags;
+import code.name.monkey.backend.rest.model.LastFmTrack.Track.Wiki;
 
 import org.jaudiotagger.tag.FieldKey;
 

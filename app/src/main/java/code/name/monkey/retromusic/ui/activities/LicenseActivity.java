@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

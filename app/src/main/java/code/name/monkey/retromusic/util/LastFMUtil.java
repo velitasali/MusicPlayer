@@ -1,7 +1,7 @@
 package code.name.monkey.retromusic.util;
 
-import com.retro.musicplayer.backend.rest.model.LastFmAlbum.Album.Image;
-import com.retro.musicplayer.backend.rest.model.LastFmArtist;
+import code.name.monkey.backend.rest.model.LastFmAlbum.Album.Image;
+import code.name.monkey.backend.rest.model.LastFmArtist;
 
 import java.util.HashMap;
 import java.util.List;

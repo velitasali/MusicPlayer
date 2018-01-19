@@ -17,8 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.model.Song;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -28,9 +28,9 @@ import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.Util;
 
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
+import static code.name.monkey.backend.RetroConstants.ACTION_REWIND;
+import static code.name.monkey.backend.RetroConstants.ACTION_SKIP;
+import static code.name.monkey.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
 
 public class AppWidgetCard extends BaseAppWidget {
     public static final String NAME = "app_widget_card";

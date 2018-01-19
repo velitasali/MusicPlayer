@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.retro.musicplayer.backend.views.LyricView
+                <code.name.monkey.backend.views.LyricView
                     android:id="@+id/lyrics"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />

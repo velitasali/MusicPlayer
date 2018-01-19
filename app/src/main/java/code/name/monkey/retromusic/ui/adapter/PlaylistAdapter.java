@@ -14,13 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
-import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.model.smartplaylist.AbsSmartPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.loaders.PlaylistSongsLoader;
+import code.name.monkey.backend.model.AbsCustomPlaylist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.smartplaylist.AbsSmartPlaylist;
+import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
 
 import java.util.ArrayList;
 import java.util.List;

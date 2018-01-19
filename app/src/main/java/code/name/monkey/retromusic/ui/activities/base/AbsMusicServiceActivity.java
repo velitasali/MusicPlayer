@@ -12,7 +12,7 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.retro.musicplayer.backend.interfaces.MusicServiceEventListener;
+import code.name.monkey.backend.interfaces.MusicServiceEventListener;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 
-import static com.retro.musicplayer.backend.RetroConstants.MEDIA_STORE_CHANGED;
-import static com.retro.musicplayer.backend.RetroConstants.META_CHANGED;
-import static com.retro.musicplayer.backend.RetroConstants.PLAY_STATE_CHANGED;
-import static com.retro.musicplayer.backend.RetroConstants.QUEUE_CHANGED;
-import static com.retro.musicplayer.backend.RetroConstants.REPEAT_MODE_CHANGED;
-import static com.retro.musicplayer.backend.RetroConstants.SHUFFLE_MODE_CHANGED;
+import static code.name.monkey.backend.RetroConstants.MEDIA_STORE_CHANGED;
+import static code.name.monkey.backend.RetroConstants.META_CHANGED;
+import static code.name.monkey.backend.RetroConstants.PLAY_STATE_CHANGED;
+import static code.name.monkey.backend.RetroConstants.QUEUE_CHANGED;
+import static code.name.monkey.backend.RetroConstants.REPEAT_MODE_CHANGED;
+import static code.name.monkey.backend.RetroConstants.SHUFFLE_MODE_CHANGED;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

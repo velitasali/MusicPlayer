@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="Advanced">
+    <code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory android:title="Advanced">
 
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreference
+        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreference
             android:key="day_dream"
             android:summary="@string/pref_summary_day_dream"
             android:title="@string/pref_title_day_dream" />
 
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATESwitchPreference
             android:defaultValue="false"
             android:key="toggle_headset"
             android:summary="@string/pref_summary_toggle_headset"
             android:title="@string/pref_title_toggle_toggle_headset" />
 
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATESwitchPreference
             android:defaultValue="false"
             android:key="language_en"
             android:summary="@string/pref_summary_language_en"
             android:title="@string/pref_title_toggle_language_en" />
 
 
-        <com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreference
+        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreference
             android:key="external_storage_access"
             android:title="@string/pref_title_external_storage_access" />
-    </com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
+    </code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

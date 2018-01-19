@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;

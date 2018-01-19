@@ -12,9 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.retro.musicplayer.backend.interfaces.PaletteColorHolder;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.util.LyricUtil;
+import code.name.monkey.backend.interfaces.PaletteColorHolder;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.util.LyricUtil;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
@@ -37,7 +37,7 @@ import code.name.monkey.retromusic.util.Util;
 
 public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implements Toolbar.OnMenuItemClickListener, PaletteColorHolder {
     public static final String TAG = AbsPlayerFragment.class.getSimpleName();
-    private static boolean isToolbarShown = true;
+    private boolean isToolbarShown = true;
     private Callbacks callbacks;
     private AsyncTask updateIsFavoriteTask;
     private AsyncTask updateLyricsAsyncTask;
@@ -124,9 +124,7 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
 
     protected void showToolbar(@Nullable final View toolbar) {
         if (toolbar == null) return;
-
         setToolbarShown(true);
-
         toolbar.setVisibility(View.VISIBLE);
         toolbar.animate().alpha(1f).setDuration(PlayerAlbumCoverFragment.VISIBILITY_ANIM_DURATION);
     }

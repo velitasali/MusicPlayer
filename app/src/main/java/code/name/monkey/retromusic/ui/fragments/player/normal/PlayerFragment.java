@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.DrawableGradient;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.DrawableGradient;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -114,8 +114,8 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
         lastColor = color;
+        getCallbacks().onPaletteColorChanged();
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
@@ -183,13 +183,13 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onServiceConnected() {
         updateIsFavorite();
-        updateLyrics();
+        //updateLyrics();
     }
 
     @Override
     public void onPlayingMetaChanged() {
         updateIsFavorite();
-        updateLyrics();
+        //updateLyrics();
     }
 
     @Override

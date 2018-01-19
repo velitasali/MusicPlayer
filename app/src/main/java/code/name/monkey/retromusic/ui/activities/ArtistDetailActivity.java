@@ -24,16 +24,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.helper.SortOrder.ArtistSongSortOrder;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.mvp.contract.ArtistDetailContract;
-import com.retro.musicplayer.backend.mvp.presenter.ArtistDetailsPresenter;
-import com.retro.musicplayer.backend.rest.LastFMRestClient;
-import com.retro.musicplayer.backend.rest.model.LastFmArtist;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.helper.SortOrder.ArtistSongSortOrder;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.mvp.contract.ArtistDetailContract;
+import code.name.monkey.backend.mvp.presenter.ArtistDetailsPresenter;
+import code.name.monkey.backend.rest.LastFMRestClient;
+import code.name.monkey.backend.rest.model.LastFmArtist;
 
 import java.util.ArrayList;
 import java.util.Locale;

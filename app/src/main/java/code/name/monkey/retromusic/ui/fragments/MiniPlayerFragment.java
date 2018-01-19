@@ -1,6 +1,7 @@
 package code.name.monkey.retromusic.ui.fragments;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
@@ -17,8 +18,9 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.views.PlayPauseDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +31,6 @@ import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.PlayPauseButtonOnClickHandler;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import com.retro.musicplayer.backend.views.PlayPauseDrawable;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
@@ -140,6 +141,10 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
         }
     }
 
+    public void setColor(int playerFragmentColor) {
+        getView().setBackgroundColor(playerFragmentColor);
+    }
+
     public static class FlingPlayBackController implements View.OnTouchListener {
         GestureDetector flingPlayBackController;
 
@@ -161,6 +166,7 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
             });
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             return flingPlayBackController.onTouchEvent(event);

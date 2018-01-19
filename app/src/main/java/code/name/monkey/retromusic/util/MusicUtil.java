@@ -20,13 +20,13 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.loaders.PlaylistLoader;
-import com.retro.musicplayer.backend.loaders.SongLoader;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.model.lyrics.AbsSynchronizedLyrics;
-import com.retro.musicplayer.backend.util.FileUtil;
+import code.name.monkey.backend.loaders.PlaylistLoader;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.lyrics.AbsSynchronizedLyrics;
+import code.name.monkey.backend.util.FileUtil;
 
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;

@@ -18,11 +18,11 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.views.PlayPauseDrawable;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.views.PlayPauseDrawable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -19,11 +19,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.interfaces.LoaderIds;
-import com.retro.musicplayer.backend.mvp.contract.SearchContract;
-import com.retro.musicplayer.backend.mvp.presenter.SearchPresenter;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.interfaces.LoaderIds;
+import code.name.monkey.backend.mvp.contract.SearchContract;
+import code.name.monkey.backend.mvp.presenter.SearchPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;

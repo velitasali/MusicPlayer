@@ -19,10 +19,10 @@ import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
 import android.view.View;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
 
 import java.util.Locale;
 
+import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.retromusic.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 

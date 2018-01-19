@@ -10,7 +10,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.util.PreferenceUtil;

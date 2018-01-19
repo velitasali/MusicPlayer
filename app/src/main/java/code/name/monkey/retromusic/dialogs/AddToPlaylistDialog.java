@@ -7,9 +7,9 @@ import android.support.v4.app.DialogFragment;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.loaders.PlaylistLoader;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.loaders.PlaylistLoader;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

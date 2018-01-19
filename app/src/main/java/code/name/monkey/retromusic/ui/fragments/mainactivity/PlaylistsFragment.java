@@ -8,10 +8,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.mvp.contract.PlaylistContract;
-import com.retro.musicplayer.backend.mvp.presenter.PlaylistPresenter;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.mvp.contract.PlaylistContract;
+import code.name.monkey.backend.mvp.presenter.PlaylistPresenter;
 
 import java.util.ArrayList;
 

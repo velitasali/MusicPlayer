@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
-    <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+    <code.name.monkey.backend.views.WidthFitSquareLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_player_album_cover" />
 
-    </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+    </code.name.monkey.backend.views.WidthFitSquareLayout>
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -47,7 +47,7 @@
                 android:orientation="horizontal"
                 android:padding="16dp">
 
-                <com.retro.musicplayer.backend.VerticalTextView
+                <code.name.monkey.backend.VerticalTextView
                     android:id="@+id/title"
                     fontPath="@string/sans_bold"
                     android:layout_width="wrap_content"
@@ -60,7 +60,7 @@
                     tools:ignore="MissingPrefix"
                     tools:text="Song title" />
 
-                <com.retro.musicplayer.backend.VerticalTextView
+                <code.name.monkey.backend.VerticalTextView
                     android:id="@+id/text"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -98,7 +98,7 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <com.retro.musicplayer.backend.VerticalTextView
+            <code.name.monkey.backend.VerticalTextView
                 android:id="@+id/player_song_total_time"
                 fontPath="@string/sans_bold"
                 android:layout_width="wrap_content"

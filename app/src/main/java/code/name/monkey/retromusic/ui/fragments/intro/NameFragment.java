@@ -35,7 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
-import static com.retro.musicplayer.backend.RetroConstants.USER_PROFILE;
+import static code.name.monkey.backend.RetroConstants.USER_PROFILE;
 
 /**
  * @author Hemanth S (h4h13).

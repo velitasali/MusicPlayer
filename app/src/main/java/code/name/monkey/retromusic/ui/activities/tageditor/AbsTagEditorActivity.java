@@ -24,9 +24,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.TintHelper;
-import com.retro.musicplayer.backend.misc.DialogAsyncTask;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.misc.DialogAsyncTask;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;

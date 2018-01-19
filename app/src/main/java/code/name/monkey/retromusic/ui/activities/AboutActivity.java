@@ -19,7 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,22 +33,22 @@ import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.retro.musicplayer.backend.RetroConstants.ALEKSANDAR_TESIC_GOOGLE_PLUS;
-import static com.retro.musicplayer.backend.RetroConstants.FLATICON_LINK;
-import static com.retro.musicplayer.backend.RetroConstants.GABRIEL_ZEGARRA_GOOGLE_PLUS;
-import static com.retro.musicplayer.backend.RetroConstants.GITHUB_PROJECT;
-import static com.retro.musicplayer.backend.RetroConstants.GOOGLE_PLUS_COMMUNITY;
-import static com.retro.musicplayer.backend.RetroConstants.GOOGLE_PLUS_PROFILE;
-import static com.retro.musicplayer.backend.RetroConstants.HEMANTH_TELEGRAM;
-import static com.retro.musicplayer.backend.RetroConstants.KARIM_GITHUB;
-import static com.retro.musicplayer.backend.RetroConstants.KARIM_GOOGLE_PLUS;
-import static com.retro.musicplayer.backend.RetroConstants.LUIS_GOMZ_GOOGLE_PLUS;
-import static com.retro.musicplayer.backend.RetroConstants.LUIS_GOMZ_TWITTER;
-import static com.retro.musicplayer.backend.RetroConstants.MATERIAL_DESIGN_ICONS;
-import static com.retro.musicplayer.backend.RetroConstants.MATERIAL_TECHJUICE_IMAGES;
-import static com.retro.musicplayer.backend.RetroConstants.RATE_ON_GOOGLE_PLAY;
-import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANNEL;
-import static com.retro.musicplayer.backend.RetroConstants.TRANSLATE;
+import static code.name.monkey.backend.RetroConstants.ALEKSANDAR_TESIC_GOOGLE_PLUS;
+import static code.name.monkey.backend.RetroConstants.FLATICON_LINK;
+import static code.name.monkey.backend.RetroConstants.GABRIEL_ZEGARRA_GOOGLE_PLUS;
+import static code.name.monkey.backend.RetroConstants.GITHUB_PROJECT;
+import static code.name.monkey.backend.RetroConstants.GOOGLE_PLUS_COMMUNITY;
+import static code.name.monkey.backend.RetroConstants.GOOGLE_PLUS_PROFILE;
+import static code.name.monkey.backend.RetroConstants.HEMANTH_TELEGRAM;
+import static code.name.monkey.backend.RetroConstants.KARIM_GITHUB;
+import static code.name.monkey.backend.RetroConstants.KARIM_GOOGLE_PLUS;
+import static code.name.monkey.backend.RetroConstants.LUIS_GOMZ_GOOGLE_PLUS;
+import static code.name.monkey.backend.RetroConstants.LUIS_GOMZ_TWITTER;
+import static code.name.monkey.backend.RetroConstants.MATERIAL_DESIGN_ICONS;
+import static code.name.monkey.backend.RetroConstants.MATERIAL_TECHJUICE_IMAGES;
+import static code.name.monkey.backend.RetroConstants.RATE_ON_GOOGLE_PLAY;
+import static code.name.monkey.backend.RetroConstants.TELEGRAM_CHANNEL;
+import static code.name.monkey.backend.RetroConstants.TRANSLATE;
 
 /**
  * @author Hemanth S (h4h13)

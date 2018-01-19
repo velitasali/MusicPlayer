@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.model.Genre;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.model.Genre;
 
 import java.util.ArrayList;
 import java.util.Locale;

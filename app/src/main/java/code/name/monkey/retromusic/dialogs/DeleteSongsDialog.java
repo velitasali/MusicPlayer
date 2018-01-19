@@ -9,7 +9,7 @@ import android.text.Html;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ import android.text.Html;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 
@@ -104,8 +104,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.misc.DialogAsyncTask;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.misc.DialogAsyncTask;
+import code.name.monkey.backend.model.Song;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

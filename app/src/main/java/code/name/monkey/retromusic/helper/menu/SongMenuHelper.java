@@ -8,8 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
-import com.retro.musicplayer.backend.interfaces.PaletteColorHolder;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.interfaces.PaletteColorHolder;
+import code.name.monkey.backend.model.Song;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;

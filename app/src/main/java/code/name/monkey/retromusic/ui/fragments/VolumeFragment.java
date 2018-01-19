@@ -16,11 +16,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.TintHelper;
-import com.retro.musicplayer.backend.volume.AudioVolumeObserver;
-import com.retro.musicplayer.backend.volume.OnAudioVolumeChangedListener;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.volume.AudioVolumeObserver;
+import code.name.monkey.backend.volume.OnAudioVolumeChangedListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

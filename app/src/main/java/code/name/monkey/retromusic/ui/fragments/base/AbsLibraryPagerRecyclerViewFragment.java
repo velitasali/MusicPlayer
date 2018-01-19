@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import butterknife.BindView;

@@ -29,15 +29,15 @@ import android.widget.Toast;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.common.ATHToolbarActivity;
-import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
-import com.retro.musicplayer.backend.interfaces.LoaderIds;
-import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.misc.DialogAsyncTask;
-import com.retro.musicplayer.backend.misc.WrappedAsyncTaskLoader;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.util.FileUtil;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.common.ATHToolbarActivity;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.interfaces.LoaderIds;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.misc.DialogAsyncTask;
+import code.name.monkey.backend.misc.WrappedAsyncTaskLoader;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.util.FileUtil;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.io.File;
@@ -196,13 +196,30 @@ public class FoldersFragment extends AbsMainActivityFragment implements
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        doChanges();
+    }
+
+    private void doChanges() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
+                getMainActivity().setNavigationbarColorAuto();
+                getMainActivity().setTaskDescriptionColorAuto();
+
+                getMainActivity().setBottomBarVisibility(View.VISIBLE);
+                getMainActivity().hideStatusBar();
+            }
+        };
+        runnable.run();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setStatusbarColorAuto(view);
-        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
-        getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setTaskDescriptionColorAuto();
-        getMainActivity().setBottomBarVisibility(View.GONE);
-        getMainActivity().hideStatusBar();
 
         setUpAppbarColor();
         setUpToolbar();
@@ -215,15 +232,13 @@ public class FoldersFragment extends AbsMainActivityFragment implements
         int primaryColor = ThemeStore.primaryColor(getActivity());
         appbar.setBackgroundColor(primaryColor);
         toolbar.setBackgroundColor(primaryColor);
-        breadCrumbs.setBackgroundColor(primaryColor);
+        //breadCrumbs.setBackgroundColor(primaryColor);
         breadCrumbs.setActivatedContentColor(ToolbarContentTintHelper.toolbarTitleColor(getActivity(), primaryColor));
         breadCrumbs.setDeactivatedContentColor(ToolbarContentTintHelper.toolbarSubtitleColor(getActivity(), primaryColor));
     }
 
     private void setUpToolbar() {
-        //toolbar.setTitle(R.string.folders);
         toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-        //toolbar.setTitleTextColor(ThemeStore.accentColor(getContext()));
         getActivity().setTitle(R.string.folders);
         getMainActivity().setSupportActionBar(toolbar);
     }

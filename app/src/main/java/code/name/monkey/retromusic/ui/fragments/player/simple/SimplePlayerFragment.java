@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,7 +56,7 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
         View view = inflater.inflate(R.layout.fragment_simple_player, container, false);
         mUnbinder = ButterKnife.bind(this, view);
         /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode() ) {
+        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
             view.findViewById(R.id.status_bar).setVisibility(View.GONE);
         }
         return view;
@@ -108,8 +108,8 @@ public class SimplePlayerFragment extends AbsPlayerFragment implements PlayerAlb
 
     @Override
     public void onColorChanged(int color) {
-        getCallbacks().onPaletteColorChanged();
         mLastColor = color;
+        getCallbacks().onPaletteColorChanged();
         mSimplePlaybackControlsFragment.setDark(color);
     }
 

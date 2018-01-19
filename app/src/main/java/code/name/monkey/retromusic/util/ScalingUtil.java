@@ -63,9 +63,8 @@ public class ScalingUtil {
         options.inJustDecodeBounds = false;
         options.inSampleSize = calculateSampleSize(options.outWidth, options.outHeight, dstWidth,
                 dstHeight, scalingLogic);
-        Bitmap unscaledBitmap = BitmapFactory.decodeResource(res, resId, options);
 
-        return unscaledBitmap;
+        return BitmapFactory.decodeResource(res, resId, options);
     }
 
     /**
@@ -77,8 +76,8 @@ public class ScalingUtil {
      * @param scalingLogic Logic to use to avoid image stretching
      * @return New scaled bitmap object
      */
-    public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight,
-            ScalingLogic scalingLogic) {
+    static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight,
+                                     ScalingLogic scalingLogic) {
         Rect srcRect = calculateSrcRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(),
                 dstWidth, dstHeight, scalingLogic);
         Rect dstRect = calculateDstRect(unscaledBitmap.getWidth(), unscaledBitmap.getHeight(),
@@ -119,8 +118,8 @@ public class ScalingUtil {
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal down scaling sample size for decoding
      */
-    public static int calculateSampleSize(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
-            ScalingLogic scalingLogic) {
+    private static int calculateSampleSize(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
+                                           ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.FIT) {
             final float srcAspect = (float)srcWidth / (float)srcHeight;
             final float dstAspect = (float)dstWidth / (float)dstHeight;
@@ -152,8 +151,8 @@ public class ScalingUtil {
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal source rectangle
      */
-    public static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
-            ScalingLogic scalingLogic) {
+    private static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
+                                         ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.CROP) {
             final float srcAspect = (float)srcWidth / (float)srcHeight;
             final float dstAspect = (float)dstWidth / (float)dstHeight;

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">backend</string>
+    <string name="history">History</string>
+    <string name="songs">Songs</string>
+    <string name="artists">Artists</string>
+    <string name="albums">Albums</string>
+    <string name="last_added">Last added</string>
+    <string name="my_top_tracks">My top tracks</string>
+    <string name="action_shuffle_all">Shuffle all</string>
+    <string name="unknown_genre">Unknown genre</string>
+    <string name="recent_artists">Recent artists</string>
+    <string name="recent_albums">Recent albums</string>
+    <string name="top_artists">Top artists</string>
+    <string name="top_albums">Top albums</string>
+    <string name="playlists">Playlists</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="genres">Genres</string>
+</resources>

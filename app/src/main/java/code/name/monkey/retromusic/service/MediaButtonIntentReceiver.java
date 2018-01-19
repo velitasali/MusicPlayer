@@ -27,12 +27,12 @@ import android.view.KeyEvent;
 
 import code.name.monkey.retromusic.BuildConfig;
 
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_PAUSE;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_PLAY;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_REWIND;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_SKIP;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_STOP;
-import static com.retro.musicplayer.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
+import static code.name.monkey.backend.RetroConstants.ACTION_PAUSE;
+import static code.name.monkey.backend.RetroConstants.ACTION_PLAY;
+import static code.name.monkey.backend.RetroConstants.ACTION_REWIND;
+import static code.name.monkey.backend.RetroConstants.ACTION_SKIP;
+import static code.name.monkey.backend.RetroConstants.ACTION_STOP;
+import static code.name.monkey.backend.RetroConstants.ACTION_TOGGLE_PAUSE;
 
 /**
  * Used to control headset playback.

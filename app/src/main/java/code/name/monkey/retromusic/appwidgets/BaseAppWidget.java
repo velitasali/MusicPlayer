@@ -19,13 +19,13 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.widget.RemoteViews;
 
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import code.name.monkey.retromusic.R;
 
 import code.name.monkey.retromusic.service.MusicService;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
+import static code.name.monkey.backend.RetroConstants.*;
 
 public abstract class BaseAppWidget extends AppWidgetProvider {
     public static final String NAME = "app_widget";

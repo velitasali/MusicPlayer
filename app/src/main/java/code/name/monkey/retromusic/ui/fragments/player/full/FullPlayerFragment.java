@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,6 +107,7 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     public void onColorChanged(int color) {
         lastColor = color;
         mFullPlaybackControlsFragment.setDark(color);
+        getCallbacks().onPaletteColorChanged();
         //ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
     }
 

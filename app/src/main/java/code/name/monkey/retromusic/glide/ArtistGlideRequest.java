@@ -14,7 +14,7 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.target.Target;
-import com.retro.musicplayer.backend.model.Artist;
+import code.name.monkey.backend.model.Artist;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;

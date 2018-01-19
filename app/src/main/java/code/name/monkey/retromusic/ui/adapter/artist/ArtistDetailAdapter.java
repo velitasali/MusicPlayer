@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.retro.musicplayer.backend.model.Album;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

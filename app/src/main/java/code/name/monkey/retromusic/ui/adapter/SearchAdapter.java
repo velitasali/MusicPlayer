@@ -10,11 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.model.Album;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;

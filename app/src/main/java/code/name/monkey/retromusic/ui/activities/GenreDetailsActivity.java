@@ -20,13 +20,13 @@ import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import com.bumptech.glide.Glide;
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.model.Genre;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.mvp.contract.GenreDetailsContract;
-import com.retro.musicplayer.backend.mvp.presenter.GenreDetailsPresenter;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.model.Genre;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.mvp.contract.GenreDetailsContract;
+import code.name.monkey.backend.mvp.presenter.GenreDetailsPresenter;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;

@@ -26,8 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
-import com.retro.musicplayer.backend.model.Playlist;
+import code.name.monkey.backend.loaders.PlaylistSongsLoader;
+import code.name.monkey.backend.model.Playlist;
 
 import java.util.ArrayList;
 import java.util.List;

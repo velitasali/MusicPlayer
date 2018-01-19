@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
-import com.retro.musicplayer.backend.loaders.SongLoader;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

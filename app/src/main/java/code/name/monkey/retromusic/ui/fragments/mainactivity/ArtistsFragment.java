@@ -11,11 +11,11 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.helper.SortOrder.ArtistSortOrder;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.mvp.contract.ArtistContract;
-import com.retro.musicplayer.backend.mvp.presenter.ArtistPresenter;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.helper.SortOrder.ArtistSortOrder;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.mvp.contract.ArtistContract;
+import code.name.monkey.backend.mvp.presenter.ArtistPresenter;
 
 import java.util.ArrayList;
 

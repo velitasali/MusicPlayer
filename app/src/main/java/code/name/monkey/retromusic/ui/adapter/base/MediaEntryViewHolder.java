@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.retro.musicplayer.backend.shadowimageview.ShadowImageView;
+import code.name.monkey.backend.shadowimageview.ShadowImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

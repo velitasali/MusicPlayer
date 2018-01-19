@@ -6,8 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import code.name.monkey.backend.util.Util;
+
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.util.Util;
 
 
 /**
@@ -30,6 +31,8 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
         }
         return gridSize;
     }
+
+    protected abstract void setGridSize(int gridSize);
 
     public int getMaxGridSize() {
         if (isLandscape()) {
@@ -130,8 +133,6 @@ public abstract class AbsLibraryPagerRecyclerViewCustomGridSizeFragment<A extend
     protected abstract boolean loadUsePalette();
 
     protected abstract void setUsePalette(boolean usePalette);
-
-    protected abstract void setGridSize(int gridSize);
 
     protected int getMaxGridSizeForList() {
         if (isLandscape()) {

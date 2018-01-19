@@ -20,14 +20,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.kabouzeid.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.helper.SortOrder.AlbumSongSortOrder;
-import com.retro.musicplayer.backend.model.Album;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.mvp.contract.AlbumDetailsContract;
-import com.retro.musicplayer.backend.mvp.presenter.AlbumDetailsPresenter;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.helper.SortOrder.AlbumSongSortOrder;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.mvp.contract.AlbumDetailsContract;
+import code.name.monkey.backend.mvp.presenter.AlbumDetailsPresenter;
 
 import java.util.ArrayList;
 
@@ -48,10 +48,6 @@ import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
-
-/**
- * Created by hemanths on 20/08/17.
- */
 
 public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implements AlbumDetailsContract.AlbumDetailsView {
     public static final String EXTRA_ALBUM_ID = "extra_album_id";
@@ -108,7 +104,7 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
         setBottomBarVisibility(View.GONE);
 
-        ViewUtil.setStatusBarHeight(this, statusBar);
+        //ViewUtil.setStatusBarHeight(this, statusBar);
 
         setUpToolBar();
         supportPostponeEnterTransition();

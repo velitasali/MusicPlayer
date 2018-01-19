@@ -7,9 +7,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.retro.musicplayer.backend.swipebtn.SwipeButton;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.backend.swipebtn.SwipeButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

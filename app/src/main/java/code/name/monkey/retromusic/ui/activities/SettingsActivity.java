@@ -28,13 +28,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEColorPreference;
-import com.kabouzeid.appthemehelper.common.prefs.supportv7.ATEPreferenceFragmentCompat;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.TabLayoutUtil;
-import com.kabouzeid.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEColorPreference;
+import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceFragmentCompat;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.TabLayoutUtil;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 
 import java.util.Locale;
 
@@ -55,7 +55,7 @@ import code.name.monkey.retromusic.ui.adapter.SettingsPagerAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
-import static com.retro.musicplayer.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
+import static code.name.monkey.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
 public class SettingsActivity extends AbsBaseActivity implements ColorChooserDialog.ColorCallback {
     @BindView(R.id.toolbar)
@@ -189,7 +189,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
         @Override
         public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            getListView().setPadding(0, 0, 0, 0);
+            getListView().setPadding(0, 0,0 , 0);
             getListView().addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {

@@ -10,8 +10,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.model.Genre;
-import com.retro.musicplayer.backend.model.Playlist;
+import code.name.monkey.backend.model.Genre;
+import code.name.monkey.backend.model.Playlist;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <com.retro.musicplayer.backend.views.WidthFitSquareLayout
+            <code.name.monkey.backend.views.WidthFitSquareLayout
                 android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                     android:transitionName="@string/transition_album_art"
                     app:srcCompat="@drawable/ic_album_white_24dp" />
 
-            </com.retro.musicplayer.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.backend.views.WidthFitSquareLayout>
 
         </FrameLayout>
 

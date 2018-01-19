@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Song;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;

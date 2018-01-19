@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.loaders.PlaylistSongsLoader;
-import com.retro.musicplayer.backend.model.AbsCustomPlaylist;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.loaders.PlaylistSongsLoader;
+import code.name.monkey.backend.model.AbsCustomPlaylist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

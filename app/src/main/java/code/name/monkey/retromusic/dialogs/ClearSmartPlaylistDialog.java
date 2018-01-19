@@ -8,7 +8,7 @@ import android.text.Html;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.smartplaylist.AbsSmartPlaylist;
+import code.name.monkey.backend.model.smartplaylist.AbsSmartPlaylist;
 
 import code.name.monkey.retromusic.R;
 

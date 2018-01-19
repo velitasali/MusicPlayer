@@ -4,7 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;

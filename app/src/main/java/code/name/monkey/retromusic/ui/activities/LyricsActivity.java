@@ -19,20 +19,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.retro.musicplayer.backend.lyrics.ParseLyrics;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.model.lyrics.Lyrics;
-import com.retro.musicplayer.backend.providers.RepositoryImpl;
-import com.retro.musicplayer.backend.providers.interfaces.Repository;
-import com.retro.musicplayer.backend.util.LyricUtil;
-import com.retro.musicplayer.backend.views.LyricView;
+import code.name.monkey.backend.lyrics.ParseLyrics;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.lyrics.Lyrics;
+import code.name.monkey.backend.providers.RepositoryImpl;
+import code.name.monkey.backend.providers.interfaces.Repository;
+import code.name.monkey.backend.util.LyricUtil;
+import code.name.monkey.backend.views.LyricView;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;

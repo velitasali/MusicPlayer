@@ -20,10 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.afollestad.materialcab.MaterialCab;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.loaders.SongLoader;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.util.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,11 +41,9 @@ import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
 import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
-import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
 
 /**
  * Created by hemanths on 13/08/17.
@@ -94,21 +93,39 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        doChanges();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(8);
         setStatusbarColorAuto(view);
-        getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setTaskDescriptionColorAuto();
-        getMainActivity().setBottomBarVisibility(View.VISIBLE);
-        getMainActivity().hideStatusBar();
+
 
         setupToolbar();
         if (savedInstanceState == null)
             setLastSelectedFragment();
     }
 
+    private void doChanges() {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                getMainActivity().setNavigationbarColorAuto();
+                getMainActivity().setTaskDescriptionColorAuto();
+
+                getMainActivity().setBottomBarVisibility(View.VISIBLE);
+                getMainActivity().hideStatusBar();
+            }
+        };
+        runnable.run();
+    }
+
     private void setLastSelectedFragment() {
+        //noinspection ConstantConditions
         int tabId = PreferenceUtil.getInstance(getContext()).getLastPage();
         if (tabId != 0) {
             getMainActivity().getBottomNavigationView().setSelectedItemId(tabId);
@@ -119,6 +136,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     }
 
     private void setupToolbar() {
+        //noinspection ConstantConditions
         int primaryColor = ThemeStore.primaryColor(getActivity());
         mAppbar.setBackgroundColor(primaryColor);
         mToolbar.setBackgroundColor(primaryColor);
@@ -128,7 +146,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         getMainActivity().setSupportActionBar(mToolbar);
 
     }
-
 
     public Fragment getCurrentFragment() {
         if (mFragmentManager == null) {
@@ -141,14 +158,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     public void onDestroyView() {
         super.onDestroyView();
         mUnBinder.unbind();
-    }
-
-    private boolean isPlaylistPage() {
-        if (mFragmentManager == null) {
-            return false;
-        }
-        Fragment fragment = mFragmentManager.findFragmentByTag(TAG);
-        return fragment == new PlaylistsFragment();
     }
 
     @Override
@@ -175,6 +184,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     @Override
     public MaterialCab openCab(int menuRes, MaterialCab.Callback callback) {
         if (cab != null && cab.isActive()) cab.finish();
+        //noinspection ConstantConditions
         cab = new MaterialCab(getMainActivity(), R.id.cab_stub)
                 .setMenu(menuRes)
                 .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
@@ -188,9 +198,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
-        if (isPlaylistPage()) {
-            menu.add(0, R.id.action_new_playlist, 0, R.string.new_playlist_title);
-        }
+
         Fragment currentFragment = getCurrentFragment();
         if (currentFragment instanceof AbsLibraryPagerRecyclerViewCustomGridSizeFragment && currentFragment.isAdded()) {
             AbsLibraryPagerRecyclerViewCustomGridSizeFragment absLibraryRecyclerViewCustomGridSizeFragment = (AbsLibraryPagerRecyclerViewCustomGridSizeFragment) currentFragment;
@@ -215,6 +223,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         new Handler().postDelayed(() -> {
             Activity activity = getActivity();
             if (activity == null) return;
+            //noinspection ConstantConditions
             ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
         }, 1);
     }

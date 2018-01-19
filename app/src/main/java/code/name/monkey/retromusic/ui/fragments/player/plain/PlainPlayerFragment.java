@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -139,8 +139,8 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     @Override
     public void onColorChanged(int color) {
         mPlainPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
         mLastColor = color;
+        getCallbacks().onPaletteColorChanged();
     }
 
     @Override

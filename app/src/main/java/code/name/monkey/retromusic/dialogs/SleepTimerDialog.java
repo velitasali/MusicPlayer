@@ -25,7 +25,7 @@ import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
-import static com.retro.musicplayer.backend.RetroConstants.*;
+import static code.name.monkey.backend.RetroConstants.*;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */

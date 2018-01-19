@@ -24,8 +24,8 @@ import com.afollestad.materialdialogs.internal.MDTintHelper;
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.SkuDetails;
 import com.anjlab.android.iab.v3.TransactionDetails;
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +44,7 @@ import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.IconImageView;
 
-import static com.retro.musicplayer.backend.RetroConstants.PAYPAL_ME_URL;
+import static code.name.monkey.backend.RetroConstants.PAYPAL_ME_URL;
 
 /**
  * @author Hemanth S (h4h13).

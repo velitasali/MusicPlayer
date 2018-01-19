@@ -20,10 +20,10 @@ import android.view.animation.LinearInterpolator;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.TintHelper;
-import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

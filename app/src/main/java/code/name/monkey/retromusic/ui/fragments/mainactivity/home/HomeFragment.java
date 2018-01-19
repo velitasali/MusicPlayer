@@ -24,11 +24,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.retro.musicplayer.backend.Injection;
-import com.retro.musicplayer.backend.interfaces.MainActivityFragmentCallbacks;
-import com.retro.musicplayer.backend.mvp.contract.HomeContract;
-import com.retro.musicplayer.backend.mvp.presenter.HomePresenter;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.mvp.contract.HomeContract;
+import code.name.monkey.backend.mvp.presenter.HomePresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -38,6 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;

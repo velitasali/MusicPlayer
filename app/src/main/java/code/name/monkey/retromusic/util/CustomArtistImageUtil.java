@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.retro.musicplayer.backend.model.Artist;
+import code.name.monkey.backend.model.Artist;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

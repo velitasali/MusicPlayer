@@ -18,9 +18,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -146,8 +146,8 @@ public class SolidPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     @Override
     public void onColorChanged(int color) {
         mPlaybackControlsFragment.setDark(ColorUtil.darkenColor(color));
-        getCallbacks().onPaletteColorChanged();
         lastColor = color;
+        getCallbacks().onPaletteColorChanged();
         ToolbarColorizeHelper.colorizeToolbar(mToolbar, color, getActivity());
     }
 

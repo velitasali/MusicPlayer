@@ -8,7 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 

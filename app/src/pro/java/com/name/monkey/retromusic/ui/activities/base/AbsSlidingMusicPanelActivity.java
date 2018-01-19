@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
-import com.kabouzeid.appthemehelper.ThemeStore;
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
 import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -26,7 +26,7 @@ import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.MiniPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.blur.BlurPlayerFragment;
-import code.name.monkey.retromusic.ui.fragments.player.card.CardPlayerFragment;
+import code.name.monkey.retromusic.ui.fragments.player.solid.CardPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.flat.FlatPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.full.FullPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.hmm.HmmPlayerFragment;

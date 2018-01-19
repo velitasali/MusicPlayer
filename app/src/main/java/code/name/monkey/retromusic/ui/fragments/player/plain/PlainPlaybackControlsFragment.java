@@ -16,11 +16,11 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
-import com.kabouzeid.appthemehelper.util.ColorUtil;
-import com.kabouzeid.appthemehelper.util.MaterialValueHelper;
-import com.kabouzeid.appthemehelper.util.TintHelper;
-import com.retro.musicplayer.backend.misc.SimpleOnSeekbarChangeListener;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +33,7 @@ import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerControlsFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import com.retro.musicplayer.backend.views.PlayPauseDrawable;
+import code.name.monkey.backend.views.PlayPauseDrawable;
 
 /**
  * @author Hemanth S (h4h13).

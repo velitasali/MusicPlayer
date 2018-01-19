@@ -16,8 +16,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.util.FileUtil;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.util.FileUtil;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
@@ -41,7 +41,7 @@ public class SAFUtil {
     public static final int REQUEST_SAF_PICK_TREE = 43;
 
     public static boolean isSAFRequired(File file) {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !file.canWrite();
+        return !file.canWrite();
     }
 
     public static boolean isSAFRequired(String path) {
@@ -105,7 +105,9 @@ public class SAFUtil {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public static void saveTreeUri(Context context, Intent data) {
         Uri uri = data.getData();
-        context.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if (uri != null) {
+            context.getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         PreferenceUtil.getInstance(context).setSAFSDCardUri(uri);
     }
 
@@ -138,7 +140,7 @@ public class SAFUtil {
      * @return URI for found file. Null if nothing found.
      */
     @Nullable
-    public static Uri findDocument(DocumentFile dir, List<String> segments) {
+    private static Uri findDocument(DocumentFile dir, List<String> segments) {
         for (DocumentFile file : dir.listFiles()) {
             int index = segments.indexOf(file.getName());
             if (index == -1) {
@@ -171,11 +173,11 @@ public class SAFUtil {
         }
     }
 
-    public static void writeFile(AudioFile audio) throws CannotWriteException {
+    private static void writeFile(AudioFile audio) throws CannotWriteException {
         audio.commit();
     }
 
-    public static void writeSAF(Context context, AudioFile audio, Uri safUri) {
+    private static void writeSAF(Context context, AudioFile audio, Uri safUri) {
         Uri uri = null;
 
         if (context == null) {
@@ -229,7 +231,7 @@ public class SAFUtil {
         }
     }
 
-    public static void delete(Context context, String path, Uri safUri) {
+    static void delete(Context context, String path, Uri safUri) {
         if (isSAFRequired(path)) {
             deleteSAF(context, path, safUri);
         } else {
@@ -241,12 +243,13 @@ public class SAFUtil {
         }
     }
 
-    public static void deleteFile(String path) {
+    private static void deleteFile(String path) {
+        //noinspection ResultOfMethodCallIgnored
         new File(path).delete();
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void deleteSAF(Context context, String path, Uri safUri) {
+    private static void deleteSAF(Context context, String path, Uri safUri) {
         Uri uri = null;
 
         if (context == null) {

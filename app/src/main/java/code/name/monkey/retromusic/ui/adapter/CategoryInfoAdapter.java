@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.model.CategoryInfo;
+import code.name.monkey.backend.model.CategoryInfo;
 
 import java.util.ArrayList;
 

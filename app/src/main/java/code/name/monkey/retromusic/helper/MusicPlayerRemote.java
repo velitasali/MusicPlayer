@@ -20,8 +20,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.retro.musicplayer.backend.loaders.SongLoader;
-import com.retro.musicplayer.backend.model.Song;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Song;
 
 import java.io.File;
 import java.util.ArrayList;

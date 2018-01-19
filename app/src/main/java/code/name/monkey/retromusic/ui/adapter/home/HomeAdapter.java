@@ -14,19 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.retro.musicplayer.backend.loaders.SongLoader;
-import com.retro.musicplayer.backend.model.Album;
-import com.retro.musicplayer.backend.model.Artist;
-import com.retro.musicplayer.backend.model.Playlist;
-import com.retro.musicplayer.backend.model.Song;
-import com.retro.musicplayer.backend.model.smartplaylist.HistoryPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.LastAddedPlaylist;
-import com.retro.musicplayer.backend.model.smartplaylist.MyTopTracksPlaylist;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.smartplaylist.HistoryPlaylist;
+import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
+import code.name.monkey.backend.model.smartplaylist.MyTopTracksPlaylist;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import code.name.monkey.retromusic.R;
+import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
@@ -34,10 +35,6 @@ import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
-
-/**
- * Created by hemanths on 19/07/17.
- */
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int SUB_HEADER = 0;
@@ -83,23 +80,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ViewHolder viewholder = (ViewHolder) holder;
         switch (getItemViewType(i)) {
             case ABS_PLAYLITS:
-                if (viewholder.history != null) {
-                    viewholder.history.setOnClickListener(view ->
-                            NavigationUtil.goToPlaylistNew(activity, new HistoryPlaylist(activity)));
-                }
-                if (viewholder.lastAdded != null) {
-                    viewholder.lastAdded.setOnClickListener(view ->
-                            NavigationUtil.goToPlaylistNew(activity, new LastAddedPlaylist(activity)));
-                }
-                if (viewholder.topTracks != null) {
-                    viewholder.topTracks.setOnClickListener(view ->
-                            NavigationUtil.goToPlaylistNew(activity, new MyTopTracksPlaylist(activity)));
-                }
-                if (viewholder.shuffle != null) {
-                    viewholder.shuffle.setOnClickListener(view ->
-                            MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(activity)
-                                    .blockingFirst(), true));
-                }
+                bindAbsActions(viewholder);
                 break;
             case SUB_HEADER:
                 String title = (String) dataSet.get(i);
@@ -113,6 +94,27 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
+    private void bindAbsActions(ViewHolder viewholder) {
+        if (viewholder.timer != null) {
+            viewholder.timer.setOnClickListener(view -> {
+                new SleepTimerDialog().show(activity.getSupportFragmentManager(), "Timer Dialog");
+            });
+        }
+        if (viewholder.history != null) {
+            viewholder.history.setOnClickListener(view -> NavigationUtil.goToPlaylistNew(activity, new HistoryPlaylist(activity)));
+        }
+        if (viewholder.lastAdded != null) {
+            viewholder.lastAdded.setOnClickListener(view -> NavigationUtil.goToPlaylistNew(activity, new LastAddedPlaylist(activity)));
+        }
+        if (viewholder.topTracks != null) {
+            viewholder.topTracks.setOnClickListener(view -> NavigationUtil.goToPlaylistNew(activity, new MyTopTracksPlaylist(activity)));
+        }
+        if (viewholder.shuffle != null) {
+            viewholder.shuffle.setOnClickListener(view -> MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(activity).blockingFirst(), true));
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     private void parseAllSections(int i, ViewHolder viewholder) {
         if (viewholder.recyclerView != null) {
             SnapHelper snapHelper = new LinearSnapHelper();
@@ -170,6 +172,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.history)
         @Nullable
         View history;
+        @BindView(R.id.timer)
+        @Nullable
+        View timer;
         @BindView(R.id.last_added)
         @Nullable
         View lastAdded;

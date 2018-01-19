@@ -4,7 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RetroMusicPlayer.iml" filepath="$PROJECT_DIR$/RetroMusicPlayer.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/backend.iml" filepath="$PROJECT_DIR$/backend/backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appthemehelper/appthemehelper.iml" filepath="$PROJECT_DIR$/appthemehelper/appthemehelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/back-end/back-end.iml" filepath="$PROJECT_DIR$/back-end/back-end.iml" />
+      <module fileurl="file://$PROJECT_DIR$/back-end/back-end.iml" filepath="$PROJECT_DIR$/back-end/back-end.iml" />
     </modules>
   </component>
 </project>

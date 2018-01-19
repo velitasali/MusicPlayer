@@ -5,7 +5,7 @@ import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.kabouzeid.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 
 import code.name.monkey.retromusic.R;
 

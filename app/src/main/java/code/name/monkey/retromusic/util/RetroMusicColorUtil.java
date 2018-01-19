@@ -8,7 +8,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 
-import com.kabouzeid.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
