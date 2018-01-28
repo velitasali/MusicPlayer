@@ -299,7 +299,7 @@
     <string name="pref_summary_open_source_licences">License details for open source software</string>
     <string name="pref_summary_round_corners">Corner edges for window, album art etc.</string>
     <string name="pref_summary_toggle_bottom_bar_titles">Disable titles from bottom navigation bar</string>
-    <string name="pref_summary_toggle_full_screen">Enable this for immersive mode</string>
+    <string name="pref_summary_toggle_full_screen">Immersive mode</string>
     <string name="pref_summary_toggle_volume">If have space in now playing screen enable volume controls</string>
     <string name="pref_title_album_art_on_lockscreen">Show album cover</string>
     <string name="pref_title_app_shortcuts">Colored app shortcuts</string>
@@ -316,14 +316,14 @@
     <string name="pref_title_gradient_color">Choose color</string>
     <string name="pref_title_ignore_media_store_artwork">Ignore Media Store covers</string>
     <string name="pref_title_last_added_interval">Last added playlist interval</string>
-    <string name="pref_title_lock_screen">Full screen controls</string>
+    <string name="pref_title_lock_screen">Fullscreen controls</string>
     <string name="pref_title_lock_screen_app">Retro lock screen</string>
     <string name="pref_title_navigation_bar">Colored navigation bar</string>
     <string name="pref_title_now_playing_screen_appearance">Appearance</string>
     <string name="pref_title_open_source_licences">Open source licences</string>
     <string name="pref_title_round_corners">Corner edges</string>
     <string name="pref_title_toggle_bottom_bar_titles">Disable titles</string>
-    <string name="pref_title_toggle_full_screen">Full screen app</string>
+    <string name="pref_title_toggle_full_screen">Fullscreen app</string>
     <string name="pref_title_toggle_volume">Volume controls</string>
     <string name="pref_title_user_info">User info</string>
 
@@ -453,9 +453,9 @@
     <string name="title_good_day">Good day</string>
     <string name="language_contributors">Language contributors</string>
     <string name="simple">Simple</string>
-    <string name="pref_summary_toggle_headset">When headphone jack plugged it\'s starts playing</string>
+    <string name="pref_summary_toggle_headset">Start playing immediately when headphones are connected.</string>
     <string name="pref_title_toggle_toggle_headset">Auto play</string>
-    <string name="pref_summary_tab_titles">Enable/ disable bottom tabs titles</string>
+    <string name="pref_summary_tab_titles">Enable/Disable bottom tab titles.</string>
     <string name="pref_title_toggle_tab_titles">Tab titles</string>
     <string name="pref_summary_language_en">Change app language forcefully to english(this is testing for multiple language option)</string>
     <string name="pref_title_toggle_language_en">English language</string>
@@ -464,12 +464,12 @@
     <string name="play_all">Play all</string>
     <string name="normal">Normal</string>
     <string name="experimental">Experimental</string>
-    <string name="pref_summary_lock_screen">Shows lock screen controls for Retro music</string>
+    <string name="pref_summary_lock_screen">Lock screen controls for Retro music.</string>
     <string name="slide_unlock">Swipe to unlock</string>
     <string name="primary_color_desc">The primary theme color, defaults to white.</string>
     <string name="media_route_menu_title">Cast device</string>
     <string name="tiny">Tiny</string>
-    <string name="pref_summary_dominant_color">Most dominant color will picks from album or artist art.</string>
+    <string name="pref_summary_dominant_color">Most dominant color will be picked from album or artist cover.</string>
     <string name="pref_title_toggle_dominant_color">Dominant color</string>
 
     <!-- SAF -->
@@ -487,7 +487,7 @@
     <string name="saf_guide_slide3_title">Tap \'select\' button at the bottom of the screen</string>
     <string name="deleting_songs">Deleting songs</string>
     <string name="saf_guide_slide3_description">Do not open any subfolders</string>
-    <string name="pref_summary_toggle_genre">Don\'t want to show genre hide it</string>
+    <string name="pref_summary_toggle_genre">Don\'t want to show genre? hide it.</string>
     <string name="pref_title_toggle_genre">Hide genre</string>
     <string name="pref_title_external_storage_access">Give access  to external storage</string>
 
