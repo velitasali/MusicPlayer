@@ -485,7 +485,7 @@ public final class PreferenceUtil {
     }
 
     public String getUserName() {
-        return mPreferences.getString(USER_NAME, "");
+        return mPreferences.getString(USER_NAME, "User");
     }
 
     public void setUserName(String name) {

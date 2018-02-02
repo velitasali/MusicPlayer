@@ -7,7 +7,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.BaseColumns;
@@ -20,14 +19,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import code.name.monkey.backend.loaders.PlaylistLoader;
-import code.name.monkey.backend.loaders.SongLoader;
-import code.name.monkey.backend.model.Artist;
-import code.name.monkey.backend.model.Playlist;
-import code.name.monkey.backend.model.Song;
-import code.name.monkey.backend.model.lyrics.AbsSynchronizedLyrics;
-import code.name.monkey.backend.util.FileUtil;
-
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.FieldKey;
 
@@ -38,6 +29,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import code.name.monkey.backend.loaders.PlaylistLoader;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Artist;
+import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.lyrics.AbsSynchronizedLyrics;
+import code.name.monkey.backend.util.FileUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import io.reactivex.Observable;
@@ -58,27 +56,6 @@ public class MusicUtil {
 
     public static Uri getSongFileUri(int songId) {
         return ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songId);
-    }
-
-    public static Bitmap getAlbumArtForAlbum(Context context, int albumId) {
-        Uri albumArtUri = MusicUtil.getMediaStoreAlbumCoverUri(albumId);
-        Bitmap bitmap = null;
-        int desWidth = 256;
-        int desHeight = 256;
-        if (bitmap != null) {
-            bitmap = ScalingUtil.createScaledBitmap(bitmap, desWidth,
-                    desHeight, ScalingUtil.ScalingLogic.FIT);
-        }
-        return bitmap;
-    }
-
-    public static int indexOfSongInList(List<Song> songs, int songId) {
-        for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).id == songId) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     @NonNull

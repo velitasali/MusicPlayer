@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
+
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.helper.SortOrder.ArtistSongSortOrder;
 import code.name.monkey.backend.model.Artist;
@@ -50,16 +52,11 @@ import code.name.monkey.retromusic.ui.adapter.artist.ArtistDetailAdapter;
 import code.name.monkey.retromusic.util.CustomArtistImageUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.util.ViewUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-/**
- * Created by BlackFootSanji on 10/9/2016.
- */
 
 public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implements ArtistDetailContract.ArtistsDetailsView {
     public static final String EXTRA_ARTIST_ID = "extra_artist_id";
@@ -280,7 +277,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
 
     private void setColors(int color) {
 
-        new Handler().postDelayed(() -> ToolbarColorizeHelper.colorizeToolbar(toolbar,
+        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(toolbar,
                 PreferenceUtil.getInstance(this)
                         .getAdaptiveColor() ? color :
                         ThemeStore.accentColor(this), ArtistDetailActivity.this), 1);

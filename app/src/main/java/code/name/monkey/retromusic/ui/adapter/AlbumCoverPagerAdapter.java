@@ -1,7 +1,6 @@
 package code.name.monkey.retromusic.ui.adapter;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -12,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.backend.misc.CustomFragmentStatePagerAdapter;
-import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import code.name.monkey.backend.misc.CustomFragmentStatePagerAdapter;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -77,7 +76,7 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         }
     }
 
-    public static class AlbumCoverFragment extends Fragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    public static class AlbumCoverFragment extends Fragment {
         private static final String SONG_ARG = "song";
         @BindView(R.id.player_image)
         ImageView albumCover;
@@ -99,7 +98,8 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            song = getArguments().getParcelable(SONG_ARG);
+            if (getArguments() != null)
+                song = getArguments().getParcelable(SONG_ARG);
         }
 
         @Override
@@ -111,7 +111,7 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
                 case FLAT:
                     layout = R.layout.fragment_album_flat_cover;
                     break;
-                case TINY:
+                //case TINY:
                 case FULL:
                     layout = R.layout.fragment_album_full_cover;
                     break;
@@ -126,12 +126,9 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         }
 
         @Override
-        public void onViewCreated(View view, Bundle savedInstanceState) {
+        public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            forceSquareAlbumCover(false);
-            // TODO
-//            forceSquareAlbumCover(PreferenceUtil.getInstance(getContext()).forceSquareAlbumCover());
-            PreferenceUtil.getInstance(getActivity()).registerOnSharedPreferenceChangedListener(this);
+
             loadAlbumCover();
 
         }
@@ -144,7 +141,6 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         @Override
         public void onDestroyView() {
             super.onDestroyView();
-            PreferenceUtil.getInstance(getActivity()).unregisterOnSharedPreferenceChangedListener(this);
             unbinder.unbind();
             colorReceiver = null;
         }
@@ -159,20 +155,6 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
                             setColor(color);
                         }
                     });
-        }
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            switch (key) {
-                case PreferenceUtil.FORCE_SQUARE_ALBUM_COVER:
-                    // TODO
-                    //forceSquareAlbumCover(PreferenceUtil.getInstance(getActivity()).forceSquareAlbumCover());
-                    break;
-            }
-        }
-
-        public void forceSquareAlbumCover(boolean forceSquareAlbumCover) {
-            albumCover.setScaleType(forceSquareAlbumCover ? ImageView.ScaleType.FIT_CENTER : ImageView.ScaleType.CENTER_CROP);
         }
 
         private void setColor(int color) {

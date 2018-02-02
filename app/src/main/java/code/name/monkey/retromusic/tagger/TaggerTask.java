@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import code.name.monkey.appthemehelper.util.VersionUtils;
 import code.name.monkey.retromusic.RetroApplication;
-import code.name.monkey.retromusic.util.RetroUtils;
 
 public class TaggerTask extends AsyncTask<Object, Integer, Boolean> {
 
@@ -114,7 +114,7 @@ public class TaggerTask extends AsyncTask<Object, Integer, Boolean> {
                 File temp = null;
                 if (tagUpdate.hasChanged()) {
 
-                    if (RetroUtils.hasLollipop() && TaggerUtils.requiresPermission(paths)) {
+                    if (VersionUtils.hasLollipop() && TaggerUtils.requiresPermission(paths)) {
                         temp = new File(RetroApplication.getInstance().getFilesDir(), orig.getName());
                         tempFiles.add(temp);
                         TaggerUtils.copyFile(orig, temp);
@@ -129,7 +129,7 @@ public class TaggerTask extends AsyncTask<Object, Integer, Boolean> {
                     tagUpdate.updateTag(tag);
                     AudioFileIO.write(audioFile);
 
-                    if (RetroUtils.hasLollipop() && requiresPermission && temp != null) {
+                    if (VersionUtils.hasLollipop() && requiresPermission && temp != null) {
                         DocumentFile documentFile = documentFiles.get(i);
                         if (documentFile != null) {
                             ParcelFileDescriptor pfd = RetroApplication.getInstance().getContentResolver().openFileDescriptor(documentFile.getUri(), "w");

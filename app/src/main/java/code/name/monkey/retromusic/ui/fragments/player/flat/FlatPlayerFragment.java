@@ -12,55 +12,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.appthemehelper.util.ColorUtil;
-import code.name.monkey.appthemehelper.util.MaterialValueHelper;
-import code.name.monkey.backend.DrawableGradient;
-import code.name.monkey.backend.model.Song;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.DrawableGradient;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
-
-/**
- * Created by hemanths on 02/09/17.
- */
 
 public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
 
     @BindView(R.id.player_toolbar)
-    Toolbar mToolbar;
+    Toolbar toolbar;
     @BindView(R.id.gradient_background)
     View colorBackground;
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
+    @BindView(R.id.now_playing_container)
+    ViewGroup viewGroup;
 
-    private PlayerAlbumCoverFragment playerAlbumCoverFragment;
     private Unbinder unbinder;
     private ValueAnimator valueAnimator;
-    private FlatPlaybackControlsFragment mFlatPlaybackControlsFragment;
+    private FlatPlaybackControlsFragment flatPlaybackControlsFragment;
     private int lastColor;
 
     private void setUpSubFragments() {
-        mFlatPlaybackControlsFragment = (FlatPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        flatPlaybackControlsFragment = (FlatPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
-        playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
+        PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
         playerAlbumCoverFragment.setCallbacks(this);
     }
 
     private void setUpPlayerToolbar() {
-        mToolbar.inflateMenu(R.menu.menu_player);
-        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        mToolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.menu_player);
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        toolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
+        ToolbarContentTintHelper.colorizeToolbar(toolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
     }
 
     private void colorize(int i) {
@@ -87,11 +83,8 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toggleStatusBar(viewGroup);
 
-        /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            view.findViewById(R.id.status_bar).setVisibility(View.GONE);
-        }
         setUpPlayerToolbar();
         setUpSubFragments();
 
@@ -104,12 +97,12 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onShow() {
-        mFlatPlaybackControlsFragment.show();
+        flatPlaybackControlsFragment.show();
     }
 
     @Override
     public void onHide() {
-        mFlatPlaybackControlsFragment.hide();
+        flatPlaybackControlsFragment.hide();
         onBackPressed();
     }
 
@@ -120,7 +113,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public Toolbar getToolbar() {
-        return mToolbar;
+        return toolbar;
     }
 
     @Override
@@ -132,7 +125,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public void onColorChanged(int color) {
         lastColor = color;
-        mFlatPlaybackControlsFragment.setDark(color);
+        flatPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
 
 
@@ -140,7 +133,7 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
         //TransitionManager.beginDelayedTransition(mToolbar);
         int iconColor = PreferenceUtil.getInstance(getContext()).getAdaptiveColor() ? MaterialValueHelper.getPrimaryTextColor(getContext(), isLight) : ATHUtil.resolveColor(getContext(), R.attr.iconColor);
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, iconColor, getActivity());
+        ToolbarContentTintHelper.colorizeToolbar(toolbar, iconColor, getActivity());
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 

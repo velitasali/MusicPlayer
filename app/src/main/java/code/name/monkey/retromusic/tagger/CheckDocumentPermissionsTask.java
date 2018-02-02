@@ -5,7 +5,7 @@ import android.support.v4.provider.DocumentFile;
 
 import java.util.List;
 
-import code.name.monkey.retromusic.util.RetroUtils;
+import code.name.monkey.appthemehelper.util.VersionUtils;
 
 public class CheckDocumentPermissionsTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -21,9 +21,7 @@ public class CheckDocumentPermissionsTask extends AsyncTask<Void, Void, Boolean>
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        return !RetroUtils.hasLollipop() ||
-                !TaggerUtils.requiresPermission(paths) ||
-                TaggerUtils.hasDocumentTreePermission(documentFiles, paths);
+        return !VersionUtils.hasLollipop() || !TaggerUtils.requiresPermission(paths) || TaggerUtils.hasDocumentTreePermission(documentFiles, paths);
     }
 
     @Override

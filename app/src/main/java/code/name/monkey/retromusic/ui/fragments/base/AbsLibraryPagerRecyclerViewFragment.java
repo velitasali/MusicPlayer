@@ -15,12 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import code.name.monkey.appthemehelper.ThemeStore;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.EdgeGlowUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.util.ViewUtil;
 
@@ -66,6 +67,7 @@ public abstract class AbsLibraryPagerRecyclerViewFragment<A extends RecyclerView
         setUpRecyclerView();
 
         progressBar.setProgressTintList(ColorStateList.valueOf(ThemeStore.accentColor(getActivity())));
+
     }
 
     private void setUpRecyclerView() {

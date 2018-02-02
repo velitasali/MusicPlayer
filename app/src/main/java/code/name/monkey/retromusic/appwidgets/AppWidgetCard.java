@@ -101,7 +101,7 @@ public class AppWidgetCard extends BaseAppWidget {
         linkButtons(service, appWidgetView);
 
         if (imageSize == 0)
-            imageSize = service.getResources().getDimensionPixelSize(R.dimen.app_widget_card_image_size);
+            imageSize = service.getResources().getDimensionPixelSize(R.dimen.app_widget_classic_image_size);
         if (cardRadius == 0f)
             cardRadius = service.getResources().getDimension(R.dimen.app_widget_card_radius);
 

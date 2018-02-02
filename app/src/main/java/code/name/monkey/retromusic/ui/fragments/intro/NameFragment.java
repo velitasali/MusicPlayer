@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.ui.activities.UserInfoActivity;
 import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.ImageUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
@@ -108,9 +107,7 @@ public class NameFragment extends Fragment {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             try {
-                Bitmap bitmap = ImageUtil
-                        .getResizedBitmap(MediaStore.Images.Media
-                                .getBitmap(getActivity().getContentResolver(), uri), PROFILE_ICON_SIZE);
+                Bitmap bitmap = ImageUtil.getResizedBitmap(MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri), PROFILE_ICON_SIZE);
                 String profileImagePath = saveToInternalStorage(bitmap);
                 PreferenceUtil.getInstance(getActivity()).saveProfileImage(profileImagePath);
                 loadImageFromStorage(profileImagePath);

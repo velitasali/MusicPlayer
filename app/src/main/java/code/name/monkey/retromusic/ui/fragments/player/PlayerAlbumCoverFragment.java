@@ -44,7 +44,7 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
     public void removeSlideEffect() {
         ParallaxPagerTransformer transformer = new ParallaxPagerTransformer(R.id.player_image);
         transformer.setSpeed(0.3f);
-        viewPager.setPageTransformer(false, transformer);
+        viewPager.setPageTransformer(true, transformer);
 
     }
 
@@ -60,7 +60,6 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager.addOnPageChangeListener(this);
-        viewPager.setPageMargin(100);
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
                 @Override

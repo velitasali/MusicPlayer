@@ -10,34 +10,36 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.backend.model.Song;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 
 /**
  * @author Hemanth S (h4h13).
  */
 
-public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
+public class PlainPlayerFragment extends AbsPlayerFragment implements
+        PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.title)
-    TextView mTitle;
+    TextView title;
     @BindView(R.id.text)
-    TextView mText;
+    TextView text;
     @BindView(R.id.player_toolbar)
-    Toolbar mToolbar;
+    Toolbar toolbar;
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
+    @BindView(R.id.now_playing_container)
+    ViewGroup viewGroup;
+
     private Unbinder unbinder;
-    private PlainPlaybackControlsFragment mPlainPlaybackControlsFragment;
+    private PlainPlaybackControlsFragment plainPlaybackControlsFragment;
     private int mLastColor;
 
     @Override
@@ -60,8 +62,8 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     private void updateSong() {
         Song song = MusicPlayerRemote.getCurrentSong();
-        mTitle.setText(song.title);
-        mText.setText(song.artistName);
+        title.setText(song.title);
+        text.setText(song.artistName);
     }
 
     @Override
@@ -76,19 +78,15 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plain_player, container, false);
         unbinder = ButterKnife.bind(this, view);
-        /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            view.findViewById(R.id.status_bar).setVisibility(View.GONE);
-        }
         return view;
     }
 
     private void setUpPlayerToolbar() {
-        mToolbar.inflateMenu(R.menu.menu_player);
-        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        mToolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.menu_player);
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        toolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+        ToolbarContentTintHelper.colorizeToolbar(toolbar,
                 ATHUtil.resolveColor(getContext(), R.attr.iconColor),
                 getActivity());
     }
@@ -96,12 +94,13 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        toggleStatusBar(viewGroup);
         setUpSubFragments();
         setUpPlayerToolbar();
     }
 
     private void setUpSubFragments() {
-        mPlainPlaybackControlsFragment = (PlainPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        plainPlaybackControlsFragment = (PlainPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
         PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
         playerAlbumCoverFragment.setCallbacks(this);
     }
@@ -113,12 +112,13 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     @Override
     public void onShow() {
-        mPlainPlaybackControlsFragment.show();
+        plainPlaybackControlsFragment.show();
     }
 
     @Override
     public void onHide() {
-        mPlainPlaybackControlsFragment.hide();
+        plainPlaybackControlsFragment.hide();
+        onBackPressed();
     }
 
     @Override
@@ -128,7 +128,7 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     @Override
     public Toolbar getToolbar() {
-        return mToolbar;
+        return toolbar;
     }
 
     @Override
@@ -138,7 +138,7 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements PlayerAlbu
 
     @Override
     public void onColorChanged(int color) {
-        mPlainPlaybackControlsFragment.setDark(color);
+        plainPlaybackControlsFragment.setDark(color);
         mLastColor = color;
         getCallbacks().onPaletteColorChanged();
     }

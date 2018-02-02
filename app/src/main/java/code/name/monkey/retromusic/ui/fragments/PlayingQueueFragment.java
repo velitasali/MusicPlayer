@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.ui.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,10 +24,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.song.PlayingQueueAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 
-/**
- * Created by hemanths on 15/07/17.
- */
-
 public class PlayingQueueFragment extends AbsMusicServiceFragment {
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -38,7 +35,8 @@ public class PlayingQueueFragment extends AbsMusicServiceFragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_activity_recycler_view, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;

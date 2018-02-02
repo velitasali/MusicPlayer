@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.provider.DocumentFile;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,12 +20,8 @@ import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.TintHelper;
-import code.name.monkey.backend.misc.DialogAsyncTask;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -43,21 +38,19 @@ import org.jaudiotagger.tag.images.ArtworkFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.misc.DialogAsyncTask;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.misc.UpdateToastMediaScannerCompletionListener;
-import code.name.monkey.retromusic.tagger.CheckDocumentPermissionsTask;
-import code.name.monkey.retromusic.tagger.TaggerUtils;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.util.MusicUtil;
-import code.name.monkey.retromusic.util.RetroUtils;
 import code.name.monkey.retromusic.util.Util;
 
 /**
@@ -382,15 +375,11 @@ public abstract class AbsTagEditorActivity extends AbsBaseActivity {
     }
 
     private static class WriteTagsAsyncTask extends DialogAsyncTask<WriteTagsAsyncTask.LoadingInfo, Integer, String[]> {
-
         Context applicationContext;
 
-
-        public WriteTagsAsyncTask(Context context) {
+        WriteTagsAsyncTask(Context context) {
             super(context);
             applicationContext = context;
-
-
         }
 
         @Override
@@ -403,7 +392,7 @@ public abstract class AbsTagEditorActivity extends AbsBaseActivity {
                 if (info.artworkInfo != null && info.artworkInfo.artwork != null) {
                     try {
                         albumArtFile = MusicUtil.createAlbumArtFile().getCanonicalFile();
-                        info.artworkInfo.artwork.compress(Bitmap.CompressFormat.PNG, 100, new FileOutputStream(albumArtFile));
+                        info.artworkInfo.artwork.compress(Bitmap.CompressFormat.PNG, 0, new FileOutputStream(albumArtFile));
                         artwork = ArtworkFactory.createArtworkFromFile(albumArtFile);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -495,10 +484,10 @@ public abstract class AbsTagEditorActivity extends AbsBaseActivity {
             ((MaterialDialog) dialog).setProgress(values[0]);
         }
 
-        public static class LoadingInfo {
-            public final Collection<String> filePaths;
+        static class LoadingInfo {
+            final Collection<String> filePaths;
             @Nullable
-            public final Map<FieldKey, String> fieldKeyValueMap;
+            final Map<FieldKey, String> fieldKeyValueMap;
             @Nullable
             private ArtworkInfo artworkInfo;
 
@@ -512,9 +501,9 @@ public abstract class AbsTagEditorActivity extends AbsBaseActivity {
 
     public static class ArtworkInfo {
         public final int albumId;
-        public final Bitmap artwork;
+        final Bitmap artwork;
 
-        public ArtworkInfo(int albumId, Bitmap artwork) {
+        ArtworkInfo(int albumId, Bitmap artwork) {
             this.albumId = albumId;
             this.artwork = artwork;
         }

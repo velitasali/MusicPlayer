@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:id="@+id/now_playing_container"
-        android:layout_width="400dp"
+        android:layout_width="@dimen/lock_screen_cover_width"
         android:minWidth="360dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

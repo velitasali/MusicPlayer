@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/player_album_art_frame"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardCornerRadius="0dp">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/player_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        tools:ignore="ContentDescription,UnusedAttribute" />
+        tools:ignore="ContentDescription,UnusedAttribute"/>
 
-</android.support.v7.widget.CardView>
+</FrameLayout>

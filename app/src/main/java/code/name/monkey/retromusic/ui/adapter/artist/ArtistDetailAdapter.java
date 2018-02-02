@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.backend.model.Album;
-import code.name.monkey.backend.model.Song;
-
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.adapter.album.HorizontalAlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
@@ -29,7 +28,6 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private static final int ALBUMS = 0;
     private static final int HEADER = 1;
     private static final int SONGS = 2;
-    private static final String TAG = "ArtistDetailAdapter";
     private ArrayList<Object> mList = new ArrayList<>();
     private AppCompatActivity mActivity;
     private int mColor;
@@ -40,19 +38,16 @@ public class ArtistDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
-        try {
-            if (mList.get(position) instanceof ArrayList<?>) {
-                if (((ArrayList<?>) mList.get(position)).get(0) instanceof Song) {
-                    return SONGS;
-                }
+
+        if (mList.get(position) instanceof String) {
+            return HEADER;
+        }
+        if (mList.get(position) instanceof ArrayList) {
+            if (((ArrayList) mList.get(position)).get(0) instanceof Song) {
+                return SONGS;
+            } else if (((ArrayList) mList.get(position)).get(0) instanceof Album) {
+                return ALBUMS;
             }
-            if (mList.get(position) instanceof ArrayList<?>) {
-                if (((ArrayList<?>) mList.get(position)).get(0) instanceof Album) {
-                    return ALBUMS;
-                }
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
         return HEADER;
     }

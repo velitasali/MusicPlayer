@@ -24,11 +24,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.ATHUtil;
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
 
 /**
  * Created by yu on 2016/11/10.
@@ -58,17 +58,17 @@ public class BottomNavigationViewEx extends BottomNavigationView {
 
     public BottomNavigationViewEx(Context context) {
         super(context);
-        tintColor(context);
+        tintColor( );
     }
 
     public BottomNavigationViewEx(Context context, AttributeSet attrs) {
         super(context, attrs);
-        tintColor(context);
+        tintColor( );
     }
 
     public BottomNavigationViewEx(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        tintColor(context);
+        tintColor( );
     }
 
     /**
@@ -106,11 +106,19 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         view.setItemTextColor(textSl);
     }
 
+    public void setIconAndTextColor(int i) {
+        tintColor(ATHUtil.resolveColor(getContext(), android.R.attr.textColorSecondary), i);
+    }
 
-    private void tintColor(Context context) {
-        int color = ATHUtil.resolveColor(context, android.R.attr.textColorSecondary);
-        setItemIconColors(this, color, ThemeStore.accentColor(context));
-        setItemTextColors(this, color, ThemeStore.accentColor(context));
+    private void tintColor() {
+        int color = ATHUtil.resolveColor(getContext(), android.R.attr.textColorSecondary);
+        int accentColor = ThemeStore.accentColor(getContext());
+        tintColor(color, accentColor);
+    }
+
+    private void tintColor(int color, int accentColor) {
+        setItemIconColors(this, color, accentColor);
+        setItemTextColors(this, color, accentColor);
     }
 
     private void init() {
@@ -941,6 +949,7 @@ public class BottomNavigationViewEx extends BottomNavigationView {
         setField(BottomNavigationItemView.class, itemView, "mDefaultMargin", marginTop);
         mMenuView.updateMenuView();
     }
+
 
     /**
      * A {@link ViewPager.OnPageChangeListener} class which contains the

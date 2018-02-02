@@ -11,16 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import code.name.monkey.backend.model.Song;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
-import code.name.monkey.retromusic.util.PreferenceUtil;
 
 /**
  * Created by hemanths on 14/09/17.
@@ -33,8 +32,10 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
     Unbinder unbinder;
+    @BindView(R.id.now_playing_container)
+    ViewGroup viewGroup;
     private int lastColor;
-    private FullPlaybackControlsFragment mFullPlaybackControlsFragment;
+    private FullPlaybackControlsFragment fullPlaybackControlsFragment;
 
     private void setUpPlayerToolbar() {
         mToolbar.inflateMenu(R.menu.menu_player);
@@ -56,16 +57,13 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*Hide status bar view for !full screen mode*/
-        if (PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            view.findViewById(R.id.status_bar).setVisibility(View.GONE);
-        }
+        toggleStatusBar(viewGroup);
         setUpSubFragments();
         setUpPlayerToolbar();
     }
 
     private void setUpSubFragments() {
-        mFullPlaybackControlsFragment = (FullPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        fullPlaybackControlsFragment = (FullPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
         PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
         playerAlbumCoverFragment.setCallbacks(this);
@@ -106,9 +104,9 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     @Override
     public void onColorChanged(int color) {
         lastColor = color;
-        mFullPlaybackControlsFragment.setDark(color);
+        fullPlaybackControlsFragment.setDark(color);
         getCallbacks().onPaletteColorChanged();
-        //ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
+        ToolbarContentTintHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
     }
 
     @Override

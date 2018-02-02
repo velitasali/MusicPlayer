@@ -70,7 +70,8 @@
                 android:contentDescription="@string/social_buttons"
                 android:foreground="?rectSelector"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
+                app:cardElevation="6dp"
+                app:cardPreventCornerOverlap="false"
                 app:cardUseCompatPadding="true">
 
                 <android.support.v7.widget.AppCompatTextView

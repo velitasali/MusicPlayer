@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            tools:ignore="UnusedAttribute">
+
+            <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:collapsedTitleTextAppearance="@style/CollapsedTitleAppearance"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleGravity="top"
+                app:expandedTitleMarginStart="16dp"
+                app:expandedTitleMarginTop="48dp"
+                app:expandedTitleTextAppearance="@style/ExpandedTitleAppearance"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:statusBarScrim="?attr/colorPrimary">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7">
+
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="196dp"
+                        android:scaleType="centerCrop"
+                        tools:ignore="ContentDescription" />
+
+                    <View
+                        android:id="@+id/gradient_background"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/shadow_up_home"
+                        android:backgroundTint="?colorPrimary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:orientation="vertical"
+                        android:paddingBottom="8dp">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/title"
+                            fontPath="@string/sans_bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:paddingEnd="16dp"
+                            android:paddingStart="16dp"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                            android:textColor="@color/md_white_1000"
+                            android:textStyle="bold"
+                            tools:ignore="MissingPrefix" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:paddingEnd="16dp"
+                            android:paddingStart="16dp"
+                            android:text="@string/lets_play_something"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                            android:textColor="@color/md_white_1000" />
+
+                    </LinearLayout>
+
+                    <!-- <com.jetradarmobile.snowfall.SnowfallView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         app:snowflakesNum="60" />-->
+
+                </FrameLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/Toolbar48"
+                    android:fitsSystemWindows="true"
+                    tools:ignore="UnusedAttribute" />
+
+            </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:cardCornerRadius="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:paddingEnd="8dp"
+                        android:paddingStart="8dp">
+
+                        <code.name.monkey.retromusic.views.IconImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:padding="8dp"
+                            app:srcCompat="@drawable/ic_search_white_24dp" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="16dp"
+                            android:drawableTint="?attr/iconColor"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="12dp"
+                            android:text="@string/search_hint"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </FrameLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/playlist_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/shadow_statusbar_toolbar" />
+    </FrameLayout>
+</LinearLayout>

@@ -59,7 +59,7 @@ public abstract class AbsMusicServiceActivity extends AbsBaseActivity implements
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         MusicPlayerRemote.unbindFromService(serviceToken);
         if (receiverRegistered) {

@@ -11,11 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import code.name.monkey.backend.interfaces.PaletteColorHolder;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.util.LyricUtil;
-
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog;
@@ -29,6 +29,7 @@ import code.name.monkey.retromusic.ui.activities.tageditor.SongTagEditorActivity
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
 
 /**
@@ -263,6 +264,16 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
     public Callbacks getCallbacks() {
         return callbacks;
     }
+
+    protected void toggleStatusBar(ViewGroup viewGroup) {
+        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) viewGroup.getLayoutParams();
+            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
+            viewGroup.setLayoutParams(params);
+        }
+
+    }
+
 
     public interface Callbacks {
         void onPaletteColorChanged();

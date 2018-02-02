@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.fragments.mainactivity.folders.FoldersFragment">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,7 +26,6 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusable="true"
             tools:ignore="UnusedAttribute">
 
             <code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout

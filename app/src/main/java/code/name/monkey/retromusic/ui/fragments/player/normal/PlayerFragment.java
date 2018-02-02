@@ -13,19 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.backend.DrawableGradient;
-import code.name.monkey.backend.model.Song;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.DrawableGradient;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -40,8 +39,9 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Nullable
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
+
     @BindView(R.id.now_playing_container)
-    ViewGroup mViewGroup;
+    ViewGroup viewGroup;
     private int lastColor;
     private PlayerPlaybackControlsFragment mPlaybackControlsFragment;
     private Unbinder unbinder;
@@ -116,6 +116,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         mPlaybackControlsFragment.setDark(color);
         lastColor = color;
         getCallbacks().onPaletteColorChanged();
+        ToolbarContentTintHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
@@ -141,8 +142,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_player, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -151,13 +151,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
-            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
-            mViewGroup.setLayoutParams(params);
-        }
+        toggleStatusBar(viewGroup);
 
         setUpSubFragments();
         setUpPlayerToolbar();
@@ -175,9 +169,7 @@ public class PlayerFragment extends AbsPlayerFragment implements PlayerAlbumCove
         mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
         mToolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar,
-                ATHUtil.resolveColor(getContext(), R.attr.iconColor),
-                getActivity());
+        ToolbarContentTintHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
     }
 
     @Override

@@ -28,6 +28,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
+
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEColorPreference;
 import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceFragmentCompat;
@@ -35,11 +40,6 @@ import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.appthemehelper.util.ColorUtil;
 import code.name.monkey.appthemehelper.util.TabLayoutUtil;
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
-
-import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
@@ -58,6 +58,7 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 import static code.name.monkey.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
 public class SettingsActivity extends AbsBaseActivity implements ColorChooserDialog.ColorCallback {
+    public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.app_bar)
@@ -88,6 +89,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
     public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
 
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
@@ -147,7 +149,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
     }
 
     public static class AdvancedSettingsFragment extends ATEPreferenceFragmentCompat {
-        public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
+
 
         private static void setSummary(@NonNull Preference preference) {
             setSummary(preference, PreferenceManager
@@ -189,7 +191,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
         @Override
         public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            getListView().setPadding(0, 0,0 , 0);
+            getListView().setPadding(0, 0, 0, 0);
             getListView().addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -230,6 +232,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
             findPreference.setVisible(false);
             findPreference.setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addFlags(0);
                 startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
                 return true;
             });
@@ -237,7 +240,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
             findPreference = findPreference("day_dream");
             findPreference.setOnPreferenceClickListener(preference -> {
                 Intent intent = new Intent(Settings.ACTION_DREAM_SETTINGS);
-                startActivity(intent);
+
                 return true;
             });
 
@@ -266,6 +269,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
 
 
             TwoStatePreference toggleLanguage = (TwoStatePreference) findPreference("language_en");
+            toggleLanguage.setVisible(false);
             toggleLanguage.setOnPreferenceChangeListener((preference, o) -> {
 
                 String languageToLoad;
@@ -425,11 +429,6 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
             cornerWindow.setOnPreferenceChangeListener((preference, newValue) -> {
                 getActivity().recreate();
                 getActivity().setResult(RESULT_OK);
-                return true;
-            });
-            TwoStatePreference toggleImmersive = (TwoStatePreference) findPreference("toggle_full_screen");
-            toggleImmersive.setOnPreferenceChangeListener((preference, o) -> {
-                getActivity().recreate();
                 return true;
             });
 

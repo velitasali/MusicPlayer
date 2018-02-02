@@ -157,7 +157,7 @@ public class SupportDevelopmentActivity extends AbsBaseActivity implements Billi
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         if (mBillingProcessor != null) {
             mBillingProcessor.release();
         }

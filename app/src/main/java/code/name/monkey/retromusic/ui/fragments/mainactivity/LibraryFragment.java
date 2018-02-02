@@ -2,6 +2,7 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,17 +21,21 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialcab.MaterialCab;
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
-import code.name.monkey.backend.loaders.SongLoader;
-import code.name.monkey.backend.util.Util;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.util.Util;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
@@ -37,29 +44,34 @@ import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
+import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout;
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-/**
- * Created by hemanths on 13/08/17.
- */
+import static code.name.monkey.backend.RetroConstants.USER_PROFILE;
 
 public class LibraryFragment extends AbsMainActivityFragment implements CabHolder, MainActivityFragmentCallbacks {
     private static final String TAG = "LibraryFragment";
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    Toolbar toolbar;
     @BindView(R.id.appbar)
-    AppBarLayout mAppbar;
+    AppBarLayout appbar;
     @BindView(R.id.collapsing_toolbar)
-    SansFontCollapsingToolbarLayout mCollapsingToolbar;
-    private Unbinder mUnBinder;
+    SansFontCollapsingToolbarLayout collapsingToolbar;
+    @BindView(R.id.title)
+    AppCompatTextView title;
+    @BindView(R.id.user_image)
+    CircleImageView userImage;
+    @BindView(R.id.user_info)
+    LinearLayout userInfo;
+    private Unbinder unBinder;
     private MaterialCab cab;
-    private FragmentManager mFragmentManager;
+    private FragmentManager fragmentManager;
 
     public static LibraryFragment newInstance() {
         Bundle args = new Bundle();
@@ -68,61 +80,59 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         return fragment;
     }
 
+    private void loadImageFromStorage() {
+        new Compressor(getContext())
+                .setMaxHeight(300)
+                .setMaxWidth(300)
+                .setQuality(75)
+                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                .compressToBitmapAsFlowable(new File(PreferenceUtil.getInstance(getContext()).getProfileImage(), USER_PROFILE))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bitmap -> userImage.setImageBitmap(bitmap),
+                        throwable -> userImage.setImageDrawable(ContextCompat
+                                .getDrawable(getContext(), R.drawable.ic_person_flat)));
+    }
+
     public SansFontCollapsingToolbarLayout getToolbar() {
-        return mCollapsingToolbar;
+        return collapsingToolbar;
     }
 
     public void addOnAppBarOffsetChangedListener(AppBarLayout.OnOffsetChangedListener onOffsetChangedListener) {
-        mAppbar.addOnOffsetChangedListener(onOffsetChangedListener);
+        appbar.addOnOffsetChangedListener(onOffsetChangedListener);
     }
 
     public void removeOnAppBarOffsetChangedListener(AppBarLayout.OnOffsetChangedListener onOffsetChangedListener) {
-        mAppbar.removeOnOffsetChangedListener(onOffsetChangedListener);
+        appbar.removeOnOffsetChangedListener(onOffsetChangedListener);
     }
 
     public int getTotalAppBarScrollingRange() {
-        return mAppbar.getTotalScrollRange();
+        return appbar.getTotalScrollRange();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_library, container, false);
-        mUnBinder = ButterKnife.bind(this, view);
+        unBinder = ButterKnife.bind(this, view);
         return view;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        doChanges();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setStatusbarColorAuto(view);
+        getMainActivity().setNavigationbarColorAuto();
+        getMainActivity().setTaskDescriptionColorAuto();
 
+        getMainActivity().setBottomBarVisibility(View.VISIBLE);
+        getMainActivity().hideStatusBar();
 
         setupToolbar();
         if (savedInstanceState == null)
             setLastSelectedFragment();
     }
 
-    private void doChanges() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-
-                getMainActivity().setNavigationbarColorAuto();
-                getMainActivity().setTaskDescriptionColorAuto();
-
-                getMainActivity().setBottomBarVisibility(View.VISIBLE);
-                getMainActivity().hideStatusBar();
-            }
-        };
-        runnable.run();
-    }
 
     private void setLastSelectedFragment() {
         //noinspection ConstantConditions
@@ -135,29 +145,37 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 
     }
 
+    public LinearLayout getUserInfo() {
+        return userInfo;
+    }
+
     private void setupToolbar() {
         //noinspection ConstantConditions
         int primaryColor = ThemeStore.primaryColor(getActivity());
-        mAppbar.setBackgroundColor(primaryColor);
-        mToolbar.setBackgroundColor(primaryColor);
-        mToolbar.setTitle(R.string.library);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        appbar.setBackgroundColor(primaryColor);
+        toolbar.setBackgroundColor(primaryColor);
+        toolbar.setTitle(R.string.library);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
         getActivity().setTitle(R.string.app_name);
-        getMainActivity().setSupportActionBar(mToolbar);
+        getMainActivity().setSupportActionBar(toolbar);
 
+        /*loadImageFromStorage();
+
+        title.setText(PreferenceUtil.getInstance(getContext()).getUserName());
+        title.setTextColor(ThemeStore.textColorPrimary(getContext()));*/
     }
 
     public Fragment getCurrentFragment() {
-        if (mFragmentManager == null) {
+        if (fragmentManager == null) {
             return SongsFragment.newInstance();
         }
-        return mFragmentManager.findFragmentByTag(LibraryFragment.TAG);
+        return fragmentManager.findFragmentByTag(LibraryFragment.TAG);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnBinder.unbind();
+        unBinder.unbind();
     }
 
     @Override
@@ -172,8 +190,10 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 
     @Override
     public void selectedFragment(Fragment fragment) {
-        mFragmentManager = getChildFragmentManager();
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        //getUserInfo().setVisibility(View.GONE);
+
+        fragmentManager = getChildFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         fragmentTransaction
                 .replace(R.id.fragment_container, fragment, TAG)
@@ -224,7 +244,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
             Activity activity = getActivity();
             if (activity == null) return;
             //noinspection ConstantConditions
-            ToolbarColorizeHelper.colorizeToolbar(mToolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
+            ToolbarContentTintHelper.colorizeToolbar(toolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
         }, 1);
     }
 
@@ -354,7 +374,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         if (gridSize > 0) {
             item.setChecked(true);
             fragment.setAndSaveGridSize(gridSize);
-            mToolbar.getMenu().findItem(R.id.action_colored_footers).setEnabled(fragment.canUsePalette());
+            toolbar.getMenu().findItem(R.id.action_colored_footers).setEnabled(fragment.canUsePalette());
             return true;
         }
         return false;

@@ -29,15 +29,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialcab.MaterialCab;
 import com.afollestad.materialdialogs.MaterialDialog;
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.common.ATHToolbarActivity;
-import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
-import code.name.monkey.backend.interfaces.LoaderIds;
-import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
-import code.name.monkey.backend.misc.DialogAsyncTask;
-import code.name.monkey.backend.misc.WrappedAsyncTaskLoader;
-import code.name.monkey.backend.model.Song;
-import code.name.monkey.backend.util.FileUtil;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.io.File;
@@ -53,6 +44,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.common.ATHToolbarActivity;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.interfaces.LoaderIds;
+import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
+import code.name.monkey.backend.misc.DialogAsyncTask;
+import code.name.monkey.backend.misc.WrappedAsyncTaskLoader;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.util.FileUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.SongMenuHelper;
@@ -196,30 +196,16 @@ public class FoldersFragment extends AbsMainActivityFragment implements
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        doChanges();
-    }
-
-    private void doChanges() {
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-
-                getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
-                getMainActivity().setNavigationbarColorAuto();
-                getMainActivity().setTaskDescriptionColorAuto();
-
-                getMainActivity().setBottomBarVisibility(View.VISIBLE);
-                getMainActivity().hideStatusBar();
-            }
-        };
-        runnable.run();
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         setStatusbarColorAuto(view);
+        getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
+
+        getMainActivity().setNavigationbarColorAuto();
+        getMainActivity().setTaskDescriptionColorAuto();
+
+        getMainActivity().setBottomBarVisibility(View.GONE);
+        getMainActivity().hideStatusBar();
+
 
         setUpAppbarColor();
         setUpToolbar();

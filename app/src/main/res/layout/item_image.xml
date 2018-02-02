@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -17,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            app:cardPreventCornerOverlap="true"
             app:cardCornerRadius="6dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:cardPreventCornerOverlap="true">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -36,6 +35,6 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textColor="?android:attr/textColorPrimary"
-        android:padding="8dp"  />
+        android:padding="8dp"
+        android:textColor="?android:attr/textColorPrimary" />
 </LinearLayout>

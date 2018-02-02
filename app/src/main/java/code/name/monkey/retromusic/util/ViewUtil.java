@@ -8,12 +8,10 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.appthemehelper.util.ColorUtil;
-import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
-import code.name.monkey.retromusic.R;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -24,10 +22,18 @@ public class ViewUtil {
 
     public static void setStatusBarHeight(final Context context, View statusBar) {
         ViewGroup.LayoutParams lp = statusBar.getLayoutParams();
-        lp.height = Util.getStatusBarHeight(context);
+        lp.height = getStatusBarHeight(context);
         statusBar.requestLayout();
     }
 
+    static int getStatusBarHeight(final Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
     public static boolean hitTest(View v, int x, int y) {
         final int tx = (int) (ViewCompat.getTranslationX(v) + 0.5f);

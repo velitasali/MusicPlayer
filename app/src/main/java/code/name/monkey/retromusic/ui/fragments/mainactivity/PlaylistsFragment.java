@@ -20,12 +20,9 @@ import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
-/**
- * Created by hemanths on 19/08/17.
- */
 
 public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<PlaylistAdapter, LinearLayoutManager> implements PlaylistContract.PlaylistView {
-    private PlaylistPresenter mPresenter;
+    private PlaylistPresenter presenter;
 
     public static PlaylistsFragment newInstance() {
         Bundle args = new Bundle();
@@ -39,7 +36,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mPresenter = new PlaylistPresenter(Injection.provideRepository(getContext()), this);
+        presenter = new PlaylistPresenter(Injection.provideRepository(getContext()), this);
     }
 
     @Override
@@ -64,19 +61,19 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
     public void onResume() {
         super.onResume();
         getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.playlists);
-        if (getAdapter().getDataSet().isEmpty()) mPresenter.subscribe();
+        if (getAdapter().getDataSet().isEmpty()) presenter.subscribe();
     }
 
     @Override
     public void onDestroy() {
-        mPresenter.unsubscribe();
+        presenter.unsubscribe();
         super.onDestroy();
     }
 
     @Override
     public void onMediaStoreChanged() {
         super.onMediaStoreChanged();
-        mPresenter.loadPlaylists();
+        presenter.loadPlaylists();
     }
 
     @Override

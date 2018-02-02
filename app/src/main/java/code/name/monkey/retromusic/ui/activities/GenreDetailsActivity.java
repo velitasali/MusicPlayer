@@ -22,6 +22,8 @@ import android.widget.ViewFlipper;
 import com.bumptech.glide.Glide;
 import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
+
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Song;
@@ -38,7 +40,6 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.util.ViewUtil;
 import io.reactivex.Observable;
@@ -119,7 +120,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implement
         setTitle(R.string.app_name);
 
 
-        new Handler().postDelayed(() -> ToolbarColorizeHelper.colorizeToolbar(mToolbar,
+        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(mToolbar,
                 ThemeStore.accentColor(this), GenreDetailsActivity.this), 1);
 
 

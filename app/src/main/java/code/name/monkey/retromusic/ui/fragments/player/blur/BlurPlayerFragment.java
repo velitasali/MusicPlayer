@@ -14,11 +14,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.backend.model.Song;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -26,8 +27,6 @@ import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
-import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -36,17 +35,16 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 
 public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
     @BindView(R.id.player_toolbar)
-    Toolbar mToolbar;
+    Toolbar toolbar;
     @BindView(R.id.gradient_background)
     ImageView colorBackground;
     @BindView(R.id.toolbar_container)
     FrameLayout toolbarContainer;
     @BindView(R.id.now_playing_container)
-    ViewGroup mViewGroup;
-    @BindView(R.id.anti_clickable)
-    ViewGroup mRoot;
+    ViewGroup viewGroup;
+
     private int lastColor;
-    private BlurPlaybackControlsFragment mPlaybackControlsFragment;
+    private BlurPlaybackControlsFragment playbackControlsFragment;
     private Unbinder unbinder;
 
     public static PlayerFragment newInstance() {
@@ -70,12 +68,12 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onShow() {
-        mPlaybackControlsFragment.show();
+        playbackControlsFragment.show();
     }
 
     @Override
     public void onHide() {
-        mPlaybackControlsFragment.hide();
+        playbackControlsFragment.hide();
         onBackPressed();
     }
 
@@ -92,7 +90,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public Toolbar getToolbar() {
-        return mToolbar;
+        return toolbar;
     }
 
     @Override
@@ -102,7 +100,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onColorChanged(int color) {
-        mPlaybackControlsFragment.setDark(color);
+        playbackControlsFragment.setDark(color);
         lastColor = color;
         getCallbacks().onPaletteColorChanged();
 
@@ -140,31 +138,25 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mViewGroup.getLayoutParams();
-            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
-            mViewGroup.setLayoutParams(params);
-        }
+        toggleStatusBar(viewGroup);
 
         setUpSubFragments();
         setUpPlayerToolbar();
     }
 
     private void setUpSubFragments() {
-        mPlaybackControlsFragment = (BlurPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+        playbackControlsFragment = (BlurPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
         PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
         playerAlbumCoverFragment.setCallbacks(this);
     }
 
     private void setUpPlayerToolbar() {
-        mToolbar.inflateMenu(R.menu.menu_player);
-        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        mToolbar.setOnMenuItemClickListener(this);
+        toolbar.inflateMenu(R.menu.menu_player);
+        toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+        toolbar.setOnMenuItemClickListener(this);
 
-        ToolbarColorizeHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
+        ToolbarContentTintHelper.colorizeToolbar(toolbar, Color.WHITE, getActivity());
     }
 
     @Override

@@ -20,20 +20,21 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-import code.name.monkey.backend.Injection;
-import code.name.monkey.backend.helper.SortOrder.AlbumSongSortOrder;
-import code.name.monkey.backend.model.Album;
-import code.name.monkey.backend.model.Song;
-import code.name.monkey.backend.mvp.contract.AlbumDetailsContract;
-import code.name.monkey.backend.mvp.presenter.AlbumDetailsPresenter;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.helper.SortOrder.AlbumSongSortOrder;
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.mvp.contract.AlbumDetailsContract;
+import code.name.monkey.backend.mvp.presenter.AlbumDetailsPresenter;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeleteSongsDialog;
@@ -46,8 +47,6 @@ import code.name.monkey.retromusic.ui.activities.tageditor.AlbumTagEditorActivit
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
-import code.name.monkey.retromusic.util.ViewUtil;
 
 public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implements AlbumDetailsContract.AlbumDetailsView {
     public static final String EXTRA_ALBUM_ID = "extra_album_id";
@@ -101,6 +100,7 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
         setDrawUnderStatusbar(true);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+
 
         setBottomBarVisibility(View.GONE);
 
@@ -195,7 +195,7 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
 
     private void setColors(int color) {
-        new Handler().postDelayed(() -> ToolbarColorizeHelper.colorizeToolbar(mToolbar, PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
+        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(mToolbar, PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
 
 
         int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this);

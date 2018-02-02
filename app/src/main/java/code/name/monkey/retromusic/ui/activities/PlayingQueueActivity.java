@@ -18,9 +18,6 @@ import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.PlayingQueueFragment;
 import code.name.monkey.retromusic.util.MusicUtil;
 
-/**
- * Created by BlackFootSanji on 4/15/2017.
- */
 
 public class PlayingQueueActivity extends AbsMusicServiceActivity {
     @BindView(R.id.toolbar)

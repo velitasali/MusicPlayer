@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.AttributeSet;
 
+import code.name.monkey.appthemehelper.util.TypefaceHelper;
 import code.name.monkey.retromusic.R;
 
 /**
@@ -28,10 +29,8 @@ public class SansFontCollapsingToolbarLayout extends CollapsingToolbarLayout {
     }
 
     private void init(Context context) {
-        Typeface typefaceBold = Typeface.createFromAsset(context.getAssets(), getResources().getString(R.string.sans_bold));
+        Typeface typefaceBold = TypefaceHelper.get(context, getResources().getString(R.string.sans_bold));
         setExpandedTitleTypeface(typefaceBold);
-
-        Typeface typefaceNormal = Typeface.createFromAsset(context.getAssets(), getResources().getString(R.string.sans_bold));
         setCollapsedTitleTypeface(typefaceBold);
 
     }

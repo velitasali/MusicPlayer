@@ -26,6 +26,8 @@ import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.appthemehelper.util.TintHelper;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
+
+import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.loaders.PlaylistLoader;
 import code.name.monkey.backend.model.AbsCustomPlaylist;
@@ -51,12 +53,7 @@ import code.name.monkey.retromusic.ui.adapter.song.PlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
 import code.name.monkey.retromusic.util.RetroMusicColorUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
 import code.name.monkey.retromusic.util.ViewUtil;
-
-/**
- * Created by hemanths on 20/08/17.
- */
 
 public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity implements CabHolder, PlaylistSongsContract.PlaylistSongsView {
     @NonNull
@@ -74,11 +71,10 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
     @BindView(R.id.app_bar)
-    AppBarLayout mAppBarLayout;
+    AppBarLayout appBarLayout;
     @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mToolbarLayout;
-    @BindView(R.id.root)
-    ViewGroup mViewGroup;
+    CollapsingToolbarLayout toolbarLayout;
+
     private Playlist playlist;
     private MaterialCab cab;
     private SongAdapter adapter;
@@ -191,7 +187,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
         //noinspection ConstantConditions
         getSupportActionBar().setTitle(playlist.name);
 
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
                 int color;
@@ -203,8 +199,8 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
                         color = ATHUtil.resolveColor(PlaylistDetailActivity.this, android.R.attr.textColorPrimary);
                         break;
                 }
-                mToolbarLayout.setExpandedTitleColor(color);
-                ToolbarColorizeHelper.colorizeToolbar(toolbar, color, PlaylistDetailActivity.this);
+                toolbarLayout.setExpandedTitleColor(color);
+                ToolbarContentTintHelper.colorizeToolbar(toolbar, color, PlaylistDetailActivity.this);
             }
         });
 
@@ -295,7 +291,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         if (recyclerViewDragDropManager != null) {
             recyclerViewDragDropManager.release();
             recyclerViewDragDropManager = null;

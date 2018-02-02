@@ -1,19 +1,22 @@
 package code.name.monkey.retromusic.ui.adapter.home;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
 import code.name.monkey.backend.loaders.SongLoader;
 import code.name.monkey.backend.model.Album;
 import code.name.monkey.backend.model.Artist;
@@ -22,13 +25,10 @@ import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.model.smartplaylist.HistoryPlaylist;
 import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
 import code.name.monkey.backend.model.smartplaylist.MyTopTracksPlaylist;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
+import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.adapter.PlaylistAdapter;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;
@@ -112,14 +112,24 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (viewholder.shuffle != null) {
             viewholder.shuffle.setOnClickListener(view -> MusicPlayerRemote.openAndShuffleQueue(SongLoader.getAllSongs(activity).blockingFirst(), true));
         }
+        if (viewholder.search != null) {
+            viewholder.search.setOnClickListener(view -> {
+                ActivityOptionsCompat optionsCompat =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                                new Pair<>(view, activity.getString(R.string.transition_search_bar)));
+                activity.startActivity(new Intent(activity, SearchActivity.class), optionsCompat.toBundle());
+            });
+        }
+
+       /* */
     }
 
     @SuppressWarnings("unchecked")
     private void parseAllSections(int i, ViewHolder viewholder) {
         if (viewholder.recyclerView != null) {
-            SnapHelper snapHelper = new LinearSnapHelper();
+           /* SnapHelper snapHelper = new LinearSnapHelper();
             viewholder.recyclerView.setOnFlingListener(null);
-            snapHelper.attachToRecyclerView(viewholder.recyclerView);
+            snapHelper.attachToRecyclerView(viewholder.recyclerView);*/
 
             ArrayList arrayList = (ArrayList) dataSet.get(i);
             if (arrayList.isEmpty()) {
@@ -155,7 +165,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return dataSet.size();
     }
 
-    public void swapData(@NonNull ArrayList<Object> data) {
+    public void swapDataSet(@NonNull ArrayList<Object> data) {
         dataSet = data;
         notifyDataSetChanged();
     }
@@ -165,10 +175,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
-        @BindView(R.id.see_all)
-        @Nullable
-        TextView seeAll;
-
         @BindView(R.id.history)
         @Nullable
         View history;
@@ -184,6 +190,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.action_shuffle)
         @Nullable
         View shuffle;
+        @BindView(R.id.search)
+        @Nullable
+        View search;
 
         public ViewHolder(View itemView) {
             super(itemView);

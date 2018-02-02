@@ -12,18 +12,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.backend.Injection;
-import code.name.monkey.backend.interfaces.LoaderIds;
-import code.name.monkey.backend.mvp.contract.SearchContract;
-import code.name.monkey.backend.mvp.presenter.SearchPresenter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,6 +25,10 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.mvp.contract.SearchContract;
+import code.name.monkey.backend.mvp.presenter.SearchPresenter;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.adapter.SearchAdapter;
@@ -63,8 +60,9 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        setDrawUnderStatusbar(true);
+
         ButterKnife.bind(this);
+
         mSearchPresenter = new SearchPresenter(Injection.provideRepository(this), this);
 
         setStatusbarColorAuto();
@@ -121,7 +119,7 @@ public class SearchActivity extends AbsMusicServiceActivity implements SearchVie
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mSearchPresenter.unsubscribe();
     }

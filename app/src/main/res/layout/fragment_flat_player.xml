@@ -15,18 +15,10 @@
     <include layout="@layout/shadow_statusbar_toolbar" />
 
     <LinearLayout
+        android:id="@+id/now_playing_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0">
-
-            <include layout="@layout/status_bar" />
-
-        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/toolbar_container"

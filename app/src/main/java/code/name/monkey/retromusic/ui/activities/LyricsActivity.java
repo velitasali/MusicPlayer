@@ -19,26 +19,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import code.name.monkey.backend.lyrics.ParseLyrics;
-import code.name.monkey.backend.model.Song;
-import code.name.monkey.backend.model.lyrics.Lyrics;
-import code.name.monkey.backend.providers.RepositoryImpl;
-import code.name.monkey.backend.providers.interfaces.Repository;
-import code.name.monkey.backend.util.LyricUtil;
-import code.name.monkey.backend.views.LyricView;
-
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.backend.lyrics.ParseLyrics;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.lyrics.Lyrics;
+import code.name.monkey.backend.providers.RepositoryImpl;
+import code.name.monkey.backend.providers.interfaces.Repository;
+import code.name.monkey.backend.util.LyricUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.views.LyricView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -95,18 +94,18 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
     private void setupLyricsView() {
         mDisposable = new CompositeDisposable();
-        mLyricView.setLineSpace(15.0f);
-        mLyricView.setTextSize(17.0f);
-        mLyricView.setPlayable(true);
+        //mLyricView.setLineSpace(15.0f);
+        //mLyricView.setTextSize(17.0f);
+        //mLyricView.setPlayable(true);
         //mLyricView.setTranslationY(DensityUtil.getScreenWidth(this) + DensityUtil.dip2px(this, 120));
         mLyricView.setOnPlayerClickListener((progress, content) -> {
             MusicPlayerRemote.seekTo((int) progress);
             MusicPlayerRemote.pauseSong();
         });
 
-        mLyricView.setHighLightTextColor(ThemeStore.accentColor(this));
-        mLyricView.setDefaultColor(ContextCompat.getColor(this, R.color.md_grey_300));
-        mLyricView.setTouchable(false);
+        //mLyricView.setHighLightTextColor(ThemeStore.accentColor(this));
+        mLyricView.setDefaultColor(ContextCompat.getColor(this, R.color.md_grey_400));
+        //mLyricView.setTouchable(false);
         mLyricView.setHintColor(Color.WHITE);
 
 
@@ -144,7 +143,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mDisposable.clear();
         mLyricView.setOnPlayerClickListener(null);
@@ -176,7 +175,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 loadSongLyrics();
                 break;
             case 2://Kogou
-                mLyricView.reset("No lyrics");
+                mLyricView.reset();
                 if (LyricUtil.isLrcFileExist(title, artist)) {
                     showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
                 } else {
@@ -231,7 +230,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
     private void showLyricsLocal(File file) {
         if (file == null) {
-            mLyricView.reset("No lyrics");
+            mLyricView.reset();
         } else {
             hideLyrics(View.VISIBLE);
             mLyricView.setLyricFile(file, "UTF-8");
@@ -303,7 +302,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 Song song = MusicPlayerRemote.getCurrentSong();
                 String title = song.title;
                 String artist = song.artistName;
-                mLyricView.reset("No lyrics");
+                mLyricView.reset();
                 if (LyricUtil.deleteLrcFile(title, artist))
                     callAgain(title, artist);
                 break;
@@ -312,7 +311,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 if (fontSize <= 17.0f) {
                     fontSize = 17.0f;
                 }
-                mLyricView.setTextSize(fontSize);
+                //mLyricView.setTextSize(fontSize);
                 break;
             case R.id.edit:
                 TransitionManager.beginDelayedTransition(findViewById(R.id.root));
@@ -323,7 +322,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 if (fontSize >= 40.0f) {
                     fontSize = 40.0f;
                 }
-                mLyricView.setTextSize(fontSize);
+                //mLyricView.setTextSize(fontSize);
                 break;
         }
     }

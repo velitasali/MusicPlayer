@@ -1,79 +1,25 @@
 package code.name.monkey.retromusic.ui.fragments.mainactivity.home;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import code.name.monkey.backend.Injection;
-import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
-import code.name.monkey.backend.mvp.contract.HomeContract;
-import code.name.monkey.backend.mvp.presenter.HomePresenter;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
-import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.Injection;
+import code.name.monkey.backend.mvp.contract.HomeContract;
+import code.name.monkey.backend.mvp.presenter.HomePresenter;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
-import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.adapter.home.HomeAdapter;
-import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
-import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.ToolbarColorizeHelper;
-import io.reactivex.disposables.CompositeDisposable;
+import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewFragment;
 
-import static code.name.monkey.retromusic.R.id.toolbar;
-
-/**
- * Created by hemanths on 19/07/17.
- */
-
-public class HomeFragment extends AbsMainActivityFragment implements MainActivityFragmentCallbacks, HomeContract.HomeView {
-    private static final String TAG = "HomeFragment";
-
-    @BindView(R.id.playlist_recycler_view)
-    RecyclerView mRecyclerView;
-    Unbinder unbinder;
-    @BindView(toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.appbar)
-    AppBarLayout mAppbar;
-    @BindView(R.id.image)
-    ImageView mImageView;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mToolbarLayout;
-    @BindView(R.id.container)
-    LinearLayout mContainer;
-    private HomePresenter mHomePresenter;
-    private CompositeDisposable mDisposable;
-    private HomeAdapter mHomeAdapter;
+public class HomeFragment extends AbsLibraryPagerRecyclerViewFragment<HomeAdapter, LinearLayoutManager> implements
+        HomeContract.HomeView {
+    private HomePresenter presenter;
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -85,18 +31,121 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDisposable = new CompositeDisposable();
-        mHomePresenter = new HomePresenter(Injection.provideRepository(getContext()), this);
+        presenter = new HomePresenter(Injection.provideRepository(getContext()), this);
+
     }
 
-    @Nullable
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (menuVisible)
+            getLibraryFragment().getToolbar().setTitle(R.string.home);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLibraryFragment().getUserInfo().setVisibility(View.VISIBLE);
+        getLibraryFragment().getToolbar().setTitle(R.string.home);
+        presenter.subscribe();
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.unsubscribe();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onMediaStoreChanged() {
+        super.onMediaStoreChanged();
+        presenter.loadAllThings();
+    }
+
+    @Override
+    public void loading() {
+        getProgressBar().setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showEmptyView() {
+        getAdapter().swapDataSet(new ArrayList<>());
+    }
+
+    @Override
+    public void completed() {
+        getProgressBar().setVisibility(View.GONE);
+    }
+
+    @Override
+    protected LinearLayoutManager createLayoutManager() {
+        return new LinearLayoutManager(getContext());
+    }
+
+    @NonNull
+    @Override
+    protected HomeAdapter createAdapter() {
+        return new HomeAdapter(getLibraryFragment().getMainActivity());
+    }
+
+    @Override
+    public void showData(ArrayList<Object> list) {
+        getAdapter().swapDataSet(list);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.removeItem(R.id.action_shuffle_all);
+        menu.removeItem(R.id.action_sort_order);
+        menu.removeItem(R.id.action_search);
+        menu.removeItem(R.id.action_grid_size);
+        menu.removeItem(R.id.action_colored_footers);
+        menu.removeItem(R.id.action_sleep_timer);
+        menu.removeItem(R.id.action_equalizer);
+        menu.removeItem(R.id.action_new_playlist);
+    }
+
+
+
+   /* @BindView(R.id.playlist_recycler_view)
+    RecyclerView recyclerView;
+    Unbinder unbinder;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
+    @BindView(R.id.user_image)
+    CircleImageView mUserImage;
+    @BindView(R.id.title)
+    TextView title;*//*
+
+    private HomePresenter homePresenter;
+    private CompositeDisposable disposable;
+    private HomeAdapter homeAdapter;
+
+    public static HomeFragment newInstance() {
+        Bundle args = new Bundle();
+        HomeFragment fragment = new HomeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //disposable = new CompositeDisposable();
+        homePresenter = new HomePresenter(Injection.provideRepository(getContext()), this);
+    }
+
+   *//* @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
-    }
+    }*//*
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
@@ -105,66 +154,67 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
         setStatusbarColorAuto(view);
         getMainActivity().setTaskDescriptionColorAuto();
         getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setBottomBarVisibility(View.GONE);
+        getMainActivity().setBottomBarVisibility(View.VISIBLE);
         getMainActivity().hideStatusBar();
-
-        /*Adding margin to toolbar for !full screen mode*/
-        if (!PreferenceUtil.getInstance(getContext()).getFullScreenMode()) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mToolbar.getLayoutParams();
-            params.topMargin = getResources().getDimensionPixelOffset(R.dimen.status_bar_padding);
-            mToolbar.setLayoutParams(params);
-        }
 
         setupToolbar();
         setupAdapter();
+        loadImageFromStorage();
     }
 
-    private void setupAdapter() {
-        mHomeAdapter = new HomeAdapter(getMainActivity());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mHomeAdapter);
+    @Override
+    protected LinearLayoutManager createLayoutManager() {
+        return new LinearLayoutManager(getContext());
+    }
+
+    @NonNull
+    @Override
+    protected HomeAdapter createAdapter() {
+        return new HomeAdapter(getLibraryFragment().getMainActivity());
+    }
+
+   *//* private void setupAdapter() {
+        homeAdapter = new HomeAdapter(getMainActivity());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(homeAdapter);
+    }*//*
+
+    private void loadImageFromStorage() {
+        new Compressor(getContext())
+                .setMaxHeight(300)
+                .setMaxWidth(300)
+                .setQuality(75)
+                .setCompressFormat(Bitmap.CompressFormat.WEBP)
+                .compressToBitmapAsFlowable(new File(PreferenceUtil.getInstance(getContext()).getProfileImage(), USER_PROFILE))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(bitmap -> mUserImage.setImageBitmap(bitmap),
+                        throwable -> mUserImage.setImageDrawable(ContextCompat
+                                .getDrawable(getContext(), R.drawable.ic_person_flat)));
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setupToolbar() {
-        mAppbar.addOnOffsetChangedListener(new AppBarStateChangeListener() {
-            @Override
-            public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                int color;
-                switch (state) {
-                    case COLLAPSED:
-                        getMainActivity().setLightStatusbar(!ATHUtil.isWindowBackgroundDark(getContext()));
-                        color = ATHUtil.resolveColor(getContext(), R.attr.iconColor);
-                        break;
-                    default:
-                    case EXPANDED:
-                    case IDLE:
-                        getMainActivity().setLightStatusbar(false);
-                        color = ContextCompat.getColor(getContext(), R.color.md_white_1000);
-                        break;
-                }
-                mToolbarLayout.setExpandedTitleColor(color);
-                ToolbarColorizeHelper.colorizeToolbar(mToolbar, color, getActivity());
-            }
 
-        });
-        mToolbar.setTitle(R.string.home);
-        mToolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setTitle(R.string.home);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setBackgroundColor(ThemeStore.primaryColor(getContext()));
         getActivity().setTitle(R.string.app_name);
-        getMainActivity().setSupportActionBar(mToolbar);
+        //getMainActivity().setSupportActionBar(toolbar);
 
-        mTitle.setText(getTimeOfTheDay());
+        title.setText(PreferenceUtil.getInstance(getContext()).getUserName());
+        title.setTextColor(ThemeStore.textColorPrimary(getContext()));
     }
 
-    @OnClick(R.id.search)
+    *//*@OnClick(R.id.search)
     void search(View view) {
         Activity activity = getMainActivity();
         ActivityOptionsCompat optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(activity, new Pair<>(view, getString(R.string.transition_search_bar)));
         startActivity(new Intent(activity, SearchActivity.class), optionsCompat.toBundle());
 
-    }
+    }*//*
 
     @Override
     public boolean handleBackPress() {
@@ -180,8 +230,8 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDisposable.clear();
-        mHomePresenter.unsubscribe();
+        disposable.clear();
+        homePresenter.unsubscribe();
     }
 
     @Override
@@ -202,26 +252,26 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
     @Override
     public void onResume() {
         super.onResume();
-        if (mHomeAdapter.getDataset().isEmpty())
-            mHomePresenter.subscribe();
+        if (homeAdapter.getDataset().isEmpty())
+            homePresenter.subscribe();
     }
 
     @Override
     public void showData(ArrayList<Object> homes) {
-        mHomeAdapter.swapData(homes);
+        homeAdapter.swapDataSet(homes);
     }
 
     @Override
     public void selectedFragment(Fragment fragment) {
-        /*ignore the method*/
+        *//*ignore the method*//*
     }
 
     private void loadTimeImage(String day) {
-        Glide.with(getActivity()).load(day)
+        *//*Glide.with(getActivity()).load(day)
                 .asBitmap()
                 .placeholder(R.drawable.material_design_default)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(mImageView);
+                .into(imageView);*//*
     }
 
     private String getTimeOfTheDay() {
@@ -254,6 +304,6 @@ public class HomeFragment extends AbsMainActivityFragment implements MainActivit
     @Override
     public void onMediaStoreChanged() {
         super.onMediaStoreChanged();
-        mHomePresenter.subscribe();
-    }
+        homePresenter.subscribe();
+    }*/
 }
