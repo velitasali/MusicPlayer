@@ -2,9 +2,10 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/anti_clickable"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/gradient_background"
@@ -18,7 +19,7 @@
         android:id="@+id/mask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shadow_up" />
+        android:background="@drawable/shadow_up_strong" />
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 
@@ -28,7 +29,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <code.name.monkey.backend.views.WidthFitSquareLayout
+        <code.name.monkey.retromusic.views.WidthFitSquareLayout
             android:id="@+id/album_cover_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
                 android:name="code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </code.name.monkey.backend.views.WidthFitSquareLayout>
+        </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -52,7 +53,7 @@
                 android:name="code.name.monkey.retromusic.ui.fragments.player.blur.BlurPlaybackControlsFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout="@layout/fragment_blur_playback_controls" />
+                tools:layout="@layout/fragment_abs_playback_controls" />
         </FrameLayout>
 
         <FrameLayout

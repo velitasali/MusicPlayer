@@ -1,14 +1,19 @@
 package code.name.monkey.retromusic.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.transition.TransitionManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,13 +24,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
+import org.jaudiotagger.tag.FieldKey;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.backend.lyrics.ParseLyrics;
+import code.name.monkey.backend.lyrics.TTDownloader;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.model.lyrics.Lyrics;
 import code.name.monkey.backend.providers.RepositoryImpl;
@@ -35,38 +48,66 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
+import code.name.monkey.retromusic.ui.activities.tageditor.WriteTagsAsyncTask;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.LyricView;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class LyricsActivity extends AbsMusicServiceActivity implements MusicProgressViewUpdateHelper.Callback {
 
+    private static final String lrcRootPath = android.os.Environment
+            .getExternalStorageDirectory().toString() + "/RetroMusic/lyrics/";
     @BindView(R.id.title)
-    TextView mTitle;
+    TextView title;
     @BindView(R.id.text)
-    TextView mText;
+    TextView text;
     @BindView(R.id.lyrics)
-    LyricView mLyricView;
+    LyricView lyricView;
     @BindView(R.id.toolbar)
-    Toolbar mToolbar;
+    Toolbar toolbar;
     @BindView(R.id.offline_lyrics)
-    TextView mOfflineLyrics;
+    TextView offlineLyrics;
     @BindView(R.id.lyrics_container)
-    View mLyricsContainer;
+    View lyricsContainer;
     @BindView(R.id.refresh)
-    AppCompatImageView mRefresh;
+    View refresh;
     @BindView(R.id.actions)
-    LinearLayout mActions;
-    private MusicProgressViewUpdateHelper mUpdateHelper;
+    LinearLayout actionsLayout;
+    @BindView(R.id.edit)
+    View edit;
+    private MusicProgressViewUpdateHelper updateHelper;
     private AsyncTask updateLyricsAsyncTask;
     private Repository loadLyrics;
-    private CompositeDisposable mDisposable;
+    private CompositeDisposable disposable;
     private float fontSize = 17.0f;
     private RotateAnimation rotateAnimation;
-    private AsyncTask<String, Void, String> mTask;
+    private AsyncTask<String, Void, String> lyricsWikiTask;
+
+    /**
+     * Open another app.
+     *
+     * @param packageName the full package name of the app to open
+     * @return true if likely successful, false if unsuccessful
+     */
+    public void openApp(String packageName) {
+        PackageManager manager = getPackageManager();
+        try {
+            Intent i = manager.getLaunchIntentForPackage(packageName);
+            if (i == null) {
+                return;
+                //throw new ActivityNotFoundException();
+            }
+            i.addCategory(Intent.CATEGORY_LAUNCHER);
+            startActivity(i);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "App not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +119,13 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         setNavigationbarColorAuto();
         setTaskDescriptionColorAuto();
 
-        mUpdateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
+        updateHelper = new MusicProgressViewUpdateHelper(this, 500, 1000);
         loadLyrics = new RepositoryImpl(this);
 
         setupToolbar();
         setupLyricsView();
         setupWakelock();
         rotate();
-
     }
 
     private void setupWakelock() {
@@ -93,29 +133,28 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     }
 
     private void setupLyricsView() {
-        mDisposable = new CompositeDisposable();
-        //mLyricView.setLineSpace(15.0f);
-        //mLyricView.setTextSize(17.0f);
-        //mLyricView.setPlayable(true);
-        //mLyricView.setTranslationY(DensityUtil.getScreenWidth(this) + DensityUtil.dip2px(this, 120));
-        mLyricView.setOnPlayerClickListener((progress, content) -> {
+        disposable = new CompositeDisposable();
+        //lyricView.setLineSpace(15.0f);
+        //lyricView.setTextSize(17.0f);
+        //lyricView.setPlayable(true);
+        //lyricView.setTranslationY(DensityUtil.getScreenWidth(this) + DensityUtil.dip2px(this, 120));
+        lyricView.setOnPlayerClickListener((progress, content) -> {
             MusicPlayerRemote.seekTo((int) progress);
-            MusicPlayerRemote.pauseSong();
         });
 
-        //mLyricView.setHighLightTextColor(ThemeStore.accentColor(this));
-        mLyricView.setDefaultColor(ContextCompat.getColor(this, R.color.md_grey_400));
-        //mLyricView.setTouchable(false);
-        mLyricView.setHintColor(Color.WHITE);
+        //lyricView.setHighLightTextColor(ThemeStore.accentColor(this));
+        lyricView.setDefaultColor(ContextCompat.getColor(this, R.color.md_grey_400));
+        //lyricView.setTouchable(false);
+        lyricView.setHintColor(Color.WHITE);
 
 
     }
 
     private void setupToolbar() {
-        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
-        mToolbar.setTitle("");
-        mToolbar.setNavigationOnClickListener(v -> onBackPressed());
-        setSupportActionBar(mToolbar);
+        toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
+        toolbar.setTitle("");
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -127,13 +166,13 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     @Override
     protected void onResume() {
         super.onResume();
-        mUpdateHelper.start();
+        updateHelper.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mUpdateHelper.stop();
+        updateHelper.stop();
     }
 
     @Override
@@ -145,11 +184,11 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDisposable.clear();
-        mLyricView.setOnPlayerClickListener(null);
+        disposable.clear();
+        lyricView.setOnPlayerClickListener(null);
 
-        if (mTask != null && !mTask.isCancelled()) {
-            mTask.cancel(true);
+        if (lyricsWikiTask != null && !lyricsWikiTask.isCancelled()) {
+            lyricsWikiTask.cancel(true);
         }
         if (updateLyricsAsyncTask != null && !updateLyricsAsyncTask.isCancelled()) {
             updateLyricsAsyncTask.cancel(true);
@@ -162,43 +201,41 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
         String artist = song.artistName;
 
         loadLyricsProvider(title, artist);
+        //netEaseLyrics(title, artist);
 
-        mTitle.setText(title);
-        mText.setText(artist);
+        this.title.setText(title);
+        text.setText(artist);
 
     }
 
     private void loadLyricsProvider(String title, String artist) {
         hideLyrics(View.GONE);
         switch (PreferenceUtil.getInstance(this).lyricsOptions()) {
-            case 0://Offline
+            default:
+            case "offline":
                 loadSongLyrics();
                 break;
-            case 2://Kogou
-                mLyricView.reset();
+            case "kugou":
+                lyricView.reset();
                 if (LyricUtil.isLrcFileExist(title, artist)) {
                     showLyricsLocal(LyricUtil.getLocalLyricFile(title, artist));
                 } else {
                     callAgain(title, artist);
                 }
                 break;
-            case 1://Lyrics Wiki
-                loadLyricsWIki(title, artist);
-                break;
         }
-
-
     }
 
     private void loadLyricsWIki(String title, String artist) {
-        if (mTask != null) {
-            mTask.cancel(false);
+        offlineLyrics.setVisibility(View.GONE);
+        if (lyricsWikiTask != null) {
+            lyricsWikiTask.cancel(false);
         }
-        mTask = new ParseLyrics(new ParseLyrics.LyricsCallback() {
+        lyricsWikiTask = new ParseLyrics(new ParseLyrics.LyricsCallback() {
             @Override
             public void onShowLyrics(String lyrics) {
-                mOfflineLyrics.setVisibility(View.VISIBLE);
-                mOfflineLyrics.setText(lyrics);
+                offlineLyrics.setVisibility(View.VISIBLE);
+                offlineLyrics.setText(lyrics);
             }
 
             @Override
@@ -209,36 +246,36 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
     }
 
     private void callAgain(final String title, final String artist) {
-        mDisposable.clear();
-        mDisposable.add(loadLyrics.downloadLrcFile(title, artist, MusicPlayerRemote.getSongDurationMillis())
+        disposable.clear();
+        disposable.add(loadLyrics.downloadLrcFile(title, artist, MusicPlayerRemote.getSongDurationMillis())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
-                    mRefresh.startAnimation(rotateAnimation);
+                    refresh.startAnimation(rotateAnimation);
                 })
-                .subscribe(this::showLyricsLocal,
-                        throwable -> {
-                            mRefresh.clearAnimation();
-                            showLyricsLocal(null);
-                            loadLyricsWIki(title, artist);
-                            hideLyrics(View.GONE);
-                        }, () -> {
-                            mRefresh.clearAnimation();
-                            Toast.makeText(this, "Lyrics downloaded", Toast.LENGTH_SHORT).show();
-                        }));
+                .subscribe(this::showLyricsLocal, throwable -> {
+                    refresh.clearAnimation();
+                    showLyricsLocal(null);
+                    //loadLyricsWIki(title, artist);
+                    hideLyrics(View.GONE);
+                }, () -> {
+                    refresh.clearAnimation();
+                    Toast.makeText(this, "Lyrics downloaded", Toast.LENGTH_SHORT).show();
+                }));
     }
 
     private void showLyricsLocal(File file) {
         if (file == null) {
-            mLyricView.reset();
+            edit.setVisibility(View.VISIBLE);
+            lyricView.reset();
         } else {
             hideLyrics(View.VISIBLE);
-            mLyricView.setLyricFile(file, "UTF-8");
+            lyricView.setLyricFile(file, "UTF-8");
         }
     }
 
     private void hideLyrics(int gone) {
-        mLyricsContainer.setVisibility(gone);
+        lyricsContainer.setVisibility(gone);
     }
 
     @Override
@@ -251,7 +288,7 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
     @Override
     public void onUpdateProgressViews(int progress, int total) {
-        mLyricView.setCurrentTimeMillis(progress);
+        lyricView.setCurrentTimeMillis(progress);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -270,12 +307,13 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
             @Override
             protected void onPostExecute(Lyrics l) {
-                mOfflineLyrics.setVisibility(View.VISIBLE);
+                offlineLyrics.setVisibility(View.VISIBLE);
                 if (l == null) {
-                    mOfflineLyrics.setText(R.string.no_lyrics_found);
+                    edit.setVisibility(View.VISIBLE);
+                    offlineLyrics.setText(R.string.no_lyrics_found);
                     return;
                 }
-                mOfflineLyrics.setText(l.data);
+                offlineLyrics.setText(l.data);
             }
 
             @Override
@@ -292,17 +330,26 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
 
     }
 
-    @OnClick({R.id.refresh,
-            R.id.dec_font_size,
-            R.id.inc_font_size,
-            R.id.edit})
+    @OnClick({R.id.refresh, R.id.dec_font_size, R.id.inc_font_size, R.id.search, R.id.edit,
+            R.id.edit_lyrics, R.id.genius})
     public void onViewClicked(View view) {
+        Song song = MusicPlayerRemote.getCurrentSong();
+        String title = song.title;
+        String artist = song.artistName;
+
         switch (view.getId()) {
+            case R.id.genius:
+                openApp("com.genius.android");
+                break;
+            case R.id.edit_lyrics:
+                showLyricsSaveDialog(song);
+                break;
+            case R.id.search:
+                Util.openUrl(this, getGoogleSearchUrl(title, artist));
+                break;
             case R.id.refresh:
-                Song song = MusicPlayerRemote.getCurrentSong();
-                String title = song.title;
-                String artist = song.artistName;
-                mLyricView.reset();
+
+                lyricView.reset();
                 if (LyricUtil.deleteLrcFile(title, artist))
                     callAgain(title, artist);
                 break;
@@ -311,19 +358,60 @@ public class LyricsActivity extends AbsMusicServiceActivity implements MusicProg
                 if (fontSize <= 17.0f) {
                     fontSize = 17.0f;
                 }
-                //mLyricView.setTextSize(fontSize);
+                //lyricView.setTextSize(fontSize);
                 break;
             case R.id.edit:
                 TransitionManager.beginDelayedTransition(findViewById(R.id.root));
-                mActions.setVisibility(mActions.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+                actionsLayout.setVisibility(actionsLayout.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
                 break;
             case R.id.inc_font_size:
                 fontSize++;
                 if (fontSize >= 40.0f) {
                     fontSize = 40.0f;
                 }
-                //mLyricView.setTextSize(fontSize);
+                //lyricView.setTextSize(fontSize);
                 break;
         }
+    }
+
+    private void showLyricsSaveDialog(Song song) {
+        new MaterialDialog.Builder(this)
+                .title("Add lyrics")
+                .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+                .input("Paste lyrics here", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                        Map<FieldKey, String> fieldKeyValueMap = new EnumMap<>(FieldKey.class);
+                        fieldKeyValueMap.put(FieldKey.LYRICS, input.toString());
+
+                        new WriteTagsAsyncTask(LyricsActivity.this)
+                                .execute(new WriteTagsAsyncTask.LoadingInfo(getSongPaths(song), fieldKeyValueMap, null));
+                        loadLrcFile();
+                    }
+                })
+                .show();
+    }
+
+    private ArrayList<String> getSongPaths(Song song) {
+        ArrayList<String> paths = new ArrayList<>(1);
+        paths.add(song.data);
+        return paths;
+    }
+
+    private String getGoogleSearchUrl(String title, String text) {
+        String baseUrl = "http://www.google.com/search?";
+        String query = title + "+" + text;
+        query = "q=" + query.replace(" ", "+") + " lyrics";
+        baseUrl += query;
+        return baseUrl;
+    }
+
+    private void netEaseLyrics(String title, String artist) {
+        Observable.fromCallable(() -> TTDownloader.query(artist, title))
+                .map(queryResults -> TTDownloader.download(queryResults.get(0), lrcRootPath + title + " - " + artist + ".lrc"))
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> {
+                    Log.i(TAG, "netEaseLyrics: " + aBoolean);
+                });
     }
 }

@@ -57,7 +57,8 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
 
 import static code.name.monkey.backend.RetroConstants.TELEGRAM_CHANGE_LOG;
 
-public class SettingsActivity extends AbsBaseActivity implements ColorChooserDialog.ColorCallback {
+public class SettingsActivity extends AbsBaseActivity implements
+        ColorChooserDialog.ColorCallback {
     public static final int REQUEST_CODE_OPEN_DIRECTORY = 1;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -89,7 +90,6 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
     public void onColorChooserDismissed(@NonNull ColorChooserDialog dialog) {
 
     }
-
 
     @Override
     protected void onCreate(@Nullable Bundle bundle) {
@@ -150,7 +150,6 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
 
     public static class AdvancedSettingsFragment extends ATEPreferenceFragmentCompat {
 
-
         private static void setSummary(@NonNull Preference preference) {
             setSummary(preference, PreferenceManager
                     .getDefaultSharedPreferences(preference.getContext())
@@ -177,7 +176,6 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
         @Nullable
         @Override
         public DialogFragment onCreatePreferenceDialog(Preference preference) {
-
             return super.onCreatePreferenceDialog(preference);
         }
 
@@ -197,7 +195,8 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (getActivity() != null) {
-                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
+                        ((SettingsActivity) getActivity())
+                                .addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                     }
                 }
             });
@@ -284,9 +283,7 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
                 return true;
             });
 
-
         }
-
     }
 
     public static class SettingsFragment extends ATEPreferenceFragmentCompat implements
@@ -344,7 +341,8 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (getActivity() != null) {
-                        ((SettingsActivity) getActivity()).addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
+                        ((SettingsActivity) getActivity())
+                                .addAppbarLayoutElevation(recyclerView.canScrollVertically(RecyclerView.NO_POSITION) ? 8f : 0f);
                     }
                 }
             });
@@ -491,7 +489,8 @@ public class SettingsActivity extends AbsBaseActivity implements ColorChooserDia
         }
 
         private void updateNowPlayingScreenSummary() {
-            findPreference("now_playing_screen_id").setSummary(PreferenceUtil.getInstance(getActivity()).getNowPlayingScreen().titleRes);
+            findPreference("now_playing_screen_id")
+                    .setSummary(PreferenceUtil.getInstance(getActivity()).getNowPlayingScreen().titleRes);
         }
 
         @Override

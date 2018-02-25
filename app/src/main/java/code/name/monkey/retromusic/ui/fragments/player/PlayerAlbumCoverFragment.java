@@ -9,15 +9,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import code.name.monkey.backend.transform.ParallaxPagerTransformer;
+import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.backend.transform.CustPagerTransformer;
+import code.name.monkey.backend.transform.NormalPageTransformer;
+import code.name.monkey.backend.transform.ParallaxPagerTransformer;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.AlbumCoverPagerAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
+import code.name.monkey.retromusic.util.PreferenceUtil;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
@@ -60,62 +64,19 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager.addOnPageChangeListener(this);
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            GestureDetector gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    if (callbacks != null) {
-                        callbacks.onToolbarToggled();
-                        return true;
-                    }
-                    return super.onSingleTapConfirmed(e);
-                }
-            });
 
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return gestureDetector.onTouchEvent(event);
-            }
-        });
-        viewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
-            private static final float MIN_SCALE = 0.85f;
-            private static final float MIN_ALPHA = 0.5f;
+        if (PreferenceUtil.getInstance(getContext()).carouselEffect() && !(
+                (PreferenceUtil.getInstance(getContext()).getNowPlayingScreen() == NowPlayingScreen.FULL) ||
+                        (PreferenceUtil.getInstance(getContext()).getNowPlayingScreen() == NowPlayingScreen.FLAT))) {
+            viewPager.setClipToPadding(false);
+            viewPager.setPadding(96, 0, 96, 0);
+            viewPager.setPageMargin(18);
 
-            @Override
-            public void transformPage(@NonNull View view, float position) {
+            viewPager.setPageTransformer(false, new CustPagerTransformer(getContext()));
+        } else {
+            viewPager.setPageTransformer(true, new NormalPageTransformer());
+        }
 
-                int pageWidth = view.getWidth();
-                int pageHeight = view.getHeight();
-
-                if (position < -1) { // [-Infinity,-1)
-                    // This page is way off-screen to the left.
-                    view.setAlpha(1);
-                    view.setScaleY(0.7f);
-                } else if (position <= 1) { // [-1,1]
-                    // Modify the default slide transition to shrink the page as well
-                    float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
-                    float vertMargin = pageHeight * (1 - scaleFactor) / 2;
-                    float horzMargin = pageWidth * (1 - scaleFactor) / 2;
-                    if (position < 0) {
-                        view.setTranslationX(horzMargin - vertMargin / 2);
-                    } else {
-                        view.setTranslationX(-horzMargin + vertMargin / 2);
-                    }
-
-                    // Scale the page down (between MIN_SCALE and 1)
-                    view.setScaleX(scaleFactor);
-                    view.setScaleY(scaleFactor);
-
-                    // Fade the page relative to its size.
-                    //view.setAlpha(MIN_ALPHA + (scaleFactor - MIN_SCALE) / (1 - MIN_SCALE) * (1 - MIN_ALPHA));
-
-                } else { // (1,+Infinity]
-                    // This page is way off-screen to the right.
-                    view.setAlpha(1);
-                    view.setScaleY(0.7f);
-                }
-            }
-        });
 
     }
 
@@ -157,7 +118,9 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
     @Override
     public void onPageSelected(int position) {
         currentPosition = position;
-        ((AlbumCoverPagerAdapter) viewPager.getAdapter()).receiveColor(colorReceiver, position);
+        if (viewPager.getAdapter() != null) {
+            ((AlbumCoverPagerAdapter) viewPager.getAdapter()).receiveColor(colorReceiver, position);
+        }
         if (position != MusicPlayerRemote.getPosition()) {
             MusicPlayerRemote.playSongAt(position);
         }
@@ -183,6 +146,5 @@ public class PlayerAlbumCoverFragment extends AbsMusicServiceFragment implements
 
         void onFavoriteToggled();
 
-        void onToolbarToggled();
     }
 }

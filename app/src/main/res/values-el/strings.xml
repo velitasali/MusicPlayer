@@ -2,6 +2,7 @@
 <resources>
     <string name="accent_color">Χρώμα Τονισμού</string>
     <string name="accent_color_desc">Το χρώμα τονισμού του θέματος, η προεπιλογή είναι το πράσινο.</string>
+    <string name="no_genres">Κανένα είδος</string>
     <string name="action_about">Σχετικά με...</string>
     <string name="action_add_to_favorites">Προσθήκη στα αγαπημένα</string>
     <string name="action_add_to_playing_queue">Προσθήκη στην ουρά αναπ/γής</string>
@@ -149,7 +150,7 @@ https://play.google.com/store/apps/details?id=%s</string>
     <string name="label_track_length">Μήκος</string>
     <string name="last_added">Προστέθηκαν τελευταία</string>
     <string name="lets_play_something">Ας παίξουμε κάτι</string>
-    <string name="library">Βιβλιοθήκη</string>
+    <string name="library">Περιηγήσου</string>
     <string name="licenses">Άδειες</string>
     <string name="light_theme_name">Ξεκάθαρα Λευκό</string>
     <string name="listing_files">Καταγραφή αρχείων</string>
@@ -172,7 +173,6 @@ https://play.google.com/store/apps/details?id=%s</string>
     <string name="no_playlists">Δεν βρέθηκαν playlists</string>
     <string name="no_results">Κανένα αποτέλεσμα</string>
     <string name="no_songs">Δεν βρέθηκαν κομμάτια</string>
-    <string name="normal">Κανονικό</string>
     <string name="not_listed_in_media_store"><![CDATA[Το <b>%s</b> δεν υπάρχει στο media store.]]></string>
     <string name="nothing_to_scan">Δεν υπάρχει στοιχείο προς σάρωση.</string>
     <string name="notification">Ειδοποίηση</string>
@@ -210,7 +210,6 @@ https://play.google.com/store/apps/details?id=%s</string>
     <string name="pref_summary_exclude_songs">Εξαίρεση κομματιών κάτω από 30 δευτ.</string>
     <string name="pref_summary_gapless_playback">"Μπορεί να προκαλέσει προβλήματα με την αναπαραγωγή σε κάποιες συσκευές."</string>
     <string name="pref_summary_ignore_media_store_artwork">Μπορεί να αυξήσει την ποιότητα των εξωφύλλων άλμπουμ, αλλά προκαλεί αργή φόρτωση εικόνων. Ενεργοποιήστε αυτή την επίλογη μόνο εαν αντιμετωπίζετε προβλήματα με εξώφυλλα χαμηλής ανάλυσης.</string>
-    <string name="pref_summary_lock_screen">Ενεργοποίηση διακοπτών ρύθμισης στην οθόνη κλειδώματος.</string>
     <string name="pref_summary_lock_screen_app">Εμφάνιση διακοπτών ρύθμισης από την οθόνη κλειδώματος.</string>
     <string name="pref_summary_open_source_licences">Λεπτομέρειες άδειας για τη χρήση open source λογισμικού</string>
     <string name="pref_summary_round_corners">Στρογγυλεμένες άκρες για το παράθυρο, εξώφυλλα άλμπουμ, κλπ.</string>
@@ -316,11 +315,34 @@ https://play.google.com/store/apps/details?id=%s</string>
     <string name="edit">Επεξεργασία</string>
     <string name="donation_header">Αγορασέ μου ένα</string>
     <string name="plain">Απλό</string>
-     <string name="tool_tip_see_all">Εμφάνιση όλων των κομματιών</string>
+    <string name="tool_tip_see_all">Τυχαία αναπαραγωγή όλων των τραγουδιών</string>
     <string name="toggle_lyrics_size">Αλλαγή μεγέθους στίχων</string>
     <string name="title_good_night">Καληνύχτα</string>
     <string name="title_good_evening">Καλό Απόγευμα</string>
     <string name="title_good_afternoon">Καλό Μεσημέρι</string>
     <string name="title_good_morning">Καλημέρα</string>
     <string name="title_good_day">Καλημέρα</string>
+    <string name="language_contributors">Συνεισφέροντες μεταφραστές</string>
+    <string name="simple">Απλό</string>
+    <string name="pref_summary_toggle_headset">Όταν συνδεθούν ηχεία/ακουστικά , αρχίζει η αναπαραγωγή</string>
+    <string name="pref_title_toggle_toggle_headset">Αυτόματη αναπαραγωγή</string>
+    <string name="pref_summary_tab_titles">Ενεργοποίηση/ Απενεργοποίηση τίτλων από την κάτω μπάρα</string>
+    <string name="pref_title_toggle_tab_titles">Τίτλοι καρτελών</string>
+    <string name="pref_summary_language_en">Επέβαλε αλλαγή γλώσσας σε Αγγλικά (σε δοκιμαστικό στάδιο για την επιλογή πολλαπλών γλωσσών)</string>
+    <string name="pref_title_toggle_language_en">Αγγλικά</string>
+    <string name="play_all">Αναπαραγωγή όλων</string>
+    <string name="normal">Κανονικό</string>
+    <string name="experimental">Πειραματικό</string>
+    <string name="pref_summary_lock_screen">Ενεργοποίηση διακοπτών ρύθμισης στην οθόνη κλειδώματος.</string>
+    <string name="slide_unlock">Σύρε για ξεκλείδωμα</string>
+    <string name="primary_color_desc">Το βασικό χρώμα του θέματος, η προεπιλογή είναι το άσπρο.</string>
+    <!-- SAF -->
+    <!-- SAF guide -->
+    <string name="saf_guide_slide1_description">Άνοιξε το συρτάρι πλοήγησης</string>
+    <string name="saf_guide_slide2_title">Διάλεξε την κάρτα SD σου στο συρτάρι πλοήγησης</string>
+    <string name="deleting_songs">Διαγραφή τραγουδιών...</string>
+    <string name="pref_summary_toggle_genre">Δεν θέλω να φαίνεται το είδος, κρύψ\'το</string>
+    <!-- Message displayed when tag editing fails -->
+    <string name="tag_editor_check_permission">Επαληθεύοντας τις άδειες...</string>
+    <!-- Android Auto -->
 </resources>

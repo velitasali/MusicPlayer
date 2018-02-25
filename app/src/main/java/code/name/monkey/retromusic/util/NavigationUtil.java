@@ -6,13 +6,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.widget.Toast;
 
 import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Playlist;
-
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.AlbumDetailsActivity;
@@ -28,19 +26,19 @@ public class NavigationUtil {
     public static void goToAlbum(@NonNull Activity activity, int i, @Nullable Pair... pairArr) {
         Intent intent = new Intent(activity, AlbumDetailsActivity.class);
         intent.putExtra(AlbumDetailsActivity.EXTRA_ALBUM_ID, i);
-        ActivityCompat.startActivity(activity, intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairArr).toBundle());
+        ActivityCompat.startActivity(activity, intent, null);
     }
 
     public static void goToArtist(@NonNull Activity activity, int i, @Nullable Pair... pairArr) {
         Intent intent = new Intent(activity, ArtistDetailActivity.class);
         intent.putExtra(ArtistDetailActivity.EXTRA_ARTIST_ID, i);
-        activity.startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pairArr).toBundle());
+        activity.startActivity(intent, null);
     }
 
     public static void goToPlaylistNew(@NonNull Activity activity, Playlist playlist) {
         Intent intent = new Intent(activity, PlaylistDetailActivity.class);
         intent.putExtra(PlaylistDetailActivity.EXTRA_PLAYLIST, playlist);
-        activity.startActivity(intent);
+        ActivityCompat.startActivity(activity, intent,null);
     }
 
     public static void openEqualizer(@NonNull Activity activity) {

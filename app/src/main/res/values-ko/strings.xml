@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <!-- 
-    <string name="pref_summary_toggle_status_bar">Hide only status bar</string>
-    <string name="pref_title_toggle_status_bar">Status bar</string>
-    <string name="pref_summary_toggle_navigation_bar">Hide only navigation bar</string>
-    <string name="pref_title_toggle_navigation_bar">Navigation bar</string>
- -->
     <string name="accent_color">강조 색상</string>
     <string name="accent_color_desc">강조 색상을 지정합니다. 기본값은 녹색입니다.</string>
+    <string name="no_genres">장르 없음</string>
     <string name="action_about">정보</string>
     <string name="action_add_to_favorites">즐겨찾기에 추가</string>
     <string name="action_add_to_playing_queue">재생 대기열에 추가</string>
@@ -90,6 +85,7 @@
     <string name="clear_blacklist">블랙리스트 비우기</string>
     <string name="clear_playlist_title">재생 목록 비우기</string>
     <string name="clear_playlist_x"><![CDATA[<b>%1$s</b> \uc7ac\uc0dd \ubaa9\ub85d\uc744 \ube44\uc6b0\uc2dc\uaca0\uc2b5\ub2c8\uae4c? \uc774 \uc791\uc5c5\uc740 \ucde8\uc18c\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4!]]></string>
+    <string name="colored_footers">하단 색상 틴트</string>
     <string name="colors">색상</string>
     <string name="could_not_create_playlist">\uc7ac\uc0dd \ubaa9\ub85d\uc744 \ub9cc\ub4e4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.</string>
     <string name="could_not_download_album_cover">"\uc774 \uc568\ubc94\uacfc \uc77c\uce58\ud558\ub294 \uc568\ubc94 \ucee4\ubc84\ub97c \ub2e4\uc6b4\ub85c\ub4dc\ud560 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4."</string>
@@ -134,7 +130,9 @@
     <string name="grid_size_8">8</string>
     <string name="history">기록</string>
     <string name="home">홈</string>
+    <string name="full">전체</string>
     <string name="pref_title_day_dream">백일몽</string>
+    <string name="pref_summary_day_dream">음악이 재생중일 때 Dream에 음악의 세부 정보를 표시합니다</string>
     <string name="inserted_x_songs_into_playlist_x">%2$s 재생 목록에 %1$d개의 노래를 추가했습니다.</string>
     <string name="inspired_designs_by">Inspired designs by</string>
     <string name="join_community">Google+ 커뮤니티에 가입</string>
@@ -290,6 +288,7 @@
     <string name="title_material_design_icons">아이콘</string>
     <string name="title_notifications">알림</string>
     <string name="today">오늘</string>
+    <string name="top_tracks">자주 재생한 음악</string>
     <string name="track_hint">"트랙 (트랙 2를 나타내려면 2, CD3의 4번 트랙을 나타내려면 3004)"</string>
     <string name="track_list">트랙 번호</string>
     <string name="translate">번역</string>
@@ -313,7 +312,9 @@
     <string name="set_artist_image">아티스트 이미지 설정</string>
     <string name="edit">편집</string>
     <string name="donation_header">사주세요!</string>
+    <string name="plain">단색</string>
     <string name="tool_tip_see_all">모든 노래 보기</string>
+    <string name="toggle_lyrics_size">가사 크기 조정</string>
     <string name="title_good_night">좋은 밤이에요</string>
     <string name="title_good_evening">좋은 저녁입니다</string>
     <string name="title_good_afternoon">좋은 저녁입니다</string>
@@ -336,7 +337,37 @@
     <string name="slide_unlock">스와이프하여 잠금해제</string>
     <string name="primary_color_desc">기본 테마 색은 흰색입니다.</string>
     <string name="media_route_menu_title">캐스트 장치</string>
+    <string name="tiny">작음</string>
+    <string name="pref_summary_dominant_color">앨범 아트나 아티스트 사진으로 부터 가장 주요한 색상을 고릅니다.</string>
+    <string name="pref_title_toggle_dominant_color">주요 색상</string>
     <!-- SAF -->
+    <string name="saf_error_uri">SAF URI를 받아올 수 없습니다</string>
+    <string name="saf_write_failed">파일 쓰기 실패: %s</string>
+    <string name="saf_delete_failed">파일 삭제 실패: %s</string>
+    <string name="saf_pick_sdcard">SD카드 접근 권한이 필요합니다. SD카드의 초기 디렉토리를 선택해주세요</string>
+    <string name="saf_pick_file">파일 접근이 필요합니다. %s를 선택해주세요</string>
     <!-- SAF guide -->
+    <string name="saf_guide_slide1_title">%s은 SD카드 접근 권한이 필요합니다</string>
+    <string name="saf_guide_slide1_description_before_o">오버플로우 메뉴에서 \'SD카드 보이기\' 활성화</string>
+    <string name="saf_guide_slide1_description">네비게이션 드로어 열기</string>
+    <string name="saf_guide_slide2_title">네비게이션 드로어에서 SD카드를 선택해주세요</string>
+    <string name="saf_guide_slide2_description">SD카드의 초기 디렉토리를 선택해 주어야 합니다</string>
+    <string name="saf_guide_slide3_title">하단의 \'선택\' 버튼을 누르세요</string>
+    <string name="deleting_songs">노래 삭제</string>
+    <string name="saf_guide_slide3_description">하위 폴더 열지 않기</string>
+    <string name="pref_summary_toggle_genre">장르 디렉토리를 보고 싶지 않으시면 숨기세요</string>
+    <string name="pref_title_toggle_genre">장르 숨기기</string>
+    <string name="pref_title_external_storage_access">외부 저장소 접근 권한을 부여해주세요</string>
     <!-- Message displayed when tag editing fails -->
+    <string name="tag_edit_error">태그를 수정하는 중 오류가 발생하였습니다.</string>
+    <string name="tag_error_lollipop">태그를 수정하는 도중 오류가 발생하였습니다. 파일이 SD카드에 저장되어 있을 시 접근 권한이 필요합니다.</string>
+    <string name="tag_error_kitkat">태그를 수정하는 도중 오류가 발생하였습니다. 파일이 SD카드에 저장되어 있나요? Google은 이러한 파일의 태그 편집을 불가능하게 만들었습니다.</string>
+    <string name="tag_editor_document_tree_message">외부 저장소 디렉토리를 선택해주세요</string>
+    <string name="tag_editor_check_permission">권한 확인중</string>
+    <string name="tag_editor_document_tree_permission_failed">이 파일을 수정하기 위한 권한이 부여되지 않은 것 같습니다. 파일 선택기에서 디렉토리를 다시 한 번 확인해주세요.</string>
+    <string name="tag_retrieve_error">태그를 불러오는 중 오류가 발생하였습니다.</string>
+    <string name="edit_tags">태그 수정하기</string>
+    <string name="saving_tags">태그 저장중</string>
+    <string name="holiday">휴일</string>
+    <!-- Android Auto -->
 </resources>

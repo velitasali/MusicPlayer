@@ -18,13 +18,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.backend.views.PlayPauseDrawable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.backend.views.PlayPauseDrawable;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
@@ -44,6 +43,8 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
     ImageView miniPlayerPlayPauseButton;
     @BindView(R.id.progress_bar)
     MaterialProgressBar progressBar;
+
+
     private Unbinder unbinder;
     private PlayPauseDrawable miniPlayerPlayPauseDrawable;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
@@ -66,6 +67,7 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
         unbinder = ButterKnife.bind(this, view);
         view.setOnTouchListener(new FlingPlayBackController(getActivity()));
         setUpMiniPlayer();
+
     }
 
     @Override
@@ -148,7 +150,7 @@ public class MiniPlayerFragment extends AbsMusicServiceFragment implements Music
     public static class FlingPlayBackController implements View.OnTouchListener {
         GestureDetector flingPlayBackController;
 
-        public FlingPlayBackController(Context context) {
+        FlingPlayBackController(Context context) {
             flingPlayBackController = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {

@@ -16,14 +16,13 @@ import java.util.ArrayList;
 
 public class GenreDetailsPresenter extends Presenter
         implements GenreDetailsContract.Presenter {
-    @NonNull
     private final int genreId;
     @NonNull
     private GenreDetailsContract.GenreDetailsView view;
 
     public GenreDetailsPresenter(@NonNull Repository repository,
                                  @NonNull GenreDetailsContract.GenreDetailsView view,
-                                 @NonNull int genreId) {
+                                 int genreId) {
         super(repository);
         this.view = view;
         this.genreId = genreId;

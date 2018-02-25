@@ -2,16 +2,18 @@ package code.name.monkey.retromusic.ui.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.transition.TransitionManager;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.Menu;
@@ -20,14 +22,22 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.appthemehelper.ThemeStore;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
 
-import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import java.util.ArrayList;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.helper.SortOrder.ArtistSongSortOrder;
 import code.name.monkey.backend.model.Artist;
@@ -36,33 +46,25 @@ import code.name.monkey.backend.mvp.contract.ArtistDetailContract;
 import code.name.monkey.backend.mvp.presenter.ArtistDetailsPresenter;
 import code.name.monkey.backend.rest.LastFMRestClient;
 import code.name.monkey.backend.rest.model.LastFmArtist;
-
-import java.util.ArrayList;
-import java.util.Locale;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.glide.ArtistGlideRequest;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
-import code.name.monkey.retromusic.ui.adapter.artist.ArtistDetailAdapter;
+import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
+import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
 import code.name.monkey.retromusic.util.CustomArtistImageUtil;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
-import code.name.monkey.retromusic.util.ViewUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implements ArtistDetailContract.ArtistsDetailsView {
+public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implements
+        ArtistDetailContract.ArtistsDetailsView {
     public static final String EXTRA_ARTIST_ID = "extra_artist_id";
     private static final int REQUEST_CODE_SELECT_IMAGE = 9003;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.image)
     ImageView image;
     @BindView(R.id.biography)
@@ -70,24 +72,38 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     @BindView(R.id.root)
     ViewGroup rootLayout;
     @BindView(R.id.status_bar)
-    View mStatusBar;
+    View statusBar;
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.play_songs)
-    AppCompatButton playSongs;
+    RecyclerView recyclerView;
+    @BindView(R.id.album_recycler_view)
+    RecyclerView alnumRecyclerView;
+    @BindView(R.id.album_title)
+    AppCompatTextView albumTitle;
+    @BindView(R.id.song_title)
+    AppCompatTextView songTitle;
+    @BindView(R.id.biography_title)
+    AppCompatTextView biographyTitle;
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.text)
+    TextView text;
+    @BindView(R.id.menu_close)
+    AppCompatImageButton close;
+    @BindView(R.id.menu)
+    AppCompatImageButton menu;
     @BindView(R.id.action_shuffle_all)
-    AppCompatButton shuffleSongs;
-    private Artist mArtist;
-    private LastFMRestClient mLastFMRestClient;
+    FloatingActionButton shuffleButton;
     @Nullable
-    private Spanned mBiography;
-    private ArtistDetailsPresenter mArtistDetailsPresenter;
-    private ArtistDetailAdapter mArtistDetailAdapter;
+    private Spanned biography;
+    private Artist artist;
+    private LastFMRestClient lastFMRestClient;
+    private ArtistDetailsPresenter artistDetailsPresenter;
+    private SimpleSongAdapter songAdapter;
+    private AlbumAdapter albumAdapter;
     private boolean forceDownload;
 
     private void setUpViews() {
         setupRecyclerView();
-        setToolBar();
     }
 
     @Override
@@ -96,29 +112,39 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
         super.onCreate(bundle);
         ButterKnife.bind(this);
 
-        supportPostponeEnterTransition();
+        //supportPostponeEnterTransition();
 
-        mLastFMRestClient = new LastFMRestClient(this);
+        lastFMRestClient = new LastFMRestClient(this);
 
         setBottomBarVisibility(View.GONE);
 
-        ViewUtil.setStatusBarHeight(this, mStatusBar);
+        //ViewUtil.setStatusBarHeight(this, statusBar);
 
         setUpViews();
 
-
         int artistID = getIntent().getIntExtra(EXTRA_ARTIST_ID, -1);
-        mArtistDetailsPresenter = new ArtistDetailsPresenter(Injection.provideRepository(this),
-                this,
-                artistID);
+        artistDetailsPresenter = new ArtistDetailsPresenter(Injection.provideRepository(this),
+                this, artistID);
 
+        ColorStateList colorState = ColorStateList.valueOf(ColorUtil.withAlpha(Color.BLACK, 0.2f));
+        TintHelper.setTintAuto(close, Color.WHITE, false);
+        menu.setBackgroundTintList(colorState);
+        close.setBackgroundTintList(colorState);
     }
 
     private void setupRecyclerView() {
-        mArtistDetailAdapter = new ArtistDetailAdapter(this);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mArtistDetailAdapter);
+
+        albumAdapter = new AlbumAdapter(this, new ArrayList<>(), R.layout.item_image, false, null);
+        alnumRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        alnumRecyclerView.setLayoutManager(new GridLayoutManager(this, 1, GridLayoutManager.HORIZONTAL, false));
+        alnumRecyclerView.setAdapter(albumAdapter);
+
+
+        songAdapter = new SimpleSongAdapter(this, new ArrayList<>(), R.layout.item_song);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(songAdapter);
+
     }
 
     @Override
@@ -132,7 +158,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
         switch (requestCode) {
             case REQUEST_CODE_SELECT_IMAGE:
                 if (resultCode == RESULT_OK) {
-                    CustomArtistImageUtil.getInstance(this).setCustomArtistImage(mArtist, data.getData());
+                    CustomArtistImageUtil.getInstance(this).setCustomArtistImage(artist, data.getData());
                 }
                 break;
             default:
@@ -151,13 +177,13 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     @Override
     protected void onResume() {
         super.onResume();
-        mArtistDetailsPresenter.subscribe();
+        artistDetailsPresenter.subscribe();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mArtistDetailsPresenter.unsubscribe();
+        artistDetailsPresenter.unsubscribe();
     }
 
     @Override
@@ -171,39 +197,32 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
 
     @Override
     public void completed() {
-        supportStartPostponedEnterTransition();
+        //supportStartPostponedEnterTransition();
     }
 
     @Override
     public void showData(Artist artist) {
-        supportStartPostponedEnterTransition();
+        //supportStartPostponedEnterTransition();
         setArtist(artist);
     }
 
     private Artist getArtist() {
-        if (mArtist == null) mArtist = new Artist();
-        return mArtist;
+        if (artist == null) artist = new Artist();
+        return artist;
     }
 
     private void setArtist(Artist artist) {
-        this.mArtist = artist;
+        this.artist = artist;
         loadArtistImage();
 
         if (Util.isAllowedToDownloadMetadata(this)) {
             loadBiography();
         }
+        title.setText(artist.getName());
+        text.setText(MusicUtil.getArtistInfoString(this, artist));
 
-        toolbar.setTitle(artist.getName());
-        toolbar.setSubtitle(MusicUtil.getArtistInfoString(this, artist));
-
-        ArrayList<Object> list = new ArrayList<>();
-        list.add("Albums");
-        list.add(artist.albums);
-        list.add("Songs");
-        list.add(artist.getSongs());
-
-
-        mArtistDetailAdapter.swapData(list);
+        songAdapter.swapDataSet(artist.getSongs());
+        albumAdapter.swapDataSet(artist.albums);
     }
 
     private void loadBiography() {
@@ -211,9 +230,9 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     private void loadBiography(@Nullable final String lang) {
-        mBiography = null;
+        biography = null;
 
-        mLastFMRestClient.getApiService()
+        lastFMRestClient.getApiService()
                 .getArtistInfo(getArtist().getName(), lang, null)
                 .enqueue(new Callback<LastFmArtist>() {
                     @Override
@@ -224,13 +243,13 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
                             if (bioContent != null && !bioContent.trim().isEmpty()) {
                                 //TransitionManager.beginDelayedTransition(titleContainer);
                                 biographyTextView.setVisibility(View.VISIBLE);
-                                mBiography = Html.fromHtml(bioContent);
-                                biographyTextView.setText(mBiography);
+                                biography = Html.fromHtml(bioContent);
+                                biographyTextView.setText(biography);
                             }
                         }
 
                         // If the "lang" parameter is set and no biography is given, retry with default language
-                        if (mBiography == null && lang != null) {
+                        if (biography == null && lang != null) {
                             loadBiography(null);
                             return;
                         }
@@ -239,7 +258,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
                     @Override
                     public void onFailure(@NonNull Call<LastFmArtist> call, @NonNull Throwable t) {
                         t.printStackTrace();
-                        mBiography = null;
+                        biography = null;
                     }
                 });
     }
@@ -254,15 +273,8 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
         }
     }
 
-    private void setToolBar() {
-        toolbar.setTitle("");
-        setTitle(R.string.app_name);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
-    }
-
     private void loadArtistImage() {
-        ArtistGlideRequest.Builder.from(Glide.with(this), mArtist)
+        ArtistGlideRequest.Builder.from(Glide.with(this), artist)
                 .forceDownload(forceDownload)
                 .generatePalette(this).build()
                 .dontAnimate()
@@ -276,30 +288,29 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     private void setColors(int color) {
-
-        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(toolbar,
-                PreferenceUtil.getInstance(this)
-                        .getAdaptiveColor() ? color :
-                        ThemeStore.accentColor(this), ArtistDetailActivity.this), 1);
-
-        mArtistDetailAdapter.setColor(color);
-
         int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this);
-        playSongs.setSupportBackgroundTintList(ColorStateList.valueOf(themeColor));
-        //ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
-        shuffleSongs.setTextColor(themeColor);
 
+        albumTitle.setTextColor(themeColor);
+        songTitle.setTextColor(themeColor);
+        biographyTitle.setTextColor(themeColor);
+
+        TintHelper.setTintAuto(shuffleButton, themeColor, true);
     }
 
-    @OnClick({R.id.action_shuffle_all, R.id.play_songs})
+    @OnClick({R.id.action_shuffle_all, R.id.menu_close, R.id.menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.menu_close:
+                onBackPressed();
+                break;
+            case R.id.menu:
+                PopupMenu popupMenu = new PopupMenu(this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_artist_detail, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(this::onOptionsItemSelected);
+                popupMenu.show();
+                break;
             case R.id.action_shuffle_all:
                 MusicPlayerRemote.openAndShuffleQueue(getArtist().getSongs(), true);
-                break;
-            case R.id.play_songs:
-                //showHeartAnimation();
-                MusicPlayerRemote.openQueue(getArtist().getSongs(), 0, true);
                 break;
         }
     }
@@ -326,10 +337,6 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
             case android.R.id.home:
                 super.onBackPressed();
                 return true;
-            case R.id.action_colored_footers:
-                item.setChecked(!item.isChecked());
-                return true;
-            /*Sort*/
             case R.id.action_sort_order_title:
                 sortOrder = ArtistSongSortOrder.SONG_A_Z;
                 break;
@@ -355,7 +362,7 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
                 return true;
             case R.id.action_reset_artist_image:
                 Toast.makeText(ArtistDetailActivity.this, getResources().getString(R.string.updating), Toast.LENGTH_SHORT).show();
-                CustomArtistImageUtil.getInstance(ArtistDetailActivity.this).resetCustomArtistImage(mArtist);
+                CustomArtistImageUtil.getInstance(ArtistDetailActivity.this).resetCustomArtistImage(artist);
                 forceDownload = true;
                 return true;
         }
@@ -413,7 +420,9 @@ public class ArtistDetailActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     private void reload() {
-        mArtistDetailsPresenter.unsubscribe();
-        mArtistDetailsPresenter.subscribe();
+        artistDetailsPresenter.unsubscribe();
+        artistDetailsPresenter.subscribe();
     }
+
+
 }

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground">
+    android:background="?android:windowBackground"
+    android:clickable="true"
+    android:focusable="true">
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 
@@ -13,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <LinearLayout
             android:id="@+id/title_container"
@@ -24,7 +27,7 @@
             android:paddingStart="16dp"
             android:paddingTop="8dp">
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/title"
                 fontPath="@string/sans_bold"
                 android:layout_width="match_parent"
@@ -36,7 +39,7 @@
                 tools:ignore="MissingPrefix"
                 tools:text="Title" />
 
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,7 +49,7 @@
                 tools:text="Text" />
         </LinearLayout>
 
-        <code.name.monkey.backend.views.WidthFitSquareLayout
+        <code.name.monkey.retromusic.views.WidthFitSquareLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -56,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.backend.views.WidthFitSquareLayout>
+        </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

@@ -1,23 +1,27 @@
 package code.name.monkey.retromusic.ui.adapter.song;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags;
-import code.name.monkey.backend.model.Song;
 
 import java.util.ArrayList;
 
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
+import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**
@@ -31,7 +35,8 @@ public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAda
 
     private int current;
 
-    public PlayingQueueAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, int current, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
+    public PlayingQueueAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, int current,
+                               @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
         super(activity, dataSet, itemLayoutRes, usePalette, cabHolder);
         this.current = current;
     }
@@ -47,9 +52,41 @@ public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAda
         if (holder.imageText != null) {
             holder.imageText.setText(String.valueOf(position - current));
         }
+        if (holder.time != null) {
+            holder.time.setText(MusicUtil.getReadableDurationString(getDataSet().get(position).duration));
+        }
         if (holder.getItemViewType() == HISTORY || holder.getItemViewType() == CURRENT) {
             setAlpha(holder, 0.5f);
         }
+        if (usePalette) {
+            setColor(holder, Color.WHITE);
+        }
+    }
+
+    private void setColor(SongAdapter.ViewHolder holder, int white) {
+
+        if (holder.title != null) {
+            holder.title.setTextColor(white);
+        }
+        if (holder.text != null) {
+            holder.text.setTextColor(white);
+        }
+        if (holder.time != null) {
+            holder.time.setTextColor(white);
+        }
+        if (holder.imageText != null) {
+            holder.imageText.setTextColor(white);
+        }
+        if (holder.menu != null) {
+            ((ImageView) holder.menu).setColorFilter(white, PorterDuff.Mode.SRC_IN);
+        }
+    }
+
+    @Override
+    public void usePalette(boolean color) {
+        super.usePalette(color);
+        usePalette = color;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -78,7 +115,7 @@ public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAda
         notifyDataSetChanged();
     }
 
-    protected void setAlpha(SongAdapter.ViewHolder holder, float alpha) {
+    private void setAlpha(SongAdapter.ViewHolder holder, float alpha) {
         if (holder.image != null) {
             holder.image.setAlpha(alpha);
         }

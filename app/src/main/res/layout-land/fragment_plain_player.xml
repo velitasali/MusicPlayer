@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true">
 
     <include layout="@layout/shadow_statusbar_toolbar" />
 
@@ -13,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <code.name.monkey.backend.views.HeightFitSquareLayout
+        <code.name.monkey.retromusic.views.HeightFitSquareLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -23,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.backend.views.HeightFitSquareLayout>
+        </code.name.monkey.retromusic.views.HeightFitSquareLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

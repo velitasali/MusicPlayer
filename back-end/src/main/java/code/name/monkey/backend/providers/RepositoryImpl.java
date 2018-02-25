@@ -3,14 +3,19 @@ package code.name.monkey.backend.providers;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import code.name.monkey.backend.loaders.AlbumLoader;
 import code.name.monkey.backend.loaders.ArtistLoader;
 import code.name.monkey.backend.loaders.GenreLoader;
 import code.name.monkey.backend.loaders.HomeLoader;
+import code.name.monkey.backend.loaders.LastAddedSongsLoader;
 import code.name.monkey.backend.loaders.PlaylistLoader;
 import code.name.monkey.backend.loaders.PlaylistSongsLoader;
 import code.name.monkey.backend.loaders.SearchLoader;
 import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.loaders.TopAndRecentlyPlayedTracksLoader;
 import code.name.monkey.backend.model.Album;
 import code.name.monkey.backend.model.Artist;
 import code.name.monkey.backend.model.Genre;
@@ -22,10 +27,6 @@ import code.name.monkey.backend.rest.model.KuGouRawLyric;
 import code.name.monkey.backend.rest.model.KuGouSearchLyricResult;
 import code.name.monkey.backend.rest.service.KuGouApiService;
 import code.name.monkey.backend.util.LyricUtil;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -54,6 +55,11 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Observable<ArrayList<Song>> getSuggestionSongs() {
+        return SongLoader.suggestSongs(context);
+    }
+
+    @Override
     public Observable<Song> getSong(int id) {
         return SongLoader.getSong(context, id);
     }
@@ -64,6 +70,16 @@ public class RepositoryImpl implements Repository {
     }
 
     @Override
+    public Observable<ArrayList<Album>> getRecentAlbums() {
+        return LastAddedSongsLoader.getLastAddedAlbums(context);
+    }
+
+    @Override
+    public Observable<ArrayList<Album>> getTopAlbums() {
+        return TopAndRecentlyPlayedTracksLoader.getTopAlbums(context);
+    }
+
+    @Override
     public Observable<Album> getAlbum(int albumId) {
         return AlbumLoader.getAlbum(context, albumId);
     }
@@ -71,6 +87,16 @@ public class RepositoryImpl implements Repository {
     @Override
     public Observable<ArrayList<Artist>> getAllArtists() {
         return ArtistLoader.getAllArtists(context);
+    }
+
+    @Override
+    public Observable<ArrayList<Artist>> getRecentArtists() {
+        return LastAddedSongsLoader.getLastAddedArtists(context);
+    }
+
+    @Override
+    public Observable<ArrayList<Artist>> getTopArtists() {
+        return TopAndRecentlyPlayedTracksLoader.getTopArtists(context);
     }
 
     @Override

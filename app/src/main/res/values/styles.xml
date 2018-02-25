@@ -47,6 +47,15 @@
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="popupTheme">?toolbarPopupTheme</item>
         <item name="android:transitionName" tools:ignore="NewApi">toolbar</item>
+        <item name="android:titleTextAppearance">@style/ToolbarTextAppearance</item>
+        <item name="android:subtitleTextAppearance">@style/ToolbarTextAppearance</item>
+        <item name="layout_collapseMode">pin</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+    </style>
+
+    <style name="Toolbar48" parent="Toolbar">
+        <item name="android:layout_height">48dp</item>
     </style>
 
     <style name="Theme.Transparent" parent="android:Theme">
@@ -58,14 +67,6 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="Toolbar48" parent="Toolbar">
-        <item name="layout_collapseMode">pin</item>
-        <item name="contentInsetStartWithNavigation">0dp</item>
-        <item name="contentInsetStart">0dp</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:titleTextAppearance">@style/ToolbarTextAppearance</item>
-        <item name="android:subtitleTextAppearance">@style/ToolbarTextAppearance</item>
-    </style>
 
     <style name="SettingsTabsTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:textAllCaps">false</item>

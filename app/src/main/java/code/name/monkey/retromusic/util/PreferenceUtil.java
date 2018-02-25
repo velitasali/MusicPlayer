@@ -13,21 +13,21 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
-import code.name.monkey.backend.helper.SortOrder;
-import code.name.monkey.backend.model.CategoryInfo;
-import code.name.monkey.backend.util.FileUtil;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import code.name.monkey.backend.helper.SortOrder;
+import code.name.monkey.backend.model.CategoryInfo;
+import code.name.monkey.backend.util.FileUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
 
 public final class PreferenceUtil {
     public static final String LIBRARY_CATEGORIES = "library_categories";
     public static final String NOW_PLAYING_SCREEN_ID = "now_playing_screen_id";
-    public static final String FORCE_SQUARE_ALBUM_COVER = "force_square_album_art";
+    public static final String CAROUSEL_EFFECT = "carousel_effect";
     public static final String COLORED_NOTIFICATION = "colored_notification";
     public static final String CLASSIC_NOTIFICATION = "classic_notification";
     public static final String GAPLESS_PLAYBACK = "gapless_playback";
@@ -37,7 +37,14 @@ public final class PreferenceUtil {
     public static final String DOMINANT_COLOR = "dominant_color";
     public static final String LAST_PAGE = "last_start_page";
     public static final String LAST_MUSIC_CHOOSER = "last_music_chooser";
-    private static final String GENERAL_THEME = "general_theme";
+    public static final String GENERAL_THEME = "general_theme";
+    public static final String ADAPTIVE_COLOR_APP = "adaptive_color_app";
+    public static final String USER_NAME = "user_name";
+    public static final String TOGGLE_FULL_SCREEN = "toggle_full_screen";
+    public static final String TOGGLE_VOLUME = "toggle_volume";
+    public static final String TOGGLE_TAB_TITLES = "toggle_tab_titles";
+    public static final String ROUND_CORNERS = "corner_window";
+    public static final String TOGGLE_GENRE = "toggle_genre";
     private static final String DEFAULT_START_PAGE = "default_start_page";
     private static final String ARTIST_SORT_ORDER = "artist_sort_order";
     private static final String ARTIST_SONG_SORT_ORDER = "artist_song_sort_order";
@@ -66,22 +73,13 @@ public final class PreferenceUtil {
     private static final String AUTO_DOWNLOAD_IMAGES_POLICY = "auto_download_images_policy";
     private static final String START_DIRECTORY = "start_directory";
     private static final String SYNCHRONIZED_LYRICS_SHOW = "synchronized_lyrics_show";
-    private static final String ADAPTIVE_COLOR_APP = "adaptive_color_app";
     private static final String LOCK_SCREEN = "lock_screen";
-    private static final String USER_NAME = "user_name";
-    private static final String TOGGLE_FULL_SCREEN = "toggle_full_screen";
-    private static final String START_COLOR = "start_color";
-    private static final String END_COLOR = "end_color";
-    private static final String PROFILE_IMAGE_PATH = "profile_image_path";
-    private static final String INITIALIZED_BLACKLIST = "initialized_blacklist";
+    public static final String PROFILE_IMAGE_PATH = "profile_image_path";
+    public static final String BANNER_IMAGE_PATH = "banner_image_path";
     private static final String ALBUM_DETAIL_SONG_SORT_ORDER = "album_detail_song_sort_order";
     private static final String ARTIST_DETAIL_SONG_SORT_ORDER = "artist_detail_song_sort_order";
-    private static final String TOGGLE_VOLUME = "toggle_volume";
     private static final String LYRICS_OPTIONS = "lyrics_options";
-    private static final String TOGGLE_TAB_TITLES = "toggle_tab_titles";
-    private static final String ROUND_CORNERS = "corner_window";
     private static final String SAF_SDCARD_URI = "saf_sdcard_uri";
-    private static final String TOGGLE_GENRE = "toggle_genre";
     private static final String DOCUMENT_TREE_URI = "document_tree_uri";
     private static PreferenceUtil sInstance;
     private final SharedPreferences mPreferences;
@@ -110,6 +108,10 @@ public final class PreferenceUtil {
             default:
                 return R.style.Theme_RetroMusic_Light;
         }
+    }
+
+    public boolean carouselEffect() {
+        return mPreferences.getBoolean(CAROUSEL_EFFECT, false);
     }
 
     public ArrayList<CategoryInfo> getLibraryCategoryInfos() {
@@ -500,30 +502,8 @@ public final class PreferenceUtil {
         mPreferences.edit().putInt(TOGGLE_FULL_SCREEN, newValue).apply();
     }
 
-    public int lyricsOptions() {
-        switch (mPreferences.getString(LYRICS_OPTIONS, "offline")) {
-            case "wiki":
-                return 1;
-            case "kugou":
-                return 2;
-            default:
-            case "offline":
-                return 0;
-        }
-    }
-
-    public int[] getGradientColors() {
-        return new int[]{
-                mPreferences.getInt(START_COLOR, 0),
-                mPreferences.getInt(END_COLOR, 0)
-        };
-    }
-
-    public void setGradientColors(int startColor, int endColor) {
-        mPreferences.edit()
-                .putInt(START_COLOR, startColor)
-                .putInt(END_COLOR, endColor)
-                .apply();
+    public String lyricsOptions() {
+        return mPreferences.getString(LYRICS_OPTIONS, "offline");
     }
 
     public void saveProfileImage(String profileImagePath) {
@@ -536,14 +516,13 @@ public final class PreferenceUtil {
         return mPreferences.getString(PROFILE_IMAGE_PATH, "");
     }
 
-    public void setInitializedBlacklist() {
-        final SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putBoolean(INITIALIZED_BLACKLIST, true);
-        editor.apply();
+    public String getBannerImage() {
+        return mPreferences.getString(BANNER_IMAGE_PATH, "");
     }
 
-    public final boolean initializedBlacklist() {
-        return mPreferences.getBoolean(INITIALIZED_BLACKLIST, false);
+    public void setBannerImagePath(String bannerImagePath) {
+        mPreferences.edit().putString(BANNER_IMAGE_PATH, bannerImagePath)
+                .apply();
     }
 
     public String getAlbumDetailSongSortOrder() {

@@ -18,7 +18,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textStyle="bold"/>
 
-        <code.name.monkey.backend.views.WidthFitSquareLayout
+        <code.name.monkey.retromusic.views.WidthFitSquareLayout
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_weight="0">
@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/hemanth_s"/>
-        </code.name.monkey.backend.views.WidthFitSquareLayout>
+        </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -2,20 +2,22 @@ package code.name.monkey.retromusic.ui.activities;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatButton;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestListener;
@@ -28,7 +30,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.helper.SortOrder.AlbumSongSortOrder;
 import code.name.monkey.backend.model.Album;
@@ -47,45 +50,53 @@ import code.name.monkey.retromusic.ui.activities.tageditor.AlbumTagEditorActivit
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
+import code.name.monkey.retromusic.util.ViewUtil;
 
 public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implements AlbumDetailsContract.AlbumDetailsView {
     public static final String EXTRA_ALBUM_ID = "extra_album_id";
     private static final int TAG_EDITOR_REQUEST = 2001;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
     @BindView(R.id.image)
     ImageView image;
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.play_songs)
-    AppCompatButton playSongs;
-    @BindView(R.id.action_shuffle_all)
-    AppCompatButton shuffleSongs;
-    @BindView(R.id.status_bar)
-    View statusBar;
-    @BindView(R.id.container)
-    ViewGroup mContainer;
-    @BindView(R.id.root)
-    ViewGroup mViewGroup;
-    private AlbumDetailsPresenter mAlbumDetailsPresenter;
-    private Album mAlbum;
-    private SimpleSongAdapter mAdapter;
+    RecyclerView recyclerView;
 
+    @BindView(R.id.title)
+    TextView title;
+    @BindView(R.id.text)
+    TextView text;
+    @BindView(R.id.menu_close)
+    AppCompatImageButton close;
+    @BindView(R.id.menu)
+    AppCompatImageButton menu;
+    @BindView(R.id.song_title)
+    AppCompatTextView songTitle;
+    @BindView(R.id.action_shuffle_all)
+    FloatingActionButton shuffleButton;
+    private AlbumDetailsPresenter albumDetailsPresenter;
+    private Album album;
+    private SimpleSongAdapter adapter;
 
     @Override
     protected View createContentView() {
         return wrapSlidingMusicPanel(R.layout.activity_album);
     }
 
-    @OnClick({R.id.action_shuffle_all, R.id.play_songs})
+    @OnClick({R.id.action_shuffle_all, R.id.menu_close, R.id.menu})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.action_shuffle_all:
-                MusicPlayerRemote.openAndShuffleQueue(mAlbum.songs, true);
+            case R.id.menu_close:
+                onBackPressed();
                 break;
-            case R.id.play_songs:
-                //showHeartAnimation();
-                MusicPlayerRemote.openQueue(mAlbum.songs, 0, true);
+            case R.id.menu:
+                PopupMenu popupMenu = new PopupMenu(this, view);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_album_detail, popupMenu.getMenu());
+                MenuItem sortOrder = popupMenu.getMenu().findItem(R.id.action_sort_order);
+                setUpSortOrderMenu(sortOrder.getSubMenu());
+                popupMenu.setOnMenuItemClickListener(this::onOptionsItemSelected);
+                popupMenu.show();
+                break;
+            case R.id.action_shuffle_all:
+                MusicPlayerRemote.openAndShuffleQueue(album.songs, true);
                 break;
         }
     }
@@ -101,26 +112,27 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-
         setBottomBarVisibility(View.GONE);
 
-        //ViewUtil.setStatusBarHeight(this, statusBar);
+        albumDetailsPresenter = new AlbumDetailsPresenter(Injection.provideRepository(this),
+                this, getIntent().getIntExtra(EXTRA_ALBUM_ID, -1));
 
-        setUpToolBar();
-        supportPostponeEnterTransition();
-        mAlbumDetailsPresenter = new AlbumDetailsPresenter(Injection.provideRepository(this), this, getIntent().getIntExtra(EXTRA_ALBUM_ID, -1));
+        ColorStateList colorState = ColorStateList.valueOf(ColorUtil.withAlpha(ThemeStore.textColorPrimary(this), 0.2f));
+        TintHelper.setTintAuto(close, Color.WHITE, false);
+        menu.setBackgroundTintList(colorState);
+        close.setBackgroundTintList(colorState);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mAlbumDetailsPresenter.subscribe();
+        albumDetailsPresenter.subscribe();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mAlbumDetailsPresenter.unsubscribe();
+        albumDetailsPresenter.unsubscribe();
     }
 
     @Override
@@ -140,31 +152,23 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     @Override
     public void showData(Album album) {
-        mAlbum = album;
+        this.album = album;
 
-        mToolbar.setTitle(album.getTitle());
-        mToolbar.setSubtitle(album.getArtistName());
+        title.setText(album.getTitle());
+        text.setText(String.format("%s%s", album.getArtistName(),
+                album.getYear() == 0 ? "" : " • " + album.getYear()));
 
         loadAlbumCover();
-        mAdapter = new SimpleSongAdapter(this, mAlbum.songs, R.layout.item_song);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setNestedScrollingEnabled(false);
 
+        adapter = new SimpleSongAdapter(this, this.album.songs, R.layout.item_song);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
     public Album getAlbum() {
-        return mAlbum;
-    }
-
-    private void setUpToolBar() {
-        mToolbar.setTitle("");
-        mToolbar.setNavigationOnClickListener(v -> onBackPressed());
-        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
-        setSupportActionBar(mToolbar);
-        setTitle(R.string.app_name);
-
+        return album;
     }
 
     private void loadAlbumCover() {
@@ -174,14 +178,18 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
                 .dontAnimate()
                 .listener(new RequestListener<Object, BitmapPaletteWrapper>() {
                     @Override
-                    public boolean onException(Exception e, Object model, Target<BitmapPaletteWrapper> target, boolean isFirstResource) {
-                        supportStartPostponedEnterTransition();
+                    public boolean onException(Exception e, Object model,
+                                               Target<BitmapPaletteWrapper> target,
+                                               boolean isFirstResource) {
+                        //supportStartPostponedEnterTransition();
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(BitmapPaletteWrapper resource, Object model, Target<BitmapPaletteWrapper> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        supportStartPostponedEnterTransition();
+                    public boolean onResourceReady(BitmapPaletteWrapper resource, Object model,
+                                                   Target<BitmapPaletteWrapper> target,
+                                                   boolean isFromMemoryCache, boolean isFirstResource) {
+                        //supportStartPostponedEnterTransition();
                         return false;
                     }
                 })
@@ -193,16 +201,14 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
                 });
     }
 
-
     private void setColors(int color) {
-        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(mToolbar, PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this), AlbumDetailsActivity.this), 1);
-
-
         int themeColor = PreferenceUtil.getInstance(this).getAdaptiveColor() ? color : ThemeStore.accentColor(this);
-        playSongs.setSupportBackgroundTintList(ColorStateList.valueOf(themeColor));
-        //ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
-        shuffleSongs.setTextColor(themeColor);
-
+        songTitle.setTextColor(themeColor);
+        TintHelper.setTintAuto(shuffleButton, themeColor, true);
+        //findViewById(R.id.gradient_background).setBackgroundTintList(ColorStateList.valueOf(themeColor));
+        /*shuffleSongs.setTextColor(ColorUtil.isColorLight(themeColor) ?
+                MaterialValueHelper.getPrimaryTextColor(this, true) :
+                MaterialValueHelper.getPrimaryTextColor(this, false));*/
     }
 
     @Override
@@ -220,7 +226,7 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     private boolean handleSortOrderMenuItem(@NonNull MenuItem item) {
         String sortOrder = null;
-        final ArrayList<Song> songs = mAdapter.getDataSet();
+        final ArrayList<Song> songs = adapter.getDataSet();
         switch (item.getItemId()) {
             case R.id.action_play_next:
                 MusicPlayerRemote.playNext(songs);
@@ -299,6 +305,6 @@ public class AlbumDetailsActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     private void reload() {
-        mAlbumDetailsPresenter.subscribe();
+        albumDetailsPresenter.subscribe();
     }
 }

@@ -32,9 +32,6 @@ import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
 
-/**
- * Created by hemanths on 18/08/17.
- */
 
 public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implements Toolbar.OnMenuItemClickListener, PaletteColorHolder {
     public static final String TAG = AbsPlayerFragment.class.getSimpleName();
@@ -207,7 +204,6 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
             @Override
             protected Boolean doInBackground(Void... params) {
                 return LyricUtil.isLrcFileExist(song.title, song.artistName);
-
             }
 
             @Override
@@ -273,7 +269,6 @@ public abstract class AbsPlayerFragment extends AbsMusicServiceFragment implemen
         }
 
     }
-
 
     public interface Callbacks {
         void onPaletteColorChanged();

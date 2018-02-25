@@ -9,7 +9,6 @@ import android.util.Log;
  */
 
 public class ParseLyrics extends AsyncTask<String, Void, String> {
-    private static final String TAG = "ParseLyrics";
     private LyricsCallback mLyricsCallback;
 
     public ParseLyrics(LyricsCallback lyricsCallback) {

@@ -5,10 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import code.name.monkey.backend.R;
-import code.name.monkey.backend.helper.ShuffleHelper;
 import code.name.monkey.backend.model.Playlist;
-import code.name.monkey.backend.model.Song;
 import io.reactivex.Observable;
 
 public class HomeLoader {
@@ -27,47 +24,32 @@ public class HomeLoader {
             LastAddedSongsLoader.getLastAddedArtists(context).subscribe(
                     artists -> {
                         if (!artists.isEmpty()) {
-                            objects.add(context.getString(R.string.recent_artists));
+                            //objects.add(context.getString(R.string.recent_artists));
                             objects.add(artists);
                         }
                     });
             LastAddedSongsLoader.getLastAddedAlbums(context).subscribe(
                     albums -> {
                         if (!albums.isEmpty()) {
-                            objects.add(context.getString(R.string.recent_albums));
+                            //objects.add(context.getString(R.string.recent_albums));
                             objects.add(albums);
                         }
                     });
             TopAndRecentlyPlayedTracksLoader.getTopArtists(context).subscribe(
                     artists -> {
                         if (!artists.isEmpty()) {
-                            objects.add(context.getString(R.string.top_artists));
+                            //objects.add(context.getString(R.string.top_artists));
                             objects.add(artists);
                         }
                     });
             TopAndRecentlyPlayedTracksLoader.getTopAlbums(context).subscribe(
                     albums -> {
                         if (!albums.isEmpty()) {
-                            objects.add(context.getString(R.string.top_albums));
+                            //objects.add(context.getString(R.string.top_albums));
                             objects.add(albums);
                         }
                     });
 
-            suggestSongs(context).subscribe(songs -> {
-                if (!songs.isEmpty()) {
-                    objects.add(context.getString(R.string.suggestions));
-                    objects.add(songs);
-                }
-            });
-
-            PlaylistLoader.getAllPlaylists(context).subscribe(
-                    playlists -> {
-                        if (!playlists.isEmpty()) {
-                            objects.add(context.getString(R.string.playlists));
-                            objects.add(playlists);
-                        }
-                    }
-            );
 
             e.onNext(objects);
             e.onComplete();
@@ -91,25 +73,5 @@ public class HomeLoader {
         return Observable.just(playlists);
     }
 
-    private static Observable<ArrayList<Song>> suggestSongs(@NonNull Context context) {
-        return Observable.create(observer -> {
-            SongLoader.getAllSongs(context)
-                    .subscribe(songs -> {
-                        ArrayList<Song> list = new ArrayList<>();
-                        if (songs.isEmpty()) {
-                            observer.onNext(new ArrayList<Song>());
-                            observer.onComplete();
-                            return;
-                        }
-                        ShuffleHelper.makeShuffleList(songs, -1);
-                        if (songs.size() > 10) {
-                            list.addAll(songs.subList(0, 10));
-                        } else {
-                            list.addAll(songs);
-                        }
-                        observer.onNext(list);
-                        observer.onComplete();
-                    });
-        });
-    }
+
 }

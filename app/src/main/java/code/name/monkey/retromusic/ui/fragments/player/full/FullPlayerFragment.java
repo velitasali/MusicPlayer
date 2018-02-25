@@ -123,12 +123,6 @@ public class FullPlayerFragment extends AbsPlayerFragment implements
     }
 
     @Override
-    public void onToolbarToggled() {
-        //Toggle hiding toolbar for effect
-        //toggleToolbar(toolbarContainer);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

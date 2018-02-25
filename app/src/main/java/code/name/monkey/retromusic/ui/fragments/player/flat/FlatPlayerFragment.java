@@ -28,7 +28,8 @@ import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 
-public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbumCoverFragment.Callbacks {
+public class FlatPlayerFragment extends AbsPlayerFragment implements
+        PlayerAlbumCoverFragment.Callbacks {
 
     @BindView(R.id.player_toolbar)
     Toolbar toolbar;
@@ -137,16 +138,12 @@ public class FlatPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) colorize(color);
     }
 
+
     @Override
     public void onFavoriteToggled() {
         toggleFavorite(MusicPlayerRemote.getCurrentSong());
     }
 
-    @Override
-    public void onToolbarToggled() {
-        //Toggle hiding toolbar for effect
-        //toggleToolbar(toolbarContainer);
-    }
 
     @Override
     protected void toggleFavorite(Song song) {

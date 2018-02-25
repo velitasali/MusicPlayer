@@ -5,8 +5,8 @@
     android:id="@+id/playback_controls"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center_vertical"
+    android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
     <SeekBar
@@ -21,9 +21,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingEnd="16dp"
-        android:gravity="center_vertical"
         android:paddingStart="16dp">
 
 
@@ -54,26 +54,33 @@
     </LinearLayout>
 
     <LinearLayout
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_weight="0"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
             android:gravity="center"
-            android:maxLines="1"
-            android:paddingEnd="24dp"
-            android:paddingStart="24dp"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/md_white_1000"
             tools:text="Title" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,20 +89,16 @@
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:paddingEnd="24dp"
-            android:paddingStart="24dp"
-            android:textColor="@color/md_white_1000"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:textColor="@color/md_white_1000" />
     </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/player_media_controller_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:minHeight="72dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
         tools:ignore="ContentDescription,UnusedAttribute">
 
         <ImageButton
@@ -103,7 +106,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@+id/dummy_fab"
             android:layout_toStartOf="@+id/dummy_fab"
             android:background="?attr/roundSelector"
@@ -118,8 +122,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_toEndOf="@+id/dummy_fab"
             android:layout_toRightOf="@+id/dummy_fab"
             android:background="?attr/roundSelector"
@@ -136,7 +140,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
             android:background="?attr/roundSelector"
             android:padding="16dp"
             android:scaleType="fitCenter"
@@ -151,7 +154,6 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
             android:background="?attr/roundSelector"
             android:padding="16dp"
             android:scaleType="fitCenter"
@@ -171,9 +173,8 @@
             android:layout_height="52dp"
             android:layout_above="@id/title_container"
             android:layout_centerInParent="true"
-            android:layout_margin="8dp"
             android:background="@drawable/color_circle_gradient"
-            android:elevation="6dp"
+            android:elevation="4dp"
             android:padding="16dp"
             app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
 
@@ -183,14 +184,14 @@
         android:id="@+id/volume_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:visibility="gone">
+        android:layout_weight="0">
 
         <fragment
             android:id="@+id/volume_fragment"
             android:name="code.name.monkey.retromusic.ui.fragments.VolumeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             tools:layout="@layout/fragment_volume" />
     </FrameLayout>
 </LinearLayout>

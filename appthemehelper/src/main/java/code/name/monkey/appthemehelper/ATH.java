@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.ColorUtil;
 import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
@@ -20,6 +19,9 @@ import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
  * @author Karim Abou Zeid (kabouzeid)
  */
 public final class ATH {
+
+    private ATH() {
+    }
 
     @SuppressLint("CommitPrefEdits")
     static boolean didThemeValuesChange(@NonNull Context context, long since) {
@@ -61,6 +63,10 @@ public final class ATH {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().setNavigationBarColor(color);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                ColorUtil.isColorLight(ThemeStore.navigationBarColor(activity))) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+        }
     }
 
     public static void setActivityToolbarColorAuto(Activity activity, @Nullable Toolbar toolbar) {
@@ -92,8 +98,5 @@ public final class ATH {
 
     public static void setBackgroundTint(@NonNull View view, @ColorInt int color) {
         TintHelper.setTintAuto(view, color, true);
-    }
-
-    private ATH() {
     }
 }

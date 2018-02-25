@@ -34,12 +34,51 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
 
     @Override
     public void loadAllThings() {
-        disposable.add(repository.getAllThings()
-                .subscribeOn(schedulerProvider.computation())
-                .observeOn(schedulerProvider.ui())
+        disposable.add(repository.getRecentArtists()
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
-                .doOnComplete(() -> view.completed())
-                .subscribe(homes -> view.showData(homes),
-                        throwable -> view.showEmptyView()));
+                .subscribe(artists -> {
+                            if (!artists.isEmpty()) view.recentArtist(artists);
+                        },
+                        throwable -> view.showEmptyView(), () -> view.completed()));
+
+        disposable.add(repository.getTopArtists()
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
+                .doOnSubscribe(disposable1 -> view.loading())
+                .subscribe(artists -> {
+                            if (!artists.isEmpty()) view.topArtists(artists);
+                        },
+                        throwable -> view.showEmptyView(), () -> view.completed()));
+
+        disposable.add(repository.getRecentAlbums()
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
+                .doOnSubscribe(disposable1 -> view.loading())
+                .subscribe(artists -> {
+                            if (!artists.isEmpty()) view.recentAlbum(artists);
+                        },
+                        throwable -> view.showEmptyView(), () -> view.completed()));
+
+        disposable.add(repository.getTopAlbums()
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
+                .doOnSubscribe(disposable1 -> view.loading())
+                .subscribe(artists -> {
+                            if (!artists.isEmpty()) view.topAlbums(artists);
+                        },
+                        throwable -> view.showEmptyView(), () -> view.completed()));
+
+        disposable.add(repository.getSuggestionSongs()
+                .observeOn(schedulerProvider.io())
+                .subscribeOn(schedulerProvider.ui())
+                .doOnSubscribe(disposable1 -> view.loading())
+                .subscribe(artists -> {
+                            if (!artists.isEmpty()) view.suggestions(artists);
+                        },
+                        throwable -> view.showEmptyView(), () -> view.completed()));
+
+
     }
 }

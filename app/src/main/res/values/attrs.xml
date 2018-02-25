@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BottomNavigationBehavior_Params">
-        <attr name="tabLayoutId" format="reference" />
-    </declare-styleable>
-
 
     <attr name="roundSelector" format="reference" />
     <attr name="rectSelector" format="reference" />
@@ -17,5 +13,23 @@
     <attr name="dividerColor" format="color" />
 
 
-
+    <declare-styleable name="RoundLinerLayoutNormal">
+        <attr name="roundBackgroundColor" format="color" />
+        <attr name="shadowColor" format="color" />
+        <attr name="shadowElevation" format="integer" />
+        <attr name="shadowCornerRadius" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="ArcLayout">
+        <attr name="arc_height" format="dimension" />
+        <attr name="arc_position">
+            <enum name="bottom" value="0" />
+            <enum name="top" value="1" />
+            <enum name="left" value="2" />
+            <enum name="right" value="3" />
+        </attr>
+        <attr name="arc_cropDirection" format="enum">
+            <enum name="cropInside" value="0" />
+            <enum name="cropOutside" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

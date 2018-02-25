@@ -119,12 +119,12 @@
     </string-array>
     <string-array name="pref_lyrics_options_list_titles">
         <item>Offline</item>
-        <item>Lyrics Wiki</item>
+        <!--<item>Lyrics Wiki</item>-->
         <item>Kugou</item>
     </string-array>
     <string-array name="pref_lyrics_options_list_values">
         <item>offline</item>
-        <item>wiki</item>
+        <!--<item>wiki</item>-->
         <item>kugou</item>
     </string-array>
 

@@ -8,12 +8,12 @@ import android.provider.MediaStore.Audio.AudioColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
+
+import code.name.monkey.backend.helper.ShuffleHelper;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.providers.BlacklistStore;
 import code.name.monkey.backend.util.PreferenceUtil;
-
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 
 /**
@@ -152,5 +152,25 @@ public class SongLoader {
         return getSong(cursor);
     }
 
-
+    public static Observable<ArrayList<Song>> suggestSongs(@NonNull Context context) {
+        return Observable.create(observer -> {
+            SongLoader.getAllSongs(context)
+                    .subscribe(songs -> {
+                        ArrayList<Song> list = new ArrayList<>();
+                        if (songs.isEmpty()) {
+                            observer.onNext(new ArrayList<Song>());
+                            observer.onComplete();
+                            return;
+                        }
+                        ShuffleHelper.makeShuffleList(songs, -1);
+                        if (songs.size() > 10) {
+                            list.addAll(songs.subList(0, 10));
+                        } else {
+                            list.addAll(songs);
+                        }
+                        observer.onNext(list);
+                        observer.onComplete();
+                    });
+        });
+    }
 }

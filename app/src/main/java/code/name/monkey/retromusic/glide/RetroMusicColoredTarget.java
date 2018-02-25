@@ -4,14 +4,16 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import com.bumptech.glide.request.animation.GlideAnimation;
-import code.name.monkey.appthemehelper.util.ATHUtil;
 
+import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTarget;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+
+import static code.name.monkey.retromusic.util.RetroColorUtil.getColor;
+import static code.name.monkey.retromusic.util.RetroColorUtil.getDominantColor;
 
 
 public abstract class RetroMusicColoredTarget extends BitmapPaletteTarget {
@@ -23,14 +25,21 @@ public abstract class RetroMusicColoredTarget extends BitmapPaletteTarget {
     public void onLoadFailed(Exception e, Drawable errorDrawable) {
         super.onLoadFailed(e, errorDrawable);
         onColorReady(getDefaultFooterColor());
+
+        //onColorReady(getDefaultFooterColor(), ColorUtil.darkenColor(getDefaultFooterColor()));
     }
+
 
     @Override
     public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
         super.onResourceReady(resource, glideAnimation);
+        int defaultColor = getDefaultFooterColor();
+        int primaryColor = getColor(resource.getPalette(), defaultColor);
+        int dominantColor = getDominantColor(resource.getBitmap(), defaultColor);
+
         onColorReady(PreferenceUtil.getInstance(RetroApplication.getInstance()).isDominantColor() ?
-                RetroMusicColorUtil.getDominantColor(resource.getBitmap(), getDefaultFooterColor()) :
-                RetroMusicColorUtil.getColor(resource.getPalette(), getDefaultFooterColor()));
+                dominantColor : primaryColor);
+
     }
 
     protected int getDefaultFooterColor() {
@@ -42,4 +51,5 @@ public abstract class RetroMusicColoredTarget extends BitmapPaletteTarget {
     }
 
     public abstract void onColorReady(int color);
+
 }

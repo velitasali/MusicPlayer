@@ -40,7 +40,7 @@ import code.name.monkey.retromusic.glide.palette.BitmapPaletteTranscoder;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.util.ImageUtil;
 import code.name.monkey.retromusic.util.LastFMUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -92,7 +92,7 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
     @Override
     protected void loadCurrentImage() {
         Bitmap bitmap = getAlbumArt();
-        setImageBitmap(bitmap, RetroMusicColorUtil.getColor(RetroMusicColorUtil.generatePalette(bitmap), ATHUtil.resolveColor(this, R.attr.defaultFooterColor)));
+        setImageBitmap(bitmap, RetroColorUtil.getColor(RetroColorUtil.generatePalette(bitmap), ATHUtil.resolveColor(this, R.attr.defaultFooterColor)));
         deleteAlbumArt = false;
     }
 
@@ -155,7 +155,7 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
                                 public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
                                     progressBar.setVisibility(View.GONE);
                                     albumArtBitmap = ImageUtil.resizeBitmap(resource.getBitmap(), 2048);
-                                    setImageBitmap(albumArtBitmap, RetroMusicColorUtil.getColor(resource.getPalette(),
+                                    setImageBitmap(albumArtBitmap, RetroColorUtil.getColor(resource.getPalette(),
                                             ContextCompat.getColor(AlbumTagEditorActivity.this, R.color.md_grey_500)));
                                     deleteAlbumArt = false;
                                     dataChanged();
@@ -237,9 +237,9 @@ public class AlbumTagEditorActivity extends AbsTagEditorActivity implements Text
 
                     @Override
                     public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
-                        RetroMusicColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT);
+                        RetroColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT);
                         albumArtBitmap = ImageUtil.resizeBitmap(resource.getBitmap(), 2048);
-                        setImageBitmap(albumArtBitmap, RetroMusicColorUtil.getColor(resource.getPalette(), ATHUtil.resolveColor(AlbumTagEditorActivity.this, R.attr.defaultFooterColor)));
+                        setImageBitmap(albumArtBitmap, RetroColorUtil.getColor(resource.getPalette(), ATHUtil.resolveColor(AlbumTagEditorActivity.this, R.attr.defaultFooterColor)));
                         deleteAlbumArt = false;
                         dataChanged();
                         setResult(RESULT_OK);

@@ -2,17 +2,13 @@ package code.name.monkey.retromusic.ui.fragments.mainactivity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,11 +17,8 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.afollestad.materialcab.MaterialCab;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,16 +37,12 @@ import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
-import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout;
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static code.name.monkey.backend.RetroConstants.USER_PROFILE;
 
 public class LibraryFragment extends AbsMainActivityFragment implements CabHolder, MainActivityFragmentCallbacks {
     private static final String TAG = "LibraryFragment";
@@ -63,12 +52,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     AppBarLayout appbar;
     @BindView(R.id.collapsing_toolbar)
     SansFontCollapsingToolbarLayout collapsingToolbar;
-    @BindView(R.id.title)
-    AppCompatTextView title;
-    @BindView(R.id.user_image)
-    CircleImageView userImage;
-    @BindView(R.id.user_info)
-    LinearLayout userInfo;
     private Unbinder unBinder;
     private MaterialCab cab;
     private FragmentManager fragmentManager;
@@ -80,19 +63,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         return fragment;
     }
 
-    private void loadImageFromStorage() {
-        new Compressor(getContext())
-                .setMaxHeight(300)
-                .setMaxWidth(300)
-                .setQuality(75)
-                .setCompressFormat(Bitmap.CompressFormat.WEBP)
-                .compressToBitmapAsFlowable(new File(PreferenceUtil.getInstance(getContext()).getProfileImage(), USER_PROFILE))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bitmap -> userImage.setImageBitmap(bitmap),
-                        throwable -> userImage.setImageDrawable(ContextCompat
-                                .getDrawable(getContext(), R.drawable.ic_person_flat)));
-    }
 
     public SansFontCollapsingToolbarLayout getToolbar() {
         return collapsingToolbar;
@@ -122,11 +92,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setStatusbarColorAuto(view);
-        getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setTaskDescriptionColorAuto();
-
         getMainActivity().setBottomBarVisibility(View.VISIBLE);
-        getMainActivity().hideStatusBar();
 
         setupToolbar();
         if (savedInstanceState == null)
@@ -145,10 +111,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 
     }
 
-    public LinearLayout getUserInfo() {
-        return userInfo;
-    }
-
     private void setupToolbar() {
         //noinspection ConstantConditions
         int primaryColor = ThemeStore.primaryColor(getActivity());
@@ -159,10 +121,13 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         getActivity().setTitle(R.string.app_name);
         getMainActivity().setSupportActionBar(toolbar);
 
-        /*loadImageFromStorage();
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                getMainActivity().setLightStatusbar(!ATHUtil.isWindowBackgroundDark(getContext()));
+            }
+        });
 
-        title.setText(PreferenceUtil.getInstance(getContext()).getUserName());
-        title.setTextColor(ThemeStore.textColorPrimary(getContext()));*/
     }
 
     public Fragment getCurrentFragment() {
@@ -190,7 +155,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 
     @Override
     public void selectedFragment(Fragment fragment) {
-        //getUserInfo().setVisibility(View.GONE);
+
 
         fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -208,7 +173,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         cab = new MaterialCab(getMainActivity(), R.id.cab_stub)
                 .setMenu(menuRes)
                 .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
-                .setBackgroundColor(RetroMusicColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(getActivity())))
+                .setBackgroundColor(RetroColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(getActivity())))
                 .start(callback);
         return cab;
     }
@@ -221,16 +186,16 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 
         Fragment currentFragment = getCurrentFragment();
         if (currentFragment instanceof AbsLibraryPagerRecyclerViewCustomGridSizeFragment && currentFragment.isAdded()) {
-            AbsLibraryPagerRecyclerViewCustomGridSizeFragment absLibraryRecyclerViewCustomGridSizeFragment = (AbsLibraryPagerRecyclerViewCustomGridSizeFragment) currentFragment;
+            AbsLibraryPagerRecyclerViewCustomGridSizeFragment fragment = (AbsLibraryPagerRecyclerViewCustomGridSizeFragment) currentFragment;
 
             MenuItem gridSizeItem = menu.findItem(R.id.action_grid_size);
             if (Util.isLandscape(getResources())) {
                 gridSizeItem.setTitle(R.string.action_grid_size_land);
             }
-            setUpGridSizeMenu(absLibraryRecyclerViewCustomGridSizeFragment, gridSizeItem.getSubMenu());
+            setUpGridSizeMenu(fragment, gridSizeItem.getSubMenu());
 
-            menu.findItem(R.id.action_colored_footers).setChecked(absLibraryRecyclerViewCustomGridSizeFragment.usePalette());
-            menu.findItem(R.id.action_colored_footers).setEnabled(absLibraryRecyclerViewCustomGridSizeFragment.canUsePalette());
+            menu.findItem(R.id.action_colored_footers).setChecked(fragment.usePalette());
+            menu.findItem(R.id.action_colored_footers).setEnabled(fragment.canUsePalette());
         } else {
             menu.add(0, R.id.action_new_playlist, 0, R.string.new_playlist_title);
             menu.removeItem(R.id.action_grid_size);
@@ -240,12 +205,10 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
     }
 
     private void colorToolbar() {
-        new Handler().postDelayed(() -> {
-            Activity activity = getActivity();
-            if (activity == null) return;
-            //noinspection ConstantConditions
-            ToolbarContentTintHelper.colorizeToolbar(toolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
-        }, 1);
+        Activity activity = getActivity();
+        if (activity == null) return;
+        //noinspection ConstantConditions
+        ToolbarContentTintHelper.colorizeToolbar(toolbar, ATHUtil.resolveColor(getContext(), R.attr.iconColor), getActivity());
     }
 
 
@@ -261,13 +224,13 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
         //if (pager == null) return false;
         Fragment currentFragment = getCurrentFragment();
         if (currentFragment instanceof AbsLibraryPagerRecyclerViewCustomGridSizeFragment) {
-            AbsLibraryPagerRecyclerViewCustomGridSizeFragment absLibraryRecyclerViewCustomGridSizeFragment = (AbsLibraryPagerRecyclerViewCustomGridSizeFragment) currentFragment;
+            AbsLibraryPagerRecyclerViewCustomGridSizeFragment fragment = (AbsLibraryPagerRecyclerViewCustomGridSizeFragment) currentFragment;
             if (item.getItemId() == R.id.action_colored_footers) {
                 item.setChecked(!item.isChecked());
-                absLibraryRecyclerViewCustomGridSizeFragment.setAndSaveUsePalette(item.isChecked());
+                fragment.setAndSaveUsePalette(item.isChecked());
                 return true;
             }
-            if (handleGridSizeMenuItem(absLibraryRecyclerViewCustomGridSizeFragment, item)) {
+            if (handleGridSizeMenuItem(fragment, item)) {
                 return true;
             }
         }
@@ -277,8 +240,7 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
                 CreatePlaylistDialog.create().show(getChildFragmentManager(), "CREATE_PLAYLIST");
                 return true;
             case R.id.action_shuffle_all:
-                SongLoader.getAllSongs(getContext())
-                        .subscribeOn(Schedulers.computation())
+                SongLoader.getAllSongs(getContext()).subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(songs -> MusicPlayerRemote.openAndShuffleQueue(songs, true));
                 return true;

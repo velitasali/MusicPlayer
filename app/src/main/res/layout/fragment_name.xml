@@ -65,16 +65,21 @@
                 </LinearLayout>
 
                 <FrameLayout
-                    android:id="@+id/image"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp">
+                    android:id="@+id/image_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:id="@+id/image"
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        android:scaleType="centerCrop" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
                         android:layout_gravity="center"
+                        android:layout_margin="16dp"
                         android:background="@drawable/color_circle_gradient"
                         android:gravity="center"
                         android:text="@string/add_photo"
@@ -84,8 +89,17 @@
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/user_image"
                         android:layout_width="88dp"
-                        android:layout_height="88dp" />
+                        android:layout_height="88dp"
+                        android:layout_gravity="center" />
 
+                    <code.name.monkey.retromusic.views.IconImageView
+                        android:id="@+id/banner_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:background="?roundSelector"
+                        android:padding="16dp"
+                        app:srcCompat="@drawable/ic_edit_white_24dp" />
                 </FrameLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>

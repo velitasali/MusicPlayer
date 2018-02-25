@@ -33,7 +33,7 @@ import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.activities.MainActivity;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import code.name.monkey.retromusic.util.Util;
 
 import static code.name.monkey.backend.RetroConstants.ACTION_QUIT;
@@ -116,8 +116,8 @@ public class PlayingNotificationImpl extends PlayingNotification {
                             public void onResourceReady(BitmapPaletteWrapper resource, GlideAnimation<? super BitmapPaletteWrapper> glideAnimation) {
                                 update(resource.getBitmap(),
                                         PreferenceUtil.getInstance(service).isDominantColor() ?
-                                                RetroMusicColorUtil.getDominantColor(resource.getBitmap(), Color.TRANSPARENT) :
-                                                RetroMusicColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT));
+                                                RetroColorUtil.getDominantColor(resource.getBitmap(), Color.TRANSPARENT) :
+                                                RetroColorUtil.getColor(resource.getPalette(), Color.TRANSPARENT));
                             }
 
                             @Override

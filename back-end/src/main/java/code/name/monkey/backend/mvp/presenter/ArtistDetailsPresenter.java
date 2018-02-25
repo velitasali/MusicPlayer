@@ -12,17 +12,15 @@ import code.name.monkey.backend.providers.interfaces.Repository;
  * Created by hemanths on 20/08/17.
  */
 
-public class ArtistDetailsPresenter extends Presenter
-        implements ArtistDetailContract.Presenter {
-    private static final String TAG = "ArtistDetailsPresenter";
-    @NonNull
+public class ArtistDetailsPresenter extends Presenter implements ArtistDetailContract.Presenter {
+    
     private final int artistId;
     @NonNull
     private final ArtistDetailContract.ArtistsDetailsView view;
 
     public ArtistDetailsPresenter(@NonNull Repository repository,
                                   @NonNull ArtistDetailContract.ArtistsDetailsView view,
-                                  @NonNull int artistId) {
+                                  int artistId) {
         super(repository);
         this.view = view;
         this.artistId = artistId;

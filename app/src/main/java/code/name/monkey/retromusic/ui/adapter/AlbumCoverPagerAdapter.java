@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
 import java.util.ArrayList;
 
@@ -103,7 +104,8 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
         }
 
         @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(@NonNull LayoutInflater inflater,
+                                 ViewGroup container,
                                  Bundle savedInstanceState) {
             int layout;
             switch (PreferenceUtil.getInstance(getContext()).getNowPlayingScreen()) {
@@ -119,6 +121,10 @@ public class AlbumCoverPagerAdapter extends CustomFragmentStatePagerAdapter {
                 case NORMAL:
                     layout = R.layout.fragment_album_cover;
                     break;
+            }
+            if (PreferenceUtil.getInstance(getContext()).carouselEffect() &&
+                    !(PreferenceUtil.getInstance(getContext()).getNowPlayingScreen() == NowPlayingScreen.FULL)) {
+                layout = R.layout.fragment_carousal_album_cover;
             }
             View view = inflater.inflate(layout, container, false);
             unbinder = ButterKnife.bind(this, view);

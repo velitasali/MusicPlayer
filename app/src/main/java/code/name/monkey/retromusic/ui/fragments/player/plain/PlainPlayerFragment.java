@@ -43,12 +43,6 @@ public class PlainPlayerFragment extends AbsPlayerFragment implements
     private int mLastColor;
 
     @Override
-    public void onToolbarToggled() {
-        //Toggle hiding toolbar for effect
-        //toggleToolbar(toolbarContainer);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();

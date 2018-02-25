@@ -1,14 +1,13 @@
 package code.name.monkey.backend.providers.interfaces;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import code.name.monkey.backend.model.Album;
 import code.name.monkey.backend.model.Artist;
 import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Playlist;
 import code.name.monkey.backend.model.Song;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 
 /**
@@ -18,13 +17,24 @@ import io.reactivex.Observable;
 public interface Repository {
     Observable<ArrayList<Song>> getAllSongs();
 
+    Observable<ArrayList<Song>> getSuggestionSongs();
+
     Observable<Song> getSong(int id);
 
     Observable<ArrayList<Album>> getAllAlbums();
 
+    Observable<ArrayList<Album>> getRecentAlbums();
+
+    Observable<ArrayList<Album>> getTopAlbums();
+
     Observable<Album> getAlbum(int albumId);
 
     Observable<ArrayList<Artist>> getAllArtists();
+
+    Observable<ArrayList<Artist>> getRecentArtists();
+
+    Observable<ArrayList<Artist>> getTopArtists();
+
 
     Observable<Artist> getArtistById(long artistId);
 
@@ -45,4 +55,6 @@ public interface Repository {
     Observable<ArrayList<Song>> getGenre(int genreId);
 
     Observable<File> downloadLrcFile(final String title, final String artist, final long duration);
+
+
 }

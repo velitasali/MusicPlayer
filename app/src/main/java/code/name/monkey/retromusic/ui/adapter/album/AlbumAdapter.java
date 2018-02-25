@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.backend.model.Album;
-import code.name.monkey.backend.model.Song;
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import code.name.monkey.backend.model.Album;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
@@ -29,12 +29,14 @@ import code.name.monkey.retromusic.ui.adapter.base.AbsMultiSelectAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
 import code.name.monkey.retromusic.util.NavigationUtil;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import uk.co.chrisjenx.calligraphy.CalligraphyUtils;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder, Album> implements FastScrollRecyclerView.SectionedAdapter {
+public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder, Album> implements
+        FastScrollRecyclerView.SectionedAdapter {
 
     public static final String TAG = AlbumAdapter.class.getSimpleName();
 
@@ -46,7 +48,11 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
     protected boolean usePalette = false;
     private Typeface mTypeface;
 
-    public AlbumAdapter(@NonNull AppCompatActivity activity, ArrayList<Album> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
+    public AlbumAdapter(@NonNull AppCompatActivity activity,
+                        ArrayList<Album> dataSet,
+                        @LayoutRes int itemLayoutRes,
+                        boolean usePalette,
+                        @Nullable CabHolder cabHolder) {
         super(activity, cabHolder, R.menu.menu_media_selection);
         this.activity = activity;
         this.dataSet = dataSet;
@@ -81,7 +87,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
         return new ViewHolder(view);
     }
 
-    protected String getAlbumTitle(Album album) {
+    private String getAlbumTitle(Album album) {
         return album.getTitle();
     }
 
@@ -172,7 +178,8 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
     }
 
     @Override
-    protected void onMultipleItemAction(@NonNull MenuItem menuItem, @NonNull ArrayList<Album> selection) {
+    protected void onMultipleItemAction(@NonNull MenuItem menuItem,
+                                        @NonNull ArrayList<Album> selection) {
         SongsMenuHelper.handleMenuClick(activity, getSongList(selection), menuItem.getItemId());
     }
 
@@ -189,8 +196,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
     @Override
     public String getSectionName(int position) {
         return CalligraphyUtils.applyTypefaceSpan(
-                MusicUtil.getSectionName(dataSet.get(position).getTitle()),
-                mTypeface).toString();
+                MusicUtil.getSectionName(dataSet.get(position).getTitle()), mTypeface).toString();
     }
 
     public class ViewHolder extends MediaEntryViewHolder {
@@ -208,11 +214,9 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
             if (isInQuickSelectMode()) {
                 toggleChecked(getAdapterPosition());
             } else {
-                Pair[] albumPairs = new Pair[]{
-                        Pair.create(image,
-                                activity.getResources().getString(R.string.transition_album_art)
-                        )};
-                NavigationUtil.goToAlbum(activity, dataSet.get(getAdapterPosition()).getId(), albumPairs);
+                Pair[] albumPairs = new Pair[]{Pair.create(image,
+                        activity.getResources().getString(R.string.transition_album_art))};
+                NavigationUtil.goToAlbum(activity, dataSet.get(getAdapterPosition()).getId());
             }
         }
 

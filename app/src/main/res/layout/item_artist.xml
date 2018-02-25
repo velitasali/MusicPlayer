@@ -7,7 +7,7 @@
     android:layout_margin="8dp"
     android:orientation="vertical">
 
-    <code.name.monkey.backend.views.WidthFitSquareLayout
+    <code.name.monkey.retromusic.views.WidthFitSquareLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             app:civ_border="false"
             tools:src="@drawable/hemanth_s" />
-    </code.name.monkey.backend.views.WidthFitSquareLayout>
+    </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/title"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxLines="2"
+        android:maxLines="1"
         android:paddingBottom="16dp"
         android:paddingTop="16dp"
         android:textColor="?android:attr/textColorPrimary" />

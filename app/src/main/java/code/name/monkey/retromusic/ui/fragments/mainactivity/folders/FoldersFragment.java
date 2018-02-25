@@ -62,17 +62,13 @@ import code.name.monkey.retromusic.misc.UpdateToastMediaScannerCompletionListene
 import code.name.monkey.retromusic.ui.adapter.SongFileAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 import code.name.monkey.retromusic.views.BreadCrumbLayout;
 
-public class FoldersFragment extends AbsMainActivityFragment implements
-        MainActivityFragmentCallbacks,
-        CabHolder,
-        BreadCrumbLayout.SelectionCallback,
-        SongFileAdapter.Callbacks,
-        AppBarLayout.OnOffsetChangedListener,
-        LoaderManager.LoaderCallbacks<List<File>> {
+public class FoldersFragment extends AbsMainActivityFragment implements MainActivityFragmentCallbacks,
+        CabHolder, BreadCrumbLayout.SelectionCallback, SongFileAdapter.Callbacks,
+        AppBarLayout.OnOffsetChangedListener, LoaderManager.LoaderCallbacks<List<File>> {
 
     public static final String TAG = FoldersFragment.class.getSimpleName();
     protected static final String PATH = "path";
@@ -200,12 +196,7 @@ public class FoldersFragment extends AbsMainActivityFragment implements
         setStatusbarColorAuto(view);
         getMainActivity().getSlidingUpPanelLayout().setShadowHeight(0);
 
-        getMainActivity().setNavigationbarColorAuto();
-        getMainActivity().setTaskDescriptionColorAuto();
-
         getMainActivity().setBottomBarVisibility(View.GONE);
-        getMainActivity().hideStatusBar();
-
 
         setUpAppbarColor();
         setUpToolbar();
@@ -288,7 +279,7 @@ public class FoldersFragment extends AbsMainActivityFragment implements
         cab = new MaterialCab(getMainActivity(), R.id.cab_stub)
                 .setMenu(menuRes)
                 .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
-                .setBackgroundColor(RetroMusicColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(getActivity())))
+                .setBackgroundColor(RetroColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(getActivity())))
                 .start(callback);
         return cab;
     }

@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/anti_clickable"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,7 +34,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <code.name.monkey.backend.views.HeightFitSquareLayout
+        <code.name.monkey.retromusic.views.HeightFitSquareLayout
             android:id="@+id/album_cover_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -45,25 +46,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.backend.views.HeightFitSquareLayout>
+        </code.name.monkey.retromusic.views.HeightFitSquareLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
             android:paddingTop="@dimen/status_bar_padding">
 
             <fragment
                 android:id="@+id/playback_controls_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.player.blur.BlurPlaybackControlsFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_blur_playback_controls" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                tools:layout="@layout/fragment_abs_playback_controls" />
 
             <FrameLayout
                 android:id="@+id/toolbar_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_weight="0"
                 tools:background="@color/md_red_A700">
 
                 <android.support.v7.widget.Toolbar
@@ -73,6 +76,6 @@
                     android:navigationIcon="@drawable/ic_close_white_24dp"
                     app:navigationIcon="@drawable/ic_close_white_24dp" />
             </FrameLayout>
-        </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

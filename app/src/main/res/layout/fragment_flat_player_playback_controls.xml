@@ -4,67 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/playback_controls"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:ignore="MissingPrefix">
 
-    <RelativeLayout
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/player_progress_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:paddingBottom="4dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:paddingTop="4dp">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/player_song_current_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:gravity="center_vertical|left|end"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12sp"
-            tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="0:00" />
-
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/player_song_total_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:gravity="center_vertical|right|end"
-            android:singleLine="true"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="12sp"
-            tools:ignore="RtlHardcoded,RtlSymmetry"
-            tools:text="3:14" />
-
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/player_progress_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/player_song_total_time"
-            android:layout_toRightOf="@id/player_song_current_progress"
-            android:maxHeight="3dp"
-            android:progressDrawable="@drawable/color_progress_seek"
-            android:splitTrack="false"
-            android:thumb="@drawable/switch_thumb_material"
-            tools:ignore="RtlHardcoded,UnusedAttribute" />
-
-    </RelativeLayout>
+        android:maxHeight="3dp"
+        android:progressDrawable="@drawable/color_progress_seek"
+        android:splitTrack="false"
+        android:thumb="@drawable/switch_thumb_material"
+        tools:ignore="RtlHardcoded,UnusedAttribute" />
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp">
+
+        <TextView
+            android:id="@+id/player_song_current_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="22.00" />
+
+
+        <TextView
+            android:id="@+id/player_song_total_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="22.00" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical"
         android:paddingEnd="16dp"
@@ -108,8 +100,8 @@
     <RelativeLayout
         android:id="@+id/player_media_controller_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="72dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         tools:ignore="ContentDescription,UnusedAttribute">
@@ -161,6 +153,7 @@
         android:id="@+id/volume_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         tools:visibility="visible">
 
         <fragment

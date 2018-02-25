@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="?android:attr/windowBackground"
+    android:clickable="true"
+    android:focusable="true">
 
-    <code.name.monkey.backend.views.WidthFitSquareLayout
+    <code.name.monkey.retromusic.views.WidthFitSquareLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -19,7 +21,7 @@
             android:layout_height="wrap_content"
             tools:layout="@layout/fragment_player_album_cover" />
 
-    </code.name.monkey.backend.views.WidthFitSquareLayout>
+    </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
     <ProgressBar
         android:id="@+id/progress_bar"

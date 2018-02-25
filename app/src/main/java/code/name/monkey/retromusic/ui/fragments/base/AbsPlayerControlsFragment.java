@@ -1,7 +1,6 @@
 package code.name.monkey.retromusic.ui.fragments.base;
 
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
-import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 
 /**
  * Created by hemanths on 24/09/17.
@@ -9,6 +8,7 @@ import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 
 public abstract class AbsPlayerControlsFragment extends AbsMusicServiceFragment
         implements MusicProgressViewUpdateHelper.Callback {
+
     protected abstract void show();
 
     protected abstract void hide();

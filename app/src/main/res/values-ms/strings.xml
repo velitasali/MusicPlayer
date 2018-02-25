@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <!-- 
-    <string name="pref_summary_toggle_status_bar">Hide only status bar</string>
-    <string name="pref_title_toggle_status_bar">Status bar</string>
-    <string name="pref_summary_toggle_navigation_bar">Hide only navigation bar</string>
-    <string name="pref_title_toggle_navigation_bar">Navigation bar</string>
- -->
     <string name="accent_color">Warna aksen</string>
     <string name="accent_color_desc">Warna tema aksen, tetapan asalnya adalah hijau</string>
+    <string name="no_genres">Tiada genre</string>
     <string name="action_about">Mengenai</string>
     <string name="action_add_to_favorites">Tambahkan ke kegemaran</string>
     <string name="action_add_to_playing_queue">Tambahkan ke baris gilir main</string>
@@ -343,7 +338,36 @@
     <string name="primary_color_desc">Warna tema utama, tetapan asalnya adalah putih</string>
     <string name="media_route_menu_title">Lancarkan peranti</string>
     <string name="tiny">Kecil</string>
+    <string name="pref_summary_dominant_color">Kebanyakan warna dominan akan diambil daripada seni album atau seniman</string>
+    <string name="pref_title_toggle_dominant_color">Warna dominan</string>
     <!-- SAF -->
+    <string name="saf_error_uri">Tidak dapat peroleh URI SAF</string>
+    <string name="saf_write_failed">Gagal menulis fail: %s</string>
+    <string name="saf_delete_failed">Gagal memadam fail: %s</string>
+    <string name="saf_pick_sdcard">Capaian kad SD diperlukan. Sila pilih direktori akar kad SD</string>
+    <string name="saf_pick_file">Capaian fail diperlukan. Pilih %s</string>
     <!-- SAF guide -->
+    <string name="saf_guide_slide1_title">%s memerlukan capaian kad SD</string>
+    <string name="saf_guide_slide1_description_before_o">Dayakan \'Tunjukkan kad SD\' dalam menu limpah</string>
+    <string name="saf_guide_slide1_description">Buka laci pandu arah</string>
+    <string name="saf_guide_slide2_title">Pilih kad SD anda di laci pandu arah</string>
+    <string name="saf_guide_slide2_description">Anda perlu memilih direktori akar kad SD anda</string>
+    <string name="saf_guide_slide3_title">Ketik butang \'Pilih\' di bawah skrin</string>
+    <string name="deleting_songs">Memadam lagu</string>
+    <string name="saf_guide_slide3_description">Jangan buka sebarang subfolder</string>
+    <string name="pref_summary_toggle_genre">Tidak ingin memaparkan genre</string>
+    <string name="pref_title_toggle_genre">Sorokkan genre</string>
+    <string name="pref_title_external_storage_access">Berikan capaian kepada storan luar</string>
     <!-- Message displayed when tag editing fails -->
+    <string name="tag_edit_error">Suatu ralat berlaku ketika menyunting tag.</string>
+    <string name="tag_error_lollipop">Suatu ralat berlaku ketika menyunting tag. Jika fail disimpan di dalam kad SD, Retro Music mungkin tidak mempunyai keizinan untuk mencapainya.</string>
+    <string name="tag_error_kitkat">Suatu ralat berlaku ketika menyunting tag. Adakah fail disimpan di dalam kad SD? Jika ya, penyuntingan tag tidak dapat dilakukan untuk fail ini.</string>
+    <string name="tag_editor_document_tree_message">Pilih direktori storan luar</string>
+    <string name="tag_editor_check_permission">Menyemak keizinan</string>
+    <string name="tag_editor_document_tree_permission_failed">Kelihatannya kami tidak mempunyai keizinan untuk menyunting fail ini. Semak semula direktori di pemilih fail.</string>
+    <string name="tag_retrieve_error">Suatu ralat berlaku ketika mendapatkan tag.</string>
+    <string name="edit_tags">Sunting tag</string>
+    <string name="saving_tags">Menyimpan tag</string>
+    <string name="holiday">Cuti</string>
+    <!-- Android Auto -->
 </resources>

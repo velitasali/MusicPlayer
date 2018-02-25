@@ -27,7 +27,7 @@
         </FrameLayout>
 
 
-        <code.name.monkey.backend.views.WidthFitSquareLayout
+        <code.name.monkey.retromusic.views.WidthFitSquareLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.backend.views.WidthFitSquareLayout>
+        </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
         <FrameLayout
             android:layout_weight="1"

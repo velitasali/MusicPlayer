@@ -48,32 +48,8 @@
                     android:id="@+id/toolbar"
                     style="@style/Toolbar48"
                     android:background="?colorPrimary"
-                    tools:ignore="UnusedAttribute">
+                    tools:ignore="UnusedAttribute"/>
 
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/user_info"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:gravity="end|center_vertical">
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:id="@+id/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp" />
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/user_image"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="16dp"
-                            app:srcCompat="@drawable/ic_person_flat" />
-
-                    </LinearLayout>
-                </android.support.v7.widget.Toolbar>
 
             </code.name.monkey.retromusic.views.SansFontCollapsingToolbarLayout>
 

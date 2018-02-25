@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
+    <string name="recent_artists">Recent artists</string>
+    <string name="recent_albums">Recent albums</string>
+    <string name="top_artists">Top artists</string>
+    <string name="top_albums">Top albums</string>
+    <string name="suggestions">Suggestions</string>
+    <string name="genres">Genres</string>
+    <string name="pref_title_toggle_carousel_effect">Carousel effect</string>
+    <string name="pref_summary_carousel_effect">Carousel effect in now playing screen album art.</string>
     <string name="pref_title_lyrics_options">Lyrics options</string>
     <string name="pref_summary_toggle_status_bar">Hide only status bar</string>
     <string name="pref_title_toggle_status_bar">Status bar</string>
@@ -522,5 +530,8 @@
     <string name="personalize">Personalize</string>
     <string name="support_development_summary">If your enjoy using Retro Music Player consider donation as support to my work.</string>
     <string name="solid">Solid</string>
+    <string name="color">Color</string>
+    <string name="now_playing">Now playing</string>
+    <string name="gradient">Gradient</string>
 
 </resources>

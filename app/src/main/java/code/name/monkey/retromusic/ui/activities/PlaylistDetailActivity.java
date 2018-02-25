@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ProgressBar;
@@ -22,11 +21,17 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
+import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.appthemehelper.util.TintHelper;
-import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
-
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.loaders.PlaylistLoader;
@@ -36,13 +41,6 @@ import code.name.monkey.backend.model.PlaylistSong;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.mvp.contract.PlaylistSongsContract;
 import code.name.monkey.backend.mvp.presenter.PlaylistSongsPresenter;
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
-
-import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.menu.PlaylistMenuHelper;
@@ -52,26 +50,34 @@ import code.name.monkey.retromusic.ui.adapter.song.OrderablePlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.PlaylistSongAdapter;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
-import code.name.monkey.retromusic.util.RetroMusicColorUtil;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity implements CabHolder, PlaylistSongsContract.PlaylistSongsView {
     @NonNull
     public static String EXTRA_PLAYLIST = "extra_playlist";
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(android.R.id.empty)
     TextView empty;
+
     @BindView(R.id.status_bar)
     View statusBar;
+
     @BindView(R.id.action_shuffle)
     FloatingActionButton shuffleButton;
+
     @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
+    ProgressBar progressBar;
+
     @BindView(R.id.app_bar)
     AppBarLayout appBarLayout;
+
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout toolbarLayout;
 
@@ -80,7 +86,8 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     private SongAdapter adapter;
     private RecyclerView.Adapter wrappedAdapter;
     private RecyclerViewDragDropManager recyclerViewDragDropManager;
-    private PlaylistSongsPresenter mSongsPresenter;
+    private PlaylistSongsPresenter songsPresenter;
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -103,7 +110,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
 
         playlist = getIntent().getExtras().getParcelable(EXTRA_PLAYLIST);
 
-        mSongsPresenter = new PlaylistSongsPresenter(Injection.provideRepository(this), this, playlist);
+        songsPresenter = new PlaylistSongsPresenter(Injection.provideRepository(this), this, playlist);
 
         setUpToolBar();
         setUpRecyclerView();
@@ -176,7 +183,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     @Override
     protected void onResume() {
         super.onResume();
-        mSongsPresenter.subscribe();
+        songsPresenter.subscribe();
     }
 
     private void setUpToolBar() {
@@ -235,7 +242,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
         cab = new MaterialCab(this, R.id.cab_stub)
                 .setMenu(menu)
                 .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
-                .setBackgroundColor(RetroMusicColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(this)))
+                .setBackgroundColor(RetroColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(this)))
                 .start(callback);
         return cab;
     }
@@ -267,7 +274,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
                 setToolbarTitle(playlist.name);
             }
         }
-        mSongsPresenter.subscribe();
+        songsPresenter.subscribe();
     }
 
     private void setToolbarTitle(String title) {
@@ -287,7 +294,7 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
             recyclerViewDragDropManager.cancelDrag();
         }
         super.onPause();
-        mSongsPresenter.unsubscribe();
+        songsPresenter.unsubscribe();
     }
 
     @Override
@@ -315,23 +322,23 @@ public class PlaylistDetailActivity extends AbsSlidingMusicPanelActivity impleme
     @Override
     public void onPlayingMetaChanged() {
         super.onPlayingMetaChanged();
-        mSongsPresenter.subscribe();
+        songsPresenter.subscribe();
     }
 
     @Override
     public void loading() {
-        mProgressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showEmptyView() {
         empty.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void completed() {
-        mProgressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

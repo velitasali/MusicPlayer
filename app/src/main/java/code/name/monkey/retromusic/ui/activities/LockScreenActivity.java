@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import code.name.monkey.appthemehelper.util.ColorUtil;
 import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 import code.name.monkey.backend.swipebtn.SwipeButton;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
@@ -74,8 +73,6 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
             }
             mSwipeButton.setBackground(drawable);
         }
-
-
     }
 
     @Override
@@ -95,8 +92,4 @@ public class LockScreenActivity extends AbsMusicServiceActivity implements Playe
 
     }
 
-    @Override
-    public void onToolbarToggled() {
-
-    }
 }

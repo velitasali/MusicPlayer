@@ -11,8 +11,6 @@
             android:entries="@array/pref_lyrics_options_list_titles"
             android:entryValues="@array/pref_lyrics_options_list_values"
             android:key="lyrics_options"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
             android:title="@string/pref_title_lyrics_options" />
 
     </code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>

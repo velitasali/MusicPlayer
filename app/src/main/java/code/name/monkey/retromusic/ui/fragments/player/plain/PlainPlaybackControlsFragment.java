@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,12 +58,12 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @BindView(R.id.player_song_current_progress)
     TextView songCurrentProgress;
     @BindView(R.id.volume_fragment_container)
-    View mVolumeContainer;
-    private Unbinder mUnbinder;
-    private PlayPauseDrawable mPlayerFabPlayPauseDrawable;
-    private int mLastPlaybackControlsColor;
-    private int mLastDisabledPlaybackControlsColor;
-    private MusicProgressViewUpdateHelper mProgressViewUpdateHelper;
+    View volumeContainer;
+    private Unbinder unbinder;
+    private PlayPauseDrawable playerFabPlayPauseDrawable;
+    private int lastPlaybackControlsColor;
+    private int lastDisabledPlaybackControlsColor;
+    private MusicProgressViewUpdateHelper progressViewUpdateHelper;
 
     @Override
     public void onPlayStateChanged() {
@@ -89,20 +90,21 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mProgressViewUpdateHelper = new MusicProgressViewUpdateHelper(this);
+        progressViewUpdateHelper = new MusicProgressViewUpdateHelper(this);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mUnbinder.unbind();
+        unbinder.unbind();
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plain_controls_fragment, container, false);
-        mUnbinder = ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -110,13 +112,13 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @Override
     public void onResume() {
         super.onResume();
-        mProgressViewUpdateHelper.start();
+        progressViewUpdateHelper.start();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mProgressViewUpdateHelper.stop();
+        progressViewUpdateHelper.stop();
     }
 
     @Override
@@ -124,9 +126,9 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
         super.onViewCreated(view, savedInstanceState);
         setUpMusicControllers();
         if (PreferenceUtil.getInstance(getContext()).getVolumeToggle()) {
-            mVolumeContainer.setVisibility(View.VISIBLE);
+            volumeContainer.setVisibility(View.VISIBLE);
         } else {
-            mVolumeContainer.setVisibility(View.GONE);
+            volumeContainer.setVisibility(View.GONE);
         }
     }
 
@@ -145,8 +147,8 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     private void updatePrevNextColor() {
-        nextButton.setColorFilter(mLastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-        prevButton.setColorFilter(mLastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+        nextButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+        prevButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
     }
 
     private void setUpShuffleButton() {
@@ -157,10 +159,10 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     protected void updateShuffleState() {
         switch (MusicPlayerRemote.getShuffleMode()) {
             case MusicService.SHUFFLE_MODE_SHUFFLE:
-                shuffleButton.setColorFilter(mLastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                shuffleButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             default:
-                shuffleButton.setColorFilter(mLastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                shuffleButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
         }
     }
@@ -174,15 +176,15 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
         switch (MusicPlayerRemote.getRepeatMode()) {
             case MusicService.REPEAT_MODE_NONE:
                 repeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                repeatButton.setColorFilter(mLastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                repeatButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             case MusicService.REPEAT_MODE_ALL:
                 repeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                repeatButton.setColorFilter(mLastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                repeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             case MusicService.REPEAT_MODE_THIS:
                 repeatButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
-                repeatButton.setColorFilter(mLastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                repeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
         }
     }
@@ -271,15 +273,15 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     public void setDark(int dark) {
         int color = ATHUtil.resolveColor(getActivity(), android.R.attr.colorBackground);
         if (ColorUtil.isColorLight(color)) {
-            mLastPlaybackControlsColor = MaterialValueHelper
-                    .getSecondaryTextColor(getActivity(), true);
-            mLastDisabledPlaybackControlsColor = MaterialValueHelper
-                    .getSecondaryDisabledTextColor(getActivity(), true);
+            lastPlaybackControlsColor =
+                    MaterialValueHelper.getSecondaryTextColor(getActivity(), true);
+            lastDisabledPlaybackControlsColor =
+                    MaterialValueHelper.getSecondaryDisabledTextColor(getActivity(), true);
         } else {
-            mLastPlaybackControlsColor = MaterialValueHelper
-                    .getPrimaryTextColor(getActivity(), false);
-            mLastDisabledPlaybackControlsColor = MaterialValueHelper
-                    .getPrimaryDisabledTextColor(getActivity(), false);
+            lastPlaybackControlsColor =
+                    MaterialValueHelper.getPrimaryTextColor(getActivity(), false);
+            lastDisabledPlaybackControlsColor =
+                    MaterialValueHelper.getPrimaryDisabledTextColor(getActivity(), false);
         }
 
         if (PreferenceUtil.getInstance(getContext()).getAdaptiveColor()) {
@@ -298,9 +300,9 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     private void setUpPlayPauseFab() {
-        mPlayerFabPlayPauseDrawable = new PlayPauseDrawable(getActivity());
+        playerFabPlayPauseDrawable = new PlayPauseDrawable(getActivity());
 
-        playPauseFab.setImageDrawable(mPlayerFabPlayPauseDrawable); // Note: set the drawable AFTER TintHelper.setTintAuto() was called
+        playPauseFab.setImageDrawable(playerFabPlayPauseDrawable); // Note: set the drawable AFTER TintHelper.setTintAuto() was called
         //playPauseFab.setColorFilter(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(fabColor)), PorterDuff.Mode.SRC_IN);
         //playPauseFab.setOnClickListener(new PlayPauseButtonOnClickHandler());
         playPauseFab.post(() -> {
@@ -313,9 +315,9 @@ public class PlainPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     protected void updatePlayPauseDrawableState(boolean animate) {
         if (MusicPlayerRemote.isPlaying()) {
-            mPlayerFabPlayPauseDrawable.setPause(animate);
+            playerFabPlayPauseDrawable.setPause(animate);
         } else {
-            mPlayerFabPlayPauseDrawable.setPlay(animate);
+            playerFabPlayPauseDrawable.setPlay(animate);
         }
     }
 }

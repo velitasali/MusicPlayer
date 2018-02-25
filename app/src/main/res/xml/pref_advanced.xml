@@ -22,5 +22,12 @@
         <code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreference
             android:key="external_storage_access"
             android:title="@string/pref_title_external_storage_access" />
+
+        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATESwitchPreference
+            android:defaultValue="false"
+            android:key="carousel_effect"
+            android:summary="@string/pref_summary_carousel_effect"
+            android:title="@string/pref_title_toggle_carousel_effect" />
+
     </code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

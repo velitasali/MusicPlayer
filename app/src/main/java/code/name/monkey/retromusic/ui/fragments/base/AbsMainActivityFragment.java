@@ -22,6 +22,10 @@ public abstract class AbsMainActivityFragment extends AbsMusicServiceFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setHasOptionsMenu(true);
+
+        getMainActivity().setNavigationbarColorAuto();
+        getMainActivity().setTaskDescriptionColorAuto();
+        getMainActivity().hideStatusBar();
     }
 
     // WORKAROUND
@@ -29,10 +33,9 @@ public abstract class AbsMainActivityFragment extends AbsMusicServiceFragment {
         final View statusBar = view.findViewById(R.id.status_bar);
         if (statusBar != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                getMainActivity().setLightStatusbarAuto(color);
                 statusBar.setBackgroundColor(ColorUtil.darkenColor(color));
             } else {
-                statusBar.setBackgroundColor(color);
+                statusBar.setBackgroundColor(ColorUtil.darkenColor(color));
             }
         }
     }

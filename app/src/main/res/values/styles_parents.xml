@@ -50,7 +50,7 @@
 
         <item name="cardBackgroundColor">@color/md_white_1000</item>
 
-        <item name="defaultFooterColor">@color/md_grey_300</item>
+        <item name="defaultFooterColor">@color/md_grey_500</item>
 
         <item name="dividerColor">@color/md_divider_black</item>
         <item name="iconColor">@color/ate_secondary_text_light</item>

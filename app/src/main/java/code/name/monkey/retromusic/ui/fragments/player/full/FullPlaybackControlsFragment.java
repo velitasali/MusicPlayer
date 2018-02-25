@@ -18,15 +18,13 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
 import code.name.monkey.backend.model.Song;
-import code.name.monkey.backend.views.PlayPauseDrawable;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
@@ -45,19 +43,19 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     @BindView(R.id.player_song_current_progress)
     TextView mPlayerSongCurrentProgress;
     @BindView(R.id.player_song_total_time)
-    TextView mSongTotalTime;
+    TextView songTotalTime;
     @BindView(R.id.player_progress_slider)
     SeekBar progressSlider;
     @BindView(R.id.player_prev_button)
-    ImageButton mPlayerPrevButton;
+    ImageButton playerPrevButton;
     @BindView(R.id.player_next_button)
-    ImageButton mPlayerNextButton;
+    ImageButton playerNextButton;
     @BindView(R.id.player_repeat_button)
-    ImageButton mPlayerRepeatButton;
+    ImageButton playerRepeatButton;
     @BindView(R.id.player_shuffle_button)
-    ImageButton mPlayerShuffleButton;
+    ImageButton playerShuffleButton;
     @BindView(R.id.player_play_pause_button)
-    ImageButton mPlayerPlayPauseFab;
+    ImageButton playerPlayPauseFab;
     Unbinder unbinder;
     @BindView(R.id.title)
     TextView mTitle;
@@ -69,7 +67,6 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     private int lastPlaybackControlsColor;
     private int lastDisabledPlaybackControlsColor;
     private MusicProgressViewUpdateHelper progressViewUpdateHelper;
-    private PlayPauseDrawable playerFabPlayPauseDrawable;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,12 +124,12 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
         animator.start();
 
         mPlayerSongCurrentProgress.setText(MusicUtil.getReadableDurationString(progress));
-        mSongTotalTime.setText(MusicUtil.getReadableDurationString(total));
+        songTotalTime.setText(MusicUtil.getReadableDurationString(total));
     }
 
 
     public void show() {
-        mPlayerPlayPauseFab.animate()
+        playerPlayPauseFab.animate()
                 .scaleX(1f)
                 .scaleY(1f)
                 .setInterpolator(new DecelerateInterpolator())
@@ -141,10 +138,10 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
 
     public void hide() {
-        if (mPlayerPlayPauseFab != null) {
-            mPlayerPlayPauseFab.setScaleX(0f);
-            mPlayerPlayPauseFab.setScaleY(0f);
-            mPlayerPlayPauseFab.setRotation(0f);
+        if (playerPlayPauseFab != null) {
+            playerPlayPauseFab.setScaleX(0f);
+            playerPlayPauseFab.setScaleY(0f);
+            playerPlayPauseFab.setRotation(0f);
         }
     }
 
@@ -197,23 +194,21 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     protected void updatePlayPauseDrawableState(boolean animate) {
+
         if (MusicPlayerRemote.isPlaying()) {
-            playerFabPlayPauseDrawable.setPause(animate);
+            playerPlayPauseFab.setImageResource(R.drawable.ic_pause_white_24dp);
         } else {
-            playerFabPlayPauseDrawable.setPlay(animate);
+            playerPlayPauseFab.setImageResource(R.drawable.ic_play_arrow_white_24dp);
         }
     }
 
     private void setUpPlayPauseFab() {
-        playerFabPlayPauseDrawable = new PlayPauseDrawable(getActivity());
 
-        mPlayerPlayPauseFab.setImageDrawable(playerFabPlayPauseDrawable); // Note: set the drawable AFTER TintHelper.setTintAuto() was called
-        //mPlayerPlayPauseFab.setColorFilter(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(fabColor)), PorterDuff.Mode.SRC_IN);
-        mPlayerPlayPauseFab.setOnClickListener(new PlayPauseButtonOnClickHandler());
-        mPlayerPlayPauseFab.post(() -> {
-            if (mPlayerPlayPauseFab != null) {
-                mPlayerPlayPauseFab.setPivotX(mPlayerPlayPauseFab.getWidth() / 2);
-                mPlayerPlayPauseFab.setPivotY(mPlayerPlayPauseFab.getHeight() / 2);
+        playerPlayPauseFab.setOnClickListener(new PlayPauseButtonOnClickHandler());
+        playerPlayPauseFab.post(() -> {
+            if (playerPlayPauseFab != null) {
+                playerPlayPauseFab.setPivotX(playerPlayPauseFab.getWidth() / 2);
+                playerPlayPauseFab.setPivotY(playerPlayPauseFab.getHeight() / 2);
             }
         });
     }
@@ -228,8 +223,8 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
 
     private void setUpPrevNext() {
         updatePrevNextColor();
-        mPlayerNextButton.setOnClickListener(v -> MusicPlayerRemote.playNextSong());
-        mPlayerPrevButton.setOnClickListener(v -> MusicPlayerRemote.back());
+        playerNextButton.setOnClickListener(v -> MusicPlayerRemote.playNextSong());
+        playerPrevButton.setOnClickListener(v -> MusicPlayerRemote.back());
     }
 
     private void updateProgressTextColor() {
@@ -239,8 +234,8 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     private void updatePrevNextColor() {
-        mPlayerNextButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-        mPlayerPrevButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+        playerNextButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+        playerPrevButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
     }
 
     @Override
@@ -268,39 +263,39 @@ public class FullPlaybackControlsFragment extends AbsPlayerControlsFragment {
     }
 
     private void setUpRepeatButton() {
-        mPlayerRepeatButton.setOnClickListener(v -> MusicPlayerRemote.cycleRepeatMode());
+        playerRepeatButton.setOnClickListener(v -> MusicPlayerRemote.cycleRepeatMode());
     }
 
     @Override
     protected void updateRepeatState() {
         switch (MusicPlayerRemote.getRepeatMode()) {
             case MusicService.REPEAT_MODE_NONE:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                playerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
+                playerRepeatButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             case MusicService.REPEAT_MODE_ALL:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                playerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
+                playerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             case MusicService.REPEAT_MODE_THIS:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                playerRepeatButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
+                playerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
         }
     }
 
     private void setUpShuffleButton() {
-        mPlayerShuffleButton.setOnClickListener(v -> MusicPlayerRemote.toggleShuffleMode());
+        playerShuffleButton.setOnClickListener(v -> MusicPlayerRemote.toggleShuffleMode());
     }
 
     @Override
     public void updateShuffleState() {
         switch (MusicPlayerRemote.getShuffleMode()) {
             case MusicService.SHUFFLE_MODE_SHUFFLE:
-                mPlayerShuffleButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                playerShuffleButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
             default:
-                mPlayerShuffleButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+                playerShuffleButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
                 break;
         }
     }

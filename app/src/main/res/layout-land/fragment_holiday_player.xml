@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <code.name.monkey.backend.views.HeightFitSquareLayout
+        <code.name.monkey.retromusic.views.HeightFitSquareLayout
             android:id="@+id/album_cover_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_player_album_cover" />
-        </code.name.monkey.backend.views.HeightFitSquareLayout>
+        </code.name.monkey.retromusic.views.HeightFitSquareLayout>
 
         <FrameLayout
             android:layout_width="match_parent"

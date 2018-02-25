@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
+import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
+import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +31,7 @@ import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
+import code.name.monkey.retromusic.ui.adapter.song.PlayingQueueAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerFragment;
@@ -42,22 +50,23 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
     FrameLayout toolbarContainer;
     @BindView(R.id.now_playing_container)
     ViewGroup viewGroup;
-
+    @Nullable
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     private int lastColor;
     private BlurPlaybackControlsFragment playbackControlsFragment;
     private Unbinder unbinder;
+
+    private RecyclerView.Adapter mWrappedAdapter;
+    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
+    private PlayingQueueAdapter mPlayingQueueAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     public static PlayerFragment newInstance() {
         Bundle args = new Bundle();
         PlayerFragment fragment = new PlayerFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onToolbarToggled() {
-        //Toggle hiding toolbar for effect
-        //toggleToolbar(toolbarContainer);
     }
 
     @Override
@@ -104,6 +113,7 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         lastColor = color;
         getCallbacks().onPaletteColorChanged();
 
+        ToolbarContentTintHelper.colorizeToolbar(toolbar, Color.WHITE, getActivity());
     }
 
     @Override
@@ -121,6 +131,24 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
 
     @Override
     public void onDestroyView() {
+        super.onDestroyView();
+        if (mRecyclerViewDragDropManager != null) {
+            mRecyclerViewDragDropManager.release();
+            mRecyclerViewDragDropManager = null;
+        }
+
+        if (mRecyclerView != null) {
+            mRecyclerView.setItemAnimator(null);
+            mRecyclerView.setAdapter(null);
+            mRecyclerView = null;
+        }
+
+        if (mWrappedAdapter != null) {
+            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+            mWrappedAdapter = null;
+        }
+        mPlayingQueueAdapter = null;
+        mLayoutManager = null;
         super.onDestroyView();
         unbinder.unbind();
     }
@@ -159,18 +187,6 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
         ToolbarContentTintHelper.colorizeToolbar(toolbar, Color.WHITE, getActivity());
     }
 
-    @Override
-    public void onServiceConnected() {
-        super.onServiceConnected();
-        updateBlur();
-    }
-
-    @Override
-    public void onPlayingMetaChanged() {
-        super.onPlayingMetaChanged();
-        updateBlur();
-    }
-
     private void updateBlur() {
         Activity activity = getActivity();
         if (activity == null) {
@@ -192,5 +208,91 @@ public class BlurPlayerFragment extends AbsPlayerFragment implements PlayerAlbum
                 });
     }
 
+    @Override
+    public void onServiceConnected() {
+        updateIsFavorite();
+        updateBlur();
+        setUpRecyclerView();
+    }
+
+    @Override
+    public void onPlayingMetaChanged() {
+        updateIsFavorite();
+        updateBlur();
+        updateQueuePosition();
+    }
+
+    private void setUpRecyclerView() {
+        if (mRecyclerView != null) {
+            mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+            final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
+
+            mPlayingQueueAdapter = new PlayingQueueAdapter(
+                    (AppCompatActivity) getActivity(),
+                    MusicPlayerRemote.getPlayingQueue(),
+                    MusicPlayerRemote.getPosition(),
+                    R.layout.item_song,
+                    false,
+                    null);
+            mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mPlayingQueueAdapter);
+
+            mLayoutManager = new LinearLayoutManager(getContext());
+
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mWrappedAdapter);
+            mRecyclerView.setItemAnimator(animator);
+            mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+            mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
+        }
+    }
+
+    @Override
+    public void onQueueChanged() {
+        updateQueue();
+        updateCurrentSong();
+    }
+
+    @Override
+    public void onMediaStoreChanged() {
+        updateQueue();
+        updateCurrentSong();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void updateCurrentSong() {
+    }
+
+    private void updateQueuePosition() {
+        if (mPlayingQueueAdapter != null) {
+            mPlayingQueueAdapter.setCurrent(MusicPlayerRemote.getPosition());
+            // if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+            resetToCurrentPosition();
+            //}
+        }
+    }
+
+    private void updateQueue() {
+        if (mPlayingQueueAdapter != null) {
+            mPlayingQueueAdapter.swapDataSet(MusicPlayerRemote.getPlayingQueue(), MusicPlayerRemote.getPosition());
+            resetToCurrentPosition();
+        }
+    }
+
+    private void resetToCurrentPosition() {
+        if (mRecyclerView != null) {
+            mRecyclerView.stopScroll();
+            mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        if (mRecyclerViewDragDropManager != null) {
+            mRecyclerViewDragDropManager.cancelDrag();
+        }
+        super.onPause();
+    }
 
 }

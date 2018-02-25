@@ -11,12 +11,8 @@ public enum NowPlayingScreen {
     FLAT(R.string.flat, R.drawable.np_flat, 1),
     FULL(R.string.full, R.drawable.np_full, 2),
     PLAIN(R.string.plain, R.drawable.np_plain, 3),
-    SIMPLE(R.string.simple, R.drawable.np_simple, 4),
-    TINY(R.string.tiny, R.drawable.np_tiny, 5),
-    HOLIDAY(R.string.holiday, R.drawable.np_normal, 6),
-    BLUR(R.string.blur, R.drawable.np_normal, 7)/*,
-    CARD(R.string.card, R.drawable.np_normal, 8),
-    TEXT(R.string.text, R.drawable.np_normal, 9)*/;
+    BLUR(R.string.blur, R.drawable.np_normal, 4),
+    COLOR(R.string.color, R.drawable.np_normal, 5);
 
     @StringRes
     public final int titleRes;

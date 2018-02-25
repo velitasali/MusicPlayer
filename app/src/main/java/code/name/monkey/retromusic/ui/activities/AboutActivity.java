@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.app.SupportActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.appthemehelper.ThemeStore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +26,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.retromusic.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
@@ -91,7 +90,7 @@ public class AboutActivity extends AbsBaseActivity {
         mContributors.setTextColor(ThemeStore.accentColor(this));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        //mRecyclerView.setAdapter(new ContributorsAdapter(sList));
+        //recyclerView.setAdapter(new ContributorsAdapter(sList));
     }
 
     @Override
@@ -139,17 +138,13 @@ public class AboutActivity extends AbsBaseActivity {
         return new String(Character.toChars(unicode));
     }
 
-    @OnClick({R.id.flaticon_link, R.id.app_github, R.id.support_container,
-            R.id.google_plus_circle_btn, R.id.telegram_btn,
+    @OnClick({R.id.flaticon_link, R.id.app_github, R.id.google_plus_circle_btn, R.id.telegram_btn,
             R.id.karimAbourGooglePlus, R.id.karimAbourGithub, R.id.luisGomezGooglePlus,
             R.id.luisGomezTwitter, R.id.app_telegram_channel, R.id.app_google_plus,
-            R.id.material_design_city_wallpaper_link,
-            R.id.app_translation, R.id.app_rate, R.id.app_share, R.id.material_design_link})
+            R.id.material_design_city_wallpaper_link, R.id.app_translation, R.id.app_rate,
+            R.id.app_share, R.id.material_design_link})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.support_container:
-                startActivity(new Intent(this, SupportDevelopmentActivity.class));
-                break;
             case R.id.flaticon_link:
                 openUrl(FLATICON_LINK);
                 break;

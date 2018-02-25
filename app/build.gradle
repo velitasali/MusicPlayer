@@ -15,8 +15,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
-        versionCode 117
-        versionName 'R - 1.1.500'
+        versionCode 129
+        versionName 'R - 1.2.100'
 
         multiDexEnabled true
 
@@ -43,7 +43,7 @@ android {
     productFlavors {
         normal {
             versionCode defaultConfig.versionCode + 10000
-            versionName defaultConfig.versionName
+            versionName defaultConfig.versionName + "_" + getDate()
             dimension "default"
         }
         kitkat {
@@ -103,6 +103,10 @@ def getProperty(@Nullable Properties properties, String name) {
     return properties.getProperty(name) ?: "$name missing";
 }
 
+def getDate() {
+    new Date().format('yyyyMMdd')
+}
+
 ext {
     supportLibVersion = "27.0.2"
     firebase = "11.8.0"
@@ -149,7 +153,6 @@ dependencies {
     implementation 'uk.co.chrisjenx:calligraphy:2.3.0'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.1'
-    implementation 'com.loopeer.lib:shadow:0.0.4-beta1'
 
     /*Backend all*/
     implementation project(':back-end')

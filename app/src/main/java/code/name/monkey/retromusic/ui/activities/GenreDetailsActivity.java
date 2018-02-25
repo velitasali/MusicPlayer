@@ -1,75 +1,87 @@
 package code.name.monkey.retromusic.ui.activities;
 
-import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ViewFlipper;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import code.name.monkey.appthemehelper.ThemeStore;
+import com.afollestad.materialcab.MaterialCab;
 import com.name.monkey.retromusic.ui.activities.base.AbsSlidingMusicPanelActivity;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ATHUtil;
+import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.mvp.contract.GenreDetailsContract;
 import code.name.monkey.backend.mvp.presenter.GenreDetailsPresenter;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import code.name.monkey.retromusic.R;
-import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
+import code.name.monkey.retromusic.interfaces.CabHolder;
+import code.name.monkey.retromusic.misc.AppBarStateChangeListener;
 import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
-import code.name.monkey.retromusic.util.Util;
+import code.name.monkey.retromusic.util.RetroColorUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author Hemanth S (h4h13).
  */
 
-public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implements GenreDetailsContract.GenreDetailsView {
+public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implements GenreDetailsContract.GenreDetailsView, CabHolder {
     public static final String EXTRA_GENRE_ID = "extra_genre_id";
     @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(android.R.id.empty)
+    TextView empty;
+
     @BindView(R.id.status_bar)
     View statusBar;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.image)
-    ViewFlipper image;
-    @BindView(R.id.play_songs)
-    Button playSongs;
-    @BindView(R.id.action_shuffle_all)
-    Button shuffleSongs;
-    private Genre mGenre;
-    private GenreDetailsPresenter mPresenter;
-    private SongAdapter mSongAdapter;
-    private ArrayList<Song> mSongs = new ArrayList<>();
-    private CompositeDisposable mDisposable;
+
+    @BindView(R.id.action_shuffle)
+    FloatingActionButton shuffleButton;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar progressBar;
+
+    @BindView(R.id.app_bar)
+    AppBarLayout appBarLayout;
+
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout toolbarLayout;
+
+    private Genre genre;
+    private GenreDetailsPresenter presenter;
+    private SongAdapter songAdapter;
+    private MaterialCab cab;
+
+    private void checkIsEmpty() {
+        empty.setVisibility(
+                songAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE
+        );
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,70 +89,76 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implement
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-        mDisposable = new CompositeDisposable();
+        setStatusbarColorAuto();
+        setNavigationbarColorAuto();
+        setTaskDescriptionColorAuto();
 
         setBottomBarVisibility(View.GONE);
 
         ViewUtil.setStatusBarHeight(this, statusBar);
 
 
-        mGenre = getIntent().getExtras().getParcelable(EXTRA_GENRE_ID);
-        mPresenter = new GenreDetailsPresenter(Injection.provideRepository(this),
+        genre = getIntent().getExtras().getParcelable(EXTRA_GENRE_ID);
+        presenter = new GenreDetailsPresenter(Injection.provideRepository(this),
                 this,
-                mGenre.id);
-
+                genre.id);
 
         setUpToolBar();
         setupRecyclerView();
-
-
-        int themeColor = ThemeStore.accentColor(this);
-        ViewCompat.setBackgroundTintList(playSongs, ColorStateList.valueOf(themeColor));
-        shuffleSongs.setTextColor(themeColor);
     }
 
-    @OnClick({R.id.action_shuffle_all, R.id.play_songs})
+    @OnClick({R.id.action_shuffle})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.action_shuffle_all:
-                MusicPlayerRemote.openAndShuffleQueue(mSongs, true);
-                break;
-            case R.id.play_songs:
-                MusicPlayerRemote.openQueue(mSongs, 0, true);
+            case R.id.action_shuffle:
+                MusicPlayerRemote.openAndShuffleQueue(songAdapter.getDataSet(), true);
                 break;
         }
     }
 
     private void setUpToolBar() {
-        mToolbar.setTitle(mGenre.name);
-        mToolbar.setSubtitle(mGenre.songCount + " " + (mGenre.songCount > 1 ? getString(R.string.songs) : getString(R.string.song)));
-        mToolbar.setNavigationOnClickListener(v -> onBackPressed());
-        mToolbar.setBackgroundColor(ThemeStore.primaryColor(this));
-        setSupportActionBar(mToolbar);
+        toolbar.setBackgroundColor(ThemeStore.primaryColor(this));
+        toolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+        setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
+        getSupportActionBar().setTitle(genre.name);
         setTitle(R.string.app_name);
 
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, AppBarStateChangeListener.State state) {
+                int color;
+                switch (state) {
+                    default:
+                    case COLLAPSED:
+                    case EXPANDED:
+                    case IDLE:
+                        color = ATHUtil.resolveColor(GenreDetailsActivity.this, android.R.attr.textColorPrimary);
+                        break;
+                }
+                toolbarLayout.setExpandedTitleColor(color);
+                ToolbarContentTintHelper.colorizeToolbar(toolbar, color, GenreDetailsActivity.this);
+            }
+        });
 
-        new Handler().postDelayed(() -> ToolbarContentTintHelper.colorizeToolbar(mToolbar,
-                ThemeStore.accentColor(this), GenreDetailsActivity.this), 1);
-
-
+        TintHelper.setTintAuto(shuffleButton, ThemeStore.accentColor(this), true);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.subscribe();
+        presenter.subscribe();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mPresenter.unsubscribe();
+        presenter.unsubscribe();
     }
 
     @Override
     protected View createContentView() {
-        return wrapSlidingMusicPanel(R.layout.activity_genre_details);
+        return wrapSlidingMusicPanel(R.layout.activity_playlist_detail);
     }
 
     @Override
@@ -160,7 +178,7 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implement
 
     @Override
     public void completed() {
-        loadImages();
+
     }
 
     @Override
@@ -172,62 +190,75 @@ public class GenreDetailsActivity extends AbsSlidingMusicPanelActivity implement
     }
 
     private void setupRecyclerView() {
-        mSongAdapter = new SongAdapter(this, new ArrayList<>(), R.layout.item_list, false, null);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(mSongAdapter);
-        mRecyclerView.setNestedScrollingEnabled(false);
+        ViewUtil.setUpFastScrollRecyclerViewColor(this,
+                ((FastScrollRecyclerView) recyclerView), ThemeStore.accentColor(this));
+        songAdapter = new SongAdapter(this, new ArrayList<Song>(), R.layout.item_list, false, this);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(songAdapter);
+
+        songAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                checkIsEmpty();
+            }
+        });
     }
 
     @Override
     public void showData(ArrayList<Song> songs) {
-        mSongs = songs;
-        mSongAdapter.swapDataSet(mSongs);
+        songAdapter.swapDataSet(songs);
     }
 
-    private void loadImages() {
-        mDisposable.add(Observable.just(mSongs)
-                .map(songs -> {
-                    ArrayList<Bitmap> bitmaps = new ArrayList<>();
-                    for (Song song : songs) {
-                        try {
-                            Bitmap bitmap = Glide.with(RetroApplication.getInstance())
-                                    .load(Util.getAlbumArtUri(song.albumId))
-                                    .asBitmap()
-                                    .into(500, 500)
-                                    .get();
-                            if (bitmap != null) {
-                                bitmaps.add(bitmap);
-                            }
-                        } catch (InterruptedException | ExecutionException ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-                    return bitmaps;
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(bitmaps -> {
-                    for (Bitmap bitmap : bitmaps) {
-                        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT);
+    public void showHeartAnimation() {
+        shuffleButton.clearAnimation();
 
-                        ImageView imageView = new ImageView(GenreDetailsActivity.this);
-                        imageView.setLayoutParams(layoutParams);
-                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        imageView.setImageBitmap(bitmap);
-                        image.addView(imageView);
-                    }
-                    // Declare in and out animations and load them using AnimationUtils class
-                    Animation in = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left);
-                    Animation out = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right);
-                    // set the animation type's to ViewFlipper
-                    image.setInAnimation(in);
-                    image.setOutAnimation(out);
-                    image.startFlipping();
-                    image.setAutoStart(true);
-                    image.setFlipInterval(5000);
-                }));
+        shuffleButton.setScaleX(0.9f);
+        shuffleButton.setScaleY(0.9f);
+        shuffleButton.setVisibility(View.VISIBLE);
+        shuffleButton.setPivotX(shuffleButton.getWidth() / 2);
+        shuffleButton.setPivotY(shuffleButton.getHeight() / 2);
+
+        shuffleButton.animate()
+                .setDuration(200)
+                .setInterpolator(new DecelerateInterpolator())
+                .scaleX(1.1f)
+                .scaleY(1.1f)
+                .withEndAction(() -> shuffleButton.animate()
+                        .setDuration(200)
+                        .setInterpolator(new AccelerateInterpolator())
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .alpha(1f)
+                        .start())
+                .start();
+    }
+
+    @NonNull
+    @Override
+    public MaterialCab openCab(final int menu, final MaterialCab.Callback callback) {
+        if (cab != null && cab.isActive()) cab.finish();
+        cab = new MaterialCab(this, R.id.cab_stub)
+                .setMenu(menu)
+                .setCloseDrawableRes(R.drawable.ic_close_white_24dp)
+                .setBackgroundColor(RetroColorUtil.shiftBackgroundColorForLightText(ThemeStore.primaryColor(this)))
+                .start(callback);
+        return cab;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (cab != null && cab.isActive()) cab.finish();
+        else {
+            recyclerView.stopScroll();
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onMediaStoreChanged() {
+        super.onMediaStoreChanged();
+        presenter.subscribe();
     }
 }

@@ -23,7 +23,9 @@
         android:theme="@style/Theme.RetroMusic.Light">
         <activity
             android:name=".ui.activities.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:resizeableActivity="true"
+            android:supportsPictureInPicture="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.MUSIC_PLAYER" />

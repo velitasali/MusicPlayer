@@ -17,28 +17,19 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@drawable/round_window"
         android:clickable="true"
+        android:focusable="true"
+        android:background="?android:attr/windowBackground"
         android:paddingEnd="24dp"
         android:paddingTop="@dimen/status_bar_padding"
         tools:layout_gravity="">
 
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/navigation_item"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="?android:attr/windowBackground"
-            android:orientation="horizontal">
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/navigation_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:overScrollMode="never" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:overScrollMode="never" />
 
 
     </FrameLayout>

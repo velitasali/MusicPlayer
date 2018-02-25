@@ -49,6 +49,7 @@ import code.name.monkey.retromusic.helper.SearchQueryHelper;
 import code.name.monkey.retromusic.service.MusicService;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.GenreFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
@@ -57,22 +58,18 @@ import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import io.reactivex.Observable;
 
-import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION;
-import static code.name.monkey.retromusic.service.MusicService.SAVED_POSITION_IN_TRACK;
-import static code.name.monkey.retromusic.service.MusicService.SAVED_REPEAT_MODE;
-import static code.name.monkey.retromusic.service.MusicService.SAVED_SHUFFLE_MODE;
 
-
-public class MainActivity extends AbsSlidingMusicPanelActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class MainActivity extends AbsSlidingMusicPanelActivity implements
+        SharedPreferences.OnSharedPreferenceChangeListener {
     public static final int APP_INTRO_REQUEST = 2323;
     public static final int APP_USER_INFO_REQUEST = 9003;
     public static final int REQUEST_CODE_THEME = 9002;
     private static final String TAG = "MainActivity";
 
-    private static final int LIBRARY = 0;
-    private static final int FOLDERS = 1;
-    private static final int SUPPORT_DIALOG = 3;
-    private static final int SETTIINGS = 2;
+    private static final int LIBRARY = 1;
+    private static final int HOME = 0;
+    private static final int FOLDERS = 2;
+    private static final int SETTIINGS = 3;
     private static final int ABOUT = 4;
     @Nullable
     MainActivityFragmentCallbacks currentFragment;
@@ -122,10 +119,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
 
         setUpNavigationView();
 
-        /*if (checkUserName()) {
-            startActivityForResult(new Intent(this, UserInfoActivity.class), APP_USER_INFO_REQUEST);
-        }*/
-
         if (savedInstanceState == null) {
             setMusicChooser(PreferenceUtil.getInstance(this).getLastMusicChooser());
         } else {
@@ -159,6 +152,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
     private void setMusicChooser(int key) {
         PreferenceUtil.getInstance(this).setLastMusicChooser(key);
         switch (key) {
+            case HOME:
+                setCurrentFragment(HomeFragment.newInstance(), false);
+                break;
             case FOLDERS:
                 setCurrentFragment(FoldersFragment.newInstance(this), false);
                 break;
@@ -224,12 +220,12 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
                             case R.id.action_playlist:
                                 currentFragment.selectedFragment(PlaylistsFragment.newInstance());
                                 break;
-                           /* case R.id.action_genre:
+                            case R.id.action_genre:
                                 currentFragment.selectedFragment(GenreFragment.newInstance());
-                                break;*/
-                            case R.id.action_home:
-                                currentFragment.selectedFragment(HomeFragment.newInstance());
                                 break;
+                            /*case R.id.action_home:
+                                currentFragment.selectedFragment(HomeFragment.newInstance());
+                                break;*/
                         }
                     }
                 });
@@ -372,28 +368,31 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equalsIgnoreCase(PreferenceUtil.LAST_MUSIC_CHOOSER) ||
-                key.equalsIgnoreCase(PreferenceUtil.LAST_PAGE) ||
-                key.equalsIgnoreCase(SAVED_SHUFFLE_MODE) ||
-                key.equalsIgnoreCase(SAVED_POSITION) ||
-                key.equalsIgnoreCase(SAVED_POSITION_IN_TRACK) ||
-                key.equalsIgnoreCase(SAVED_REPEAT_MODE)
-
-                ) {
-            return;
+        if (key.equalsIgnoreCase(PreferenceUtil.GENERAL_THEME) ||
+                key.equalsIgnoreCase(PreferenceUtil.ADAPTIVE_COLOR_APP) ||
+                key.equalsIgnoreCase(PreferenceUtil.DOMINANT_COLOR) ||
+                key.equalsIgnoreCase(PreferenceUtil.USER_NAME) ||
+                key.equalsIgnoreCase(PreferenceUtil.TOGGLE_FULL_SCREEN) ||
+                key.equalsIgnoreCase(PreferenceUtil.TOGGLE_VOLUME) ||
+                key.equalsIgnoreCase(PreferenceUtil.TOGGLE_TAB_TITLES) ||
+                key.equalsIgnoreCase(PreferenceUtil.ROUND_CORNERS) ||
+                key.equals(PreferenceUtil.CAROUSEL_EFFECT) ||
+                key.equals(PreferenceUtil.NOW_PLAYING_SCREEN_ID) ||
+                key.equals(PreferenceUtil.TOGGLE_GENRE) ||
+                key.equals(PreferenceUtil.BANNER_IMAGE_PATH) ||
+                key.equals(PreferenceUtil.PROFILE_IMAGE_PATH)) {
+            postRecreate();
         }
-        postRecreate();
-        //setupTitles();
     }
 
     class NavigationItemsAdapter extends RecyclerView.Adapter<NavigationItemsAdapter.ViewHolder> {
         List<Pair<Integer, Integer>> mList = new ArrayList<>();
 
         NavigationItemsAdapter() {
+            mList.add(new Pair<>(R.drawable.ic_home_white_24dp, R.string.home));
             mList.add(new Pair<>(R.drawable.ic_library_music_white_24dp, R.string.library));
             mList.add(new Pair<>(R.drawable.ic_folder_white_24dp, R.string.folders));
             mList.add(new Pair<>(R.drawable.ic_settings_white_24dp, R.string.action_settings));
-            mList.add(new Pair<>(R.drawable.ic_card_giftcard_black_24dp, R.string.support_development));
             mList.add(new Pair<>(R.drawable.ic_help_white_24dp, R.string.action_about));
         }
 
@@ -416,8 +415,8 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements Shared
                     case FOLDERS:
                         new Handler().postDelayed(() -> setMusicChooser(FOLDERS), 200);
                         break;
-                    case SUPPORT_DIALOG:
-                        new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SupportDevelopmentActivity.class)), 200);
+                    case HOME:
+                        new Handler().postDelayed(() -> setMusicChooser(HOME), 200);
                         break;
                     case SETTIINGS:
                         new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)), 200);

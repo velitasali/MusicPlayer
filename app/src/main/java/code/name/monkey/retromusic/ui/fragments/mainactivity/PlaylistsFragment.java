@@ -101,6 +101,7 @@ public class PlaylistsFragment extends AbsLibraryPagerRecyclerViewFragment<Playl
         super.onCreateOptionsMenu(menu, inflater);
         menu.removeItem(R.id.action_shuffle_all);
         menu.removeItem(R.id.action_sort_order);
+        menu.removeItem(R.id.action_grid_size);
     }
 
     @Override

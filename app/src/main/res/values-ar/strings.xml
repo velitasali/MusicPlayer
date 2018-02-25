@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <resources>
-    <!-- 
-    <string name="pref_summary_toggle_status_bar">Hide only status bar</string>
-    <string name="pref_title_toggle_status_bar">Status bar</string>
-    <string name="pref_summary_toggle_navigation_bar">Hide only navigation bar</string>
-    <string name="pref_title_toggle_navigation_bar">Navigation bar</string>
- -->
-    <string name="accent_color">اللون الرئيسي</string>
-    <string name="accent_color_desc">اللون الرئيسي للنُسق، اللون الأخضر هو اللون الافتراضي.</string>
+    <string name="accent_color">النائبة</string>
+    <string name="accent_color_desc">النائبة</string>
     <string name="action_about">حول</string>
     <string name="action_add_to_favorites">إضافة إلى المفضلة</string>
     <string name="action_add_to_playing_queue">إضافة إلى ما يتم تشغيله الآن</string>
@@ -343,8 +337,8 @@
     <string name="primary_color_desc">لون السمة الرئيسية، اللون الافتراضي هو الأبيض.</string>
     <string name="media_route_menu_title">بث إلى جهاز</string>
     <string name="tiny">دقيق</string>
-    <string name="app_name">Retro Music</string>
     <!-- SAF -->
     <!-- SAF guide -->
     <!-- Message displayed when tag editing fails -->
+    <!-- Android Auto -->
 </resources>

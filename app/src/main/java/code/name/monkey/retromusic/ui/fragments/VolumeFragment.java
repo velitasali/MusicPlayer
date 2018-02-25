@@ -16,16 +16,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
-import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.appthemehelper.util.ColorUtil;
-import code.name.monkey.appthemehelper.util.TintHelper;
-import code.name.monkey.backend.volume.AudioVolumeObserver;
-import code.name.monkey.backend.volume.OnAudioVolumeChangedListener;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import code.name.monkey.appthemehelper.ThemeStore;
+import code.name.monkey.appthemehelper.util.ColorUtil;
+import code.name.monkey.appthemehelper.util.MaterialValueHelper;
+import code.name.monkey.appthemehelper.util.TintHelper;
+import code.name.monkey.backend.volume.AudioVolumeObserver;
+import code.name.monkey.backend.volume.OnAudioVolumeChangedListener;
 import code.name.monkey.retromusic.R;
 
 /**
@@ -45,6 +45,7 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
     ImageView volumeUp;
     private Unbinder unbinder;
     private AudioVolumeObserver mAudioVolumeObserver;
+
 
     public static VolumeFragment newInstance() {
         return new VolumeFragment();
@@ -168,5 +169,9 @@ public class VolumeFragment extends Fragment implements SeekBar.OnSeekBarChangeL
     public void dominantColor(int dark) {
         volumeSeekbar.setThumb(null);
         TintHelper.setTint(volumeSeekbar, dark, true);
+    }
+
+    public void setTintable(int color) {
+        setProgressBarColor(color);
     }
 }

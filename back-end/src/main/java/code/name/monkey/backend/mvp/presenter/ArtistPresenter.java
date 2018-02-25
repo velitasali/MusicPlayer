@@ -9,11 +9,6 @@ import code.name.monkey.backend.providers.interfaces.Repository;
 
 import java.util.ArrayList;
 
-
-/**
- * Created by hemanths on 16/08/17.
- */
-
 public class ArtistPresenter extends Presenter implements ArtistContract.Presenter {
     @NonNull
     private ArtistContract.ArtistView mView;

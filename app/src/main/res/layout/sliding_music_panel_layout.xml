@@ -27,13 +27,14 @@
         <FrameLayout
             android:id="@+id/sliding_panel"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:colorBackground">
+            android:layout_height="match_parent">
+
 
             <FrameLayout
                 android:id="@+id/player_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
 
             <fragment
                 android:id="@+id/mini_player_fragment"

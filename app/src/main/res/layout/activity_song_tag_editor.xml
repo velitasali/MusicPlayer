@@ -18,7 +18,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
 
-            <code.name.monkey.backend.views.WidthFitSquareLayout
+            <code.name.monkey.retromusic.views.WidthFitSquareLayout
                 android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
                     app:srcCompat="@drawable/default_album_art" />
 
 
-            </code.name.monkey.backend.views.WidthFitSquareLayout>
+            </code.name.monkey.retromusic.views.WidthFitSquareLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
