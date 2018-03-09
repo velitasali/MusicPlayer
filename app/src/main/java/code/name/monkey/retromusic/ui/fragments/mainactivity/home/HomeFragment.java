@@ -38,7 +38,6 @@ import code.name.monkey.retromusic.ui.adapter.song.SongAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class HomeFragment extends AbsLibraryPagerFragment implements MainActivityFragmentCallbacks, HomeContract.HomeView
 {
@@ -64,10 +63,14 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	@BindView(R.id.top_albums_container)
 	View topAlbumContainer;
 	@BindView(R.id.songs_container)
-	View songsContainer;
+	View suggestedSongContainer;
 
 	private HomePresenter homePresenter;
-	private CompositeDisposable disposable;
+	private ArtistAdapter topArtistAdapter;
+	private AlbumAdapter topAlbumsAdapter;
+	private SongAdapter suggestedSongAdapter;
+	private AlbumAdapter recentAlbumAdapter;
+	private ArtistAdapter recentArtistAdapter;
 
 	public static HomeFragment newInstance()
 	{
@@ -82,8 +85,13 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	public void onCreate(@Nullable Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		disposable = new CompositeDisposable();
 		homePresenter = new HomePresenter(Injection.provideRepository(getContext()), this);
+
+		topArtistAdapter = new ArtistAdapter(getActivity(), new ArrayList<>(), R.layout.item_artist, false, null);
+		topAlbumsAdapter = new AlbumAdapter(getActivity(), new ArrayList<>(), R.layout.pager_item, false, null);
+		suggestedSongAdapter = new SongAdapter(getActivity(), new ArrayList<>(), R.layout.item_image, false, null);
+		recentAlbumAdapter = new AlbumAdapter(getActivity(),new ArrayList<>(),  R.layout.pager_item, false, null);
+		recentArtistAdapter = new ArtistAdapter(getActivity(), new ArrayList<>(),  R.layout.item_artist, false, null);
 	}
 
 	@Nullable
@@ -93,7 +101,34 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	{
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 		unbinder = ButterKnife.bind(this, view);
+
 		return view;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+
+		topArtistRV.setLayoutManager(new GridLayoutManager(getActivity(),
+				1, GridLayoutManager.HORIZONTAL, false));
+		topArtistRV.setAdapter(topArtistAdapter);
+
+		topAlbumRV.setLayoutManager(new GridLayoutManager(getActivity(),
+				1, GridLayoutManager.HORIZONTAL, false));
+		topAlbumRV.setAdapter(topAlbumsAdapter);
+
+		songsRV.setLayoutManager(new GridLayoutManager(getActivity(),
+				1, GridLayoutManager.HORIZONTAL, false));
+		songsRV.setAdapter(suggestedSongAdapter);
+
+		recentAlbumRV.setLayoutManager(new GridLayoutManager(getActivity(),
+				1, GridLayoutManager.HORIZONTAL, false));
+		recentAlbumRV.setAdapter(recentAlbumAdapter);
+
+		recentArtistRV.setLayoutManager(new GridLayoutManager(getActivity(),
+				1, GridLayoutManager.HORIZONTAL, false));
+		recentArtistRV.setAdapter(recentArtistAdapter);
 	}
 
 	@Override
@@ -113,14 +148,6 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	{
 		super.onDestroyView();
 		unbinder.unbind();
-	}
-
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-		disposable.clear();
-		homePresenter.unsubscribe();
 	}
 
 	@Override
@@ -146,8 +173,14 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	{
 		super.onResume();
 		homePresenter.subscribe();
-
 		getLibraryFragment().getToolbar().setTitle(PreferenceUtil.getInstance(getContext()).tabTitles() ? R.string.library : R.string.home);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		homePresenter.unsubscribe();
 	}
 
 	@Override
@@ -166,53 +199,37 @@ public class HomeFragment extends AbsLibraryPagerFragment implements MainActivit
 	@Override
 	public void recentArtist(ArrayList<Artist> artists)
 	{
-		recentArtistContainer.setVisibility(View.VISIBLE);
-		recentArtistRV.setLayoutManager(new GridLayoutManager(getActivity(),
-				1, GridLayoutManager.HORIZONTAL, false));
-		ArtistAdapter artistAdapter = new ArtistAdapter(getActivity(), artists, R.layout.item_artist, false, null);
-		recentArtistRV.setAdapter(artistAdapter);
-
+		recentArtistContainer.setVisibility(artists.isEmpty() ? View.GONE : View.VISIBLE);
+		recentArtistAdapter.swapDataSet(artists);
 	}
 
 	@Override
 	public void recentAlbum(ArrayList<Album> albums)
 	{
-		recentAlbumsContainer.setVisibility(View.VISIBLE);
-		recentAlbumRV.setLayoutManager(new GridLayoutManager(getActivity(),
-				1, GridLayoutManager.HORIZONTAL, false));
-		AlbumAdapter artistAdapter = new AlbumAdapter(getActivity(), albums, R.layout.pager_item, false, null);
-		recentAlbumRV.setAdapter(artistAdapter);
+		recentAlbumsContainer.setVisibility(albums.isEmpty() ? View.GONE : View.VISIBLE);
+		recentAlbumAdapter.swapDataSet(albums);
 
 	}
 
 	@Override
 	public void topArtists(ArrayList<Artist> artists)
 	{
-		topArtistContainer.setVisibility(View.VISIBLE);
-		topArtistRV.setLayoutManager(new GridLayoutManager(getActivity(),
-				1, GridLayoutManager.HORIZONTAL, false));
-		ArtistAdapter artistAdapter = new ArtistAdapter(getActivity(), artists, R.layout.item_artist, false, null);
-		topArtistRV.setAdapter(artistAdapter);
+		topArtistContainer.setVisibility(artists.isEmpty() ? View.GONE : View.VISIBLE);
+		topArtistAdapter.swapDataSet(artists);
 	}
 
 	@Override
 	public void topAlbums(ArrayList<Album> albums)
 	{
-		topAlbumContainer.setVisibility(View.VISIBLE);
-		topAlbumRV.setLayoutManager(new GridLayoutManager(getActivity(),
-				1, GridLayoutManager.HORIZONTAL, false));
-		AlbumAdapter artistAdapter = new AlbumAdapter(getActivity(), albums, R.layout.pager_item, false, null);
-		topAlbumRV.setAdapter(artistAdapter);
+		topAlbumContainer.setVisibility(albums.isEmpty() ? View.GONE : View.VISIBLE);
+		topAlbumsAdapter.swapDataSet(albums);
 	}
 
 	@Override
 	public void suggestions(ArrayList<Song> songs)
 	{
-		songsContainer.setVisibility(View.VISIBLE);
-		songsRV.setLayoutManager(new GridLayoutManager(getActivity(),
-				1, GridLayoutManager.HORIZONTAL, false));
-		SongAdapter artistAdapter = new SongAdapter(getActivity(), songs, R.layout.item_image, false, null);
-		songsRV.setAdapter(artistAdapter);
+		suggestedSongContainer.setVisibility(songs.isEmpty() ? View.GONE : View.VISIBLE);
+		suggestedSongAdapter.swapDataSet(songs);
 	}
 
 	@OnClick({R.id.history, R.id.last_added, R.id.top_tracks, R.id.action_shuffle, R.id.timer})

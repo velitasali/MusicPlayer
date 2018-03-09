@@ -51,10 +51,9 @@ import code.name.monkey.retromusic.ui.fragments.mainactivity.AlbumsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.ArtistsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.GenreFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.LibraryFragment;
-import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistsFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.PlaylistFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.SongsFragment;
 import code.name.monkey.retromusic.ui.fragments.mainactivity.folders.FoldersFragment;
-import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import io.reactivex.Observable;
 
@@ -227,11 +226,14 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 								currentFragment.selectedFragment(ArtistsFragment.newInstance());
 								break;
 							case R.id.action_playlist:
-								currentFragment.selectedFragment(PlaylistsFragment.newInstance());
+								currentFragment.selectedFragment(PlaylistFragment.newInstance());
 								break;
-							case R.id.action_home:
-                                currentFragment.selectedFragment(HomeFragment.newInstance());
-                                break;
+							case R.id.action_genres:
+								currentFragment.selectedFragment(GenreFragment.newInstance());
+								break;
+							//case R.id.action_home:
+                              //  currentFragment.selectedFragment(HomeFragment.newInstance());
+                               // break;
 						}
 					}
 				});

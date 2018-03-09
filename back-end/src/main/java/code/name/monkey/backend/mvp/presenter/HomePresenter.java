@@ -39,7 +39,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(artists -> {
-                            if (!artists.isEmpty()) view.recentArtist(artists);
+                            view.recentArtist(artists);
                         },
                         throwable -> view.showEmptyView(), () -> view.completed()));
 
@@ -48,7 +48,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(artists -> {
-                            if (!artists.isEmpty()) view.topArtists(artists);
+                            view.topArtists(artists);
                         },
                         throwable -> view.showEmptyView(), () -> view.completed()));
 
@@ -57,7 +57,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(artists -> {
-                            if (!artists.isEmpty()) view.recentAlbum(artists);
+                            view.recentAlbum(artists);
                         },
                         throwable -> view.showEmptyView(), () -> view.completed()));
 
@@ -66,7 +66,7 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(artists -> {
-                            if (!artists.isEmpty()) view.topAlbums(artists);
+                            view.topAlbums(artists);
                         },
                         throwable -> view.showEmptyView(), () -> view.completed()));
 
@@ -75,10 +75,8 @@ public class HomePresenter extends Presenter implements HomeContract.HomePresent
                 .subscribeOn(schedulerProvider.ui())
                 .doOnSubscribe(disposable1 -> view.loading())
                 .subscribe(artists -> {
-                            if (!artists.isEmpty()) view.suggestions(artists);
+                            view.suggestions(artists);
                         },
                         throwable -> view.showEmptyView(), () -> view.completed()));
-
-
     }
 }

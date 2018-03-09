@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView xmlns:tools="http://schemas.android.com/tools"
+    <android.support.v7.widget.AppCompatTextView
+        xmlns:tools="http://schemas.android.com/tools"
         fontPath="@string/sans_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +14,7 @@
         android:text="@string/for_you"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textColor="?android:attr/textColorPrimary"
-        tools:ignore="MissingPrefix" />
+        tools:ignore="MissingPrefix"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
                     android:elevation="2dp"
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_access_time_white_24dp"
-                    app:tint="@color/md_white_1000" />
+                    app:tint="@color/md_white_1000"/>
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -50,7 +51,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/history"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
 
@@ -73,7 +74,7 @@
                     android:elevation="2dp"
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_library_add_white_24dp"
-                    app:tint="@color/md_white_1000" />
+                    app:tint="@color/md_white_1000"/>
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -83,7 +84,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/last_added"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
 
@@ -106,7 +107,7 @@
                     android:elevation="2dp"
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_trending_up_white_24dp"
-                    app:tint="@color/md_white_1000" />
+                    app:tint="@color/md_white_1000"/>
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -116,7 +117,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/my_top_tracks"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
 
@@ -139,7 +140,7 @@
                     android:elevation="2dp"
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_shuffle_white_24dp"
-                    app:tint="@color/md_white_1000" />
+                    app:tint="@color/md_white_1000"/>
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -149,7 +150,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/shuffle"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
 
@@ -172,7 +173,7 @@
                     android:elevation="2dp"
                     android:padding="16dp"
                     app:srcCompat="@drawable/ic_timer_white_24dp"
-                    app:tint="@color/md_white_1000" />
+                    app:tint="@color/md_white_1000"/>
             </FrameLayout>
 
             <android.support.v7.widget.AppCompatTextView
@@ -182,7 +183,7 @@
                 android:paddingTop="8dp"
                 android:text="@string/action_sleep_timer"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
         </LinearLayout>
     </LinearLayout>
@@ -191,5 +192,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_margin="12dp"
-        android:background="?attr/dividerColor" />
+        android:background="?attr/dividerColor"/>
 </LinearLayout>

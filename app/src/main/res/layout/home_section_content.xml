@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:showIn="@layout/fragment_home">
 
@@ -10,8 +10,7 @@
         android:id="@+id/recent_artist_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             fontPath="@string/sans_bold"
@@ -40,8 +39,7 @@
         android:id="@+id/recent_albums_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             fontPath="@string/sans_bold"
@@ -70,8 +68,7 @@
         android:id="@+id/top_artist_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             fontPath="@string/sans_bold"
@@ -100,8 +97,7 @@
         android:id="@+id/top_albums_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             fontPath="@string/sans_bold"
@@ -130,8 +126,7 @@
         android:id="@+id/songs_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:orientation="vertical">
 
         <TextView
             fontPath="@string/sans_bold"

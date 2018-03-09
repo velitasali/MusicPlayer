@@ -37,6 +37,7 @@ import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.ui.activities.SearchActivity;
 import code.name.monkey.retromusic.ui.fragments.base.AbsLibraryPagerRecyclerViewCustomGridSizeFragment;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMainActivityFragment;
+import code.name.monkey.retromusic.ui.fragments.mainactivity.home.HomeFragment;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.RetroColorUtil;
@@ -171,8 +172,6 @@ public class LibraryFragment extends AbsMainActivityFragment implements CabHolde
 	@Override
 	public void selectedFragment(Fragment fragment)
 	{
-
-
 		fragmentManager = getChildFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

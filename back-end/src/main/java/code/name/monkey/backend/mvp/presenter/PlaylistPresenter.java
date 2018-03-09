@@ -1,11 +1,16 @@
 package code.name.monkey.backend.mvp.presenter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import code.name.monkey.backend.model.Playlist;
+import code.name.monkey.backend.model.Song;
+import code.name.monkey.backend.model.smartplaylist.AbsSmartPlaylist;
+import code.name.monkey.backend.model.smartplaylist.HistoryPlaylist;
 import code.name.monkey.backend.mvp.Presenter;
 import code.name.monkey.backend.mvp.contract.PlaylistContract;
 import code.name.monkey.backend.providers.interfaces.Repository;
+import io.reactivex.Observable;
 
 import java.util.ArrayList;
 
@@ -47,10 +52,6 @@ public class PlaylistPresenter extends Presenter
     }
 
     private void showList(@NonNull ArrayList<Playlist> songs) {
-        if (songs.isEmpty()) {
-            mView.showEmptyView();
-        } else {
-            mView.showData(songs);
-        }
+        mView.showData(songs);
     }
 }
