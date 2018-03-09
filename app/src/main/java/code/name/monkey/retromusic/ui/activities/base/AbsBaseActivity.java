@@ -23,7 +23,7 @@ import android.view.View;
 import java.util.Locale;
 
 import code.name.monkey.appthemehelper.ThemeStore;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**

@@ -18,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.loaders.SongLoader;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 
 public class SongTagEditorActivity extends AbsTagEditorActivity implements TextWatcher {

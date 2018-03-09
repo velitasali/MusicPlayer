@@ -44,7 +44,7 @@ import code.name.monkey.backend.model.lyrics.Lyrics;
 import code.name.monkey.backend.providers.RepositoryImpl;
 import code.name.monkey.backend.providers.interfaces.Repository;
 import code.name.monkey.backend.util.LyricUtil;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;

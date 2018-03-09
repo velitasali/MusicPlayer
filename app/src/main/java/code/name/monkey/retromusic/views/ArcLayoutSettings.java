@@ -6,7 +6,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 public class ArcLayoutSettings {
     public final static int CROP_INSIDE = 0;

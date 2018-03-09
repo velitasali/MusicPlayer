@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.pm.ShortcutInfo;
 import android.os.Build;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.appshortcuts.AppShortcutIconGenerator;
 import code.name.monkey.retromusic.appshortcuts.AppShortcutLauncherActivity;
 

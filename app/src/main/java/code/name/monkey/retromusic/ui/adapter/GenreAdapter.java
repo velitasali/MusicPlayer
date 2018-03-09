@@ -14,7 +14,7 @@ import code.name.monkey.backend.model.Genre;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.util.NavigationUtil;
 

@@ -34,7 +34,7 @@ import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.mvp.contract.GenreDetailsContract;
 import code.name.monkey.backend.mvp.presenter.GenreDetailsPresenter;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.misc.AppBarStateChangeListener;

@@ -10,9 +10,9 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.TypedValue;
 
-import code.name.monkey.appthemehelper.ThemeStore;
+import com.velitasali.music.R;
 
-import code.name.monkey.retromusic.R;
+import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.Util;
 

@@ -6,7 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.AttributeSet;
 
 import code.name.monkey.appthemehelper.util.TypefaceHelper;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Hemanth S (h4h13).

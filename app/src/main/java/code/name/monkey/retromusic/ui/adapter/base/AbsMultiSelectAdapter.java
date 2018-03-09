@@ -11,7 +11,7 @@ import com.afollestad.materialcab.MaterialCab;
 
 import java.util.ArrayList;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 /**
  * @author Karim Abou Zeid (kabouzeid)

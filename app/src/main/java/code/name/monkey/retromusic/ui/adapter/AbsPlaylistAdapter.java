@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.NavigationUtil;
 import code.name.monkey.retromusic.views.MetalRecyclerViewPager;
 import io.reactivex.android.schedulers.AndroidSchedulers;

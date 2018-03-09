@@ -3,7 +3,7 @@ package com.name.monkey.retromusic.ui.fragments.player;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 
 public enum NowPlayingScreen {

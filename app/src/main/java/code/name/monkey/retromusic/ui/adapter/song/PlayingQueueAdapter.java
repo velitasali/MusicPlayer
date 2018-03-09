@@ -18,7 +18,7 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableI
 import java.util.ArrayList;
 
 import code.name.monkey.backend.model.Song;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.util.MusicUtil;

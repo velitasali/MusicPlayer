@@ -25,7 +25,7 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import code.name.monkey.retromusic.BuildConfig;
+import com.velitasali.music.BuildConfig;
 
 import static code.name.monkey.backend.RetroConstants.ACTION_PAUSE;
 import static code.name.monkey.backend.RetroConstants.ACTION_PLAY;

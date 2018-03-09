@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import code.name.monkey.backend.model.Genre;
 import code.name.monkey.backend.model.Playlist;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.activities.AlbumDetailsActivity;
 import code.name.monkey.retromusic.ui.activities.ArtistDetailActivity;

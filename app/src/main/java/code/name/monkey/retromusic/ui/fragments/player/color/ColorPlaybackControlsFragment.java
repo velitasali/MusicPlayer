@@ -30,7 +30,7 @@ import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.views.PlayPauseDrawable;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.service.MusicService;

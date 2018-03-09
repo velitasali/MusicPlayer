@@ -17,7 +17,7 @@ import butterknife.Unbinder;
 import code.name.monkey.backend.transform.CustPagerTransformer;
 import code.name.monkey.backend.transform.NormalPageTransformer;
 import code.name.monkey.backend.transform.ParallaxPagerTransformer;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.AlbumCoverPagerAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;

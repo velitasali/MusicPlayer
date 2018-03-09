@@ -14,9 +14,9 @@ android {
         renderscriptTargetApi 27 //must match target sdk and build tools
         vectorDrawables.useSupportLibrary = true
 
-        applicationId "code.name.monkey.retromusic"
-        versionCode 129
-        versionName 'R - 1.2.100'
+        applicationId "com.velitasali.music"
+        versionCode 1
+        versionName '1.0'
 
         multiDexEnabled true
 
@@ -42,21 +42,9 @@ android {
     flavorDimensions "default"
     productFlavors {
         normal {
-            versionCode defaultConfig.versionCode + 10000
-            versionName defaultConfig.versionName + "_" + getDate()
+            // versionCode defaultConfig.versionCode + 42
+            // versionName defaultConfig.versionName + "." + getDate()
             dimension "default"
-        }
-        /*
-        kitkat {
-            minSdkVersion 19
-            targetSdkVersion 19
-            versionCode defaultConfig.versionCode + 2000
-            versionName defaultConfig.versionName
-            dimension "default"
-        }*/
-        pro {
-            versionName defaultConfig.versionName
-            applicationId defaultConfig.applicationId + ".pro"
         }
     }
 
@@ -118,7 +106,7 @@ ext {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:multidex:1.0.3'
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:recyclerview-v7:$supportLibVersion"
     implementation "com.android.support:gridlayout-v7:$supportLibVersion"

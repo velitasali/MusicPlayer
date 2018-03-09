@@ -36,7 +36,7 @@ import code.name.monkey.backend.model.Playlist;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.model.lyrics.AbsSynchronizedLyrics;
 import code.name.monkey.backend.util.FileUtil;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import io.reactivex.Observable;
 

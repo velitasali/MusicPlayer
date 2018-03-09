@@ -12,7 +12,7 @@ import code.name.monkey.backend.model.Playlist;
 
 import java.util.ArrayList;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
 
 /**

@@ -30,7 +30,7 @@ import android.view.ViewGroup;
 
 import code.name.monkey.backend.model.Playlist;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 
 public class MetalRecyclerViewPager extends RecyclerView {

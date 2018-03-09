@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import code.name.monkey.backend.interfaces.PaletteColorHolder;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.util.LyricUtil;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeleteSongsDialog;

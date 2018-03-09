@@ -29,7 +29,7 @@ import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.interfaces.MainActivityFragmentCallbacks;
 import code.name.monkey.backend.loaders.SongLoader;
 import code.name.monkey.backend.util.Util;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.CreatePlaylistDialog;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;

@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.EdgeGlowUtil;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.ViewUtil;
 
 /**

@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Aidan Follestad (afollestad), modified for Phonograph by Karim Abou Zeid (kabouzeid)

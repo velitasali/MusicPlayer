@@ -48,7 +48,7 @@ import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
 import code.name.monkey.backend.model.smartplaylist.MyTopTracksPlaylist;
 import code.name.monkey.backend.mvp.contract.HomeContract;
 import code.name.monkey.backend.mvp.presenter.HomePresenter;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.SleepTimerDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.misc.AppBarStateChangeListener;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="code.name.monkey.retromusic">
+    package="com.velitasali.music">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +14,7 @@
 
 
     <application
-        android:name=".RetroApplication"
+        android:name="code.name.monkey.retromusic.RetroApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RetroMusic.Light">
         <activity
-            android:name=".ui.activities.MainActivity"
+            android:name="code.name.monkey.retromusic.ui.activities.MainActivity"
             android:label="@string/app_name"
             android:resizeableActivity="true"
             android:supportsPictureInPicture="true">
@@ -97,38 +97,38 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.AlbumDetailsActivity" />
-        <activity android:name=".ui.activities.ArtistDetailActivity" />
-        <activity android:name=".ui.activities.PlaylistDetailActivity" />
-        <activity android:name=".ui.activities.PlayingQueueActivity" />
-        <activity android:name=".ui.activities.AboutActivity" />
-        <activity android:name=".ui.activities.tageditor.AlbumTagEditorActivity" />
-        <activity android:name=".ui.activities.tageditor.SongTagEditorActivity" />
-        <activity android:name=".ui.activities.SettingsActivity" />
-        <activity android:name=".ui.activities.SearchActivity" />
-        <activity android:name=".ui.activities.LyricsActivity" />
-        <activity android:name=".ui.activities.UserInfoActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.AlbumDetailsActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.ArtistDetailActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.PlaylistDetailActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.PlayingQueueActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.AboutActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.tageditor.AlbumTagEditorActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.tageditor.SongTagEditorActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.SettingsActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.SearchActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.LyricsActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.UserInfoActivity" />
         <activity
-            android:name=".appshortcuts.AppShortcutLauncherActivity"
+            android:name="code.name.monkey.retromusic.appshortcuts.AppShortcutLauncherActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
-            android:name=".ui.activities.LockScreenActivity"
+            android:name="code.name.monkey.retromusic.ui.activities.LockScreenActivity"
             android:autoRemoveFromRecents="true"
             android:launchMode="singleInstance"
             android:screenOrientation="sensorPortrait"
             android:showOnLockScreen="true" />
-        <activity android:name=".ui.activities.SupportDevelopmentActivity" />
-        <activity android:name=".ui.activities.GenreDetailsActivity" />
-        <activity android:name=".ui.activities.ShareSongActivity" />
-        <activity android:name=".ui.activities.LicenseActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.SupportDevelopmentActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.GenreDetailsActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.ShareSongActivity" />
+        <activity android:name="code.name.monkey.retromusic.ui.activities.LicenseActivity" />
 
         <service
-            android:name=".service.MusicService"
+            android:name="code.name.monkey.retromusic.service.MusicService"
             android:enabled="true" />
 
         <service
-            android:name=".service.daydream.RetroMusicAlbums"
+            android:name="code.name.monkey.retromusic.service.daydream.RetroMusicAlbums"
             android:exported="true"
             android:label="Retro Music Albums"
             android:permission="android.permission.BIND_DREAM_SERVICE">
@@ -146,14 +146,14 @@
                  <action android:name="android.intent.action.HEADSET_PLUG" />
              </intent-filter>
          </receiver>-->
-        <receiver android:name=".appwidgets.BootReceiver">
+        <receiver android:name="code.name.monkey.retromusic.appwidgets.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".appwidgets.AppWidgetBig"
+            android:name="code.name.monkey.retromusic.appwidgets.AppWidgetBig"
             android:exported="false"
             android:label="@string/app_widget_big_name">
             <intent-filter>
@@ -165,7 +165,7 @@
                 android:resource="@xml/app_widget_big_info" />
         </receiver>
         <receiver
-            android:name=".appwidgets.AppWidgetClassic"
+            android:name="code.name.monkey.retromusic.appwidgets.AppWidgetClassic"
             android:exported="false"
             android:label="@string/app_widget_classic_name">
             <intent-filter>
@@ -177,7 +177,7 @@
                 android:resource="@xml/app_widget_classic_info" />
         </receiver>
         <receiver
-            android:name=".appwidgets.AppWidgetSmall"
+            android:name="code.name.monkey.retromusic.appwidgets.AppWidgetSmall"
             android:exported="false"
             android:label="@string/app_widget_small_name">
             <intent-filter>
@@ -189,7 +189,7 @@
                 android:resource="@xml/app_widget_small_info" />
         </receiver>
         <receiver
-            android:name=".appwidgets.AppWidgetCard"
+            android:name="code.name.monkey.retromusic.appwidgets.AppWidgetCard"
             android:exported="false"
             android:label="@string/app_widget_card_name">
             <intent-filter>
@@ -200,7 +200,7 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/app_widget_card_info" />
         </receiver>
-        <receiver android:name=".service.MediaButtonIntentReceiver">
+        <receiver android:name="code.name.monkey.retromusic.service.MediaButtonIntentReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>

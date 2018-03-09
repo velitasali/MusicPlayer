@@ -12,7 +12,7 @@ import code.name.monkey.appthemehelper.ThemeStore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 
 /**

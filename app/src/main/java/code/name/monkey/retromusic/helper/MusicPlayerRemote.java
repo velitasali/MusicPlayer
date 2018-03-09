@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.WeakHashMap;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.service.MusicService;
 import io.reactivex.schedulers.Schedulers;
 

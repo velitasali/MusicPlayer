@@ -19,7 +19,7 @@ import code.name.monkey.backend.model.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.glide.ArtistGlideRequest;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;

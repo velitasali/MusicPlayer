@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import code.name.monkey.appthemehelper.util.ColorUtil;
 import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 import code.name.monkey.backend.swipebtn.SwipeButton;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
 import code.name.monkey.retromusic.ui.fragments.player.normal.PlayerPlaybackControlsFragment;

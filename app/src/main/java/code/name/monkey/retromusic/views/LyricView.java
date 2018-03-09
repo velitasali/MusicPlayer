@@ -41,7 +41,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * Created by zhengken.me on 2016/11/27.

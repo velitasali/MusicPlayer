@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import code.name.monkey.backend.misc.DialogAsyncTask;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.misc.UpdateToastMediaScannerCompletionListener;
 import code.name.monkey.retromusic.util.MusicUtil;
 

@@ -8,7 +8,7 @@ import android.view.View;
 
 import code.name.monkey.backend.util.Util;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 
 /**

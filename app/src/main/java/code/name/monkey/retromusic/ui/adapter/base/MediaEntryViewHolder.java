@@ -13,7 +13,7 @@ import code.name.monkey.backend.shadowimageview.ShadowImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

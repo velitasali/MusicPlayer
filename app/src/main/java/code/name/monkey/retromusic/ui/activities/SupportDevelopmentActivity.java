@@ -38,8 +38,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import code.name.monkey.retromusic.BuildConfig;
-import code.name.monkey.retromusic.R;
+
+import com.velitasali.music.BuildConfig;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsBaseActivity;
 import code.name.monkey.retromusic.util.Util;
 import code.name.monkey.retromusic.views.IconImageView;

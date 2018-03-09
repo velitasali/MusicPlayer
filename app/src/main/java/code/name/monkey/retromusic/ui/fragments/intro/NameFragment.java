@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.Compressor;
 import code.name.monkey.retromusic.util.ImageUtil;
 import code.name.monkey.retromusic.util.PreferenceUtil;

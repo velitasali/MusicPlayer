@@ -6,7 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.request.animation.GlideAnimation;
 
 import code.name.monkey.appthemehelper.util.ATHUtil;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTarget;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;

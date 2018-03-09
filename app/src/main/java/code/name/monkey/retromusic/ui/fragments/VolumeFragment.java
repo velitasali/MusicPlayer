@@ -26,7 +26,7 @@ import code.name.monkey.appthemehelper.util.MaterialValueHelper;
 import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.backend.volume.AudioVolumeObserver;
 import code.name.monkey.backend.volume.OnAudioVolumeChangedListener;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * Created by BlackFootSanji on 5/5/2017.

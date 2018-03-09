@@ -35,7 +35,7 @@ import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.loaders.AlbumLoader;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.rest.LastFMRestClient;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTranscoder;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteWrapper;
 import code.name.monkey.retromusic.util.ImageUtil;

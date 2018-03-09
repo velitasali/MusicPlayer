@@ -10,7 +10,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import code.name.monkey.backend.model.smartplaylist.AbsSmartPlaylist;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

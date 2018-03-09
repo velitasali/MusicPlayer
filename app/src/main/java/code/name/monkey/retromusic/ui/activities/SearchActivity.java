@@ -29,7 +29,7 @@ import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.backend.Injection;
 import code.name.monkey.backend.mvp.contract.SearchContract;
 import code.name.monkey.backend.mvp.presenter.SearchPresenter;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.activities.base.AbsMusicServiceActivity;
 import code.name.monkey.retromusic.ui.adapter.SearchAdapter;
 import code.name.monkey.retromusic.util.Util;

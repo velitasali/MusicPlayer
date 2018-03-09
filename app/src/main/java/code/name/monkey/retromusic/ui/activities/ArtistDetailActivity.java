@@ -46,7 +46,7 @@ import code.name.monkey.backend.mvp.contract.ArtistDetailContract;
 import code.name.monkey.backend.mvp.presenter.ArtistDetailsPresenter;
 import code.name.monkey.backend.rest.LastFMRestClient;
 import code.name.monkey.backend.rest.model.LastFmArtist;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.AddToPlaylistDialog;
 import code.name.monkey.retromusic.glide.ArtistGlideRequest;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;

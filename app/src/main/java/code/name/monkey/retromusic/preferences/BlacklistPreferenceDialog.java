@@ -14,7 +14,7 @@ import code.name.monkey.backend.providers.BlacklistStore;
 import java.io.File;
 import java.util.ArrayList;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.BlacklistFolderChooserDialog;
 
 /**

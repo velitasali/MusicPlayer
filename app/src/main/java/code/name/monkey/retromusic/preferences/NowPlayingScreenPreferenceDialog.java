@@ -21,7 +21,7 @@ import com.bumptech.glide.Glide;
 import com.name.monkey.retromusic.ui.fragments.player.NowPlayingScreen;
 
 import butterknife.ButterKnife;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 import code.name.monkey.retromusic.util.ViewUtil;
 

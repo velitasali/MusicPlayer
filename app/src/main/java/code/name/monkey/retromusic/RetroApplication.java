@@ -3,6 +3,8 @@ package code.name.monkey.retromusic;
 import android.os.Build;
 import android.support.multidex.MultiDexApplication;
 
+import com.velitasali.music.R;
+
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 

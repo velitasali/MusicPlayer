@@ -8,7 +8,7 @@ import android.text.InputType;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.PlaylistsUtil;
 
 /**

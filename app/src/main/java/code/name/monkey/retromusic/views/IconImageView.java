@@ -7,7 +7,7 @@ import android.widget.ImageView;
 
 import code.name.monkey.appthemehelper.util.ATHUtil;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

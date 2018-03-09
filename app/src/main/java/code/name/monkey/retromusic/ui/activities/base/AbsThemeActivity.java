@@ -17,7 +17,7 @@ import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.appthemehelper.util.ColorUtil;
 import code.name.monkey.appthemehelper.util.MaterialDialogsUtil;
 import code.name.monkey.backend.util.Util;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
 public abstract class AbsThemeActivity extends ATHToolbarActivity implements Runnable {

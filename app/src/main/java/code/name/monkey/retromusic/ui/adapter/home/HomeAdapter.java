@@ -21,7 +21,7 @@ import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.model.smartplaylist.HistoryPlaylist;
 import code.name.monkey.backend.model.smartplaylist.LastAddedPlaylist;
 import code.name.monkey.backend.model.smartplaylist.MyTopTracksPlaylist;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.album.AlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.artist.ArtistAdapter;

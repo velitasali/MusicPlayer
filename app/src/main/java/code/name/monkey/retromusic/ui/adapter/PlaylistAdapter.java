@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.dialogs.ClearSmartPlaylistDialog;
 import code.name.monkey.retromusic.dialogs.DeletePlaylistDialog;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;

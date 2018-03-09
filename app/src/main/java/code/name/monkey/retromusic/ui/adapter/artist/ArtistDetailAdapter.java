@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.backend.model.Album;
 import code.name.monkey.backend.model.Song;
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.ui.adapter.album.HorizontalAlbumAdapter;
 import code.name.monkey.retromusic.ui.adapter.base.MediaEntryViewHolder;
 import code.name.monkey.retromusic.ui.adapter.song.SimpleSongAdapter;

@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 
 /**
  * @author Karim Abou Zeid (kabouzeid)

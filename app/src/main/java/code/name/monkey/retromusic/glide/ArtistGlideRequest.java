@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.target.Target;
 import code.name.monkey.backend.model.Artist;
 
-import code.name.monkey.retromusic.R;
+import com.velitasali.music.R;
 import code.name.monkey.retromusic.RetroApplication;
 import code.name.monkey.retromusic.glide.artistimage.ArtistImage;
 import code.name.monkey.retromusic.glide.palette.BitmapPaletteTranscoder;
