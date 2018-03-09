@@ -677,11 +677,6 @@ public final class PreferenceUtil
 		return mPreferences.getBoolean(DOMINANT_COLOR, false);
 	}
 
-	public boolean isGenreShown()
-	{
-		return mPreferences.getBoolean(TOGGLE_GENRE, false);
-	}
-
 	public String getDocumentTreeUri()
 	{
 		return mPreferences.getString(DOCUMENT_TREE_URI, "");

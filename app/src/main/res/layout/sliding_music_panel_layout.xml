@@ -7,9 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sothree.slidinguppanel.SlidingUpPanelLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:sothree="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,18 +27,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <FrameLayout
                 android:id="@+id/player_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-
             <fragment
                 android:id="@+id/mini_player_fragment"
                 android:name="code.name.monkey.retromusic.ui.fragments.MiniPlayerFragment"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_mini_player" />
 
         </FrameLayout>
@@ -50,13 +46,14 @@
     <code.name.monkey.retromusic.views.BottomNavigationViewEx
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="?android:windowBackground"
         android:elevation="0dp"
         android:visibility="gone"
         app:elevation="0dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         app:menu="@menu/bottom_navigation_main" />
-
 
 </android.support.design.widget.CoordinatorLayout>

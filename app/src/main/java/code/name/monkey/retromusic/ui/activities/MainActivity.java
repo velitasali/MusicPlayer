@@ -67,11 +67,10 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 	public static final int REQUEST_CODE_THEME = 9002;
 	private static final String TAG = "MainActivity";
 
-	private static final int LIBRARY = 1;
-	private static final int HOME = 0;
-	private static final int FOLDERS = 2;
-	private static final int SETTIINGS = 3;
-	private static final int ABOUT = 4;
+	private static final int LIBRARY = 0;
+	private static final int FOLDERS = 1;
+	private static final int SETTINGS = 2;
+	private static final int ABOUT = 3;
 	@Nullable
 	MainActivityFragmentCallbacks currentFragment;
 	@BindView(R.id.navigation_view)
@@ -160,9 +159,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 	{
 		PreferenceUtil.getInstance(this).setLastMusicChooser(key);
 		switch (key) {
-			case HOME:
-				setCurrentFragment(HomeFragment.newInstance(), false);
-				break;
 			case FOLDERS:
 				setCurrentFragment(FoldersFragment.newInstance(this), false);
 				break;
@@ -233,12 +229,9 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 							case R.id.action_playlist:
 								currentFragment.selectedFragment(PlaylistsFragment.newInstance());
 								break;
-							case R.id.action_genre:
-								currentFragment.selectedFragment(GenreFragment.newInstance());
-								break;
-							/*case R.id.action_home:
+							case R.id.action_home:
                                 currentFragment.selectedFragment(HomeFragment.newInstance());
-                                break;*/
+                                break;
 						}
 					}
 				});
@@ -415,7 +408,6 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 
 		NavigationItemsAdapter()
 		{
-			mList.add(new Pair<>(R.drawable.ic_home_white_24dp, R.string.home));
 			mList.add(new Pair<>(R.drawable.ic_library_music_white_24dp, R.string.library));
 			mList.add(new Pair<>(R.drawable.ic_folder_white_24dp, R.string.folders));
 			mList.add(new Pair<>(R.drawable.ic_settings_white_24dp, R.string.action_settings));
@@ -443,10 +435,7 @@ public class MainActivity extends AbsSlidingMusicPanelActivity implements
 					case FOLDERS:
 						new Handler().postDelayed(() -> setMusicChooser(FOLDERS), 200);
 						break;
-					case HOME:
-						new Handler().postDelayed(() -> setMusicChooser(HOME), 200);
-						break;
-					case SETTIINGS:
+					case SETTINGS:
 						new Handler().postDelayed(() -> startActivity(new Intent(MainActivity.this, SettingsActivity.class)), 200);
 						break;
 					case ABOUT:

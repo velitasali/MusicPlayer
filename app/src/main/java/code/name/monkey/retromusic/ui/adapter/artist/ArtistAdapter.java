@@ -3,6 +3,7 @@ package code.name.monkey.retromusic.ui.adapter.artist;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,7 +34,7 @@ import code.name.monkey.retromusic.util.NavigationUtil;
 public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolder, Artist> implements FastScrollRecyclerView.SectionedAdapter
 {
 
-	protected final AppCompatActivity activity;
+	protected final FragmentActivity activity;
 	protected ArrayList<Artist> dataSet;
 
 	protected int itemLayoutRes;
@@ -41,7 +42,7 @@ public class ArtistAdapter extends AbsMultiSelectAdapter<ArtistAdapter.ViewHolde
 	protected boolean usePalette = false;
 
 
-	public ArtistAdapter(@NonNull AppCompatActivity activity, ArrayList<Artist> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder)
+	public ArtistAdapter(@NonNull FragmentActivity activity, ArrayList<Artist> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder)
 	{
 		super(activity, cabHolder, R.menu.menu_media_selection);
 		this.activity = activity;

@@ -11,10 +11,5 @@
             android:key="toggle_tab_titles"
             android:summary="@string/pref_summary_tab_titles"
             android:title="@string/pref_title_toggle_tab_titles" />
-        <code.name.monkey.appthemehelper.common.prefs.supportv7.ATESwitchPreference
-            android:defaultValue="false"
-            android:key="toggle_genre"
-            android:summary="@string/pref_summary_toggle_genre"
-            android:title="@string/pref_title_toggle_genre" />
     </code.name.monkey.appthemehelper.common.prefs.supportv7.ATEPreferenceCategory>
 </android.support.v7.preference.PreferenceScreen>

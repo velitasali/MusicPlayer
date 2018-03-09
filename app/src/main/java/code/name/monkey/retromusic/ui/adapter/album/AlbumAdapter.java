@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
 
 	public static final String TAG = AlbumAdapter.class.getSimpleName();
 
-	protected final AppCompatActivity activity;
+	protected final FragmentActivity activity;
 	protected ArrayList<Album> dataSet;
 
 	protected int itemLayoutRes;
@@ -48,7 +49,7 @@ public class AlbumAdapter extends AbsMultiSelectAdapter<AlbumAdapter.ViewHolder,
 	protected boolean usePalette = false;
 	private Typeface mTypeface;
 
-	public AlbumAdapter(@NonNull AppCompatActivity activity,
+	public AlbumAdapter(@NonNull FragmentActivity activity,
 						ArrayList<Album> dataSet,
 						@LayoutRes int itemLayoutRes,
 						boolean usePalette,

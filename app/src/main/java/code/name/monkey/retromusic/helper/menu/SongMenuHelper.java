@@ -72,9 +72,9 @@ public class SongMenuHelper
 
 	public static abstract class OnClickSongMenu implements View.OnClickListener, PopupMenu.OnMenuItemClickListener
 	{
-		private AppCompatActivity activity;
+		private FragmentActivity activity;
 
-		public OnClickSongMenu(@NonNull AppCompatActivity activity)
+		public OnClickSongMenu(@NonNull FragmentActivity activity)
 		{
 			this.activity = activity;
 		}

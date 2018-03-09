@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
 
 	public static final String TAG = SongAdapter.class.getSimpleName();
 
-	protected final AppCompatActivity activity;
+	protected final FragmentActivity activity;
 	protected ArrayList<Song> dataSet;
 
 	protected int itemLayoutRes;
@@ -51,12 +52,12 @@ public class SongAdapter extends AbsMultiSelectAdapter<SongAdapter.ViewHolder, S
 	protected boolean showSectionName = true;
 	private Typeface mTypeface;
 
-	public SongAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder)
+	public SongAdapter(FragmentActivity activity, ArrayList<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder)
 	{
 		this(activity, dataSet, itemLayoutRes, usePalette, cabHolder, true);
 	}
 
-	public SongAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder, boolean showSectionName)
+	public SongAdapter(FragmentActivity activity, ArrayList<Song> dataSet, @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder, boolean showSectionName)
 	{
 		super(activity, cabHolder, R.menu.menu_media_selection);
 		this.activity = activity;

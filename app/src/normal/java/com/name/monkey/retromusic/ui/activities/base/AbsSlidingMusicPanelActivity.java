@@ -117,9 +117,6 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
 			}
 		});
 
-		if (PreferenceUtil.getInstance(this).isGenreShown())
-			bottomNavigationView.getMenu().removeItem(R.id.action_genre);
-
 		setupBottomView();
 		slidingUpPanelLayout.addPanelSlideListener(this);
 	}
@@ -298,9 +295,9 @@ public abstract class AbsSlidingMusicPanelActivity extends AbsMusicServiceActivi
 		} else {
 			if (!MusicPlayerRemote.getPlayingQueue().isEmpty())
 				if (bottomNavigationView.getVisibility() == View.VISIBLE) {
-					slidingUpPanelLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.mini_player_height_expanded));
+					slidingUpPanelLayout.setPanelHeight(bottomNavigationView.getHeight() + miniPlayerFragment.getView().getHeight());
 				} else {
-					slidingUpPanelLayout.setPanelHeight(getResources().getDimensionPixelSize(R.dimen.mini_player_height));
+					slidingUpPanelLayout.setPanelHeight(miniPlayerFragment.getView().getHeight());
 				}
 		}
 	}
