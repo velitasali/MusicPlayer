@@ -14,22 +14,27 @@ import java.io.InputStream;
  * @author Karim Abou Zeid (kabouzeid)
  */
 
-public class AudioFileCoverLoader implements StreamModelLoader<AudioFileCover> {
+public class AudioFileCoverLoader implements StreamModelLoader<AudioFileCover>
+{
 
-    @Override
-    public DataFetcher<InputStream> getResourceFetcher(AudioFileCover model, int width, int height) {
-        return new AudioFileCoverFetcher(model);
-    }
+	@Override
+	public DataFetcher<InputStream> getResourceFetcher(AudioFileCover model, int width, int height)
+	{
+		return new AudioFileCoverFetcher(model);
+	}
 
-    public static class Factory implements ModelLoaderFactory<AudioFileCover, InputStream> {
-        @Override
-        public ModelLoader<AudioFileCover, InputStream> build(Context context, GenericLoaderFactory factories) {
-            return new AudioFileCoverLoader();
-        }
+	public static class Factory implements ModelLoaderFactory<AudioFileCover, InputStream>
+	{
+		@Override
+		public ModelLoader<AudioFileCover, InputStream> build(Context context, GenericLoaderFactory factories)
+		{
+			return new AudioFileCoverLoader();
+		}
 
-        @Override
-        public void teardown() {
-        }
-    }
+		@Override
+		public void teardown()
+		{
+		}
+	}
 }
 

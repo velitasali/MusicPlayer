@@ -14,37 +14,41 @@ import code.name.monkey.retromusic.appshortcuts.AppShortcutLauncherActivity;
  * @author Adrian Campos
  */
 @TargetApi(Build.VERSION_CODES.N_MR1)
-public abstract class BaseShortcutType {
+public abstract class BaseShortcutType
+{
 
-    static final String ID_PREFIX = "code.name.monkey.retromusic.appshortcuts.id.";
+	static final String ID_PREFIX = "code.name.monkey.retromusic.appshortcuts.id.";
 
-    Context context;
+	Context context;
 
-    public BaseShortcutType(Context context) {
-        this.context = context;
-    }
+	public BaseShortcutType(Context context)
+	{
+		this.context = context;
+	}
 
-    static public String getId() {
-        return ID_PREFIX + "invalid";
-    }
+	static public String getId()
+	{
+		return ID_PREFIX + "invalid";
+	}
 
-    abstract ShortcutInfo getShortcutInfo();
+	abstract ShortcutInfo getShortcutInfo();
 
-    /**
-     * Creates an Intent that will launch MainActivtiy and immediately play {@param songs} in either shuffle or normal mode
-     *
-     * @param shortcutType Describes the type of shortcut to create (ShuffleAll, TopTracks, custom playlist, etc.)
-     * @return
-     */
-    Intent getPlaySongsIntent(int shortcutType) {
-        Intent intent = new Intent(context, AppShortcutLauncherActivity.class);
-        intent.setAction(Intent.ACTION_VIEW);
+	/**
+	 * Creates an Intent that will launch MainActivtiy and immediately play {@param songs} in either shuffle or normal mode
+	 *
+	 * @param shortcutType Describes the type of shortcut to create (ShuffleAll, TopTracks, custom playlist, etc.)
+	 * @return
+	 */
+	Intent getPlaySongsIntent(int shortcutType)
+	{
+		Intent intent = new Intent(context, AppShortcutLauncherActivity.class);
+		intent.setAction(Intent.ACTION_VIEW);
 
-        Bundle b = new Bundle();
-        b.putInt(AppShortcutLauncherActivity.KEY_SHORTCUT_TYPE, shortcutType);
+		Bundle b = new Bundle();
+		b.putInt(AppShortcutLauncherActivity.KEY_SHORTCUT_TYPE, shortcutType);
 
-        intent.putExtras(b);
+		intent.putExtras(b);
 
-        return intent;
-    }
+		return intent;
+	}
 }

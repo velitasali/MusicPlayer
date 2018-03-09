@@ -7,17 +7,18 @@ import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
  */
 
 public abstract class AbsPlayerControlsFragment extends AbsMusicServiceFragment
-        implements MusicProgressViewUpdateHelper.Callback {
+		implements MusicProgressViewUpdateHelper.Callback
+{
 
-    protected abstract void show();
+	protected abstract void show();
 
-    protected abstract void hide();
+	protected abstract void hide();
 
-    protected abstract void updateShuffleState();
+	protected abstract void updateShuffleState();
 
-    protected abstract void updateRepeatState();
+	protected abstract void updateRepeatState();
 
-    protected abstract void setUpProgressSlider();
+	protected abstract void setUpProgressSlider();
 
-    public abstract void setDark(int color);
+	public abstract void setDark(int color);
 }

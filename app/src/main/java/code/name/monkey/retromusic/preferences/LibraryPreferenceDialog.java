@@ -10,75 +10,81 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import code.name.monkey.backend.model.CategoryInfo;
+import com.velitasali.music.R;
 
 import java.util.ArrayList;
 
-import com.velitasali.music.R;
+import code.name.monkey.backend.model.CategoryInfo;
 import code.name.monkey.retromusic.ui.adapter.CategoryInfoAdapter;
 import code.name.monkey.retromusic.util.PreferenceUtil;
 
 
-public class LibraryPreferenceDialog extends DialogFragment {
-    private CategoryInfoAdapter adapter;
+public class LibraryPreferenceDialog extends DialogFragment
+{
+	private CategoryInfoAdapter adapter;
 
-    public static LibraryPreferenceDialog newInstance() {
-        return new LibraryPreferenceDialog();
-    }
+	public static LibraryPreferenceDialog newInstance()
+	{
+		return new LibraryPreferenceDialog();
+	}
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.preference_dialog_library_categories, null);
+	@NonNull
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState)
+	{
+		View view = LayoutInflater.from(getActivity()).inflate(R.layout.preference_dialog_library_categories, null);
 
-        ArrayList<CategoryInfo> categoryInfos;
-        if (savedInstanceState != null) {
-            categoryInfos = savedInstanceState.getParcelableArrayList(PreferenceUtil.LIBRARY_CATEGORIES);
-        } else {
-            categoryInfos = PreferenceUtil.getInstance(getContext()).getLibraryCategoryInfos();
-        }
-        adapter = new CategoryInfoAdapter(categoryInfos);
+		ArrayList<CategoryInfo> categoryInfos;
+		if (savedInstanceState != null) {
+			categoryInfos = savedInstanceState.getParcelableArrayList(PreferenceUtil.LIBRARY_CATEGORIES);
+		} else {
+			categoryInfos = PreferenceUtil.getInstance(getContext()).getLibraryCategoryInfos();
+		}
+		adapter = new CategoryInfoAdapter(categoryInfos);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
+		RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+		recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		recyclerView.setAdapter(adapter);
 
-        adapter.attachToRecyclerView(recyclerView);
+		adapter.attachToRecyclerView(recyclerView);
 
-        return new MaterialDialog.Builder(getContext())
-                .title(R.string.library_categories)
-                .customView(view, false)
-                .positiveText(android.R.string.ok)
-                .negativeText(android.R.string.cancel)
-                .neutralText(R.string.reset_action)
-                .autoDismiss(false)
-                .onNeutral((dialog, action) -> adapter.setCategoryInfos(PreferenceUtil.getInstance(getContext()).getDefaultLibraryCategoryInfos()))
-                .onNegative((dialog, action) -> dismiss())
-                .onPositive((dialog, action) -> {
-                    updateCategories(adapter.getCategoryInfos());
-                    dismiss();
-                })
-                .build();
-    }
+		return new MaterialDialog.Builder(getContext())
+				.title(R.string.library_categories)
+				.customView(view, false)
+				.positiveText(android.R.string.ok)
+				.negativeText(android.R.string.cancel)
+				.neutralText(R.string.reset_action)
+				.autoDismiss(false)
+				.onNeutral((dialog, action) -> adapter.setCategoryInfos(PreferenceUtil.getInstance(getContext()).getDefaultLibraryCategoryInfos()))
+				.onNegative((dialog, action) -> dismiss())
+				.onPositive((dialog, action) -> {
+					updateCategories(adapter.getCategoryInfos());
+					dismiss();
+				})
+				.build();
+	}
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(PreferenceUtil.LIBRARY_CATEGORIES, adapter.getCategoryInfos());
-    }
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList(PreferenceUtil.LIBRARY_CATEGORIES, adapter.getCategoryInfos());
+	}
 
-    private void updateCategories(ArrayList<CategoryInfo> categories) {
-        if (getSelected(categories) == 0) return;
+	private void updateCategories(ArrayList<CategoryInfo> categories)
+	{
+		if (getSelected(categories) == 0) return;
 
-        PreferenceUtil.getInstance(getContext()).setLibraryCategoryInfos(categories);
-    }
+		PreferenceUtil.getInstance(getContext()).setLibraryCategoryInfos(categories);
+	}
 
-    private int getSelected(ArrayList<CategoryInfo> categories) {
-        int selected = 0;
-        for (CategoryInfo categoryInfo : categories) {
-            if (categoryInfo.visible)
-                selected++;
-        }
-        return selected;
-    }
+	private int getSelected(ArrayList<CategoryInfo> categories)
+	{
+		int selected = 0;
+		for (CategoryInfo categoryInfo : categories) {
+			if (categoryInfo.visible)
+				selected++;
+		}
+		return selected;
+	}
 }

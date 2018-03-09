@@ -15,145 +15,160 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.GeneralItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemAnimator;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.RecyclerViewDragDropManager;
 import com.h6ah4i.android.widget.advrecyclerview.utils.WrapperAdapterUtils;
+import com.velitasali.music.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.adapter.song.PlayingQueueAdapter;
 import code.name.monkey.retromusic.ui.fragments.base.AbsMusicServiceFragment;
 
-public class PlayingQueueFragment extends AbsMusicServiceFragment {
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    Unbinder unbinder;
-    private RecyclerView.Adapter mWrappedAdapter;
-    private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
-    private PlayingQueueAdapter mPlayingQueueAdapter;
-    private LinearLayoutManager mLayoutManager;
+public class PlayingQueueFragment extends AbsMusicServiceFragment
+{
+	@BindView(R.id.recycler_view)
+	RecyclerView mRecyclerView;
+	Unbinder unbinder;
+	private RecyclerView.Adapter mWrappedAdapter;
+	private RecyclerViewDragDropManager mRecyclerViewDragDropManager;
+	private PlayingQueueAdapter mPlayingQueueAdapter;
+	private LinearLayoutManager mLayoutManager;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_activity_recycler_view, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+							 @Nullable Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.fragment_main_activity_recycler_view, container, false);
+		unbinder = ButterKnife.bind(this, view);
+		return view;
+	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setUpRecyclerView();
-    }
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState)
+	{
+		super.onViewCreated(view, savedInstanceState);
+		setUpRecyclerView();
+	}
 
-    private void setUpRecyclerView() {
-        mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
-        final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
+	private void setUpRecyclerView()
+	{
+		mRecyclerViewDragDropManager = new RecyclerViewDragDropManager();
+		final GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
 
-        mPlayingQueueAdapter = new PlayingQueueAdapter(
-                (AppCompatActivity) getActivity(),
-                MusicPlayerRemote.getPlayingQueue(),
-                MusicPlayerRemote.getPosition(),
-                R.layout.item_list,
-                false,
-                null);
-        mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mPlayingQueueAdapter);
+		mPlayingQueueAdapter = new PlayingQueueAdapter(
+				(AppCompatActivity) getActivity(),
+				MusicPlayerRemote.getPlayingQueue(),
+				MusicPlayerRemote.getPosition(),
+				R.layout.item_list,
+				false,
+				null);
+		mWrappedAdapter = mRecyclerViewDragDropManager.createWrappedAdapter(mPlayingQueueAdapter);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
+		mLayoutManager = new LinearLayoutManager(getContext());
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mWrappedAdapter);
-        mRecyclerView.setItemAnimator(animator);
+		mRecyclerView.setLayoutManager(mLayoutManager);
+		mRecyclerView.setAdapter(mWrappedAdapter);
+		mRecyclerView.setItemAnimator(animator);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                   /* if (recyclerView.canScrollVertically(RecyclerView.NO_POSITION)) {
+		mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener()
+		{
+			@Override
+			public void onScrolled(RecyclerView recyclerView, int dx, int dy)
+			{
+				super.onScrolled(recyclerView, dx, dy);
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				   /* if (recyclerView.canScrollVertically(RecyclerView.NO_POSITION)) {
                         mAppBarLayout.setElevation(5f);
                     } else {
                         mAppBarLayout.setElevation(0f);
                     }*/
-                }
-            }
-        });
+				}
+			}
+		});
 
-        mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
-        mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
-    }
+		mRecyclerViewDragDropManager.attachRecyclerView(mRecyclerView);
+		mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
+	}
 
-    @Override
-    public void onQueueChanged() {
-        updateQueue();
-        updateCurrentSong();
-    }
+	@Override
+	public void onQueueChanged()
+	{
+		updateQueue();
+		updateCurrentSong();
+	}
 
-    @Override
-    public void onMediaStoreChanged() {
-        updateQueue();
-        updateCurrentSong();
-    }
+	@Override
+	public void onMediaStoreChanged()
+	{
+		updateQueue();
+		updateCurrentSong();
+	}
 
-    @SuppressWarnings("ConstantConditions")
-    private void updateCurrentSong() {
-    }
+	@SuppressWarnings("ConstantConditions")
+	private void updateCurrentSong()
+	{
+	}
 
-    @Override
-    public void onPlayingMetaChanged() {
-        //updateCurrentSong();
-        //updateIsFavorite();
-        updateQueuePosition();
-        //updateLyrics();
-    }
+	@Override
+	public void onPlayingMetaChanged()
+	{
+		//updateCurrentSong();
+		//updateIsFavorite();
+		updateQueuePosition();
+		//updateLyrics();
+	}
 
-    private void updateQueuePosition() {
-        mPlayingQueueAdapter.setCurrent(MusicPlayerRemote.getPosition());
-        // if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-        resetToCurrentPosition();
-        //}
-    }
+	private void updateQueuePosition()
+	{
+		mPlayingQueueAdapter.setCurrent(MusicPlayerRemote.getPosition());
+		// if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+		resetToCurrentPosition();
+		//}
+	}
 
-    private void updateQueue() {
-        mPlayingQueueAdapter.swapDataSet(MusicPlayerRemote.getPlayingQueue(), MusicPlayerRemote.getPosition());
-        resetToCurrentPosition();
-    }
+	private void updateQueue()
+	{
+		mPlayingQueueAdapter.swapDataSet(MusicPlayerRemote.getPlayingQueue(), MusicPlayerRemote.getPosition());
+		resetToCurrentPosition();
+	}
 
-    private void resetToCurrentPosition() {
-        mRecyclerView.stopScroll();
-        mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
-    }
+	private void resetToCurrentPosition()
+	{
+		mRecyclerView.stopScroll();
+		mLayoutManager.scrollToPositionWithOffset(MusicPlayerRemote.getPosition() + 1, 0);
+	}
 
-    @Override
-    public void onPause() {
-        if (mRecyclerViewDragDropManager != null) {
-            mRecyclerViewDragDropManager.cancelDrag();
-        }
-        super.onPause();
-    }
+	@Override
+	public void onPause()
+	{
+		if (mRecyclerViewDragDropManager != null) {
+			mRecyclerViewDragDropManager.cancelDrag();
+		}
+		super.onPause();
+	}
 
-    @Override
-    public void onDestroyView() {
-        if (mRecyclerViewDragDropManager != null) {
-            mRecyclerViewDragDropManager.release();
-            mRecyclerViewDragDropManager = null;
-        }
+	@Override
+	public void onDestroyView()
+	{
+		if (mRecyclerViewDragDropManager != null) {
+			mRecyclerViewDragDropManager.release();
+			mRecyclerViewDragDropManager = null;
+		}
 
-        if (mRecyclerView != null) {
-            mRecyclerView.setItemAnimator(null);
-            mRecyclerView.setAdapter(null);
-            mRecyclerView = null;
-        }
+		if (mRecyclerView != null) {
+			mRecyclerView.setItemAnimator(null);
+			mRecyclerView.setAdapter(null);
+			mRecyclerView = null;
+		}
 
-        if (mWrappedAdapter != null) {
-            WrapperAdapterUtils.releaseAll(mWrappedAdapter);
-            mWrappedAdapter = null;
-        }
-        mPlayingQueueAdapter = null;
-        mLayoutManager = null;
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+		if (mWrappedAdapter != null) {
+			WrapperAdapterUtils.releaseAll(mWrappedAdapter);
+			mWrappedAdapter = null;
+		}
+		mPlayingQueueAdapter = null;
+		mLayoutManager = null;
+		super.onDestroyView();
+		unbinder.unbind();
+	}
 }

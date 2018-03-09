@@ -16,15 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import code.name.monkey.backend.loaders.SongLoader;
-import code.name.monkey.backend.model.Song;
+import com.velitasali.music.R;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.velitasali.music.R;
+import code.name.monkey.backend.loaders.SongLoader;
+import code.name.monkey.backend.model.Song;
 import code.name.monkey.retromusic.glide.RetroMusicColoredTarget;
 import code.name.monkey.retromusic.glide.SongGlideRequest;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
@@ -40,147 +40,164 @@ import io.reactivex.schedulers.Schedulers;
  * Created by hemanths on 25/09/17.
  */
 
-public class RetroMusicAlbums extends DreamService {
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.text)
-    TextView mText;
-    @BindView(R.id.title_container)
-    ViewGroup mViewGroup;
+public class RetroMusicAlbums extends DreamService
+{
+	@BindView(R.id.recycler_view)
+	RecyclerView mRecyclerView;
+	@BindView(R.id.title)
+	TextView mTitle;
+	@BindView(R.id.text)
+	TextView mText;
+	@BindView(R.id.title_container)
+	ViewGroup mViewGroup;
 
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent == null) {
-                return;
-            }
-            String artist = intent.getStringExtra("artist");
-            String track = intent.getStringExtra("track");
-            if (mViewGroup != null) {
-                mViewGroup.setVisibility(View.VISIBLE);
-                TransitionManager.beginDelayedTransition(mViewGroup);
-                if (mTitle != null) {
-                    mTitle.setText(track);
-                }
-                if (mText != null) {
-                    mText.setText(artist);
-                }
-            }
+	private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver()
+	{
+		@Override
+		public void onReceive(Context context, Intent intent)
+		{
+			if (intent == null) {
+				return;
+			}
+			String artist = intent.getStringExtra("artist");
+			String track = intent.getStringExtra("track");
+			if (mViewGroup != null) {
+				mViewGroup.setVisibility(View.VISIBLE);
+				TransitionManager.beginDelayedTransition(mViewGroup);
+				if (mTitle != null) {
+					mTitle.setText(track);
+				}
+				if (mText != null) {
+					mText.setText(artist);
+				}
+			}
 
-        }
-    };
-    private Unbinder unbinder;
-    private CompositeDisposable mDisposable;
+		}
+	};
+	private Unbinder unbinder;
+	private CompositeDisposable mDisposable;
 
-    @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
+	@Override
+	public void onAttachedToWindow()
+	{
+		super.onAttachedToWindow();
 
-        View view = LayoutInflater.from(this).inflate(R.layout.dream_service, null);
-        setContentView(view);
-        unbinder = ButterKnife.bind(this, view);
+		View view = LayoutInflater.from(this).inflate(R.layout.dream_service, null);
+		setContentView(view);
+		unbinder = ButterKnife.bind(this, view);
 
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+		GridLayoutManager layoutManager = new GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false);
+		mRecyclerView.setLayoutManager(layoutManager);
 
 
-        mDisposable.add(getPlayingQueue()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap((Function<ArrayList<Song>, ObservableSource<ArrayList<Song>>>) songs -> Observable.create(e -> {
-                    if (songs.isEmpty()) {
-                        e.onNext(SongLoader.getAllSongs(RetroMusicAlbums.this).blockingFirst());
-                    } else {
-                        e.onNext(songs);
-                    }
-                    e.onComplete();
-                }))
-                .subscribe(songs -> {
-                    if (songs.size() > 0) {
-                        ImagesAdapter imagesAdapter = new ImagesAdapter(songs);
-                        mRecyclerView.setAdapter(imagesAdapter);
-                    }
-                }));
+		mDisposable.add(getPlayingQueue()
+				.subscribeOn(Schedulers.computation())
+				.observeOn(AndroidSchedulers.mainThread())
+				.flatMap((Function<ArrayList<Song>, ObservableSource<ArrayList<Song>>>) songs -> Observable.create(e -> {
+					if (songs.isEmpty()) {
+						e.onNext(SongLoader.getAllSongs(RetroMusicAlbums.this).blockingFirst());
+					} else {
+						e.onNext(songs);
+					}
+					e.onComplete();
+				}))
+				.subscribe(songs -> {
+					if (songs.size() > 0) {
+						ImagesAdapter imagesAdapter = new ImagesAdapter(songs);
+						mRecyclerView.setAdapter(imagesAdapter);
+					}
+				}));
 
-    }
+	}
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        setInteractive(true);
-        setFullscreen(true);
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+		setInteractive(true);
+		setFullscreen(true);
 
-        mDisposable = new CompositeDisposable();
+		mDisposable = new CompositeDisposable();
 
-        IntentFilter iF = new IntentFilter();
-        iF.addAction("com.android.music.musicservicecommand");
-        iF.addAction("com.android.music.metachanged");
-        registerReceiver(mBroadcastReceiver, iF);
+		IntentFilter iF = new IntentFilter();
+		iF.addAction("com.android.music.musicservicecommand");
+		iF.addAction("com.android.music.metachanged");
+		registerReceiver(mBroadcastReceiver, iF);
 
-    }
+	}
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
-        mDisposable.clear();
-        unregisterReceiver(mBroadcastReceiver);
-    }
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+		unbinder.unbind();
+		mDisposable.clear();
+		unregisterReceiver(mBroadcastReceiver);
+	}
 
-    private Observable<ArrayList<Song>> getPlayingQueue() {
-        return Observable.just(MusicPlayerRemote.getPlayingQueue());
-    }
+	private Observable<ArrayList<Song>> getPlayingQueue()
+	{
+		return Observable.just(MusicPlayerRemote.getPlayingQueue());
+	}
 
-    class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder> {
+	class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder>
+	{
 
-        private final ArrayList<Song> list;
+		private final ArrayList<Song> list;
 
-        public ImagesAdapter(ArrayList<Song> songs) {
-            this.list = songs;
-        }
+		public ImagesAdapter(ArrayList<Song> songs)
+		{
+			this.list = songs;
+		}
 
-        @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            return new ViewHolder(LayoutInflater.from(getApplicationContext())
-                    .inflate(R.layout.image, viewGroup, false));
-        }
+		@Override
+		public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
+		{
+			return new ViewHolder(LayoutInflater.from(getApplicationContext())
+					.inflate(R.layout.image, viewGroup, false));
+		}
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int i) {
-            Song song = list.get(i);
-            SongGlideRequest.Builder.from(Glide.with(getApplicationContext()), song)
-                    .checkIgnoreMediaStore(getApplicationContext())
-                    .generatePalette(getApplicationContext()).build()
-                    .override(400, 400)
-                    .into(new RetroMusicColoredTarget(holder.image) {
+		@Override
+		public void onBindViewHolder(ViewHolder holder, int i)
+		{
+			Song song = list.get(i);
+			SongGlideRequest.Builder.from(Glide.with(getApplicationContext()), song)
+					.checkIgnoreMediaStore(getApplicationContext())
+					.generatePalette(getApplicationContext()).build()
+					.override(400, 400)
+					.into(new RetroMusicColoredTarget(holder.image)
+					{
 
-                        @Override
-                        public void onColorReady(int color) {
+						@Override
+						public void onColorReady(int color)
+						{
 
-                        }
-                    });
+						}
+					});
 
-        }
+		}
 
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
+		@Override
+		public int getItemCount()
+		{
+			return list.size();
+		}
 
-        class ViewHolder extends MediaEntryViewHolder {
+		class ViewHolder extends MediaEntryViewHolder
+		{
 
-            public ViewHolder(View itemView) {
-                super(itemView);
-            }
+			public ViewHolder(View itemView)
+			{
+				super(itemView);
+			}
 
-            @Override
-            public void onClick(View v) {
-                super.onClick(v);
-                MusicPlayerRemote.openQueue(list, getAdapterPosition(), true);
-            }
-        }
-    }
+			@Override
+			public void onClick(View v)
+			{
+				super.onClick(v);
+				MusicPlayerRemote.openQueue(list, getAdapterPosition(), true);
+			}
+		}
+	}
 }

@@ -17,6 +17,11 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.velitasali.music.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import code.name.monkey.appthemehelper.ThemeStore;
 import code.name.monkey.appthemehelper.util.ATHUtil;
 import code.name.monkey.appthemehelper.util.ColorUtil;
@@ -25,11 +30,6 @@ import code.name.monkey.appthemehelper.util.TintHelper;
 import code.name.monkey.backend.misc.SimpleOnSeekbarChangeListener;
 import code.name.monkey.backend.model.Song;
 import code.name.monkey.backend.views.PlayPauseDrawable;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper;
 import code.name.monkey.retromusic.helper.MusicProgressViewUpdateHelper.Callback;
@@ -43,268 +43,300 @@ import code.name.monkey.retromusic.util.PreferenceUtil;
  * Created by hemanths on 30/08/17.
  */
 
-public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implements Callback {
-    private static final String TAG = "FlatPlaybackControls";
-    @BindView(R.id.text)
-    TextView mText;
-    @BindView(R.id.title)
-    TextView mTitle;
-    @BindView(R.id.playback_controls)
-    ViewGroup viewGroup;
-    @BindView(R.id.player_song_total_time)
-    TextView mSongTotalTime;
-    @BindView(R.id.player_song_current_progress)
-    TextView mPlayerSongCurrentProgress;
-    @BindView(R.id.player_repeat_button)
-    ImageButton mPlayerRepeatButton;
-    @BindView(R.id.player_shuffle_button)
-    ImageButton mPlayerShuffleButton;
-    @BindView(R.id.player_play_pause_button)
-    ImageView mPlayerPlayPauseFab;
-    Unbinder unbinder;
-    @BindView(R.id.player_progress_slider)
-    SeekBar progressSlider;
-    @BindView(R.id.volume_fragment_container)
-    View mVolumeContainer;
-    private int lastPlaybackControlsColor;
-    private int lastDisabledPlaybackControlsColor;
-    private MusicProgressViewUpdateHelper progressViewUpdateHelper;
-    private PlayPauseDrawable playerFabPlayPauseDrawable;
+public class FlatPlaybackControlsFragment extends AbsMusicServiceFragment implements Callback
+{
+	private static final String TAG = "FlatPlaybackControls";
+	@BindView(R.id.text)
+	TextView mText;
+	@BindView(R.id.title)
+	TextView mTitle;
+	@BindView(R.id.playback_controls)
+	ViewGroup viewGroup;
+	@BindView(R.id.player_song_total_time)
+	TextView mSongTotalTime;
+	@BindView(R.id.player_song_current_progress)
+	TextView mPlayerSongCurrentProgress;
+	@BindView(R.id.player_repeat_button)
+	ImageButton mPlayerRepeatButton;
+	@BindView(R.id.player_shuffle_button)
+	ImageButton mPlayerShuffleButton;
+	@BindView(R.id.player_play_pause_button)
+	ImageView mPlayerPlayPauseFab;
+	Unbinder unbinder;
+	@BindView(R.id.player_progress_slider)
+	SeekBar progressSlider;
+	@BindView(R.id.volume_fragment_container)
+	View mVolumeContainer;
+	private int lastPlaybackControlsColor;
+	private int lastDisabledPlaybackControlsColor;
+	private MusicProgressViewUpdateHelper progressViewUpdateHelper;
+	private PlayPauseDrawable playerFabPlayPauseDrawable;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        progressViewUpdateHelper = new MusicProgressViewUpdateHelper(this);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		progressViewUpdateHelper = new MusicProgressViewUpdateHelper(this);
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_flat_player_playback_controls, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.fragment_flat_player_playback_controls, container, false);
+		unbinder = ButterKnife.bind(this, view);
+		return view;
+	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setUpMusicControllers();
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState)
+	{
+		super.onViewCreated(view, savedInstanceState);
+		setUpMusicControllers();
 
-        mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
-    }
+		mVolumeContainer.setVisibility(PreferenceUtil.getInstance(getContext()).getVolumeToggle() ? View.VISIBLE : View.GONE);
+	}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        progressViewUpdateHelper.start();
-    }
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		progressViewUpdateHelper.start();
+	}
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        progressViewUpdateHelper.stop();
-    }
+	@Override
+	public void onPause()
+	{
+		super.onPause();
+		progressViewUpdateHelper.stop();
+	}
 
-    @Override
-    public void onUpdateProgressViews(int progress, int total) {
-        progressSlider.setMax(total);
+	@Override
+	public void onUpdateProgressViews(int progress, int total)
+	{
+		progressSlider.setMax(total);
 
-        ObjectAnimator animator = ObjectAnimator.ofInt(progressSlider, "progress", progress);
-        animator.setDuration(1500);
-        animator.setInterpolator(new LinearInterpolator());
-        animator.start();
+		ObjectAnimator animator = ObjectAnimator.ofInt(progressSlider, "progress", progress);
+		animator.setDuration(1500);
+		animator.setInterpolator(new LinearInterpolator());
+		animator.start();
 
-        mPlayerSongCurrentProgress.setText(MusicUtil.getReadableDurationString(progress));
-        mSongTotalTime.setText(MusicUtil.getReadableDurationString(total));
-    }
-
-
-    public void show() {
-        mPlayerPlayPauseFab.animate()
-                .scaleX(1f)
-                .scaleY(1f)
-                .setInterpolator(new DecelerateInterpolator())
-                .start();
-    }
+		mPlayerSongCurrentProgress.setText(MusicUtil.getReadableDurationString(progress));
+		mSongTotalTime.setText(MusicUtil.getReadableDurationString(total));
+	}
 
 
-    public void hide() {
-        if (mPlayerPlayPauseFab != null) {
-            mPlayerPlayPauseFab.setScaleX(0f);
-            mPlayerPlayPauseFab.setScaleY(0f);
-            mPlayerPlayPauseFab.setRotation(0f);
-        }
-    }
+	public void show()
+	{
+		mPlayerPlayPauseFab.animate()
+				.scaleX(1f)
+				.scaleY(1f)
+				.setInterpolator(new DecelerateInterpolator())
+				.start();
+	}
 
-    public void setDark(int dark) {
-        int color = ATHUtil.resolveColor(getActivity(), android.R.attr.colorBackground);
-        if (ColorUtil.isColorLight(color)) {
-            lastPlaybackControlsColor = MaterialValueHelper.getSecondaryTextColor(getActivity(), true);
-            lastDisabledPlaybackControlsColor = MaterialValueHelper.getSecondaryDisabledTextColor(getActivity(), true);
-        } else {
-            lastPlaybackControlsColor = MaterialValueHelper.getPrimaryTextColor(getActivity(), false);
-            lastDisabledPlaybackControlsColor = MaterialValueHelper.getPrimaryDisabledTextColor(getActivity(), false);
-        }
-        int accentColor = ThemeStore.accentColor(getContext());
-        boolean b = PreferenceUtil.getInstance(getContext()).getAdaptiveColor();
-        updateTextColors(b ? dark : accentColor);
-        setProgressBarColor(b ? dark : accentColor);
-        TintHelper.setTintAuto(mPlayerPlayPauseFab, b ? dark : accentColor, true);
 
-        updateRepeatState();
-        updateShuffleState();
-        updatePrevNextColor();
-        updateProgressTextColor();
-    }
+	public void hide()
+	{
+		if (mPlayerPlayPauseFab != null) {
+			mPlayerPlayPauseFab.setScaleX(0f);
+			mPlayerPlayPauseFab.setScaleY(0f);
+			mPlayerPlayPauseFab.setRotation(0f);
+		}
+	}
 
-    private void setProgressBarColor(int dark) {
-        LayerDrawable ld = (LayerDrawable) progressSlider.getProgressDrawable();
-        ClipDrawable clipDrawable = (ClipDrawable) ld.findDrawableByLayerId(android.R.id.progress);
-        clipDrawable.setColorFilter(dark, PorterDuff.Mode.SRC_IN);
-    }
+	public void setDark(int dark)
+	{
+		int color = ATHUtil.resolveColor(getActivity(), android.R.attr.colorBackground);
+		if (ColorUtil.isColorLight(color)) {
+			lastPlaybackControlsColor = MaterialValueHelper.getSecondaryTextColor(getActivity(), true);
+			lastDisabledPlaybackControlsColor = MaterialValueHelper.getSecondaryDisabledTextColor(getActivity(), true);
+		} else {
+			lastPlaybackControlsColor = MaterialValueHelper.getPrimaryTextColor(getActivity(), false);
+			lastDisabledPlaybackControlsColor = MaterialValueHelper.getPrimaryDisabledTextColor(getActivity(), false);
+		}
+		int accentColor = ThemeStore.accentColor(getContext());
+		boolean b = PreferenceUtil.getInstance(getContext()).getAdaptiveColor();
+		updateTextColors(b ? dark : accentColor);
+		setProgressBarColor(b ? dark : accentColor);
+		TintHelper.setTintAuto(mPlayerPlayPauseFab, b ? dark : accentColor, true);
 
-    private void updateTextColors(int color) {
-        mTitle.setBackgroundColor(color);
-        mTitle.setTextColor(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(color)));
-        mText.setBackgroundColor(ColorUtil.darkenColor(color));
-        mText.setTextColor(MaterialValueHelper.getSecondaryTextColor(getContext(), ColorUtil.isColorLight(color)));
-    }
+		updateRepeatState();
+		updateShuffleState();
+		updatePrevNextColor();
+		updateProgressTextColor();
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+	private void setProgressBarColor(int dark)
+	{
+		LayerDrawable ld = (LayerDrawable) progressSlider.getProgressDrawable();
+		ClipDrawable clipDrawable = (ClipDrawable) ld.findDrawableByLayerId(android.R.id.progress);
+		clipDrawable.setColorFilter(dark, PorterDuff.Mode.SRC_IN);
+	}
 
-    @Override
-    public void onServiceConnected() {
-        updatePlayPauseDrawableState(false);
-        updateRepeatState();
-        updateShuffleState();
-        updateSong();
-    }
+	private void updateTextColors(int color)
+	{
+		mTitle.setBackgroundColor(color);
+		mTitle.setTextColor(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(color)));
+		mText.setBackgroundColor(ColorUtil.darkenColor(color));
+		mText.setTextColor(MaterialValueHelper.getSecondaryTextColor(getContext(), ColorUtil.isColorLight(color)));
+	}
 
-    @Override
-    public void onPlayingMetaChanged() {
-        super.onPlayingMetaChanged();
-        updateSong();
-    }
+	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+		unbinder.unbind();
+	}
 
-    @Override
-    public void onPlayStateChanged() {
-        updatePlayPauseDrawableState(true);
-    }
+	@Override
+	public void onServiceConnected()
+	{
+		updatePlayPauseDrawableState(false);
+		updateRepeatState();
+		updateShuffleState();
+		updateSong();
+	}
 
-    protected void updatePlayPauseDrawableState(boolean animate) {
-        if (MusicPlayerRemote.isPlaying()) {
-            playerFabPlayPauseDrawable.setPause(animate);
-        } else {
-            playerFabPlayPauseDrawable.setPlay(animate);
-        }
-    }
+	@Override
+	public void onPlayingMetaChanged()
+	{
+		super.onPlayingMetaChanged();
+		updateSong();
+	}
 
-    private void setUpPlayPauseFab() {
-        playerFabPlayPauseDrawable = new PlayPauseDrawable(getActivity());
+	@Override
+	public void onPlayStateChanged()
+	{
+		updatePlayPauseDrawableState(true);
+	}
 
-        mPlayerPlayPauseFab.setImageDrawable(playerFabPlayPauseDrawable); // Note: set the drawable AFTER TintHelper.setTintAuto() was called
-        //playPauseFab.setColorFilter(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(fabColor)), PorterDuff.Mode.SRC_IN);
-        mPlayerPlayPauseFab.setOnClickListener(new PlayPauseButtonOnClickHandler());
-        mPlayerPlayPauseFab.post(() -> {
-            if (mPlayerPlayPauseFab != null) {
-                mPlayerPlayPauseFab.setPivotX(mPlayerPlayPauseFab.getWidth() / 2);
-                mPlayerPlayPauseFab.setPivotY(mPlayerPlayPauseFab.getHeight() / 2);
-            }
-        });
-    }
+	protected void updatePlayPauseDrawableState(boolean animate)
+	{
+		if (MusicPlayerRemote.isPlaying()) {
+			playerFabPlayPauseDrawable.setPause(animate);
+		} else {
+			playerFabPlayPauseDrawable.setPlay(animate);
+		}
+	}
 
-    private void setUpMusicControllers() {
-        setUpPlayPauseFab();
-        setUpPrevNext();
-        setUpRepeatButton();
-        setUpShuffleButton();
-        setUpProgressSlider();
-    }
+	private void setUpPlayPauseFab()
+	{
+		playerFabPlayPauseDrawable = new PlayPauseDrawable(getActivity());
 
-    private void setUpPrevNext() {
-        updatePrevNextColor();
-        //mPlayerNextButton.setOnClickListener(v -> MusicPlayerRemote.playNextSong());
-        //mPlayerPrevButton.setOnClickListener(v -> MusicPlayerRemote.back());
-    }
+		mPlayerPlayPauseFab.setImageDrawable(playerFabPlayPauseDrawable); // Note: set the drawable AFTER TintHelper.setTintAuto() was called
+		//playPauseFab.setColorFilter(MaterialValueHelper.getPrimaryTextColor(getContext(), ColorUtil.isColorLight(fabColor)), PorterDuff.Mode.SRC_IN);
+		mPlayerPlayPauseFab.setOnClickListener(new PlayPauseButtonOnClickHandler());
+		mPlayerPlayPauseFab.post(() -> {
+			if (mPlayerPlayPauseFab != null) {
+				mPlayerPlayPauseFab.setPivotX(mPlayerPlayPauseFab.getWidth() / 2);
+				mPlayerPlayPauseFab.setPivotY(mPlayerPlayPauseFab.getHeight() / 2);
+			}
+		});
+	}
 
-    private void updateProgressTextColor() {
-        int color = MaterialValueHelper.getSecondaryTextColor(getContext(), false);
-        //songTotalTime.setTextColor(color);
-        //songCurrentProgress.setTextColor(color);
-    }
+	private void setUpMusicControllers()
+	{
+		setUpPlayPauseFab();
+		setUpPrevNext();
+		setUpRepeatButton();
+		setUpShuffleButton();
+		setUpProgressSlider();
+	}
 
-    private void updatePrevNextColor() {
-        //mPlayerNextButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-        //mPlayerPrevButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-    }
+	private void setUpPrevNext()
+	{
+		updatePrevNextColor();
+		//mPlayerNextButton.setOnClickListener(v -> MusicPlayerRemote.playNextSong());
+		//mPlayerPrevButton.setOnClickListener(v -> MusicPlayerRemote.back());
+	}
 
-    private void updateSong() {
-        //TransitionManager.beginDelayedTransition(viewGroup, new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));
-        Song song = MusicPlayerRemote.getCurrentSong();
-        mTitle.setText(song.title);
-        mText.setText(song.artistName);
+	private void updateProgressTextColor()
+	{
+		int color = MaterialValueHelper.getSecondaryTextColor(getContext(), false);
+		//songTotalTime.setTextColor(color);
+		//songCurrentProgress.setTextColor(color);
+	}
 
-    }
+	private void updatePrevNextColor()
+	{
+		//mPlayerNextButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+		//mPlayerPrevButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+	}
 
-    private void setUpProgressSlider() {
-        progressSlider.setOnSeekBarChangeListener(new SimpleOnSeekbarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    MusicPlayerRemote.seekTo(progress);
-                    onUpdateProgressViews(MusicPlayerRemote.getSongProgressMillis(), MusicPlayerRemote.getSongDurationMillis());
-                }
-            }
-        });
-    }
+	private void updateSong()
+	{
+		//TransitionManager.beginDelayedTransition(viewGroup, new ChangeText().setChangeBehavior(ChangeText.CHANGE_BEHAVIOR_OUT_IN));
+		Song song = MusicPlayerRemote.getCurrentSong();
+		mTitle.setText(song.title);
+		mText.setText(song.artistName);
 
-    @Override
-    public void onRepeatModeChanged() {
-        updateRepeatState();
-    }
+	}
 
-    @Override
-    public void onShuffleModeChanged() {
-        updateShuffleState();
-    }
+	private void setUpProgressSlider()
+	{
+		progressSlider.setOnSeekBarChangeListener(new SimpleOnSeekbarChangeListener()
+		{
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+			{
+				if (fromUser) {
+					MusicPlayerRemote.seekTo(progress);
+					onUpdateProgressViews(MusicPlayerRemote.getSongProgressMillis(), MusicPlayerRemote.getSongDurationMillis());
+				}
+			}
+		});
+	}
 
-    private void setUpRepeatButton() {
-        mPlayerRepeatButton.setOnClickListener(v -> MusicPlayerRemote.cycleRepeatMode());
-    }
+	@Override
+	public void onRepeatModeChanged()
+	{
+		updateRepeatState();
+	}
 
-    private void updateRepeatState() {
-        switch (MusicPlayerRemote.getRepeatMode()) {
-            case MusicService.REPEAT_MODE_NONE:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-                break;
-            case MusicService.REPEAT_MODE_ALL:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-                break;
-            case MusicService.REPEAT_MODE_THIS:
-                mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
-                mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-                break;
-        }
-    }
+	@Override
+	public void onShuffleModeChanged()
+	{
+		updateShuffleState();
+	}
 
-    private void setUpShuffleButton() {
-        mPlayerShuffleButton.setOnClickListener(v -> MusicPlayerRemote.toggleShuffleMode());
-    }
+	private void setUpRepeatButton()
+	{
+		mPlayerRepeatButton.setOnClickListener(v -> MusicPlayerRemote.cycleRepeatMode());
+	}
 
-    private void updateShuffleState() {
-        switch (MusicPlayerRemote.getShuffleMode()) {
-            case MusicService.SHUFFLE_MODE_SHUFFLE:
-                mPlayerShuffleButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-                break;
-            default:
-                mPlayerShuffleButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
-                break;
-        }
-    }
+	private void updateRepeatState()
+	{
+		switch (MusicPlayerRemote.getRepeatMode()) {
+			case MusicService.REPEAT_MODE_NONE:
+				mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
+				mPlayerRepeatButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+				break;
+			case MusicService.REPEAT_MODE_ALL:
+				mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_white_24dp);
+				mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+				break;
+			case MusicService.REPEAT_MODE_THIS:
+				mPlayerRepeatButton.setImageResource(R.drawable.ic_repeat_one_white_24dp);
+				mPlayerRepeatButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+				break;
+		}
+	}
+
+	private void setUpShuffleButton()
+	{
+		mPlayerShuffleButton.setOnClickListener(v -> MusicPlayerRemote.toggleShuffleMode());
+	}
+
+	private void updateShuffleState()
+	{
+		switch (MusicPlayerRemote.getShuffleMode()) {
+			case MusicService.SHUFFLE_MODE_SHUFFLE:
+				mPlayerShuffleButton.setColorFilter(lastPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+				break;
+			default:
+				mPlayerShuffleButton.setColorFilter(lastDisabledPlaybackControlsColor, PorterDuff.Mode.SRC_IN);
+				break;
+		}
+	}
 }

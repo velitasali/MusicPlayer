@@ -14,11 +14,11 @@ import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemAdapter;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.DraggableItemViewHolder;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.ItemDraggableRange;
 import com.h6ah4i.android.widget.advrecyclerview.draggable.annotation.DraggableItemStateFlags;
+import com.velitasali.music.R;
 
 import java.util.ArrayList;
 
 import code.name.monkey.backend.model.Song;
-import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.interfaces.CabHolder;
 import code.name.monkey.retromusic.util.MusicUtil;
@@ -27,180 +27,203 @@ import code.name.monkey.retromusic.util.ViewUtil;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAdapter<PlayingQueueAdapter.ViewHolder> {
+public class PlayingQueueAdapter extends SongAdapter implements DraggableItemAdapter<PlayingQueueAdapter.ViewHolder>
+{
 
-    private static final int HISTORY = 0;
-    private static final int CURRENT = 1;
-    private static final int UP_NEXT = 2;
+	private static final int HISTORY = 0;
+	private static final int CURRENT = 1;
+	private static final int UP_NEXT = 2;
 
-    private int current;
+	private int current;
 
-    public PlayingQueueAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, int current,
-                               @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder) {
-        super(activity, dataSet, itemLayoutRes, usePalette, cabHolder);
-        this.current = current;
-    }
+	public PlayingQueueAdapter(AppCompatActivity activity, ArrayList<Song> dataSet, int current,
+							   @LayoutRes int itemLayoutRes, boolean usePalette, @Nullable CabHolder cabHolder)
+	{
+		super(activity, dataSet, itemLayoutRes, usePalette, cabHolder);
+		this.current = current;
+	}
 
-    @Override
-    protected SongAdapter.ViewHolder createViewHolder(View view) {
-        return new ViewHolder(view);
-    }
+	@Override
+	protected SongAdapter.ViewHolder createViewHolder(View view)
+	{
+		return new ViewHolder(view);
+	}
 
-    @Override
-    public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
-        if (holder.imageText != null) {
-            holder.imageText.setText(String.valueOf(position - current));
-        }
-        if (holder.time != null) {
-            holder.time.setText(MusicUtil.getReadableDurationString(getDataSet().get(position).duration));
-        }
-        if (holder.getItemViewType() == HISTORY || holder.getItemViewType() == CURRENT) {
-            setAlpha(holder, 0.5f);
-        }
-        if (usePalette) {
-            setColor(holder, Color.WHITE);
-        }
-    }
+	@Override
+	public void onBindViewHolder(@NonNull SongAdapter.ViewHolder holder, int position)
+	{
+		super.onBindViewHolder(holder, position);
+		if (holder.imageText != null) {
+			holder.imageText.setText(String.valueOf(position - current));
+		}
+		if (holder.time != null) {
+			holder.time.setText(MusicUtil.getReadableDurationString(getDataSet().get(position).duration));
+		}
+		if (holder.getItemViewType() == HISTORY || holder.getItemViewType() == CURRENT) {
+			setAlpha(holder, 0.5f);
+		}
+		if (usePalette) {
+			setColor(holder, Color.WHITE);
+		}
+	}
 
-    private void setColor(SongAdapter.ViewHolder holder, int white) {
+	private void setColor(SongAdapter.ViewHolder holder, int white)
+	{
 
-        if (holder.title != null) {
-            holder.title.setTextColor(white);
-        }
-        if (holder.text != null) {
-            holder.text.setTextColor(white);
-        }
-        if (holder.time != null) {
-            holder.time.setTextColor(white);
-        }
-        if (holder.imageText != null) {
-            holder.imageText.setTextColor(white);
-        }
-        if (holder.menu != null) {
-            ((ImageView) holder.menu).setColorFilter(white, PorterDuff.Mode.SRC_IN);
-        }
-    }
+		if (holder.title != null) {
+			holder.title.setTextColor(white);
+		}
+		if (holder.text != null) {
+			holder.text.setTextColor(white);
+		}
+		if (holder.time != null) {
+			holder.time.setTextColor(white);
+		}
+		if (holder.imageText != null) {
+			holder.imageText.setTextColor(white);
+		}
+		if (holder.menu != null) {
+			((ImageView) holder.menu).setColorFilter(white, PorterDuff.Mode.SRC_IN);
+		}
+	}
 
-    @Override
-    public void usePalette(boolean color) {
-        super.usePalette(color);
-        usePalette = color;
-        notifyDataSetChanged();
-    }
+	@Override
+	public void usePalette(boolean color)
+	{
+		super.usePalette(color);
+		usePalette = color;
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position < current) {
-            return HISTORY;
-        } else if (position > current) {
-            return UP_NEXT;
-        }
-        return CURRENT;
-    }
+	@Override
+	public int getItemViewType(int position)
+	{
+		if (position < current) {
+			return HISTORY;
+		} else if (position > current) {
+			return UP_NEXT;
+		}
+		return CURRENT;
+	}
 
-    @Override
-    protected void loadAlbumCover(Song song, SongAdapter.ViewHolder holder) {
-        // We don't want to load it in this adapter
-    }
+	@Override
+	protected void loadAlbumCover(Song song, SongAdapter.ViewHolder holder)
+	{
+		// We don't want to load it in this adapter
+	}
 
-    public void swapDataSet(ArrayList<Song> dataSet, int position) {
-        this.dataSet = dataSet;
-        current = position;
-        notifyDataSetChanged();
-    }
+	public void swapDataSet(ArrayList<Song> dataSet, int position)
+	{
+		this.dataSet = dataSet;
+		current = position;
+		notifyDataSetChanged();
+	}
 
-    public void setCurrent(int current) {
-        this.current = current;
-        notifyDataSetChanged();
-    }
+	public void setCurrent(int current)
+	{
+		this.current = current;
+		notifyDataSetChanged();
+	}
 
-    private void setAlpha(SongAdapter.ViewHolder holder, float alpha) {
-        if (holder.image != null) {
-            holder.image.setAlpha(alpha);
-        }
-        if (holder.title != null) {
-            holder.title.setAlpha(alpha);
-        }
-        if (holder.text != null) {
-            holder.text.setAlpha(alpha);
-        }
-        if (holder.imageText != null) {
-            holder.imageText.setAlpha(alpha);
-        }
-        if (holder.paletteColorContainer != null) {
-            holder.paletteColorContainer.setAlpha(alpha);
-        }
-    }
+	private void setAlpha(SongAdapter.ViewHolder holder, float alpha)
+	{
+		if (holder.image != null) {
+			holder.image.setAlpha(alpha);
+		}
+		if (holder.title != null) {
+			holder.title.setAlpha(alpha);
+		}
+		if (holder.text != null) {
+			holder.text.setAlpha(alpha);
+		}
+		if (holder.imageText != null) {
+			holder.imageText.setAlpha(alpha);
+		}
+		if (holder.paletteColorContainer != null) {
+			holder.paletteColorContainer.setAlpha(alpha);
+		}
+	}
 
-    @Override
-    public boolean onCheckCanStartDrag(ViewHolder holder, int position, int x, int y) {
-        return ViewUtil.hitTest(holder.imageText, x, y);
-    }
+	@Override
+	public boolean onCheckCanStartDrag(ViewHolder holder, int position, int x, int y)
+	{
+		return ViewUtil.hitTest(holder.imageText, x, y);
+	}
 
-    @Override
-    public ItemDraggableRange onGetItemDraggableRange(ViewHolder holder, int position) {
-        return null;
-    }
+	@Override
+	public ItemDraggableRange onGetItemDraggableRange(ViewHolder holder, int position)
+	{
+		return null;
+	}
 
-    @Override
-    public void onMoveItem(int fromPosition, int toPosition) {
-        MusicPlayerRemote.moveSong(fromPosition, toPosition);
-    }
+	@Override
+	public void onMoveItem(int fromPosition, int toPosition)
+	{
+		MusicPlayerRemote.moveSong(fromPosition, toPosition);
+	}
 
-    @Override
-    public boolean onCheckCanDrop(int draggingPosition, int dropPosition) {
-        return true;
-    }
+	@Override
+	public boolean onCheckCanDrop(int draggingPosition, int dropPosition)
+	{
+		return true;
+	}
 
-    @Override
-    public void onItemDragStarted(int position) {
-        notifyDataSetChanged();
-    }
+	@Override
+	public void onItemDragStarted(int position)
+	{
+		notifyDataSetChanged();
+	}
 
-    @Override
-    public void onItemDragFinished(int fromPosition, int toPosition, boolean result) {
-        notifyDataSetChanged();
-    }
+	@Override
+	public void onItemDragFinished(int fromPosition, int toPosition, boolean result)
+	{
+		notifyDataSetChanged();
+	}
 
-    public class ViewHolder extends SongAdapter.ViewHolder implements DraggableItemViewHolder {
-        @DraggableItemStateFlags
-        private int mDragStateFlags;
+	public class ViewHolder extends SongAdapter.ViewHolder implements DraggableItemViewHolder
+	{
+		@DraggableItemStateFlags
+		private int mDragStateFlags;
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            if (imageText != null) {
-                imageText.setVisibility(View.VISIBLE);
-            }
-            if (image != null) {
-                image.setVisibility(View.GONE);
-            }
-        }
+		public ViewHolder(@NonNull View itemView)
+		{
+			super(itemView);
+			if (imageText != null) {
+				imageText.setVisibility(View.VISIBLE);
+			}
+			if (image != null) {
+				image.setVisibility(View.GONE);
+			}
+		}
 
-        @Override
-        protected int getSongMenuRes() {
-            return R.menu.menu_item_playing_queue_song;
-        }
+		@Override
+		protected int getSongMenuRes()
+		{
+			return R.menu.menu_item_playing_queue_song;
+		}
 
-        @Override
-        protected boolean onSongMenuItemClick(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_remove_from_playing_queue:
-                    MusicPlayerRemote.removeFromQueue(getAdapterPosition());
-                    return true;
-            }
-            return super.onSongMenuItemClick(item);
-        }
+		@Override
+		protected boolean onSongMenuItemClick(MenuItem item)
+		{
+			switch (item.getItemId()) {
+				case R.id.action_remove_from_playing_queue:
+					MusicPlayerRemote.removeFromQueue(getAdapterPosition());
+					return true;
+			}
+			return super.onSongMenuItemClick(item);
+		}
 
-        @Override
-        @DraggableItemStateFlags
-        public int getDragStateFlags() {
-            return mDragStateFlags;
-        }
+		@Override
+		@DraggableItemStateFlags
+		public int getDragStateFlags()
+		{
+			return mDragStateFlags;
+		}
 
-        @Override
-        public void setDragStateFlags(@DraggableItemStateFlags int flags) {
-            mDragStateFlags = flags;
-        }
-    }
+		@Override
+		public void setDragStateFlags(@DraggableItemStateFlags int flags)
+		{
+			mDragStateFlags = flags;
+		}
+	}
 }

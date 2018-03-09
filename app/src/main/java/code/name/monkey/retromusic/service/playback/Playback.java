@@ -5,41 +5,43 @@ import android.support.annotation.Nullable;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public interface Playback {
+public interface Playback
+{
 
-    boolean setDataSource(String path);
+	boolean setDataSource(String path);
 
-    void setNextDataSource(@Nullable String path);
+	void setNextDataSource(@Nullable String path);
 
-    void setCallbacks(PlaybackCallbacks callbacks);
+	void setCallbacks(PlaybackCallbacks callbacks);
 
-    boolean isInitialized();
+	boolean isInitialized();
 
-    boolean start();
+	boolean start();
 
-    void stop();
+	void stop();
 
-    void release();
+	void release();
 
-    boolean pause();
+	boolean pause();
 
-    boolean isPlaying();
+	boolean isPlaying();
 
-    int duration();
+	int duration();
 
-    int position();
+	int position();
 
-    int seek(int whereto);
+	int seek(int whereto);
 
-    boolean setVolume(float vol);
+	boolean setVolume(float vol);
 
-    boolean setAudioSessionId(int sessionId);
+	boolean setAudioSessionId(int sessionId);
 
-    int getAudioSessionId();
+	int getAudioSessionId();
 
-    interface PlaybackCallbacks {
-        void onTrackWentToNext();
+	interface PlaybackCallbacks
+	{
+		void onTrackWentToNext();
 
-        void onTrackEnded();
-    }
+		void onTrackEnded();
+	}
 }

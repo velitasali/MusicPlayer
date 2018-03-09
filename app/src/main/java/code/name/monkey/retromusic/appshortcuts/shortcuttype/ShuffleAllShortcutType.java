@@ -6,30 +6,34 @@ import android.content.pm.ShortcutInfo;
 import android.os.Build;
 
 import com.velitasali.music.R;
+
 import code.name.monkey.retromusic.appshortcuts.AppShortcutIconGenerator;
 import code.name.monkey.retromusic.appshortcuts.AppShortcutLauncherActivity;
-
 
 
 /**
  * @author Adrian Campos
  */
 @TargetApi(Build.VERSION_CODES.N_MR1)
-public final class ShuffleAllShortcutType extends BaseShortcutType {
-    public ShuffleAllShortcutType(Context context) {
-        super(context);
-    }
+public final class ShuffleAllShortcutType extends BaseShortcutType
+{
+	public ShuffleAllShortcutType(Context context)
+	{
+		super(context);
+	}
 
-    public static String getId() {
-        return ID_PREFIX + "shuffle_all";
-    }
+	public static String getId()
+	{
+		return ID_PREFIX + "shuffle_all";
+	}
 
-    public ShortcutInfo getShortcutInfo() {
-        return new ShortcutInfo.Builder(context, getId())
-                .setShortLabel(context.getString(R.string.app_shortcut_shuffle_all_short))
-                .setLongLabel(context.getString(R.string.app_shortcut_shuffle_all_long))
-                .setIcon(AppShortcutIconGenerator.generateThemedIcon(context, R.drawable.ic_app_shortcut_shuffle_all))
-                .setIntent(getPlaySongsIntent(AppShortcutLauncherActivity.SHORTCUT_TYPE_SHUFFLE_ALL))
-                .build();
-    }
+	public ShortcutInfo getShortcutInfo()
+	{
+		return new ShortcutInfo.Builder(context, getId())
+				.setShortLabel(context.getString(R.string.app_shortcut_shuffle_all_short))
+				.setLongLabel(context.getString(R.string.app_shortcut_shuffle_all_long))
+				.setIcon(AppShortcutIconGenerator.generateThemedIcon(context, R.drawable.ic_app_shortcut_shuffle_all))
+				.setIntent(getPlaySongsIntent(AppShortcutLauncherActivity.SHORTCUT_TYPE_SHUFFLE_ALL))
+				.build();
+	}
 }

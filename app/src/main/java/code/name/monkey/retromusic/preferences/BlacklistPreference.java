@@ -8,20 +8,25 @@ import code.name.monkey.appthemehelper.common.prefs.supportv7.ATEDialogPreferenc
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class BlacklistPreference extends ATEDialogPreference {
-    public BlacklistPreference(Context context) {
-        super(context);
-    }
+public class BlacklistPreference extends ATEDialogPreference
+{
+	public BlacklistPreference(Context context)
+	{
+		super(context);
+	}
 
-    public BlacklistPreference(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public BlacklistPreference(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+	}
 
-    public BlacklistPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+	public BlacklistPreference(Context context, AttributeSet attrs, int defStyleAttr)
+	{
+		super(context, attrs, defStyleAttr);
+	}
 
-    public BlacklistPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+	public BlacklistPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+	{
+		super(context, attrs, defStyleAttr, defStyleRes);
+	}
 }

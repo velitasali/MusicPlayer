@@ -22,63 +22,73 @@ import code.name.monkey.retromusic.interfaces.CabHolder;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public class HorizontalAlbumAdapter extends AlbumAdapter {
-    public static final String TAG = AlbumAdapter.class.getSimpleName();
+public class HorizontalAlbumAdapter extends AlbumAdapter
+{
+	public static final String TAG = AlbumAdapter.class.getSimpleName();
 
-    public HorizontalAlbumAdapter(@NonNull AppCompatActivity activity, ArrayList<Album> dataSet, boolean usePalette, @Nullable CabHolder cabHolder) {
-        super(activity, dataSet, HorizontalAdapterHelper.LAYOUT_RES, usePalette, cabHolder);
-    }
+	public HorizontalAlbumAdapter(@NonNull AppCompatActivity activity, ArrayList<Album> dataSet, boolean usePalette, @Nullable CabHolder cabHolder)
+	{
+		super(activity, dataSet, HorizontalAdapterHelper.LAYOUT_RES, usePalette, cabHolder);
+	}
 
-    @Override
-    protected ViewHolder createViewHolder(View view, int viewType) {
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-        HorizontalAdapterHelper.applyMarginToLayoutParams(activity, params, viewType);
-        return new ViewHolder(view);
-    }
+	@Override
+	protected ViewHolder createViewHolder(View view, int viewType)
+	{
+		ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+		HorizontalAdapterHelper.applyMarginToLayoutParams(activity, params, viewType);
+		return new ViewHolder(view);
+	}
 
-    @Override
-    protected void setColors(int color, ViewHolder holder) {
-        if (holder.itemView != null) {
-            if (holder.title != null) {
-                holder.title.setTextColor(MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(color)));
-            }
-            if (holder.text != null) {
-                holder.text.setTextColor(MaterialValueHelper.getSecondaryTextColor(activity, ColorUtil.isColorLight(color)));
-            }
-        }
-    }
+	@Override
+	protected void setColors(int color, ViewHolder holder)
+	{
+		if (holder.itemView != null) {
+			if (holder.title != null) {
+				holder.title.setTextColor(MaterialValueHelper.getPrimaryTextColor(activity, ColorUtil.isColorLight(color)));
+			}
+			if (holder.text != null) {
+				holder.text.setTextColor(MaterialValueHelper.getSecondaryTextColor(activity, ColorUtil.isColorLight(color)));
+			}
+		}
+	}
 
-    @Override
-    protected void loadAlbumCover(Album album, final ViewHolder holder) {
-        if (holder.image == null) return;
+	@Override
+	protected void loadAlbumCover(Album album, final ViewHolder holder)
+	{
+		if (holder.image == null) return;
 
-        SongGlideRequest.Builder.from(Glide.with(activity), album.safeGetFirstSong())
-                .checkIgnoreMediaStore(activity)
-                .generatePalette(activity).build()
-                .into(new RetroMusicColoredTarget(holder.image) {
-                    @Override
-                    public void onLoadCleared(Drawable placeholder) {
-                        super.onLoadCleared(placeholder);
-                        setColors(getAlbumArtistFooterColor(), holder);
-                    }
+		SongGlideRequest.Builder.from(Glide.with(activity), album.safeGetFirstSong())
+				.checkIgnoreMediaStore(activity)
+				.generatePalette(activity).build()
+				.into(new RetroMusicColoredTarget(holder.image)
+				{
+					@Override
+					public void onLoadCleared(Drawable placeholder)
+					{
+						super.onLoadCleared(placeholder);
+						setColors(getAlbumArtistFooterColor(), holder);
+					}
 
-                    @Override
-                    public void onColorReady(int color) {
-                        if (usePalette)
-                            setColors(color, holder);
-                        else
-                            setColors(getAlbumArtistFooterColor(), holder);
-                    }
-                });
-    }
+					@Override
+					public void onColorReady(int color)
+					{
+						if (usePalette)
+							setColors(color, holder);
+						else
+							setColors(getAlbumArtistFooterColor(), holder);
+					}
+				});
+	}
 
-    @Override
-    protected String getAlbumText(Album album) {
-        return String.valueOf(album.getYear());
-    }
+	@Override
+	protected String getAlbumText(Album album)
+	{
+		return String.valueOf(album.getYear());
+	}
 
-    @Override
-    public int getItemViewType(int position) {
-        return HorizontalAdapterHelper.getItemViewtype(position, getItemCount());
-    }
+	@Override
+	public int getItemViewType(int position)
+	{
+		return HorizontalAdapterHelper.getItemViewtype(position, getItemCount());
+	}
 }

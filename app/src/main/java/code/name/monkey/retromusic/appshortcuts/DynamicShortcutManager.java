@@ -8,56 +8,64 @@ import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 
+import java.util.Arrays;
+import java.util.List;
+
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.LastAddedShortcutType;
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.ShuffleAllShortcutType;
 import code.name.monkey.retromusic.appshortcuts.shortcuttype.TopTracksShortcutType;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author Adrian Campos
  */
 
 @TargetApi(Build.VERSION_CODES.N_MR1)
-public class DynamicShortcutManager {
+public class DynamicShortcutManager
+{
 
-    private Context context;
-    private ShortcutManager shortcutManager;
+	private Context context;
+	private ShortcutManager shortcutManager;
 
-    public DynamicShortcutManager(Context context) {
-        this.context = context;
-        shortcutManager = this.context.getSystemService(ShortcutManager.class);
-    }
+	public DynamicShortcutManager(Context context)
+	{
+		this.context = context;
+		shortcutManager = this.context.getSystemService(ShortcutManager.class);
+	}
 
-    public static ShortcutInfo createShortcut(Context context, String id, String shortLabel, String longLabel, Icon icon, Intent intent) {
-        return new ShortcutInfo.Builder(context, id)
-                .setShortLabel(shortLabel)
-                .setLongLabel(longLabel)
-                .setIcon(icon)
-                .setIntent(intent)
-                .build();
-    }
+	public static ShortcutInfo createShortcut(Context context, String id, String shortLabel, String longLabel, Icon icon, Intent intent)
+	{
+		return new ShortcutInfo.Builder(context, id)
+				.setShortLabel(shortLabel)
+				.setLongLabel(longLabel)
+				.setIcon(icon)
+				.setIntent(intent)
+				.build();
+	}
 
-    public void initDynamicShortcuts() {
-        if (shortcutManager.getDynamicShortcuts().size() == 0) {
-            shortcutManager.setDynamicShortcuts(getDefaultShortcuts());
-        }
-    }
+	public void initDynamicShortcuts()
+	{
+		if (shortcutManager.getDynamicShortcuts().size() == 0) {
+			shortcutManager.setDynamicShortcuts(getDefaultShortcuts());
+		}
+	}
 
-    public void updateDynamicShortcuts() {
-        shortcutManager.updateShortcuts(getDefaultShortcuts());
-    }
+	public void updateDynamicShortcuts()
+	{
+		shortcutManager.updateShortcuts(getDefaultShortcuts());
+	}
 
-    public List<ShortcutInfo> getDefaultShortcuts() {
-        return (Arrays.asList(
-                new ShuffleAllShortcutType(context).getShortcutInfo(),
-                new TopTracksShortcutType(context).getShortcutInfo(),
-                new LastAddedShortcutType(context).getShortcutInfo()
-        ));
-    }
+	public List<ShortcutInfo> getDefaultShortcuts()
+	{
+		return (Arrays.asList(
+				new ShuffleAllShortcutType(context).getShortcutInfo(),
+				new TopTracksShortcutType(context).getShortcutInfo(),
+				new LastAddedShortcutType(context).getShortcutInfo()
+		)
+		);
+	}
 
-    public static void reportShortcutUsed(Context context, String shortcutId){
-        context.getSystemService(ShortcutManager.class).reportShortcutUsed(shortcutId);
-    }
+	public static void reportShortcutUsed(Context context, String shortcutId)
+	{
+		context.getSystemService(ShortcutManager.class).reportShortcutUsed(shortcutId);
+	}
 }

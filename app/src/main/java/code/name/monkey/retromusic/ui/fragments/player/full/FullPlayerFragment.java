@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.velitasali.music.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import code.name.monkey.appthemehelper.util.ToolbarContentTintHelper;
 import code.name.monkey.backend.model.Song;
-import com.velitasali.music.R;
 import code.name.monkey.retromusic.helper.MusicPlayerRemote;
 import code.name.monkey.retromusic.ui.fragments.base.AbsPlayerFragment;
 import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
@@ -26,105 +27,120 @@ import code.name.monkey.retromusic.ui.fragments.player.PlayerAlbumCoverFragment;
  */
 
 public class FullPlayerFragment extends AbsPlayerFragment implements
-        PlayerAlbumCoverFragment.Callbacks {
-    @BindView(R.id.player_toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.toolbar_container)
-    FrameLayout toolbarContainer;
-    Unbinder unbinder;
-    @BindView(R.id.now_playing_container)
-    ViewGroup viewGroup;
-    private int lastColor;
-    private FullPlaybackControlsFragment fullPlaybackControlsFragment;
+		PlayerAlbumCoverFragment.Callbacks
+{
+	@BindView(R.id.player_toolbar)
+	Toolbar mToolbar;
+	@BindView(R.id.toolbar_container)
+	FrameLayout toolbarContainer;
+	Unbinder unbinder;
+	@BindView(R.id.now_playing_container)
+	ViewGroup viewGroup;
+	private int lastColor;
+	private FullPlaybackControlsFragment fullPlaybackControlsFragment;
 
-    private void setUpPlayerToolbar() {
-        mToolbar.inflateMenu(R.menu.menu_player);
-        mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
-        mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
-        mToolbar.setOnMenuItemClickListener(this);
-    }
+	private void setUpPlayerToolbar()
+	{
+		mToolbar.inflateMenu(R.menu.menu_player);
+		mToolbar.setNavigationIcon(R.drawable.ic_close_white_24dp);
+		mToolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
+		mToolbar.setOnMenuItemClickListener(this);
+	}
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_full, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
+	@Nullable
+	@Override
+	public View onCreateView(@NonNull LayoutInflater inflater,
+							 @Nullable ViewGroup container,
+							 @Nullable Bundle savedInstanceState)
+	{
+		View view = inflater.inflate(R.layout.fragment_full, container, false);
+		unbinder = ButterKnife.bind(this, view);
+		return view;
+	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        toggleStatusBar(viewGroup);
-        setUpSubFragments();
-        setUpPlayerToolbar();
-    }
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState)
+	{
+		super.onViewCreated(view, savedInstanceState);
+		toggleStatusBar(viewGroup);
+		setUpSubFragments();
+		setUpPlayerToolbar();
+	}
 
-    private void setUpSubFragments() {
-        fullPlaybackControlsFragment = (FullPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
+	private void setUpSubFragments()
+	{
+		fullPlaybackControlsFragment = (FullPlaybackControlsFragment) getChildFragmentManager().findFragmentById(R.id.playback_controls_fragment);
 
-        PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
-        playerAlbumCoverFragment.setCallbacks(this);
-        playerAlbumCoverFragment.removeSlideEffect();
-    }
+		PlayerAlbumCoverFragment playerAlbumCoverFragment = (PlayerAlbumCoverFragment) getChildFragmentManager().findFragmentById(R.id.player_album_cover_fragment);
+		playerAlbumCoverFragment.setCallbacks(this);
+		playerAlbumCoverFragment.removeSlideEffect();
+	}
 
-    @Override
-    @ColorInt
-    public int getPaletteColor() {
-        return lastColor;
-    }
+	@Override
+	@ColorInt
+	public int getPaletteColor()
+	{
+		return lastColor;
+	}
 
-    @Override
-    public void onShow() {
+	@Override
+	public void onShow()
+	{
 
-    }
+	}
 
-    @Override
-    public void onHide() {
+	@Override
+	public void onHide()
+	{
 
-    }
+	}
 
-    @Override
-    public boolean onBackPressed() {
-        return false;
-    }
+	@Override
+	public boolean onBackPressed()
+	{
+		return false;
+	}
 
-    @Override
-    public Toolbar getToolbar() {
-        return mToolbar;
-    }
+	@Override
+	public Toolbar getToolbar()
+	{
+		return mToolbar;
+	}
 
-    @Override
-    public int toolbarIconColor() {
-        return Color.WHITE;
-    }
+	@Override
+	public int toolbarIconColor()
+	{
+		return Color.WHITE;
+	}
 
-    @Override
-    public void onColorChanged(int color) {
-        lastColor = color;
-        fullPlaybackControlsFragment.setDark(color);
-        getCallbacks().onPaletteColorChanged();
-        ToolbarContentTintHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
-    }
+	@Override
+	public void onColorChanged(int color)
+	{
+		lastColor = color;
+		fullPlaybackControlsFragment.setDark(color);
+		getCallbacks().onPaletteColorChanged();
+		ToolbarContentTintHelper.colorizeToolbar(mToolbar, Color.WHITE, getActivity());
+	}
 
-    @Override
-    public void onFavoriteToggled() {
-        toggleFavorite(MusicPlayerRemote.getCurrentSong());
-    }
+	@Override
+	public void onFavoriteToggled()
+	{
+		toggleFavorite(MusicPlayerRemote.getCurrentSong());
+	}
 
-    @Override
-    protected void toggleFavorite(Song song) {
-        super.toggleFavorite(song);
-        if (song.id == MusicPlayerRemote.getCurrentSong().id) {
-            updateIsFavorite();
-        }
-    }
+	@Override
+	protected void toggleFavorite(Song song)
+	{
+		super.toggleFavorite(song);
+		if (song.id == MusicPlayerRemote.getCurrentSong().id) {
+			updateIsFavorite();
+		}
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
+	@Override
+	public void onDestroyView()
+	{
+		super.onDestroyView();
+		unbinder.unbind();
+	}
 }

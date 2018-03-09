@@ -7,8 +7,9 @@ import com.afollestad.materialcab.MaterialCab;
 /**
  * @author Karim Abou Zeid (kabouzeid)
  */
-public interface CabHolder {
+public interface CabHolder
+{
 
-    @NonNull
-    MaterialCab openCab(final int menuRes, final MaterialCab.Callback callback);
+	@NonNull
+	MaterialCab openCab(final int menuRes, final MaterialCab.Callback callback);
 }
