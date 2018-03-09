@@ -46,13 +46,14 @@ android {
             versionName defaultConfig.versionName + "_" + getDate()
             dimension "default"
         }
+        /*
         kitkat {
             minSdkVersion 19
             targetSdkVersion 19
             versionCode defaultConfig.versionCode + 2000
             versionName defaultConfig.versionName
             dimension "default"
-        }
+        }*/
         pro {
             versionName defaultConfig.versionName
             applicationId defaultConfig.applicationId + ".pro"
@@ -158,4 +159,3 @@ dependencies {
     implementation project(':back-end')
     implementation project(':appthemehelper')
 }
-apply plugin: 'com.google.gms.google-services'
